@@ -8,6 +8,7 @@ QT       -= core gui
 
 TARGET = neuron_models
 TEMPLATE = lib
+CONFIG += staticlib
 
 SOURCES += izhikevich.cpp \
            network.cpp \

@@ -19,3 +19,4 @@ build/moc_glscene.o
 build/moc_mainwindow.cpp
 build/moc_mainwindow.o
 build/ui_mainwindow.h
+NeuronModels/libneuron_models.a
