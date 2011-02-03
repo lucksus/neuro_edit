@@ -1,5 +1,6 @@
 build/*
 *.o
+moc_*.cpp
 NeuronModels/Makefile
 NeuronModels/izhikevich.o
 NeuronModels/libneuron_models.1.0.0.dylib
