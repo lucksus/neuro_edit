@@ -24,8 +24,25 @@ NeuronPropertiesWidget::~NeuronPropertiesWidget()
 
 void NeuronPropertiesWidget::show_properties_for_objects(std::set<SimulationObject *> objects){
     disable();
+    ui->label_current->setText("current:");
+    m_objects = objects;
     if(objects.empty()){
         return;
+    }
+
+    bool all_neurons = true;
+    BOOST_FOREACH(SimulationObject* o, objects){
+        if(!dynamic_cast<Neuron*>(o))
+            all_neurons = false;
+    }
+
+    if(all_neurons){
+        enable();
+
+        if(objects.size() == 1)
+            ui->currentSpinBox->setValue(dynamic_cast<Neuron*>(*objects.begin())->membrane_potential());
+        else
+            ui->label_current->setText("current:*");
     }
 
     std::string type;
@@ -79,3 +96,12 @@ void NeuronPropertiesWidget::enable(){
     ui->add_potential_button->setEnabled(true);
     ui->set_potential_button->setEnabled(true);
 }
+
+void NeuronPropertiesWidget::on_set_potential_button_clicked(){
+    BOOST_FOREACH(SimulationObject* o, m_objects){
+        Neuron* n = dynamic_cast<Neuron*>(o);
+        assert(n);
+        n->set_membrane_potential(ui->currentSpinBox->value());
+    }
+}
+

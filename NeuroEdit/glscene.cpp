@@ -337,7 +337,7 @@ void GLScene::paint_objects(bool picking_run, bool only_moving_objects){
             }else{
                 glEnable(GL_LIGHTING);
                 glEnable(GL_DITHER);
-                GLfloat green[] = {.2,1,0,1};
+                GLfloat green[] = {.2,1, std::max(0.,neuron->membrane_potential()+70.)/100.,1};
                 GLfloat yellow[] = {1,1,0,1};
                 if(m_selected_objects.count(neuron))
                     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, yellow);

@@ -9,6 +9,7 @@ public:
     virtual ~Neuron() {};
     virtual bool update(double milli_seconds, double current) = 0;
     virtual double membrane_potential() = 0;
+    virtual void set_membrane_potential(double) = 0;
     virtual bool is_spiking() = 0;
 
     void add_synaptic_input(double current);

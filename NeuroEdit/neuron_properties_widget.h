@@ -21,6 +21,8 @@ public:
 public slots:
     void show_properties_for_objects(std::set<SimulationObject*>);
 
+private slots:
+    void on_set_potential_button_clicked();
 private:
     Ui::NeuronPropertiesWidget *ui;
 
@@ -28,6 +30,7 @@ private:
     void enable();
 
     QWidget* m_model_parameters;
+    std::set<SimulationObject*> m_objects;
 };
 
 #endif // NEURON_PROPERTIES_WIDGET_H

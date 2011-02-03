@@ -31,6 +31,10 @@ double Izhikevich::membrane_potential(){
     return v;
 }
 
+void Izhikevich::set_membrane_potential(double p){
+    v = p;
+}
+
 bool Izhikevich::is_spiking(){
     return m_spiking;
 }

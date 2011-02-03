@@ -9,6 +9,7 @@ public:
 
     virtual bool update(double milli_seconds, double current);
     virtual double membrane_potential();
+    virtual void set_membrane_potential(double);
     virtual bool is_spiking();
 
     inline double get_a(){return a;}
