@@ -4,9 +4,10 @@
 #include "neuron.h"
 #include "link.h"
 #include <GLUT/glut.h>
+#include <algorithm>
 
 GLScene::GLScene(QWidget *parent) :
-    QGLWidget(parent), m_mousedown_right(false), m_fov(120.),
+    QGLWidget(parent), m_mousedown_right(false), m_mousedown_left(false), m_fov(120.),
     m_moving_start_point(0,0,0), m_picking_run(false), m_moving(false),
     m_shift_key_down(false), m_ctrl_key_down(false),
     m_selection_box(false)
@@ -17,6 +18,7 @@ GLScene::GLScene(QWidget *parent) :
     setMouseTracking(true);
     setAutoBufferSwap(false);
     m_pixel_buffer = new GLubyte[2000*2000];
+    m_camera_config.elevation = m_camera_config.azimuth = 45.;
 }
 
 GLScene::~GLScene(){
@@ -146,6 +148,10 @@ void GLScene::keyPressEvent(QKeyEvent *e){
         m_ctrl_key_down = true;
         m_moving_switch_plane_point = m_moving_point;
         if(m_moving) updateGL();
+        break;
+    case Qt::Key_Escape:
+        m_moving = false;
+        updateGL();
         break;
     }
 
@@ -469,7 +475,7 @@ void GLScene::paint_moving_plane(){
     double dist = destination.distance(p);
     glDisable(GL_LIGHTING);
     glColor3f(.0,.0,.8);
-    for(double step=10;step<2*dist;step*=1.5){
+    for(double step=10;step < std::max(2*dist,150.);step*=1.5){
         if(!m_shift_key_down && !m_ctrl_key_down){
             //parallel to x-z-achsis
             glBegin(GL_LINE_STRIP);
