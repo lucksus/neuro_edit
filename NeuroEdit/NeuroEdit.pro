@@ -17,9 +17,18 @@ macx{
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    glscene.cpp
+    glscene.cpp \
+    neuron_properties_widget.cpp \
+    izhikevich_properties_widget.cpp
 
 HEADERS  += mainwindow.h \
-    glscene.h
+    glscene.h \
+    neuron_properties_widget.h \
+    izhikevich_properties_widget.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    neuron_properties_widget.ui \
+    izhikevich_properties_widget.ui
+
+RESOURCES += \
+    icons.qrc
