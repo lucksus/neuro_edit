@@ -15,7 +15,8 @@ SOURCES += izhikevich.cpp \
     link.cpp \
     neuron.cpp \
     simulationobject.cpp \
-    spatialobject.cpp
+    spatialobject.cpp \
+    simulation.cpp
 
 HEADERS += izhikevich.h \
            network.h \
@@ -23,4 +24,5 @@ HEADERS += izhikevich.h \
     link.h \
     simulationobject.h \
     spatialobject.h \
-    point.h
+    point.h \
+    simulation.h
