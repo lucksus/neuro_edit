@@ -16,6 +16,10 @@ public:
     explicit IzhikevichPropertiesWidget(Izhikevich* neuron, QWidget *parent = 0);
     ~IzhikevichPropertiesWidget();
 
+private slots:
+    void on_set_button_clicked();
+    void on_comboBox_activated(int type);
+
 private:
     Ui::IzhikevichPropertiesWidget *ui;
 

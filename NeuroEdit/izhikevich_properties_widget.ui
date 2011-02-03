@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QComboBox" name="comboBox_2">
+    <widget class="QComboBox" name="comboBox">
      <item>
       <property name="text">
        <string>regular spiking</string>
@@ -63,7 +63,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="a_2">
+      <widget class="QDoubleSpinBox" name="a">
        <property name="minimum">
         <double>-999.000000000000000</double>
        </property>
@@ -84,7 +84,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="b_2">
+      <widget class="QDoubleSpinBox" name="b">
        <property name="minimum">
         <double>-999.000000000000000</double>
        </property>
@@ -105,7 +105,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="c_2">
+      <widget class="QDoubleSpinBox" name="c">
        <property name="minimum">
         <double>-999.000000000000000</double>
        </property>
@@ -126,7 +126,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="d_2">
+      <widget class="QDoubleSpinBox" name="d">
        <property name="minimum">
         <double>-999.000000000000000</double>
        </property>
@@ -138,7 +138,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QPushButton" name="set_button_2">
+    <widget class="QPushButton" name="set_button">
      <property name="text">
       <string>set</string>
      </property>
