@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
     dock->setWidget(&m_neuron_properties);
     addDockWidget(Qt::RightDockWidgetArea,dock);
 
+    ui->menuWindows->addAction(dock->toggleViewAction());
+
     connect(&m_sim, SIGNAL(simulation_started()), this, SLOT(simulation_started()));
     connect(&m_sim, SIGNAL(simulation_stopped()), this, SLOT(simulation_stopped()));
 }
