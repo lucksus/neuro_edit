@@ -13,6 +13,7 @@ public:
     ~GLScene();
 
 signals:
+    void selection_changed(std::set<SimulationObject*>);
 
 public slots:
     void set_network(Network*);
@@ -34,6 +35,9 @@ protected:
 private:
     Network* m_network;
     std::set<SimulationObject*> m_selected_objects;
+    void add_to_selection(SimulationObject*);
+    void select(SimulationObject*);
+    void select(std::set<SimulationObject*>);
 
     void setup_projection_and_modelview_matrix();
     void apply_camera_translation_to_modelviewmatrix();

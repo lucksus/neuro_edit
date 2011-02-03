@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(&m_sim, SIGNAL(simulation_started()), this, SLOT(simulation_started()));
     connect(&m_sim, SIGNAL(simulation_stopped()), this, SLOT(simulation_stopped()));
+
+    connect(&m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_neuron_properties, SLOT(show_properties_for_objects(std::set<SimulationObject*>)));
 }
 
 MainWindow::~MainWindow()

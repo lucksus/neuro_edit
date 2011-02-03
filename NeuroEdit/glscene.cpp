@@ -19,6 +19,8 @@ GLScene::GLScene(QWidget *parent) :
     setAutoBufferSwap(false);
     m_pixel_buffer = new GLubyte[2000*2000];
     m_camera_config.elevation = m_camera_config.azimuth = 45.;
+
+    qRegisterMetaType< std::set<SimulationObject*> >("std::set<SimulationObject*>");
 }
 
 GLScene::~GLScene(){
@@ -34,6 +36,7 @@ void GLScene::mouseMoveEvent(QMouseEvent *e){
         //----------------
         //Camera:
         //----------------
+    //----------------
         if(m_mousedown_right){
                 int deltaX = e->x() - m_oldMouseX;
                 int deltaY = -(e->y() - m_oldMouseY);
@@ -65,7 +68,7 @@ void GLScene::mouseMoveEvent(QMouseEvent *e){
                         if(!m_selected_objects.count(clicked_object))
                             m_selected_objects.clear();
                         if(m_selected_objects.empty())
-                            m_selected_objects.insert(clicked_object);
+                            add_to_selection(clicked_object);
 
                         start_moving(*spatial_object);
                     }else{
@@ -106,11 +109,14 @@ void GLScene::mouseReleaseEvent(QMouseEvent* e){
             }else{
                 if(m_selection_box){
                     m_selection_box = false;
-                    m_selected_objects = objects_in_selection_box();
+                    select(objects_in_selection_box());
                 }else{
-                    if(!m_shift_key_down)
-                        m_selected_objects.clear();
-                    m_selected_objects.insert(object_under_cursor(e->x(),e->y()));
+
+                    SimulationObject* o = object_under_cursor(e->x(),e->y());
+                    if(m_shift_key_down)
+                        add_to_selection(o);
+                    else
+                        select(o);
                 }
                 updateGL();
             }
@@ -509,3 +515,21 @@ void GLScene::paint_moving_plane(){
     }
 
 }
+
+
+void GLScene::add_to_selection(SimulationObject* o){
+    m_selected_objects.insert(o);
+    emit selection_changed(m_selected_objects);
+}
+
+void GLScene::select(SimulationObject* o){
+    m_selected_objects.clear();
+    if(o) m_selected_objects.insert(o);
+    emit selection_changed(m_selected_objects);
+}
+
+void GLScene::select(std::set<SimulationObject*> o){
+    m_selected_objects = o;
+    emit selection_changed(m_selected_objects);
+}
+

@@ -17,14 +17,14 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_9">
      <item>
-      <widget class="QLabel" name="label_7">
+      <widget class="QLabel" name="typeLabel">
        <property name="text">
         <string>Type:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="type">
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -33,9 +33,15 @@
     </layout>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="modelParameters">
      <property name="title">
       <string>Model Parameters</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -50,6 +56,9 @@
      <property name="title">
       <string>Membrane Potential</string>
      </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -61,7 +70,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="current_2">
+         <widget class="QDoubleSpinBox" name="currentSpinBox">
           <property name="decimals">
            <number>0</number>
           </property>
