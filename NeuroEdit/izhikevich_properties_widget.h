@@ -2,6 +2,7 @@
 #define IZHIKEVICH_PROPERTIES_WIDGET_H
 
 #include <QWidget>
+#include <set>
 class Izhikevich;
 
 namespace Ui {
@@ -13,7 +14,8 @@ class IzhikevichPropertiesWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit IzhikevichPropertiesWidget(Izhikevich* neuron, QWidget *parent = 0);
+    IzhikevichPropertiesWidget(Izhikevich* neuron, QWidget *parent = 0);
+    IzhikevichPropertiesWidget(std::set<Izhikevich*> neurons, QWidget *parent = 0);
     ~IzhikevichPropertiesWidget();
 
 private slots:
@@ -24,6 +26,7 @@ private:
     Ui::IzhikevichPropertiesWidget *ui;
 
     Izhikevich* m_neuron;
+    std::set<Izhikevich*> m_neurons;
 };
 
 #endif // IZHIKEVICH_PROPERTIES_WIDGET_H

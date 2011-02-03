@@ -3,6 +3,8 @@
 #include "simulationobject.h"
 #include "izhikevich.h"
 #include "izhikevich_properties_widget.h"
+#include <boost/foreach.hpp>
+#include <assert.h>
 
 NeuronPropertiesWidget::NeuronPropertiesWidget(QWidget *parent) :
     QWidget(parent),
@@ -22,17 +24,37 @@ NeuronPropertiesWidget::~NeuronPropertiesWidget()
 
 void NeuronPropertiesWidget::show_properties_for_objects(std::set<SimulationObject *> objects){
     disable();
-    if(objects.empty() || objects.size() > 1){
+    if(objects.empty()){
         return;
     }
 
-    SimulationObject* o = *(objects.begin());
-    Izhikevich* izhikevich_neuron = dynamic_cast<Izhikevich*>(o);
+    std::string type;
+    BOOST_FOREACH(SimulationObject* o, objects){
+        std::string new_type;
+        if(dynamic_cast<Izhikevich*>(o))
+            new_type = "Izhikevich";
+        else
+            new_type = "unknown";
 
-    if(izhikevich_neuron){
-        ui->type->setText("Izhikevich");
-        enable();
-        m_model_parameters = new IzhikevichPropertiesWidget(izhikevich_neuron);
+        if(type == "") type = new_type;
+        else if(type != new_type) return;
+    }
+    //all objects of same type
+    ui->type->setText(type.c_str());
+    enable();
+
+    if(type == "Izhikevich"){
+        std::set<Izhikevich*> neurons;
+        BOOST_FOREACH(SimulationObject* o, objects){
+            Izhikevich* n = dynamic_cast<Izhikevich*>(o);
+            assert(n);
+            neurons.insert(n);
+        }
+
+        if(neurons.size() == 1)
+            m_model_parameters = new IzhikevichPropertiesWidget(*neurons.begin());
+        else
+            m_model_parameters = new IzhikevichPropertiesWidget(neurons);
         ui->modelParameters->layout()->addWidget(m_model_parameters);
     }
 

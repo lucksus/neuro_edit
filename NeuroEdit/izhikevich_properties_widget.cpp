@@ -1,6 +1,7 @@
 #include "izhikevich_properties_widget.h"
 #include "ui_izhikevich_properties_widget.h"
 #include "izhikevich.h"
+#include <boost/foreach.hpp>
 
 IzhikevichPropertiesWidget::IzhikevichPropertiesWidget(Izhikevich* neuron, QWidget *parent) :
     QWidget(parent),
@@ -13,6 +14,40 @@ IzhikevichPropertiesWidget::IzhikevichPropertiesWidget(Izhikevich* neuron, QWidg
     ui->c->setValue(m_neuron->get_c());
     ui->d->setValue(m_neuron->get_d());
 
+}
+
+IzhikevichPropertiesWidget::IzhikevichPropertiesWidget(std::set<Izhikevich*> neurons, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::IzhikevichPropertiesWidget),
+    m_neuron(0),
+    m_neurons(neurons)
+{
+    ui->setupUi(this);
+    double a,b,c,d;
+    bool a_different=false, b_different=false, c_different=false, d_different=false;
+    Izhikevich* n = *neurons.begin();
+    a = n->get_a();
+    b = n->get_b();
+    c = n->get_c();
+    d = n->get_d();
+
+    BOOST_FOREACH(n, neurons){
+        if(a != n->get_a()) { a=n->get_a(); a_different=true; }
+        if(b != n->get_b()) { b=n->get_b(); b_different=true; }
+        if(c != n->get_c()) { c=n->get_c(); c_different=true; }
+        if(d != n->get_d()) { d=n->get_d(); d_different=true; }
+    }
+
+    if(!a_different) ui->a->setValue(a);
+    else ui->label_a->setText("a:*");
+    if(!b_different) ui->b->setValue(b);
+    else ui->label_b->setText("b:*");
+    if(!c_different) ui->c->setValue(c);
+    else ui->label_c->setText("c:*");
+    if(!d_different) ui->d->setValue(d);
+    else ui->label_d->setText("d:*");
+
+    ui->set_button->setText("set all");
 }
 
 IzhikevichPropertiesWidget::~IzhikevichPropertiesWidget()
