@@ -25,6 +25,12 @@ MainWindow::MainWindow(QWidget *parent) :
     //dock->setWidget(&m_neuron_potential_plot);
     //addDockWidget(Qt::RightDockWidgetArea,dock);
 
+    dock = new QDockWidget(tr("Neuron membrane potential"), this);
+    dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    dock->setWidget(&m_neuron_membrane_potential_widget);
+    addDockWidget(Qt::RightDockWidgetArea,dock);
+    ui->menuWindows->addAction(dock->toggleViewAction());
+
     dock = new QDockWidget(tr("Neuron properties"), this);
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     dock->setWidget(&m_neuron_properties);
@@ -34,8 +40,10 @@ MainWindow::MainWindow(QWidget *parent) :
     dock = new QDockWidget(tr("Simulation settings"), this);
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     dock->setWidget(&m_sim_settings_widget);
-    addDockWidget(Qt::RightDockWidgetArea,dock);
+    //addDockWidget(Qt::RightDockWidgetArea,dock);
     ui->menuWindows->addAction(dock->toggleViewAction());
+
+
 
 
     connect(&m_sim, SIGNAL(simulation_started()), this, SLOT(simulation_started()));
