@@ -5,6 +5,7 @@
 #include "glscene.h"
 #include "simulation.h"
 #include "neuron_properties_widget.h"
+#include "simulation_settings_widget.h"
 
 namespace Ui {
     class MainWindow;
@@ -26,6 +27,9 @@ private slots:
 
      void simulation_started();
      void simulation_stopped();
+
+     void simulation_time_passed(long useconds);
+
 private:
     Ui::MainWindow *ui;
     GLScene m_glscene;
@@ -33,6 +37,7 @@ private:
     //NeuronPlotWidget m_neuron_potential_plot;
     NeuronPropertiesWidget m_neuron_properties;
     Simulation m_sim;
+    SimulationSettingsWidget m_sim_settings_widget;
 };
 
 #endif // MAINWINDOW_H

@@ -12,13 +12,17 @@ public:
     void request_stop();
 
     void set_network(Network*);
-    void set_time_step(double milliseconds);
-    void set_time_ratio(double ratio);
+    void set_simulation_step(double milliseconds);
+    void set_real_step(double milliseconds);
+
+    double simulation_step();
+    double real_step();
 
 signals:
     void not_matching_speed();
     void simulation_started();
     void simulation_stopped();
+    void simulation_time_passed(long useconds);
 
 protected:
     virtual void run();
@@ -26,8 +30,8 @@ protected:
 private:
     bool m_stop_request;
     Network* m_network;
-    double m_time_step;
-    double m_time_ratio;
+    double m_simulation_step;
+    double m_real_step;
 
 };
 

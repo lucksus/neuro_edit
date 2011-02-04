@@ -16,6 +16,9 @@ MainWindow::MainWindow(QWidget *parent) :
     setCentralWidget(&m_glscene);
     m_glscene.setFocus();
 
+    m_sim_settings_widget.set_simulation(&m_sim);
+    m_sim.set_network(m_network);
+
     QDockWidget *dock;
     //dock = new QDockWidget(tr("Neuron Potential Plot"), this);
     //dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
@@ -26,13 +29,22 @@ MainWindow::MainWindow(QWidget *parent) :
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     dock->setWidget(&m_neuron_properties);
     addDockWidget(Qt::RightDockWidgetArea,dock);
-
     ui->menuWindows->addAction(dock->toggleViewAction());
+
+    dock = new QDockWidget(tr("Simulation settings"), this);
+    dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    dock->setWidget(&m_sim_settings_widget);
+    addDockWidget(Qt::RightDockWidgetArea,dock);
+    ui->menuWindows->addAction(dock->toggleViewAction());
+
 
     connect(&m_sim, SIGNAL(simulation_started()), this, SLOT(simulation_started()));
     connect(&m_sim, SIGNAL(simulation_stopped()), this, SLOT(simulation_stopped()));
+    connect(&m_sim, SIGNAL(simulation_started()), &m_sim_settings_widget, SLOT(simulation_started()));
+    connect(&m_sim, SIGNAL(simulation_stopped()), &m_sim_settings_widget, SLOT(simulation_stopped()));
 
     connect(&m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_neuron_properties, SLOT(show_properties_for_objects(std::set<SimulationObject*>)));
+    connect(&m_sim, SIGNAL(simulation_time_passed(long)), this, SLOT(simulation_time_passed(long)));
 }
 
 MainWindow::~MainWindow()
@@ -47,9 +59,6 @@ void MainWindow::on_actionSingle_Neuron_triggered(bool){
 }
 
 void MainWindow::on_actionStart_Simulation_triggered(bool){
-    m_sim.set_network(m_network);
-    m_sim.set_time_step(1);
-    m_sim.set_time_ratio(10000);
     m_sim.start();
 }
 
@@ -67,4 +76,9 @@ void MainWindow::simulation_started(){
 void MainWindow::simulation_stopped(){
     ui->actionStart_Simulation->setEnabled(true);
     ui->actionPause_Simulation->setEnabled(false);
+}
+
+
+void MainWindow::simulation_time_passed(long){
+    m_glscene.updateGL();
 }
