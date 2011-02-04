@@ -86,6 +86,7 @@ void NeuronPropertiesWidget::disable(){
     ui->type->setText("");
     ui->type->setEnabled(false);
     ui->currentSpinBox->setEnabled(false);
+    ui->currentSpinBox->setValue(0);
     ui->add_potential_button->setEnabled(false);
     ui->set_potential_button->setEnabled(false);
 }
