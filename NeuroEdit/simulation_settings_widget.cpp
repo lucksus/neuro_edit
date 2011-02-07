@@ -46,12 +46,12 @@ void SimulationSettingsWidget::on_run_button_clicked(){
 }
 
 
-void SimulationSettingsWidget::on_simulation_step_changed(double value){
+void SimulationSettingsWidget::on_simulation_step_valueChanged(double value){
     assert(m_simulation);
     m_simulation->set_simulation_step(value);
 }
 
-void SimulationSettingsWidget::on_real_step_changed(double value){
+void SimulationSettingsWidget::on_real_step_valueChanged(double value){
     assert(m_simulation);
     m_simulation->set_real_step(value);
 }

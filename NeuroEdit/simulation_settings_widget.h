@@ -24,8 +24,8 @@ public slots:
 
 private slots:
     void on_run_button_clicked();
-    void on_simulation_step_changed(double value);
-    void on_real_step_changed(double value);
+    void on_simulation_step_valueChanged(double value);
+    void on_real_step_valueChanged(double value);
 
 
 private:
