@@ -238,7 +238,7 @@ void GLScene::paintGL()
     setup_projection_and_modelview_matrix();
 
     paint_floor();
-    paint_objects(m_selection_box);
+    paint_objects();
     if(m_moving){
         paint_moving_plane();
         paint_objects(false,true);
