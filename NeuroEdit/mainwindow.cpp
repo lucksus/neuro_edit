@@ -40,8 +40,9 @@ MainWindow::MainWindow(QWidget *parent) :
     dock = new QDockWidget(tr("Simulation settings"), this);
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     dock->setWidget(&m_sim_settings_widget);
-    //addDockWidget(Qt::RightDockWidgetArea,dock);
+    addDockWidget(Qt::RightDockWidgetArea,dock);
     ui->menuWindows->addAction(dock->toggleViewAction());
+    dock->hide();
 
 
 
@@ -50,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_sim, SIGNAL(simulation_stopped()), this, SLOT(simulation_stopped()));
     connect(&m_sim, SIGNAL(simulation_started()), &m_sim_settings_widget, SLOT(simulation_started()));
     connect(&m_sim, SIGNAL(simulation_stopped()), &m_sim_settings_widget, SLOT(simulation_stopped()));
+    connect(&m_sim, SIGNAL(simulation_started()), &m_neuron_properties, SLOT(simulation_started()));
+    connect(&m_sim, SIGNAL(simulation_stopped()), &m_neuron_properties, SLOT(simulation_stopped()));
 
     connect(&m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_neuron_properties, SLOT(show_properties_for_objects(std::set<SimulationObject*>)));
     connect(&m_glscene, SIGNAL(neuron_selected(Neuron*)), &m_neuron_membrane_potential_widget, SLOT(set_neuron(Neuron*)));

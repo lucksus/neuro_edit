@@ -9,7 +9,8 @@
 NeuronPropertiesWidget::NeuronPropertiesWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::NeuronPropertiesWidget),
-    m_model_parameters(0)
+    m_model_parameters(0),
+    m_simulation_running(false)
 {
     ui->setupUi(this);
     ui->modelParameters->setLayout(new QHBoxLayout());
@@ -106,3 +107,23 @@ void NeuronPropertiesWidget::on_set_potential_button_clicked(){
     }
 }
 
+void NeuronPropertiesWidget::on_add_potential_button_clicked(){
+    BOOST_FOREACH(SimulationObject* o, m_objects){
+        Neuron* n = dynamic_cast<Neuron*>(o);
+        assert(n);
+        n->add_synaptic_input(ui->currentSpinBox->value());
+    }
+}
+
+
+void NeuronPropertiesWidget::simulation_started(){
+    m_simulation_running = true;
+    ui->set_potential_button->setEnabled(false);
+    ui->add_potential_button->setEnabled(true);
+}
+
+void NeuronPropertiesWidget::simulation_stopped(){
+    m_simulation_running = false;
+    ui->set_potential_button->setEnabled(true);
+    ui->add_potential_button->setEnabled(false);
+}
