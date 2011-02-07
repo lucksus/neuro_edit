@@ -107,6 +107,7 @@ void GLMembranePlot::paint_axis(){
     glLineStipple (1, 0xAAAA);
     glEnable(GL_LINE_STIPPLE);
 
+    glLineWidth(1);
     glBegin(GL_LINES);
     for(int i = -105; i<=35; i+=35){
         glVertex2f(-100,i); glVertex2f(0,i);
@@ -151,6 +152,7 @@ void GLMembranePlot::paint_axis(){
 void GLMembranePlot::paint_values(){
     double_pair last;
     bool first = true;
+    glLineWidth(2);
     glBegin(GL_LINES);
     BOOST_FOREACH(double_pair p, m_last_values){
         if(!first){
