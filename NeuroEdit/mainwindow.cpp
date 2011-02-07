@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     m_network = new Network;
     m_glscene.set_network(m_network);
+    m_neuron_properties.set_network(m_network);
     setCentralWidget(&m_glscene);
     m_glscene.setFocus();
 

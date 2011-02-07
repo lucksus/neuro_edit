@@ -5,12 +5,15 @@
 #include "izhikevich_properties_widget.h"
 #include <boost/foreach.hpp>
 #include <assert.h>
+#include "network.h"
+#include "current_inducer.h"
 
 NeuronPropertiesWidget::NeuronPropertiesWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::NeuronPropertiesWidget),
     m_model_parameters(0),
-    m_simulation_running(false)
+    m_simulation_running(false),
+    m_network(0)
 {
     ui->setupUi(this);
     ui->modelParameters->setLayout(new QHBoxLayout());
@@ -22,6 +25,9 @@ NeuronPropertiesWidget::~NeuronPropertiesWidget()
     delete ui;
 }
 
+void NeuronPropertiesWidget::set_network(Network* net){
+    m_network = net;
+}
 
 void NeuronPropertiesWidget::show_properties_for_objects(std::set<SimulationObject *> objects){
     disable();
@@ -76,6 +82,9 @@ void NeuronPropertiesWidget::show_properties_for_objects(std::set<SimulationObje
         ui->modelParameters->layout()->addWidget(m_model_parameters);
     }
 
+    if(m_simulation_running)
+        create_current_inducers();
+
 }
 
 void NeuronPropertiesWidget::disable(){
@@ -107,17 +116,18 @@ void NeuronPropertiesWidget::on_set_potential_button_clicked(){
     }
 }
 
-void NeuronPropertiesWidget::on_add_potential_button_clicked(){
-    BOOST_FOREACH(SimulationObject* o, m_objects){
-        Neuron* n = dynamic_cast<Neuron*>(o);
-        assert(n);
-        n->add_synaptic_input(ui->currentSpinBox->value());
-    }
+void NeuronPropertiesWidget::on_add_potential_button_pressed(){
+    activate_current_inducers();
+}
+
+void NeuronPropertiesWidget::on_add_potential_button_released(){
+    deactivate_current_inducers();
 }
 
 
 void NeuronPropertiesWidget::simulation_started(){
     m_simulation_running = true;
+    create_current_inducers();
     ui->set_potential_button->setEnabled(false);
     ui->add_potential_button->setEnabled(true);
 }
@@ -126,4 +136,36 @@ void NeuronPropertiesWidget::simulation_stopped(){
     m_simulation_running = false;
     ui->set_potential_button->setEnabled(true);
     ui->add_potential_button->setEnabled(false);
+}
+
+void NeuronPropertiesWidget::create_current_inducers(){
+    delete_current_inducers();
+    BOOST_FOREACH(SimulationObject* o, m_objects){
+        Neuron* n = dynamic_cast<Neuron*>(o);
+        if(n){
+            CurrentInducer* ci = new CurrentInducer(n);
+            m_current_inducers.insert(ci);
+            m_network->add_object(ci);
+        }
+    }
+}
+
+void NeuronPropertiesWidget::delete_current_inducers(){
+    BOOST_FOREACH(CurrentInducer* ci, m_current_inducers){
+        m_network->delete_object(ci);
+    }
+    m_current_inducers.clear();
+}
+
+void NeuronPropertiesWidget::activate_current_inducers(){
+    BOOST_FOREACH(CurrentInducer* ci, m_current_inducers){
+        ci->set_current(ui->currentSpinBox->value());
+        ci->set_active(true);
+    }
+}
+
+void NeuronPropertiesWidget::deactivate_current_inducers(){
+    BOOST_FOREACH(CurrentInducer* ci, m_current_inducers){
+        ci->set_active(false);
+    }
 }
