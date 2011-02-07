@@ -29,7 +29,7 @@ private slots:
      void simulation_started();
      void simulation_stopped();
 
-     void simulation_time_passed(long useconds);
+     void simulation_time_passed(double);
 
 private:
     Ui::MainWindow *ui;

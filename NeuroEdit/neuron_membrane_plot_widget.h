@@ -2,7 +2,7 @@
 #define NEURON_MEMBRANE_PLOT_WIDGET_H
 
 #include <QGLWidget>
-#include <vector>
+#include <deque>
 
 namespace Ui {
     class NeuronMembranePlotWidget;
@@ -19,6 +19,7 @@ public slots:
     void milliseconds_passed(double milliseconds);
 
     void set_neuron(Neuron*);
+    void set_time_intervall(double milliseconds);
 
 protected:
      void initializeGL();
@@ -28,11 +29,13 @@ protected:
 
 private:
     Neuron* m_neuron;
+    double m_time_interval;
 
     void setup_projection_matrix();
     void paint_axis();
+    void paint_values();
 
-    std::vector< std::pair<double,double> > m_last_values;
+    std::deque< std::pair<double,double> > m_last_values;
 };
 
 class Neuron;
@@ -44,10 +47,11 @@ public:
     explicit NeuronMembranePlotWidget(QWidget *parent = 0);
     ~NeuronMembranePlotWidget();
 
+public slots:
     void set_neuron(Neuron*);
 
 private slots:
-    void on_last_milliseconds_changed(double value);
+    void milliseconds_passed(double milliseconds);
 
 private:
     Ui::NeuronMembranePlotWidget *ui;

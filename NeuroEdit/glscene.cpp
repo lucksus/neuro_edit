@@ -238,7 +238,7 @@ void GLScene::paintGL()
     setup_projection_and_modelview_matrix();
 
     paint_floor();
-    paint_objects();
+    paint_objects(m_selection_box);
     if(m_moving){
         paint_moving_plane();
         paint_objects(false,true);
@@ -379,9 +379,11 @@ SimulationObject* GLScene::object_under_cursor(int cursorX, int cursorY) {
         GLint viewport[4];
         glGetIntegerv(GL_VIEWPORT,viewport);
         GLubyte pixel[3];
+        pixel[0] = pixel[1] = pixel[2] = 0;
         glReadPixels(cursorX,viewport[3]-cursorY,1,1,GL_RGB,GL_UNSIGNED_BYTE,(void *)pixel);
 
-        if (pixel[0]>0) return m_picking_names[pixel[0]-1];
+        if (pixel[0]>0)
+            return m_picking_names[pixel[0]-1];
         else return 0;
 }
 
@@ -526,6 +528,11 @@ void GLScene::select(SimulationObject* o){
     m_selected_objects.clear();
     if(o) m_selected_objects.insert(o);
     emit selection_changed(m_selected_objects);
+    if(o){
+        Neuron* n = dynamic_cast<Neuron*>(o);
+        if(n) emit neuron_selected(n);
+    }else emit neuron_selected(0);
+
 }
 
 void GLScene::select(std::set<SimulationObject*> o){

@@ -52,7 +52,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_sim, SIGNAL(simulation_stopped()), &m_sim_settings_widget, SLOT(simulation_stopped()));
 
     connect(&m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_neuron_properties, SLOT(show_properties_for_objects(std::set<SimulationObject*>)));
-    connect(&m_sim, SIGNAL(simulation_time_passed(long)), this, SLOT(simulation_time_passed(long)));
+    connect(&m_glscene, SIGNAL(neuron_selected(Neuron*)), &m_neuron_membrane_potential_widget, SLOT(set_neuron(Neuron*)));
+    connect(&m_sim, SIGNAL(simulation_milliseconds_passed(double)), this, SLOT(simulation_time_passed(double)));
+    connect(&m_sim, SIGNAL(simulation_milliseconds_passed(double)), &m_neuron_membrane_potential_widget, SLOT(milliseconds_passed(double)));
 }
 
 MainWindow::~MainWindow()
@@ -87,6 +89,6 @@ void MainWindow::simulation_stopped(){
 }
 
 
-void MainWindow::simulation_time_passed(long){
+void MainWindow::simulation_time_passed(double){
     m_glscene.updateGL();
 }

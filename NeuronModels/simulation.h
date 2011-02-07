@@ -22,7 +22,7 @@ signals:
     void not_matching_speed();
     void simulation_started();
     void simulation_stopped();
-    void simulation_time_passed(long useconds);
+    void simulation_milliseconds_passed(double milliseconds);
 
 protected:
     virtual void run();

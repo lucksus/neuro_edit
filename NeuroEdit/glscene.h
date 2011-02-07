@@ -14,6 +14,7 @@ public:
 
 signals:
     void selection_changed(std::set<SimulationObject*>);
+    void neuron_selected(Neuron*);
 
 public slots:
     void set_network(Network*);
