@@ -272,7 +272,7 @@ void GLScene::paintGL()
     glLoadIdentity();
 
     if(m_selection_box)
-        draw_selection_box();
+        paint_selection_box();
 
 
     glMatrixMode(GL_PROJECTION);
@@ -426,7 +426,7 @@ Point GLScene::CameraConfig::position(){
     return center_position + camera_offset;
 }
 
-void GLScene::draw_selection_box(){
+void GLScene::paint_selection_box(){
     int left, right, up, down;
     left = m_selection_box_origin[0] < m_selection_box_current[0] ? m_selection_box_origin[0] : m_selection_box_current[0];
     right = m_selection_box_origin[0] > m_selection_box_current[0] ? m_selection_box_origin[0] : m_selection_box_current[0];

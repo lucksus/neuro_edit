@@ -66,7 +66,7 @@ private:
     int m_selection_box_origin[2];
     int m_selection_box_current[2];
     bool m_selection_box;
-    void draw_selection_box();
+    void paint_selection_box();
     std::set<SimulationObject*> objects_in_selection_box();
     GLubyte* m_pixel_buffer;
 
