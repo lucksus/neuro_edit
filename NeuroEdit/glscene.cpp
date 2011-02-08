@@ -253,6 +253,11 @@ void GLScene::paintGL()
     //renderText(20.,40.,0.,QString("%1").arg(m_moving_start_point.y));
     //renderText(20.,60.,0.,QString("%1").arg(m_moving_start_point.z));
 
+    std::list<QRect> regions_of_selected_objects;
+    BOOST_FOREACH(SimulationObject* object, m_selected_objects){
+        regions_of_selected_objects.push_back(occupied_2d_region_of_object(object));
+    }
+
 
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -275,6 +280,11 @@ void GLScene::paintGL()
         paint_selection_box();
 
 
+    BOOST_FOREACH(QRect rect, regions_of_selected_objects){
+        paint_selection_marker(rect);
+    }
+
+
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
@@ -282,6 +292,32 @@ void GLScene::paintGL()
 
     glFlush();
     swapBuffers();
+}
+
+void GLScene::paint_selection_marker(QRect rect){
+    glColor3f(1.,1.,0.);
+    glDisable(GL_LIGHTING);
+    glBegin(GL_LINES);
+        glVertex2i(rect.left(),rect.top());
+        glVertex2i(rect.left()+5,rect.top());
+        glVertex2i(rect.left(),rect.top());
+        glVertex2i(rect.left(),rect.top()-5);
+
+        glVertex2i(rect.right(),rect.top());
+        glVertex2i(rect.right()-5,rect.top());
+        glVertex2i(rect.right(),rect.top());
+        glVertex2i(rect.right(),rect.top()-5);
+
+        glVertex2i(rect.left(),rect.bottom());
+        glVertex2i(rect.left()+5,rect.bottom());
+        glVertex2i(rect.left(),rect.bottom());
+        glVertex2i(rect.left(),rect.bottom()+5);
+
+        glVertex2i(rect.right(),rect.bottom());
+        glVertex2i(rect.right()-5,rect.bottom());
+        glVertex2i(rect.right(),rect.bottom());
+        glVertex2i(rect.right(),rect.bottom()+5);
+    glEnd();
 }
 
 void GLScene::setup_projection_and_modelview_matrix(){
@@ -338,11 +374,7 @@ void GLScene::paint_objects(bool picking_run, bool only_moving_objects){
                 glEnable(GL_LIGHTING);
                 glEnable(GL_DITHER);
                 GLfloat green[] = {.2,1, std::max(0.,neuron->membrane_potential()+70.)/100.,1};
-                GLfloat yellow[] = {1,1,0,1};
-                if(m_selected_objects.count(neuron))
-                    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, yellow);
-                else
-                    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
+                glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
             }
 
             if(only_moving_objects){
@@ -416,6 +448,55 @@ Point GLScene::mouse_on_plane(int x, int y, Point plane_origin, Point normal){
     Point schnittpunkt = cam + ray*n;
     return schnittpunkt;
 }
+
+QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT,viewport);
+    GLdouble model_view[16];
+    glGetDoublev(GL_MODELVIEW_MATRIX, model_view);
+    GLdouble projection[16];
+    glGetDoublev(GL_PROJECTION_MATRIX, projection);
+
+    Neuron* neuron = dynamic_cast<Neuron*>(object);
+    if(neuron){
+        double x = neuron->position().x, y = neuron->position().y, z = neuron->position().z;
+        GLdouble x2d, y2d, z2d;
+        gluProject(x + 20, y, z, model_view, projection, viewport, &x2d, &y2d, &z2d);
+
+        double left = x2d, right = x2d, top = y2d, bottom = y2d;
+
+        gluProject(x - 20, y, z, model_view, projection, viewport, &x2d, &y2d, &z2d);
+        if(x2d<left)left=x2d;
+        if(x2d>right)right=x2d;
+        if(y2d<bottom)bottom=y2d;
+        if(y2d>top)top=y2d;
+        gluProject(x, y + 20, z, model_view, projection, viewport, &x2d, &y2d, &z2d);
+        if(x2d<left)left=x2d;
+        if(x2d>right)right=x2d;
+        if(y2d<bottom)bottom=y2d;
+        if(y2d>top)top=y2d;
+        gluProject(x, y - 20, z, model_view, projection, viewport, &x2d, &y2d, &z2d);
+        if(x2d<left)left=x2d;
+        if(x2d>right)right=x2d;
+        if(y2d<bottom)bottom=y2d;
+        if(y2d>top)top=y2d;
+        gluProject(x, y, z + 20, model_view, projection, viewport, &x2d, &y2d, &z2d);
+        if(x2d<left)left=x2d;
+        if(x2d>right)right=x2d;
+        if(y2d<bottom)bottom=y2d;
+        if(y2d>top)top=y2d;
+        gluProject(x, y, z - 20, model_view, projection, viewport, &x2d, &y2d, &z2d);
+        if(x2d<left)left=x2d;
+        if(x2d>right)right=x2d;
+        if(y2d<bottom)bottom=y2d;
+        if(y2d>top)top=y2d;
+
+        return QRect(left,top,right-left,bottom-top);
+    }
+
+    return QRect();
+}
+
 
 Point GLScene::CameraConfig::position(){
     double pi = 3.141592653589793;

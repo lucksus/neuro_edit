@@ -51,6 +51,7 @@ private:
 
     void paint_floor();
     void paint_objects(bool picking_run = false, bool only_moving_objects = false);
+    void paint_selection_marker(QRect);
 
 
     bool m_mousedown_right, m_mousedown_left;
@@ -73,6 +74,8 @@ private:
 
     SimulationObject* object_under_cursor(int cursorX, int cursorY);
     Point mouse_on_plane(int x, int y, Point plane_origin, Point normal);
+
+    QRect occupied_2d_region_of_object(SimulationObject*);
 
     //-----------------
     //moving:
