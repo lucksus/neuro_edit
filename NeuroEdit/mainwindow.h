@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
 #include "glscene.h"
 #include "simulation.h"
 #include "neuron_properties_widget.h"
@@ -40,6 +41,7 @@ private:
     NeuronMembranePlotWidget m_neuron_membrane_potential_widget;
     Simulation m_sim;
     SimulationSettingsWidget m_sim_settings_widget;
+    QTimer m_refresh_timer;
 };
 
 #endif // MAINWINDOW_H

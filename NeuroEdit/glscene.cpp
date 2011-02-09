@@ -33,10 +33,10 @@ void GLScene::set_network(Network* network){
 }
 
 void GLScene::mouseMoveEvent(QMouseEvent *e){
+    setFocus();
         //----------------
         //Camera:
         //----------------
-    //----------------
         if(m_mousedown_right){
                 int deltaX = e->x() - m_oldMouseX;
                 int deltaY = -(e->y() - m_oldMouseY);
@@ -89,6 +89,7 @@ void GLScene::mouseMoveEvent(QMouseEvent *e){
 }
 
 void GLScene::mousePressEvent(QMouseEvent* e){
+    setFocus();
     if(e->button() == Qt::RightButton) m_mousedown_right = true;
     if(e->button() == Qt::LeftButton){
         m_mousedown_left = true;
@@ -101,6 +102,7 @@ void GLScene::mousePressEvent(QMouseEvent* e){
 }
 
 void GLScene::mouseReleaseEvent(QMouseEvent* e){
+    setFocus();
         m_mousedown_right = false;
         m_mousedown_left = false;
         if(e->button() == Qt::LeftButton){
@@ -124,6 +126,7 @@ void GLScene::mouseReleaseEvent(QMouseEvent* e){
 }
 
 void GLScene::wheelEvent(QWheelEvent *e){
+    setFocus();
         m_camera_config.distance -= e->delta()*pow(2,m_camera_config.distance/10000.f);
         if( m_camera_config.distance<70) m_camera_config.distance=70;
         if( m_camera_config.distance>10000) m_camera_config.distance=10000;
@@ -403,6 +406,7 @@ void GLScene::paint_objects(bool picking_run, bool only_moving_objects){
 }
 
 SimulationObject* GLScene::object_under_cursor(int cursorX, int cursorY) {
+        makeCurrent();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         setup_projection_and_modelview_matrix();
         m_picking_names.clear();
@@ -417,9 +421,11 @@ SimulationObject* GLScene::object_under_cursor(int cursorX, int cursorY) {
         if (pixel[0]>0)
             return m_picking_names[pixel[0]-1];
         else return 0;
+
 }
 
 Point GLScene::mouse_on_plane(int x, int y, Point plane_origin, Point normal){
+    makeCurrent();
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT,viewport);
     y = viewport[3]-y;
@@ -450,6 +456,7 @@ Point GLScene::mouse_on_plane(int x, int y, Point plane_origin, Point normal){
 }
 
 QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
+    makeCurrent();
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT,viewport);
     GLdouble model_view[16];
@@ -527,6 +534,7 @@ void GLScene::paint_selection_box(){
 }
 
 std::set<SimulationObject*> GLScene::objects_in_selection_box(){
+    makeCurrent();
     int left, right, up, down;
     left = m_selection_box_origin[0] < m_selection_box_current[0] ? m_selection_box_origin[0] : m_selection_box_current[0];
     right = m_selection_box_origin[0] > m_selection_box_current[0] ? m_selection_box_origin[0] : m_selection_box_current[0];
@@ -555,6 +563,7 @@ std::set<SimulationObject*> GLScene::objects_in_selection_box(){
             //bla = a;
         }
     }
+
     return result;
 }
 

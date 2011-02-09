@@ -8,7 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_glscene(this),
-    m_neuron_properties(this)
+    m_neuron_properties(this),
+    m_refresh_timer(this)
 {
     ui->setupUi(this);
     m_network = new Network;
@@ -57,8 +58,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(&m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_neuron_properties, SLOT(show_properties_for_objects(std::set<SimulationObject*>)));
     connect(&m_glscene, SIGNAL(neuron_selected(Neuron*)), &m_neuron_membrane_potential_widget, SLOT(set_neuron(Neuron*)));
-    connect(&m_sim, SIGNAL(simulation_milliseconds_passed(double)), this, SLOT(simulation_time_passed(double)));
+    //connect(&m_sim, SIGNAL(simulation_milliseconds_passed(double)), this, SLOT(simulation_time_passed(double)));
     connect(&m_sim, SIGNAL(simulation_milliseconds_passed(double)), &m_neuron_membrane_potential_widget, SLOT(milliseconds_passed(double)));
+
+
+    //refresh:
+    connect(&m_refresh_timer, SIGNAL(timeout()), &m_glscene, SLOT(updateGL()));
+    m_refresh_timer.start(1000/30);
 }
 
 MainWindow::~MainWindow()
