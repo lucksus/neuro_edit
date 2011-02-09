@@ -109,3 +109,7 @@ void MainWindow::closeEvent(QCloseEvent *event){
     usleep(1000);
     event->accept();
 }
+
+void MainWindow::on_actionQuit_triggered(bool){
+    close();
+}
