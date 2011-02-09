@@ -21,14 +21,16 @@ SOURCES += main.cpp\
     neuron_properties_widget.cpp \
     izhikevich_properties_widget.cpp \
     simulation_settings_widget.cpp \
-    neuron_membrane_plot_widget.cpp
+    neuron_membrane_plot_widget.cpp \
+    glplotwidget2d.cpp
 
 HEADERS  += mainwindow.h \
     glscene.h \
     neuron_properties_widget.h \
     izhikevich_properties_widget.h \
     simulation_settings_widget.h \
-    neuron_membrane_plot_widget.h
+    neuron_membrane_plot_widget.h \
+    glplotwidget2d.h
 
 FORMS    += mainwindow.ui \
     neuron_properties_widget.ui \

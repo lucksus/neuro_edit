@@ -3,6 +3,7 @@
 
 #include <QGLWidget>
 #include <deque>
+#include "glplotwidget2d.h"
 
 namespace Ui {
     class NeuronMembranePlotWidget;
@@ -10,7 +11,7 @@ namespace Ui {
 
 class Neuron;
 
-class GLMembranePlot : public QGLWidget{
+class GLMembranePlot : public GLPlotWidget2d{
 Q_OBJECT
 public:
     GLMembranePlot(QWidget* parent = 0);
@@ -22,20 +23,16 @@ public slots:
     void set_time_intervall(double milliseconds);
 
 protected:
-     void initializeGL();
-     void resizeGL(int w, int h);
-     void paintGL();
+    virtual list<GLPlotWidget2d::Point2DWithAlpha> data();
 
 
 private:
     Neuron* m_neuron;
     double m_time_interval;
 
-    void setup_projection_matrix();
-    void paint_axis();
-    void paint_values();
-
     std::deque< std::pair<double,double> > m_last_values;
+
+    void setup();
 };
 
 class Neuron;

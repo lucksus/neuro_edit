@@ -32,9 +32,25 @@ void NeuronMembranePlotWidget::set_neuron(Neuron* n){
 }
 
 GLMembranePlot::GLMembranePlot(QWidget* parent) :
-        QGLWidget(parent),
+        GLPlotWidget2d(parent),
         m_neuron(0)
 {
+    setup();
+}
+
+void GLMembranePlot::setup(){
+    set_region(-m_time_interval,-105,0,35);
+    set_x_unit("ms");
+    set_y_unit("mV");
+    //set_number_of_x_lines(6);
+    //set_number_of_y_lines(5);
+    clear_lines();
+    add_y_line_at(0,false);
+    add_y_line_at(-35,true);
+    add_y_line_at(-70,false);
+    add_x_line_at(-m_time_interval/4,true);
+    add_x_line_at(-m_time_interval/2,true);
+    add_x_line_at(-m_time_interval/4*3,true);
 
 }
 
@@ -46,6 +62,7 @@ void GLMembranePlot::set_neuron(Neuron* n){
 
 void GLMembranePlot::set_time_intervall(double milliseconds){
     m_time_interval = milliseconds;
+    setup();
     updateGL();
 }
 
@@ -63,108 +80,18 @@ void GLMembranePlot::milliseconds_passed(double milliseconds){
     updateGL();
 }
 
+list<GLPlotWidget2d::Point2DWithAlpha> GLMembranePlot::data(){
+    list<GLPlotWidget2d::Point2DWithAlpha> return_value;
 
-void GLMembranePlot::initializeGL(){
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-    glEnable(GL_LINE_SMOOTH);
-    glEnable(GL_POINT_SMOOTH);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-void GLMembranePlot::resizeGL(int w, int h){
-    glViewport(0, 0, (GLint)w, (GLint)h);
-}
-
-void GLMembranePlot::paintGL(){
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    setup_projection_matrix();
-    paint_axis();
-    paint_values();
-    glFlush();
-}
-
-
-void GLMembranePlot::setup_projection_matrix(){
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    //gluOrtho2D(-110, -110, 120, 120);
-    gluOrtho2D(-100, -100, 120, 120);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    //glScalef(0.018,0.019,1.);
-    //glTranslatef(65,55,0);
-
-    glScalef(1/50.,1/70.,1.);
-    glTranslatef(50,35,0);
-
-}
-
-void GLMembranePlot::paint_axis(){
-    glColor3f(.7,.7,.7);
-    glLineStipple (1, 0xAAAA);
-    glEnable(GL_LINE_STIPPLE);
-
-    glLineWidth(1);
-    glBegin(GL_LINES);
-    for(int i = -105; i<=35; i+=35){
-        glVertex2f(-100,i); glVertex2f(0,i);
-    }
-
-    for(int i = -100; i<=0; i+=20){
-        glVertex2f(i,-105); glVertex2f(i,35);
-    }
-
-    //glVertex2f(-100,0);glVertex2f(0,0);
-    //glVertex2f(-100,-0.5);glVertex2f(0,-0.5);
-    glEnd();
-
-    glDisable(GL_LINE_STIPPLE);
-    glBegin(GL_LINES);
-    glVertex2f(-100,0);glVertex2f(0,0);
-    glVertex2f(-100,-70);glVertex2f(0,-70);
-    glEnd();
-
-    QFont font;
-    QFontMetrics metrics(font);
-    QString text = QString("0");
-    QRect boundingRect = metrics.boundingRect(text);
-    int h = boundingRect.height()/2;
-
-    glColor3f(1.,1.,1.);
-    renderText(0.,height()/4 + h,QString("0mV"));
-    //renderText(0.,height()/2 + h,QString("-35"));
-    renderText(0.,height()*3/4 + h,QString("-70mV"));
-
-    text = QString("%1ms").arg(-m_time_interval*4/5);
-    renderText(width()/5 - metrics.boundingRect(text).width()/2, height(), text);
-    text = QString("%1ms").arg(-m_time_interval*3/5);
-    renderText(width()*2/5 - metrics.boundingRect(text).width()/2, height(), text);
-    text = QString("%1ms").arg(-m_time_interval*4/5);
-    renderText(width()*3/5 - metrics.boundingRect(text).width()/2, height(), text);
-    text = QString("%1ms").arg(-m_time_interval*2/5);
-    renderText(width()*4/5 - metrics.boundingRect(text).width()/2, height(), text);
-
-}
-
-void GLMembranePlot::paint_values(){
-    double_pair last;
-    bool first = true;
-    glLineWidth(2);
-    glBegin(GL_LINES);
     BOOST_FOREACH(double_pair p, m_last_values){
-        if(!first){
-            double a = last.first/m_time_interval;
-            double b = p.first/m_time_interval;
-            glColor4f(0.,1.0,0.,1. + a);
-            glVertex2f(a*100,last.second);
-            glColor4f(0.,1.0,0.,1. + b);
-            glVertex2f(b*100,p.second);
-        }
-        last = p;
-        first = false;
+        GLPlotWidget2d::Point2DWithAlpha point;
+        point.x = p.first;
+        point.y = p.second;
+        point.alpha = (m_time_interval + point.x)/m_time_interval;
+        return_value.push_back(point);
     }
-    glEnd();
+
+    return return_value;
 }
+
+
