@@ -13,28 +13,37 @@ Izhikevich::Izhikevich(Point position, double a, double b, double c, double d)
 
 
 bool Izhikevich::update(double milli_seconds, double current){
-    if(v >= 30){
+    if(m_v >= 30){
         //spike
-        v = c;
-        u = u + d;
+        m_v = c;
+        m_u = m_u + d;
         m_spiking = false;
     }
 
-    v += milli_seconds * (0.04*pow(v,2) + 5*v + 140 - u + current);
-    u += milli_seconds * (a*(b*v - u));
+    m_v += milli_seconds * (0.04*pow(m_v,2) + 5*m_v + 140 - m_u + current);
+    m_u += milli_seconds * (a*(b*m_v - m_u));
 
-    m_spiking = v >= 30;
+    m_spiking = m_v >= 30;
     return m_spiking;
 }
 
 double Izhikevich::membrane_potential(){
-    return v;
+    return m_v;
 }
 
 void Izhikevich::set_membrane_potential(double p){
-    v = p;
+    m_v = p;
 }
 
 bool Izhikevich::is_spiking(){
     return m_spiking;
+}
+
+
+double Izhikevich::v(){
+    return m_v;
+}
+
+double Izhikevich::u(){
+    return m_u;
 }

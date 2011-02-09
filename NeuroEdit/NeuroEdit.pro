@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     izhikevich_properties_widget.cpp \
     simulation_settings_widget.cpp \
     neuron_membrane_plot_widget.cpp \
-    glplotwidget2d.cpp
+    glplotwidget2d.cpp \
+    izhikevich_systemstate_plotwidget.cpp
 
 HEADERS  += mainwindow.h \
     glscene.h \
@@ -30,7 +31,8 @@ HEADERS  += mainwindow.h \
     izhikevich_properties_widget.h \
     simulation_settings_widget.h \
     neuron_membrane_plot_widget.h \
-    glplotwidget2d.h
+    glplotwidget2d.h \
+    izhikevich_systemstate_plotwidget.h
 
 FORMS    += mainwindow.ui \
     neuron_properties_widget.ui \

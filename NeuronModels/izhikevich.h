@@ -22,8 +22,11 @@ public:
     void set_c(double x){c=x;}
     void set_d(double x){d=x;}
 
+    double v();
+    double u();
+
 private:
-    double u,v;
+    double m_u,m_v;
     double a,b,c,d;
     bool m_spiking;
 };

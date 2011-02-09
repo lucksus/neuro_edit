@@ -8,6 +8,7 @@
 #include "neuron_properties_widget.h"
 #include "simulation_settings_widget.h"
 #include "neuron_membrane_plot_widget.h"
+#include "izhikevich_systemstate_plotwidget.h"
 
 namespace Ui {
     class MainWindow;
@@ -43,6 +44,7 @@ private:
     //NeuronPlotWidget m_neuron_potential_plot;
     NeuronPropertiesWidget m_neuron_properties;
     NeuronMembranePlotWidget m_neuron_membrane_potential_widget;
+    IzhikevichSystemStatePlotWidget m_izhikevich_system_plot_widget;
     Simulation m_sim;
     SimulationSettingsWidget m_sim_settings_widget;
     QTimer m_refresh_timer;
