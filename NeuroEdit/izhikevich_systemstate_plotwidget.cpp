@@ -1,6 +1,7 @@
 #include "izhikevich_systemstate_plotwidget.h"
 #include <boost/foreach.hpp>
 #include "izhikevich.h"
+#include "application.h"
 
 IzhikevichSystemStatePlotWidget::IzhikevichSystemStatePlotWidget(QWidget* parent):
         GLPlotWidget2d(parent),
@@ -16,10 +17,9 @@ IzhikevichSystemStatePlotWidget::IzhikevichSystemStatePlotWidget(QWidget* parent
     add_y_line_at(-35,true);
     add_y_line_at(-70,false);
     add_x_line_at(0,false);
-    add_x_line_at(-35,true);
-    add_x_line_at(-70,false);
-    connect(&m_timer, SIGNAL(timeout()), this, SLOT(updateGL()));
-    m_timer.start(1000/30);
+    add_x_line_at(-10,true);
+    add_x_line_at(10,true);
+    connect(&Application::instance(), SIGNAL(refresh()), this, SLOT(updateGL()));
 }
 
 void IzhikevichSystemStatePlotWidget::set_neuron(Neuron* n){

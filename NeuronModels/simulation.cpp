@@ -20,6 +20,10 @@ void Simulation::set_network(Network* network){
     m_network = network;
 }
 
+Network* Simulation::network(){
+    return m_network;
+}
+
 void Simulation::set_simulation_step(double milliseconds){
     m_simulation_step = milliseconds;
 }
@@ -39,12 +43,14 @@ double Simulation::real_step(){
 
 void Simulation::run(){
     if(!m_network) return;
+    m_time_ms = 0;
     emit simulation_started();
     while(!m_stop_request){
         struct timeval start, end;
         long real_time, seconds, useconds;
         gettimeofday(&start, NULL);
         m_network->simulate(m_simulation_step);
+        m_time_ms += m_simulation_step;
         gettimeofday(&end, NULL);
         seconds  = end.tv_sec  - start.tv_sec;
         useconds = end.tv_usec - start.tv_usec;
@@ -54,10 +60,13 @@ void Simulation::run(){
 
         if(diff < 0) emit not_matching_speed();
         else usleep(diff);
-        emit simulation_milliseconds_passed(m_simulation_step);
+        //emit simulation_milliseconds_passed(m_simulation_step);
     }
     m_stop_request = false;
     emit simulation_stopped();
 }
 
+double Simulation::time_ms(){
+    return m_time_ms;
+}
 

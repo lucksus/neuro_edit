@@ -5,23 +5,21 @@
 #include <QDockWidget>
 #include <QCloseEvent>
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_glscene(this),
     m_neuron_properties(this),
     m_izhikevich_system_plot_widget(this),
-    m_refresh_timer(this)
+    m_sim(sim)
 {
     ui->setupUi(this);
-    m_network = new Network;
+    m_network = m_sim->network();
     m_glscene.set_network(m_network);
     m_neuron_properties.set_network(m_network);
     setCentralWidget(&m_glscene);
     m_glscene.setFocus();
-
-    m_sim_settings_widget.set_simulation(&m_sim);
-    m_sim.set_network(m_network);
+    m_sim_settings_widget.set_simulation(m_sim);
 
     QDockWidget *dock;
     //dock = new QDockWidget(tr("Neuron Potential Plot"), this);
@@ -57,23 +55,19 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 
-    connect(&m_sim, SIGNAL(simulation_started()), this, SLOT(simulation_started()));
-    connect(&m_sim, SIGNAL(simulation_stopped()), this, SLOT(simulation_stopped()));
-    connect(&m_sim, SIGNAL(simulation_started()), &m_sim_settings_widget, SLOT(simulation_started()));
-    connect(&m_sim, SIGNAL(simulation_stopped()), &m_sim_settings_widget, SLOT(simulation_stopped()));
-    connect(&m_sim, SIGNAL(simulation_started()), &m_neuron_properties, SLOT(simulation_started()));
-    connect(&m_sim, SIGNAL(simulation_stopped()), &m_neuron_properties, SLOT(simulation_stopped()));
+    connect(m_sim, SIGNAL(simulation_started()), this, SLOT(simulation_started()));
+    connect(m_sim, SIGNAL(simulation_stopped()), this, SLOT(simulation_stopped()));
+    connect(m_sim, SIGNAL(simulation_started()), &m_sim_settings_widget, SLOT(simulation_started()));
+    connect(m_sim, SIGNAL(simulation_stopped()), &m_sim_settings_widget, SLOT(simulation_stopped()));
+    connect(m_sim, SIGNAL(simulation_started()), &m_neuron_properties, SLOT(simulation_started()));
+    connect(m_sim, SIGNAL(simulation_stopped()), &m_neuron_properties, SLOT(simulation_stopped()));
 
     connect(&m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_neuron_properties, SLOT(show_properties_for_objects(std::set<SimulationObject*>)));
     connect(&m_glscene, SIGNAL(neuron_selected(Neuron*)), &m_neuron_membrane_potential_widget, SLOT(set_neuron(Neuron*)));
     connect(&m_glscene, SIGNAL(neuron_selected(Neuron*)), &m_izhikevich_system_plot_widget, SLOT(set_neuron(Neuron*)));
     //connect(&m_sim, SIGNAL(simulation_milliseconds_passed(double)), this, SLOT(simulation_time_passed(double)));
-    connect(&m_sim, SIGNAL(simulation_milliseconds_passed(double)), &m_neuron_membrane_potential_widget, SLOT(milliseconds_passed(double)));
+    //connect(m_sim, SIGNAL(simulation_milliseconds_passed(double)), &m_neuron_membrane_potential_widget, SLOT(milliseconds_passed(double)));
 
-
-    //refresh:
-    connect(&m_refresh_timer, SIGNAL(timeout()), &m_glscene, SLOT(updateGL()));
-    m_refresh_timer.start(1000/30);
 }
 
 MainWindow::~MainWindow()
@@ -88,12 +82,12 @@ void MainWindow::on_actionSingle_Neuron_triggered(bool){
 }
 
 void MainWindow::on_actionStart_Simulation_triggered(bool){
-    m_sim.start();
+    m_sim->start();
 }
 
 
 void MainWindow::on_actionPause_Simulation_triggered(bool){
-    m_sim.request_stop();
+    m_sim->request_stop();
 }
 
 
@@ -113,7 +107,7 @@ void MainWindow::simulation_time_passed(double){
 }
 
 void MainWindow::closeEvent(QCloseEvent *event){
-    m_sim.request_stop();
+    m_sim->request_stop();
     usleep(1000);
     event->accept();
 }

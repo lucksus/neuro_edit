@@ -2,6 +2,8 @@
 #include "ui_neuron_membrane_plot_widget.h"
 #include <boost/foreach.hpp>
 #include "neuron.h"
+#include "application.h"
+#include "simulation.h"
 
 typedef std::pair<double,double> double_pair;
 
@@ -23,19 +25,18 @@ NeuronMembranePlotWidget::~NeuronMembranePlotWidget()
     delete ui;
 }
 
-void NeuronMembranePlotWidget::milliseconds_passed(double milliseconds){
-    m_plot.milliseconds_passed(milliseconds);
-}
-
 void NeuronMembranePlotWidget::set_neuron(Neuron* n){
     m_plot.set_neuron(n);
 }
 
 GLMembranePlot::GLMembranePlot(QWidget* parent) :
         GLPlotWidget2d(parent),
-        m_neuron(0)
+        m_neuron(0),
+        m_time(0)
 {
     setup();
+    connect(&Application::instance(), SIGNAL(refresh()), this, SLOT(updateGL()));
+    connect(Application::instance().simulation(), SIGNAL(simulation_started()), this, SLOT(simulation_started()));
 }
 
 void GLMembranePlot::setup(){
@@ -66,10 +67,14 @@ void GLMembranePlot::set_time_intervall(double milliseconds){
     updateGL();
 }
 
-void GLMembranePlot::milliseconds_passed(double milliseconds){
+void GLMembranePlot::update_values(){
     if(!m_neuron)
         return;
 
+    double new_time = Application::instance().simulation()->time_ms();
+    if(m_time == new_time) return;
+    double milliseconds = new_time - m_time;
+    m_time = new_time;
     BOOST_FOREACH(double_pair& p, m_last_values){
         p.first -= milliseconds;
     }
@@ -77,12 +82,12 @@ void GLMembranePlot::milliseconds_passed(double milliseconds){
     while((!m_last_values.empty()) && (m_last_values.back().first > m_time_interval)) m_last_values.pop_back();
 
     m_last_values.push_front(double_pair(0,m_neuron->membrane_potential()));
-    updateGL();
 }
 
 list<GLPlotWidget2d::Point2DWithAlpha> GLMembranePlot::data(){
     list<GLPlotWidget2d::Point2DWithAlpha> return_value;
 
+    update_values();
     BOOST_FOREACH(double_pair p, m_last_values){
         GLPlotWidget2d::Point2DWithAlpha point;
         point.x = p.first;
@@ -94,4 +99,6 @@ list<GLPlotWidget2d::Point2DWithAlpha> GLMembranePlot::data(){
     return return_value;
 }
 
-
+void GLMembranePlot::simulation_started(){
+    m_time = 0;
+}

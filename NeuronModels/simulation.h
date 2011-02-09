@@ -12,11 +12,14 @@ public:
     void request_stop();
 
     void set_network(Network*);
+    Network* network();
     void set_simulation_step(double milliseconds);
     void set_real_step(double milliseconds);
 
     double simulation_step();
     double real_step();
+
+    double time_ms();
 
 signals:
     void not_matching_speed();
@@ -32,6 +35,7 @@ private:
     Network* m_network;
     double m_simulation_step;
     double m_real_step;
+    double m_time_ms;
 
 };
 

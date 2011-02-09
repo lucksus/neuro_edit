@@ -17,18 +17,20 @@ public:
     GLMembranePlot(QWidget* parent = 0);
 
 public slots:
-    void milliseconds_passed(double milliseconds);
-
     void set_neuron(Neuron*);
     void set_time_intervall(double milliseconds);
 
 protected:
     virtual list<GLPlotWidget2d::Point2DWithAlpha> data();
 
+private slots:
+    void simulation_started();
 
 private:
     Neuron* m_neuron;
     double m_time_interval;
+    double m_time;
+    void update_values();
 
     std::deque< std::pair<double,double> > m_last_values;
 
@@ -47,8 +49,6 @@ public:
 public slots:
     void set_neuron(Neuron*);
 
-private slots:
-    void milliseconds_passed(double milliseconds);
 
 private:
     Ui::NeuronMembranePlotWidget *ui;

@@ -5,6 +5,7 @@
 #include "link.h"
 #include <GLUT/glut.h>
 #include <algorithm>
+#include "application.h"
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent), m_mousedown_right(false), m_mousedown_left(false), m_fov(120.),
@@ -21,6 +22,8 @@ GLScene::GLScene(QWidget *parent) :
     m_camera_config.elevation = m_camera_config.azimuth = 45.;
 
     qRegisterMetaType< std::set<SimulationObject*> >("std::set<SimulationObject*>");
+
+    connect(&Application::instance(), SIGNAL(refresh()), this, SLOT(updateGL()));
 }
 
 GLScene::~GLScene(){

@@ -20,7 +20,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(Simulation* sim, QWidget *parent = 0);
     ~MainWindow();
 
 protected:
@@ -45,9 +45,8 @@ private:
     NeuronPropertiesWidget m_neuron_properties;
     NeuronMembranePlotWidget m_neuron_membrane_potential_widget;
     IzhikevichSystemStatePlotWidget m_izhikevich_system_plot_widget;
-    Simulation m_sim;
+    Simulation* m_sim;
     SimulationSettingsWidget m_sim_settings_widget;
-    QTimer m_refresh_timer;
 };
 
 #endif // MAINWINDOW_H

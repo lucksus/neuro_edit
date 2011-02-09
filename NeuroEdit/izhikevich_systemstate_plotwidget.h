@@ -19,7 +19,6 @@ protected:
 
 private:
     Izhikevich* m_neuron;
-    QTimer m_timer;
 
     list<GLPlotWidget2d::Point2DWithAlpha> m_last_values;
 };
