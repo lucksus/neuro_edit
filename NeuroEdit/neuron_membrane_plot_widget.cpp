@@ -56,15 +56,14 @@ void GLMembranePlot::setup(){
 }
 
 void GLMembranePlot::set_neuron(Neuron* n){
+    if(m_neuron != n) m_last_values.clear();
     m_neuron = n;
-    if(!m_neuron) m_last_values.clear();
-    updateGL();
+
 }
 
 void GLMembranePlot::set_time_intervall(double milliseconds){
     m_time_interval = milliseconds;
     setup();
-    updateGL();
 }
 
 void GLMembranePlot::update_values(){
