@@ -3,6 +3,7 @@
 #include "network.h"
 #include "izhikevich.h"
 #include <QDockWidget>
+#include <QCloseEvent>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -101,4 +102,10 @@ void MainWindow::simulation_stopped(){
 
 void MainWindow::simulation_time_passed(double){
     m_glscene.updateGL();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event){
+    m_sim.request_stop();
+    usleep(1000);
+    event->accept();
 }

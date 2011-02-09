@@ -22,6 +22,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+protected:
+    void closeEvent(QCloseEvent *event);
+
 private slots:
      void on_actionSingle_Neuron_triggered(bool);
      void on_actionStart_Simulation_triggered(bool);
