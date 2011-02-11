@@ -6,6 +6,7 @@
 #include <GLUT/glut.h>
 #include <algorithm>
 #include "application.h"
+#include <assert.h>
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent), m_mousedown_right(false), m_mousedown_left(false), m_fov(120.),
@@ -48,15 +49,8 @@ void GLScene::mouseMoveEvent(QMouseEvent *e){
         }
 
 
-        if(m_mousedown_left){
+        if(m_mousedown_left && !m_moving){
             SimulationObject* clicked_object = 0;
-
-            if(m_moving){
-                Point normal(0,1,0);
-                if(m_shift_key_down) normal = Point(0,0,1);
-                if(m_ctrl_key_down) normal = Point(1,0,0);
-                m_moving_point = mouse_on_plane(e->x(),e->y(),m_moving_switch_plane_point, normal);
-            }else{
                 if(m_selection_box){
                     m_selection_box_current[0] = e->x();
                     m_selection_box_current[1] = e->y();
@@ -80,7 +74,13 @@ void GLScene::mouseMoveEvent(QMouseEvent *e){
                         m_selection_box = true;
                     }
                 }
-            }
+        }
+
+        if(m_moving){
+            Point normal(0,1,0);
+            if(m_shift_key_down) normal = Point(0,0,1);
+            if(m_ctrl_key_down) normal = Point(1,0,0);
+            m_moving_point = mouse_on_plane(e->x(),e->y(),m_moving_switch_plane_point, normal);
         }
 
         m_oldMouseX = e->x();
@@ -159,7 +159,7 @@ void GLScene::keyPressEvent(QKeyEvent *e){
         if(m_moving) updateGL();
         break;
     case Qt::Key_Escape:
-        m_moving = false;
+        abort_moving();
         updateGL();
         break;
     }
@@ -190,14 +190,39 @@ void GLScene::start_moving(const SpatialObject& o){
     m_moving_switch_plane_point = m_moving_start_point = m_moving_point = o.position();
 }
 
+void GLScene::start_inserting(std::set<SimulationObject*> objects){
+    m_moving_objects = objects;
+    m_moving = m_insert_moving = true;
+    m_moving_switch_plane_point = m_moving_start_point = m_moving_point = m_camera_config.center_position;
+}
+
 void GLScene::finish_moving(){
     Point offset = m_moving_point - m_moving_start_point;
+
     BOOST_FOREACH(SimulationObject* o, m_moving_objects){
+        if(m_insert_moving){
+            m_network->add_object(o);
+        }
+
         SpatialObject* spo = dynamic_cast<SpatialObject*>(o);
         if(spo) spo->set_position(spo->position() + offset);
     }
+
     m_moving = false;
+    m_insert_moving = false;
+    m_moving_objects.clear();
     updateGL();
+}
+
+void GLScene::abort_moving(){
+    m_moving = false;
+    if(m_insert_moving){
+        BOOST_FOREACH(SimulationObject* o, m_moving_objects){
+            delete o;
+        }
+    }
+    m_insert_moving = false;
+    m_moving_objects.clear();
 }
 
 void GLScene::initializeGL()
@@ -241,11 +266,9 @@ void GLScene::paintGL()
     setup_projection_and_modelview_matrix();
 
     paint_floor();
+    if(m_moving) paint_moving_plane();
     paint_objects();
-    if(m_moving){
-        paint_moving_plane();
-        paint_objects(false,true);
-    }
+
 
 
     glColor3f(1.f,1.f,1.f);
@@ -362,47 +385,54 @@ void GLScene::paint_floor(){
 
 }
 
-void GLScene::paint_objects(bool picking_run, bool only_moving_objects){
-    BOOST_FOREACH(SimulationObject* o, m_network->objects()){
-        Neuron* neuron = dynamic_cast<Neuron*>(o);
-        Link* link = dynamic_cast<Link*>(o);
-        if(neuron){
-            glPushMatrix();
-            if(picking_run){
-                glColor3ub(m_picking_names.size()+1,0,0);
-                m_picking_names.push_back(neuron);
-                glDisable(GL_DITHER);
-                glDisable(GL_LIGHTING);
-            }else{
-                glEnable(GL_LIGHTING);
-                glEnable(GL_DITHER);
-                GLfloat green[] = {.2,1, std::max(0.,neuron->membrane_potential()+70.)/100.,1};
-                glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
-            }
-
-            if(only_moving_objects){
-                if(!m_moving_objects.count(neuron)) continue;
-                glEnable(GL_LIGHTING);
-                glEnable(GL_DITHER);
-                GLfloat transparent[] = {.9,.9,.9,0.5};
-                glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, transparent);
-                Point offset = m_moving_point - m_moving_start_point;
-                Point position = neuron->position() + offset;
-                glTranslatef(position.x,position.y,position.z);
-            }else{
-                glTranslatef(neuron->position().x,neuron->position().y,neuron->position().z);
-            }
-
-
-            glutSolidSphere(15,20,20);
-            glPopName();
-            glPopMatrix();
-        }
-
-        if(link){
-
-        }
+void GLScene::paint_objects(bool picking_run){
+    if(!picking_run){
+        BOOST_FOREACH(SimulationObject* o, m_moving_objects){
+            SpatialObject* spo = dynamic_cast<SpatialObject*>(o);
+            assert(spo);
+            paint_object(spo,false,true);
+         }
     }
+    BOOST_FOREACH(SimulationObject* o, m_network->objects()){
+        paint_object(o,picking_run);
+    }
+}
+
+void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
+    glPushMatrix();
+
+    Neuron* neuron = dynamic_cast<Neuron*>(o);
+    Link* link = dynamic_cast<Link*>(o);
+    if(neuron){
+
+        if(picking){
+            glColor3ub(m_picking_names.size()+1,0,0);
+            m_picking_names.push_back(neuron);
+            glDisable(GL_DITHER);
+            glDisable(GL_LIGHTING);
+        }else{
+            glEnable(GL_LIGHTING);
+            glEnable(GL_DITHER);
+            GLfloat green[] = {.2,1, std::max(0.,neuron->membrane_potential()+70.)/100.,1};
+            glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
+        }
+
+        if(moving){
+            glEnable(GL_LIGHTING);
+            glEnable(GL_DITHER);
+            GLfloat transparent[] = {.9,.9,.9,0.5};
+            glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, transparent);
+            Point offset = m_moving_point - m_moving_start_point;
+            Point position = neuron->position() + offset;
+            glTranslatef(position.x,position.y,position.z);
+        }else{
+            glTranslatef(neuron->position().x,neuron->position().y,neuron->position().z);
+        }
+        glutSolidSphere(15,20,20);
+    }
+
+
+    glPopMatrix();
 }
 
 SimulationObject* GLScene::object_under_cursor(int cursorX, int cursorY) {

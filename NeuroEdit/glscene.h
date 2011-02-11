@@ -18,6 +18,7 @@ signals:
 
 public slots:
     void set_network(Network*);
+    void start_inserting(std::set<SimulationObject*>);
 
 protected:
      void initializeGL();
@@ -50,7 +51,8 @@ private:
     } m_camera_config;
 
     void paint_floor();
-    void paint_objects(bool picking_run = false, bool only_moving_objects = false);
+    void paint_objects(bool picking_run = false);
+    void paint_object(SimulationObject*, bool picking=false, bool moving=false);
     void paint_selection_marker(QRect);
 
 
@@ -82,14 +84,16 @@ private:
     //-----------------
     //moving:
     //-----------------
-    bool m_moving;
+    bool m_moving, m_insert_moving;
     Point m_moving_start_point;
     Point m_moving_point;
     Point m_moving_switch_plane_point;
     std::set<SimulationObject*> m_moving_objects;
     void start_moving(const SpatialObject&);
     void finish_moving();
+    void abort_moving();
     void paint_moving_plane();
+
 
     double m_fov;
 };

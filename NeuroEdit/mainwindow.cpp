@@ -85,8 +85,9 @@ MainWindow::~MainWindow()
 
 
 void MainWindow::on_actionSingle_Neuron_triggered(bool){
-    m_network->add_object(new Izhikevich(Point(),0.02, 0.2, -65, 8));
-    m_glscene.updateGL();
+    std::set<SimulationObject*> s;
+    s.insert(new Izhikevich(Point(),0.02, 0.2, -65, 8));
+    m_glscene.start_inserting(s);
 }
 
 void MainWindow::on_actionStart_Simulation_triggered(bool){
