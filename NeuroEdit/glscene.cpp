@@ -9,12 +9,10 @@
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent), m_mousedown_right(false), m_mousedown_left(false), m_fov(120.),
-    m_moving_start_point(0,0,0), m_picking_run(false), m_moving(false),
+    m_moving_start_point(0,0,0), m_moving(false),
     m_shift_key_down(false), m_ctrl_key_down(false),
     m_selection_box(false)
 {
-    m_selection_buffer_size = 512;
-    m_selection_buffer = new GLuint[m_selection_buffer_size];
     m_camera_config.distance = 100;
     setMouseTracking(true);
     setAutoBufferSwap(false);
@@ -27,7 +25,6 @@ GLScene::GLScene(QWidget *parent) :
 }
 
 GLScene::~GLScene(){
-    delete m_selection_buffer;
     delete[] m_pixel_buffer;
 }
 

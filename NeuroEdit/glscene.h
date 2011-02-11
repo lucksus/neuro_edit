@@ -59,23 +59,25 @@ private:
     int m_oldMouseY;
     bool m_shift_key_down, m_ctrl_key_down;
 
-    GLuint* m_selection_buffer;
-    GLuint m_selection_buffer_size;
     std::vector<SimulationObject*> m_picking_names;
-    bool m_picking_run;
 
+    //----------------
+    // selection box
+    //----------------
     int m_selection_box_origin[2];
     int m_selection_box_current[2];
     bool m_selection_box;
     void paint_selection_box();
     std::set<SimulationObject*> objects_in_selection_box();
+
+
     GLubyte* m_pixel_buffer;
-
-
     SimulationObject* object_under_cursor(int cursorX, int cursorY);
+
     Point mouse_on_plane(int x, int y, Point plane_origin, Point normal);
 
     QRect occupied_2d_region_of_object(SimulationObject*);
+
 
     //-----------------
     //moving:
