@@ -6,6 +6,9 @@
 class SpatialObject : public SimulationObject
 {
 public:
+    SpatialObject();
+    SpatialObject(const SpatialObject&);
+
     Point position() const;
     void set_position(const Point& p);
 private:

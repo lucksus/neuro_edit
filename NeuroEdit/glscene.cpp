@@ -30,7 +30,13 @@ GLScene::~GLScene(){
 }
 
 void GLScene::set_network(Network* network){
+    disconnect(m_network, SIGNAL(object_deleted(SimulationObject*)), this, SLOT(object_deleted(SimulationObject*)));
     m_network = network;
+    connect(m_network, SIGNAL(object_deleted(SimulationObject*)), this, SLOT(object_deleted(SimulationObject*)));
+}
+
+std::set<SimulationObject*> GLScene::selected_objects(){
+    return m_selected_objects;
 }
 
 void GLScene::mouseMoveEvent(QMouseEvent *e){
@@ -660,3 +666,12 @@ void GLScene::select(std::set<SimulationObject*> o){
     emit selection_changed(m_selected_objects);
 }
 
+void GLScene::deselect(){
+    m_selected_objects.clear();
+    emit selection_changed(m_selected_objects);
+}
+
+void GLScene::object_deleted(SimulationObject* object){
+    m_selected_objects.erase(object);
+    m_moving_objects.erase(object);
+}

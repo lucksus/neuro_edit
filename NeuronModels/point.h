@@ -22,8 +22,16 @@ struct Point{
         return Point(x+p.x,y+p.y,z+p.z);
     }
 
+    inline void operator+=(const Point& p){
+        x += p.x; y += p.y; z += p.z;
+    }
+
     inline Point operator*(const double& s){
         return Point(x*s,y*s,z*s);
+    }
+
+    inline void operator/=(const double& s){
+        x /= s; y /= s; z /=s;
     }
 
     inline double operator*(const Point& p){

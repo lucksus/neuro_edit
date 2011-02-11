@@ -4,6 +4,7 @@
 #include "izhikevich.h"
 #include <QDockWidget>
 #include <QCloseEvent>
+#include <boost/foreach.hpp>
 
 MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),
@@ -73,9 +74,7 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     connect(&m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_neuron_manipulator_widget, SLOT(set_neurons(std::set<SimulationObject*>)));
     connect(&m_glscene, SIGNAL(neuron_selected(Neuron*)), &m_neuron_membrane_potential_widget, SLOT(set_neuron(Neuron*)));
     connect(&m_glscene, SIGNAL(neuron_selected(Neuron*)), &m_izhikevich_system_plot_widget, SLOT(set_neuron(Neuron*)));
-    //connect(&m_sim, SIGNAL(simulation_milliseconds_passed(double)), this, SLOT(simulation_time_passed(double)));
-    //connect(m_sim, SIGNAL(simulation_milliseconds_passed(double)), &m_neuron_membrane_potential_widget, SLOT(milliseconds_passed(double)));
-
+    connect(&m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), this, SLOT(objects_selected(std::set<SimulationObject*>)));
 }
 
 MainWindow::~MainWindow()
@@ -123,4 +122,67 @@ void MainWindow::closeEvent(QCloseEvent *event){
 
 void MainWindow::on_actionQuit_triggered(bool){
     close();
+}
+
+void MainWindow::on_actionCut_triggered(bool b){
+    on_actionCopy_triggered(b);
+    BOOST_FOREACH(SimulationObject* o, m_glscene.selected_objects()){
+        m_network->delete_object(o);
+    }
+
+}
+
+void MainWindow::on_actionCopy_triggered(bool){
+    std::set<SimulationObject*> objects = selected_objects_cloned_and_self_centered();
+    if(objects.empty()) return;
+    clear_clipboard();
+    m_clipboard = objects;
+    ui->actionPaste->setEnabled(true);
+}
+
+void MainWindow::on_actionPaste_triggered(bool){
+    if(m_clipboard.empty()) return;
+    ui->actionPaste->setEnabled(true);
+    m_glscene.start_inserting(cloned_clipboard());
+}
+
+void MainWindow::clear_clipboard(){
+    BOOST_FOREACH(SimulationObject* o, m_clipboard){
+        delete o;
+    }
+    m_clipboard.clear();
+}
+
+std::set<SimulationObject*> MainWindow::cloned_clipboard(){
+    std::set<SimulationObject*> objects;
+    BOOST_FOREACH(SimulationObject* o, m_clipboard){
+        objects.insert(o->clone());
+    }
+    return objects;
+}
+
+std::set<SimulationObject*> MainWindow::selected_objects_cloned_and_self_centered(){
+    std::set<SimulationObject*> objects;
+    std::set<SpatialObject*> spatial_objects;
+    BOOST_FOREACH(SimulationObject* o, m_glscene.selected_objects()){
+        SimulationObject* oc = o->clone();
+        objects.insert(oc);
+        SpatialObject* spo = dynamic_cast<SpatialObject*>(oc);
+        if(spo) spatial_objects.insert(spo);
+    }
+
+    Point center;
+    BOOST_FOREACH(SpatialObject* o, spatial_objects){
+        center += o->position();
+    }
+    center /= spatial_objects.size();
+    BOOST_FOREACH(SpatialObject* o, spatial_objects){
+        o->set_position(o->position()-center);
+    }
+    return objects;
+}
+
+void MainWindow::objects_selected(std::set<SimulationObject*> objects){
+    ui->actionCopy->setDisabled(objects.empty());
+    ui->actionCut->setDisabled(objects.empty());
 }

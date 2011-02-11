@@ -33,10 +33,16 @@ private slots:
      void on_actionPause_Simulation_triggered(bool);
      void on_actionQuit_triggered(bool);
 
+     void on_actionCut_triggered(bool);
+     void on_actionCopy_triggered(bool);
+     void on_actionPaste_triggered(bool);
+
      void simulation_started();
      void simulation_stopped();
 
      void simulation_time_passed(double);
+
+     void objects_selected(std::set<SimulationObject*>);
 
 private:
     Ui::MainWindow *ui;
@@ -49,6 +55,11 @@ private:
     IzhikevichSystemStatePlotWidget m_izhikevich_system_plot_widget;
     Simulation* m_sim;
     SimulationSettingsWidget m_sim_settings_widget;
+
+    std::set<SimulationObject*> m_clipboard;
+    void clear_clipboard();
+    std::set<SimulationObject*> cloned_clipboard();
+    std::set<SimulationObject*> selected_objects_cloned_and_self_centered();
 };
 
 #endif // MAINWINDOW_H

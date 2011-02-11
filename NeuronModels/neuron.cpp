@@ -6,6 +6,12 @@ Neuron::Neuron(Point position)
     set_position(position);
 }
 
+Neuron::Neuron(const Neuron& n) :
+        SpatialObject(n)
+{
+    m_summed_synaptic_inputs = n.m_summed_synaptic_inputs;
+}
+
 void Neuron::add_synaptic_input(double current){
     m_summed_synaptic_inputs += current;
 }

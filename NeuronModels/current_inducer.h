@@ -7,6 +7,8 @@ class CurrentInducer : public SimulationObject
 {
 public:
     CurrentInducer(Neuron*);
+
+    virtual SimulationObject* clone();
     void set_current(double current);
     void set_active(bool);
 

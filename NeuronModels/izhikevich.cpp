@@ -11,6 +11,21 @@ Izhikevich::Izhikevich(Point position, double a, double b, double c, double d)
     m_spiking = false;
 }
 
+Izhikevich::Izhikevich(const Izhikevich& i) :
+        Neuron(i)
+{
+    m_v = i.m_v;
+    m_u = i.m_u;
+    a = i.a;
+    b = i.b;
+    c = i.c;
+    d = i.d;
+    m_spiking = i.m_spiking;
+}
+
+SimulationObject* Izhikevich::clone(){
+    return new Izhikevich(*this);
+}
 
 bool Izhikevich::update(double milli_seconds, double current){
     if(m_v >= 30){

@@ -12,6 +12,8 @@ public:
     explicit GLScene(QWidget *parent = 0);
     ~GLScene();
 
+    std::set<SimulationObject*> selected_objects();
+
 signals:
     void selection_changed(std::set<SimulationObject*>);
     void neuron_selected(Neuron*);
@@ -19,6 +21,7 @@ signals:
 public slots:
     void set_network(Network*);
     void start_inserting(std::set<SimulationObject*>);
+    void deselect();
 
 protected:
      void initializeGL();
@@ -32,7 +35,8 @@ protected:
      void keyPressEvent(QKeyEvent *e);
      void keyReleaseEvent(QKeyEvent *e);
 
-
+private slots:
+     void object_deleted(SimulationObject*);
 
 private:
     Network* m_network;

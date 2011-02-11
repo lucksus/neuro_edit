@@ -6,6 +6,9 @@ class Izhikevich : public Neuron
 {
 public:
     Izhikevich(Point position, double a, double b, double c, double d);
+    Izhikevich(const Izhikevich&);
+
+    virtual SimulationObject* clone();
 
     virtual bool update(double milli_seconds, double current);
     virtual double membrane_potential();

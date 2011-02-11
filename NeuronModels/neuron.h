@@ -6,6 +6,7 @@ class Neuron : public SpatialObject
 {
 public:
     Neuron(Point position);
+    Neuron(const Neuron& n);
     virtual ~Neuron() {};
     virtual bool update(double milli_seconds, double current) = 0;
     virtual double membrane_potential() = 0;

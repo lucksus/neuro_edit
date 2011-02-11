@@ -3,11 +3,13 @@
 
 void Network::add_object(SimulationObject* object){
     m_objects.push_back(object);
+    emit object_added(object);
 }
 
 void Network::delete_object(SimulationObject* object){
     m_objects.remove(object);
     delete object;
+    emit object_deleted(object);
 }
 
 std::list<SimulationObject*> Network::objects(){
