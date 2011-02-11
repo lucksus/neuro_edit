@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>210</width>
+    <width>270</width>
     <height>49</height>
    </rect>
   </property>
@@ -29,6 +29,18 @@
    </item>
    <item>
     <widget class="QDoubleSpinBox" name="currentSpinBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="suffix">
+      <string>mV/ms</string>
+     </property>
      <property name="decimals">
       <number>0</number>
      </property>
