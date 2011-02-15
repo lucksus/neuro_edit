@@ -521,39 +521,32 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
 
     Neuron* neuron = dynamic_cast<Neuron*>(object);
     if(neuron){
+
+
+        GLdouble x1,x2,y1,y2,z1,z2;
+        gluUnProject(width()/2, height()/2, 0, model_view, projection, viewport, &x1, &y1, &z1);
+        gluUnProject(width()/2+1, height()/2, 0, model_view, projection, viewport, &x2, &y2, &z2);
+        Point rechts(x2-x1,y2-y1,z2-z1);
+        gluUnProject(width()/2, height()/2+1, 0, model_view, projection, viewport, &x2, &y2, &z2);
+        Point hoch(x2-x1,y2-y1,z2-z1);
+        rechts = rechts / rechts.length();
+        rechts *= 20;
+        hoch = hoch / hoch.length();
+        hoch *= 20;
+
         double x = neuron->position().x, y = neuron->position().y, z = neuron->position().z;
-        GLdouble x2d, y2d, z2d;
-        gluProject(x + 20, y, z, model_view, projection, viewport, &x2d, &y2d, &z2d);
+        GLdouble mitte_x, mitte_y, mitte_z;
+        gluProject(x, y, z, model_view, projection, viewport, &mitte_x, &mitte_y, &mitte_z);
+        GLdouble rechts_x, rechts_y, rechts_z;
+        gluProject(x + rechts.x, y + rechts.y, z + rechts.z, model_view, projection, viewport, &rechts_x, &rechts_y, &rechts_z);
+        GLdouble links_x, links_y, links_z;
+        gluProject(x - rechts.x, y - rechts.y, z - rechts.z, model_view, projection, viewport, &links_x, &links_y, &links_z);
+        GLdouble oben_x, oben_y, oben_z;
+        gluProject(x + hoch.x, y + hoch.y, z + hoch.z, model_view, projection, viewport, &oben_x, &oben_y, &oben_z);
+        GLdouble unten_x, unten_y, unten_z;
+        gluProject(x - hoch.x, y - hoch.y, z - hoch.z, model_view, projection, viewport, &unten_x, &unten_y, &unten_z);
 
-        double left = x2d, right = x2d, top = y2d, bottom = y2d;
-
-        gluProject(x - 20, y, z, model_view, projection, viewport, &x2d, &y2d, &z2d);
-        if(x2d<left)left=x2d;
-        if(x2d>right)right=x2d;
-        if(y2d<bottom)bottom=y2d;
-        if(y2d>top)top=y2d;
-        gluProject(x, y + 20, z, model_view, projection, viewport, &x2d, &y2d, &z2d);
-        if(x2d<left)left=x2d;
-        if(x2d>right)right=x2d;
-        if(y2d<bottom)bottom=y2d;
-        if(y2d>top)top=y2d;
-        gluProject(x, y - 20, z, model_view, projection, viewport, &x2d, &y2d, &z2d);
-        if(x2d<left)left=x2d;
-        if(x2d>right)right=x2d;
-        if(y2d<bottom)bottom=y2d;
-        if(y2d>top)top=y2d;
-        gluProject(x, y, z + 20, model_view, projection, viewport, &x2d, &y2d, &z2d);
-        if(x2d<left)left=x2d;
-        if(x2d>right)right=x2d;
-        if(y2d<bottom)bottom=y2d;
-        if(y2d>top)top=y2d;
-        gluProject(x, y, z - 20, model_view, projection, viewport, &x2d, &y2d, &z2d);
-        if(x2d<left)left=x2d;
-        if(x2d>right)right=x2d;
-        if(y2d<bottom)bottom=y2d;
-        if(y2d>top)top=y2d;
-
-        return QRect(left,top,right-left,bottom-top);
+        return QRect(links_x,oben_y,rechts_x - links_x,unten_y - oben_y);
     }
 
     return QRect();
