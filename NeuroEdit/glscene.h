@@ -4,6 +4,7 @@
 #include <set>
 #include "network.h"
 #include "neuron.h"
+#include <QTimer>
 
 class GLScene : public QGLWidget
 {
@@ -31,6 +32,7 @@ protected:
      void mouseMoveEvent(QMouseEvent *e);
      void mousePressEvent(QMouseEvent *e);
      void mouseReleaseEvent(QMouseEvent *e);
+     void mouseDoubleClickEvent(QMouseEvent *e);
      void wheelEvent(QWheelEvent *e);
      void keyPressEvent(QKeyEvent *e);
      void keyReleaseEvent(QKeyEvent *e);
@@ -97,6 +99,19 @@ private:
     void finish_moving();
     void abort_moving();
     void paint_moving_plane();
+
+
+
+
+    //-----------------
+    //camera moving:
+    //-----------------
+    Point m_camera_center_moving_target, m_camera_center_moving_source;
+    double m_camera_center_moving_param;
+    QTimer m_camera_center_moving_timer;
+private slots:
+    void camera_center_moving_update();
+private:
 
 
     double m_fov;

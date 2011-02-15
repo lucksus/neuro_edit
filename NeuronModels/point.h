@@ -30,6 +30,10 @@ struct Point{
         return Point(x*s,y*s,z*s);
     }
 
+    inline void operator*=(const double& s){
+        x *= s; y *= s; z *=s;
+    }
+
     inline void operator/=(const double& s){
         x /= s; y /= s; z /=s;
     }

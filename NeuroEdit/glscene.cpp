@@ -23,6 +23,7 @@ GLScene::GLScene(QWidget *parent) :
     qRegisterMetaType< std::set<SimulationObject*> >("std::set<SimulationObject*>");
 
     connect(&Application::instance(), SIGNAL(refresh()), this, SLOT(updateGL()));
+    connect(&m_camera_center_moving_timer, SIGNAL(timeout()), this, SLOT(camera_center_moving_update()));
 }
 
 GLScene::~GLScene(){
@@ -131,6 +132,18 @@ void GLScene::mouseReleaseEvent(QMouseEvent* e){
         }
 }
 
+void GLScene::mouseDoubleClickEvent(QMouseEvent *e){
+    SpatialObject* object = dynamic_cast<SpatialObject*>(object_under_cursor(e->x(),e->y()));
+    if(!object) return;
+
+    m_camera_center_moving_target = object->position();
+    m_camera_center_moving_source = m_camera_config.center_position;
+    m_camera_center_moving_param = 0;
+    m_camera_center_moving_timer.start(10);
+    //m_camera_config.center_position = object->position();
+}
+
+
 void GLScene::wheelEvent(QWheelEvent *e){
     setFocus();
         m_camera_config.distance -= e->delta()*pow(2,m_camera_config.distance/10000.f);
@@ -200,6 +213,10 @@ void GLScene::start_inserting(std::set<SimulationObject*> objects){
     m_moving_objects = objects;
     m_moving = m_insert_moving = true;
     m_moving_switch_plane_point = m_moving_start_point = m_moving_point = m_camera_config.center_position;
+    BOOST_FOREACH(SimulationObject* o, objects){
+        SpatialObject* spo = dynamic_cast<SpatialObject*>(o);
+        spo->set_position(spo->position()+m_camera_config.center_position);
+    }
 }
 
 void GLScene::finish_moving(){
@@ -366,10 +383,12 @@ void GLScene::setup_projection_and_modelview_matrix(){
 void GLScene::apply_camera_translation_to_modelviewmatrix(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glTranslatef(m_camera_config.center_position.x,m_camera_config.center_position.y,m_camera_config.center_position.z);
+
     glTranslatef(0.,0.,0.-m_camera_config.distance);
     glRotatef(m_camera_config.elevation, 1., 0., 0.);
     glRotatef(m_camera_config.azimuth, 0., 1., 0.);
+
+    glTranslatef(-m_camera_config.center_position.x,-m_camera_config.center_position.y,-m_camera_config.center_position.z);
 }
 
 void GLScene::paint_floor(){
@@ -674,4 +693,21 @@ void GLScene::deselect(){
 void GLScene::object_deleted(SimulationObject* object){
     m_selected_objects.erase(object);
     m_moving_objects.erase(object);
+}
+
+void GLScene::camera_center_moving_update(){
+    if(m_camera_center_moving_param>=1){
+        m_camera_center_moving_timer.stop();
+        m_camera_config.center_position = m_camera_center_moving_target;
+        return;
+    }
+
+    double x = m_camera_center_moving_param;
+    //double fac = 0.01*(x-1)*(x-1);
+    double pi = 3.14159265;
+    double fac = (sin(m_camera_center_moving_param*pi - pi/2) + 1) /2;
+    m_camera_center_moving_param += 0.02;
+
+    m_camera_config.center_position = m_camera_center_moving_source + (m_camera_center_moving_target - m_camera_center_moving_source)*fac;
+
 }
