@@ -7,4 +7,7 @@
         <file>Resources/pause.png</file>
         <file>Resources/play.png</file>
     </qresource>
+    <qresource prefix="/images">
+        <file alias="splash">Resources/splash.png</file>
+    </qresource>
 </RCC>

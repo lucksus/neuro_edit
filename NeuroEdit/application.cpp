@@ -45,3 +45,7 @@ void Application::refresh_timeout(){
 Simulation* Application::simulation(){
     return m_simulation;
 }
+
+QWidget* Application::main_window(){
+    return m_main_window;
+}

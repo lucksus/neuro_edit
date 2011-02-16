@@ -16,6 +16,8 @@ public:
 
     Simulation* simulation();
 
+    QWidget* main_window();
+
 signals:
     void refresh();
 
