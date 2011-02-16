@@ -1,14 +1,10 @@
 <RCC>
     <qresource prefix="/icons">
-        <file>Resources/pause.png</file>
-        <file>Resources/play.png</file>
-        <file>Resources/neuron2.png</file>
-        <file>Resources/neuron1.png</file>
-        <file>Resources/network.png</file>
-        <file>Resources/save.png</file>
-        <file>Resources/check.png</file>
         <file>Resources/add_neuron.png</file>
         <file>Resources/connect.png</file>
         <file>Resources/load.png</file>
+        <file>Resources/save.png</file>
+        <file>Resources/pause.png</file>
+        <file>Resources/play.png</file>
     </qresource>
 </RCC>
