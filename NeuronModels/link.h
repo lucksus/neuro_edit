@@ -7,11 +7,19 @@ class Neuron;
 class Link : public SimulationObject
 {
 public:
-    Link(Neuron* source, Neuron* destination, double weight=1, double speed=5);
+    Link(Neuron* presynaptic_neuron, Neuron* postsynaptic_neuron, double weight=1, double speed=5);
     virtual void update(double milli_seconds);
+    virtual SimulationObject* clone();
+
+    Neuron* presynaptic_neuron();
+    Neuron* postsynaptic_neuron();
+    double weight();
+    double speed();
+    void set_weight(double weight);
+    void set_speed(double speed);
 
 private:
-    Neuron *m_source, *m_destination;
+    Neuron *m_presynaptic_neuron, *m_postsynaptic_neuron;
     double m_weight;
     double m_speed; //mm per ms
     double m_runtime; //cached
