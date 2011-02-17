@@ -8,6 +8,10 @@
 #include "application.h"
 #include <assert.h>
 
+#define NEURON_SIZE 15
+#define SYNAPSE_SIZE 5
+#define AXON_RADIUS 3
+
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent), m_mousedown_right(false), m_mousedown_left(false), m_fov(120.),
     m_moving_start_point(0,0,0), m_moving(false),
@@ -459,7 +463,7 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
         }else{
             glTranslatef(neuron->position().x,neuron->position().y,neuron->position().z);
         }
-        glutSolidSphere(15,20,20);
+        glutSolidSphere(NEURON_SIZE,20,20);
     }
 
     if(link){
@@ -473,12 +477,14 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
 
         Point vec = link->postsynaptic_neuron()->position() - link->presynaptic_neuron()->position();
         vec /= vec.length();
-        Point cylinder_start = link->presynaptic_neuron()->position() + vec*15;
-        Point cylinder_end = link->postsynaptic_neuron()->position() - vec*15;
+        Point cylinder_start = link->presynaptic_neuron()->position() + vec*(NEURON_SIZE-1);
+        Point cylinder_end = link->postsynaptic_neuron()->position() - vec*(NEURON_SIZE + 1.8*SYNAPSE_SIZE);
+        Point synapse_center = link->postsynaptic_neuron()->position() - vec*(NEURON_SIZE + SYNAPSE_SIZE);
 
-        draw_cylinder(cylinder_start, cylinder_end, 7, 32);
+        draw_cylinder(cylinder_start, cylinder_end, AXON_RADIUS, 32);
 
-
+        glTranslatef(synapse_center.x, synapse_center.y, synapse_center.z);
+        glutSolidSphere(SYNAPSE_SIZE,20,20);
     }
 
 
