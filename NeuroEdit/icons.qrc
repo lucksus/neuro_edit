@@ -9,5 +9,6 @@
     </qresource>
     <qresource prefix="/images">
         <file alias="splash">Resources/splash.png</file>
+        <file alias="about">Resources/about.png</file>
     </qresource>
 </RCC>
