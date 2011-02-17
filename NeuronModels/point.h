@@ -46,6 +46,16 @@ struct Point{
         return x*p.x + y*p.y + z*p.z;
     }
 
+    inline Point cross(const Point& p){
+        return Point(y*p.z - z*p.y, z*p.x - x*p.z, x*p.y - y*p.x);
+    }
+
+    inline Point orthogonal(){
+        Point p(1,1,-(x+y)/z);
+        p /= p.length();
+        return p;
+    }
+
     inline double length(){
         return distance(Point(0,0,0));
     }
