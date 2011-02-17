@@ -6,7 +6,7 @@
 
 QT       += core gui opengl
 
-TARGET = NeuroEdit
+TARGET = neuro_edit
 TEMPLATE = app
 INCLUDEPATH += ../NeuronModels
 LIBS += -L../NeuronModels -lneuron_models

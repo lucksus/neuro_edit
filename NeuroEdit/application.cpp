@@ -24,7 +24,7 @@ void Application::init(){
 
     QCoreApplication::setOrganizationName("lucksus");
     QCoreApplication::setOrganizationDomain("lucksus.eu");
-    QCoreApplication::setApplicationName("NeuroEdit");
+    QCoreApplication::setApplicationName("neuro_edit");
 
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(refresh_timeout()));
