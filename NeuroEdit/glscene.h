@@ -23,6 +23,7 @@ public slots:
     void set_network(Network*);
     void start_inserting(std::set<SimulationObject*>);
     void deselect();
+    void start_connecting(std::set<SimulationObject*>);
 
 protected:
      void initializeGL();
@@ -109,6 +110,16 @@ private:
     Point m_camera_center_moving_target, m_camera_center_moving_source;
     double m_camera_center_moving_param;
     QTimer m_camera_center_moving_timer;
+
+
+    //-----------------
+    //connecting:
+    //-----------------
+    bool m_connecting;
+    std::set<SimulationObject*> m_connection_sources;
+    void finish_connecting();
+    void draw_cylinder(Point start, Point end, double radius, unsigned int slices);
+
 private slots:
     void camera_center_moving_update();
 private:

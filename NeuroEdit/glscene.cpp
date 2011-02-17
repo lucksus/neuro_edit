@@ -12,7 +12,8 @@ GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent), m_mousedown_right(false), m_mousedown_left(false), m_fov(120.),
     m_moving_start_point(0,0,0), m_moving(false),
     m_shift_key_down(false), m_ctrl_key_down(false),
-    m_selection_box(false)
+    m_selection_box(false),
+    m_network(0)
 {
     m_camera_config.distance = 100;
     setMouseTracking(true);
@@ -31,7 +32,7 @@ GLScene::~GLScene(){
 }
 
 void GLScene::set_network(Network* network){
-    disconnect(m_network, SIGNAL(object_deleted(SimulationObject*)), this, SLOT(object_deleted(SimulationObject*)));
+    if(m_network) disconnect(m_network, SIGNAL(object_deleted(SimulationObject*)), this, SLOT(object_deleted(SimulationObject*)));
     m_network = network;
     connect(m_network, SIGNAL(object_deleted(SimulationObject*)), this, SLOT(object_deleted(SimulationObject*)));
 }
@@ -126,6 +127,9 @@ void GLScene::mouseReleaseEvent(QMouseEvent* e){
                         add_to_selection(o);
                     else
                         select(o);
+                }
+                if(m_connecting){
+                    finish_connecting();
                 }
                 updateGL();
             }
@@ -426,16 +430,18 @@ void GLScene::paint_objects(bool picking_run){
 void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
     glPushMatrix();
 
+    if(picking){
+        glColor3ub(m_picking_names.size()+1,0,0);
+        m_picking_names.push_back(o);
+        glDisable(GL_DITHER);
+        glDisable(GL_LIGHTING);
+    }
+
     Neuron* neuron = dynamic_cast<Neuron*>(o);
     Link* link = dynamic_cast<Link*>(o);
     if(neuron){
 
-        if(picking){
-            glColor3ub(m_picking_names.size()+1,0,0);
-            m_picking_names.push_back(neuron);
-            glDisable(GL_DITHER);
-            glDisable(GL_LIGHTING);
-        }else{
+        if(!picking){
             glEnable(GL_LIGHTING);
             glEnable(GL_DITHER);
             GLfloat green[] = {.2,1, std::max(0.,neuron->membrane_potential()+70.)/100.,1};
@@ -456,8 +462,65 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
         glutSolidSphere(15,20,20);
     }
 
+    if(link){
+        glEnable(GL_LIGHTING);
+        glEnable(GL_DITHER);
+        GLfloat gray[] = {.9,.9,.9,0.5};
+        GLfloat green[] = {.0,.9,.0,0.5};
+
+        if(!picking) glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
+        if(moving) glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, gray);
+
+        Point vec = link->postsynaptic_neuron()->position() - link->presynaptic_neuron()->position();
+        vec /= vec.length();
+        Point cylinder_start = link->presynaptic_neuron()->position() + vec*15;
+        Point cylinder_end = link->postsynaptic_neuron()->position() - vec*15;
+
+        draw_cylinder(cylinder_start, cylinder_end, 7, 32);
+
+
+    }
+
 
     glPopMatrix();
+}
+
+void GLScene::draw_cylinder(Point start, Point end, double radius, unsigned int slices){
+    Point vec = end - start;
+    double length = vec.length();
+    vec /= length;
+
+    Point plane1 = vec.orthogonal();
+    Point plane2 = vec.cross(plane1);
+    plane2 /= plane2.length();
+
+    plane1 *= radius;
+    plane2 *= radius;
+
+    double pi = 3.141592653589793;
+    double fac = 2*pi/slices;
+
+    glCullFace(GL_BACK);
+    glEnable(GL_CULL_FACE);
+    glBegin(GL_QUADS);
+    for(unsigned int i=0; i<slices; i++){
+        Point offset1 = plane1*cos(i*fac) + plane2*sin(i*fac);
+        Point offset2 = plane1*cos((i+1)*fac) + plane2*sin((i+1)*fac);
+
+        Point temp = start + offset1;
+        glNormal3f(offset1.x, offset1.y, offset1.z);
+        glVertex3f(temp.x,temp.y,temp.z);
+        temp = start + offset2;
+        glNormal3f(offset2.x, offset2.y, offset2.z);
+        glVertex3f(temp.x,temp.y,temp.z);
+        temp = end + offset2;
+        glNormal3f(offset2.x, offset2.y, offset2.z);
+        glVertex3f(temp.x,temp.y,temp.z);
+        temp = end + offset1;
+        glNormal3f(offset1.x, offset1.y, offset1.z);
+        glVertex3f(temp.x,temp.y,temp.z);
+    }
+    glEnd();
 }
 
 SimulationObject* GLScene::object_under_cursor(int cursorX, int cursorY) {
@@ -697,10 +760,30 @@ void GLScene::camera_center_moving_update(){
 
     double x = m_camera_center_moving_param;
     //double fac = 0.01*(x-1)*(x-1);
-    double pi = 3.14159265;
+    double pi = 3.141592653589793;
     double fac = (sin(m_camera_center_moving_param*pi - pi/2) + 1) /2;
     m_camera_center_moving_param += 0.02;
 
     m_camera_config.center_position = m_camera_center_moving_source + (m_camera_center_moving_target - m_camera_center_moving_source)*fac;
 
 }
+
+
+void GLScene::start_connecting(std::set<SimulationObject*> objects){
+    m_connection_sources = objects;
+    m_connecting = true;
+}
+
+void GLScene::finish_connecting(){
+    if(m_selected_objects.empty()) return;
+    BOOST_FOREACH(SimulationObject* source, m_connection_sources){
+        BOOST_FOREACH(SimulationObject* dest, m_selected_objects){
+            Neuron* source_neuron = dynamic_cast<Neuron*>(source);
+            Neuron* dest_neuron = dynamic_cast<Neuron*>(dest);
+            if(!source_neuron || !dest_neuron) continue;
+            m_network->add_object(new Link(source_neuron,dest_neuron));
+        }
+    }
+    m_connecting = false;
+}
+
