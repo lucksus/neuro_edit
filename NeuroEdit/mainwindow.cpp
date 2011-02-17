@@ -5,6 +5,7 @@
 #include <QDockWidget>
 #include <QCloseEvent>
 #include <boost/foreach.hpp>
+#include "about_dialog.h"
 
 MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),
@@ -144,6 +145,15 @@ void MainWindow::on_actionPaste_triggered(bool){
     if(m_clipboard.empty()) return;
     ui->actionPaste->setEnabled(true);
     m_glscene.start_inserting(cloned_clipboard());
+}
+
+void MainWindow::on_actionConnect_triggered(bool){
+    m_glscene.start_connecting(m_glscene.selected_objects());
+}
+
+void MainWindow::on_actionAbout_triggered(bool){
+    AboutDialog dialog;
+    dialog.exec();
 }
 
 void MainWindow::clear_clipboard(){
