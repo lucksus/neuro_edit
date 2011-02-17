@@ -4,6 +4,7 @@
 #include "simulation.h"
 #include "network.h"
 #include <QTimer>
+#include <QSplashScreen>
 
 class Application : public QObject
 {
@@ -23,9 +24,11 @@ signals:
 
 private slots:
     void refresh_timeout();
+    void hide_splash();
 
 private:
     Application();
+    QSplashScreen m_splash;
     MainWindow* m_main_window;
     Simulation* m_simulation;
     Network* m_network;

@@ -1,12 +1,15 @@
 #include "application.h"
 #include <QCoreApplication>
 
+
 Application::Application():
+        m_splash(QPixmap(":/images/splash")),
         m_main_window(0),
         m_simulation(0),
         m_network(0),
         m_timer(this)
 {
+    m_splash.setWindowFlags( Qt::WindowStaysOnTopHint | m_splash.windowFlags() );
 }
 
 
@@ -16,6 +19,9 @@ Application& Application::instance(){
 }
 
 void Application::init(){
+    m_splash.show();
+    QTimer::singleShot(1500, this, SLOT(hide_splash()));
+
     QCoreApplication::setOrganizationName("lucksus");
     QCoreApplication::setOrganizationDomain("lucksus.eu");
     QCoreApplication::setApplicationName("NeuroEdit");
@@ -48,4 +54,8 @@ Simulation* Application::simulation(){
 
 QWidget* Application::main_window(){
     return m_main_window;
+}
+
+void Application::hide_splash(){
+    m_splash.finish(m_main_window);
 }
