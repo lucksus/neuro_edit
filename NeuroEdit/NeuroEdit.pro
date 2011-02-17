@@ -47,3 +47,4 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     icons.qrc
+ICON = Resources/logo.icns
