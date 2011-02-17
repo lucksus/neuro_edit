@@ -53,7 +53,8 @@ void Link::update(double milli_seconds){
     }
 
     //remove arrived aps from list
-    remove_if(m_action_potentials.begin(), m_action_potentials.end(), leq_zero);
+    while(m_action_potentials.front()<=0)
+        m_action_potentials.pop_front();
 
     //add aps to list, if source is spiking
     if(m_presynaptic_neuron->is_spiking()){
