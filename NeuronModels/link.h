@@ -17,6 +17,7 @@ public:
     double speed();
     void set_weight(double weight);
     void set_speed(double speed);
+    std::list<double> action_potentials_normalized();
 
 private:
     Neuron *m_presynaptic_neuron, *m_postsynaptic_neuron;

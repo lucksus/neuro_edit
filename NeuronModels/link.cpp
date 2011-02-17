@@ -60,3 +60,11 @@ void Link::update(double milli_seconds){
         m_action_potentials.push_back(m_runtime);
     }
 }
+
+std::list<double> Link::action_potentials_normalized(){
+    std::list<double> result;
+    BOOST_FOREACH(double time_to_go, m_action_potentials){
+        result.push_back(1 - (time_to_go/m_runtime));
+    }
+    return result;
+}

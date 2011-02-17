@@ -11,6 +11,7 @@
 #define NEURON_SIZE 15
 #define SYNAPSE_SIZE 5
 #define AXON_RADIUS 3
+#define SPIKE_SIZE 7
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent), m_mousedown_right(false), m_mousedown_left(false), m_fov(120.),
@@ -471,20 +472,33 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
         glEnable(GL_DITHER);
         GLfloat gray[] = {.9,.9,.9,0.5};
         GLfloat green[] = {.0,.9,.0,0.5};
+        GLfloat spike_yellow[] = {.9,.9,.0,0.5};
 
         if(!picking) glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
         if(moving) glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, gray);
 
         Point vec = link->postsynaptic_neuron()->position() - link->presynaptic_neuron()->position();
-        vec /= vec.length();
+        double distance = vec.length();
+        vec /= distance;
         Point cylinder_start = link->presynaptic_neuron()->position() + vec*(NEURON_SIZE-1);
         Point cylinder_end = link->postsynaptic_neuron()->position() - vec*(NEURON_SIZE + 1.8*SYNAPSE_SIZE);
         Point synapse_center = link->postsynaptic_neuron()->position() - vec*(NEURON_SIZE + SYNAPSE_SIZE);
 
         draw_cylinder(cylinder_start, cylinder_end, AXON_RADIUS, 32);
 
+        glPushMatrix();
         glTranslatef(synapse_center.x, synapse_center.y, synapse_center.z);
         glutSolidSphere(SYNAPSE_SIZE,20,20);
+        glPopMatrix();
+
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, spike_yellow);
+        BOOST_FOREACH(double spike, link->action_potentials_normalized()){
+            glPushMatrix();
+            Point spike_center = link->presynaptic_neuron()->position() + vec*(spike*distance);
+            glTranslatef(spike_center.x, spike_center.y, spike_center.z);
+            glutSolidSphere(SPIKE_SIZE,20,20);
+            glPopMatrix();
+        }
     }
 
 
