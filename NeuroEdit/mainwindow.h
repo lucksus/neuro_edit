@@ -29,6 +29,7 @@ protected:
 
 private slots:
      void on_actionSingle_Neuron_triggered(bool);
+     void on_actionAxon_Node_triggered(bool);
      void on_actionStart_Simulation_triggered(bool);
      void on_actionPause_Simulation_triggered(bool);
      void on_actionQuit_triggered(bool);

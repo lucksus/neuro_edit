@@ -444,6 +444,10 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
 
     Neuron* neuron = dynamic_cast<Neuron*>(o);
     Axon* link = dynamic_cast<Axon*>(o);
+    AxonNode* axon_node = dynamic_cast<AxonNode*>(o);
+
+    GLfloat transparent[] = {.9,.9,.9,0.5};
+
     if(neuron){
 
         if(!picking){
@@ -456,7 +460,6 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
         if(moving){
             glEnable(GL_LIGHTING);
             glEnable(GL_DITHER);
-            GLfloat transparent[] = {.9,.9,.9,0.5};
             glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, transparent);
             Point offset = m_moving_point - m_moving_start_point;
             Point position = neuron->position() + offset;
@@ -467,14 +470,16 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
         glutSolidSphere(NEURON_SIZE,20,20);
     }
 
-    if(link){
-        glEnable(GL_LIGHTING);
-        glEnable(GL_DITHER);
-        GLfloat gray[] = {.9,.9,.9,0.5};
-        GLfloat green[] = {.0,.9,.0,0.5};
-        GLfloat spike_yellow[] = {.9,.9,.0,0.5};
+    GLfloat gray[] = {.9,.9,.9,0.5};
+    GLfloat green[] = {.0,.9,.0,0.5};
+    GLfloat spike_yellow[] = {.9,.9,.0,0.5};
 
-        if(!picking) glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
+    if(link){
+        if(!picking){
+            glEnable(GL_LIGHTING);
+            glEnable(GL_DITHER);
+            glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
+        }
         if(moving) glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, gray);
 
         Point vec = link->receiver()->position() - link->emitter()->position();
@@ -499,6 +504,22 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
             glutSolidSphere(SPIKE_SIZE,20,20);
             glPopMatrix();
         }
+    }
+
+    if(axon_node){
+        if(!picking){
+            glEnable(GL_LIGHTING);
+            glEnable(GL_DITHER);
+            glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
+        }
+        if(moving){
+            glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, gray);
+            glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, transparent);
+            Point offset = m_moving_point - m_moving_start_point;
+            Point position = axon_node->position() + offset;
+            glTranslatef(position.x,position.y,position.z);
+        }else glTranslatef(axon_node->position().x, axon_node->position().y, axon_node->position().z);
+        glutSolidSphere(SYNAPSE_SIZE,20,20);
     }
 
 
@@ -603,34 +624,41 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
     glGetDoublev(GL_PROJECTION_MATRIX, projection);
 
     Neuron* neuron = dynamic_cast<Neuron*>(object);
+    AxonNode* axon_node = dynamic_cast<AxonNode*>(object);
+    double x, y, z;
+    double radius;
     if(neuron){
-
-
-        GLdouble x1,x2,y1,y2,z1,z2;
-        gluUnProject(width()/2, height()/2, 0, model_view, projection, viewport, &x1, &y1, &z1);
-        gluUnProject(width()/2+1, height()/2, 0, model_view, projection, viewport, &x2, &y2, &z2);
-        Point rechts(x2-x1,y2-y1,z2-z1);
-        gluUnProject(width()/2, height()/2+1, 0, model_view, projection, viewport, &x2, &y2, &z2);
-        Point hoch(x2-x1,y2-y1,z2-z1);
-        rechts = rechts / rechts.length();
-        rechts *= 20;
-        hoch = hoch / hoch.length();
-        hoch *= 20;
-
-        double x = neuron->position().x, y = neuron->position().y, z = neuron->position().z;
-        GLdouble mitte_x, mitte_y, mitte_z;
-        gluProject(x, y, z, model_view, projection, viewport, &mitte_x, &mitte_y, &mitte_z);
-        GLdouble rechts_x, rechts_y, rechts_z;
-        gluProject(x + rechts.x, y + rechts.y, z + rechts.z, model_view, projection, viewport, &rechts_x, &rechts_y, &rechts_z);
-        GLdouble links_x, links_y, links_z;
-        gluProject(x - rechts.x, y - rechts.y, z - rechts.z, model_view, projection, viewport, &links_x, &links_y, &links_z);
-        GLdouble oben_x, oben_y, oben_z;
-        gluProject(x + hoch.x, y + hoch.y, z + hoch.z, model_view, projection, viewport, &oben_x, &oben_y, &oben_z);
-        GLdouble unten_x, unten_y, unten_z;
-        gluProject(x - hoch.x, y - hoch.y, z - hoch.z, model_view, projection, viewport, &unten_x, &unten_y, &unten_z);
-
-        return QRect(links_x,oben_y,rechts_x - links_x,unten_y - oben_y);
+        x = neuron->position().x; y = neuron->position().y; z = neuron->position().z;
+        radius = 20;
     }
+    if(axon_node){
+        x = axon_node->position().x; y = axon_node->position().y; z = axon_node->position().z;
+        radius = 7;
+    }
+
+    GLdouble x1,x2,y1,y2,z1,z2;
+    gluUnProject(width()/2, height()/2, 0, model_view, projection, viewport, &x1, &y1, &z1);
+    gluUnProject(width()/2+1, height()/2, 0, model_view, projection, viewport, &x2, &y2, &z2);
+    Point rechts(x2-x1,y2-y1,z2-z1);
+    gluUnProject(width()/2, height()/2+1, 0, model_view, projection, viewport, &x2, &y2, &z2);
+    Point hoch(x2-x1,y2-y1,z2-z1);
+    rechts = rechts / rechts.length();
+    rechts *= radius;
+    hoch = hoch / hoch.length();
+    hoch *= radius;
+
+    GLdouble mitte_x, mitte_y, mitte_z;
+    gluProject(x, y, z, model_view, projection, viewport, &mitte_x, &mitte_y, &mitte_z);
+    GLdouble rechts_x, rechts_y, rechts_z;
+    gluProject(x + rechts.x, y + rechts.y, z + rechts.z, model_view, projection, viewport, &rechts_x, &rechts_y, &rechts_z);
+    GLdouble links_x, links_y, links_z;
+    gluProject(x - rechts.x, y - rechts.y, z - rechts.z, model_view, projection, viewport, &links_x, &links_y, &links_z);
+    GLdouble oben_x, oben_y, oben_z;
+    gluProject(x + hoch.x, y + hoch.y, z + hoch.z, model_view, projection, viewport, &oben_x, &oben_y, &oben_z);
+    GLdouble unten_x, unten_y, unten_z;
+    gluProject(x - hoch.x, y - hoch.y, z - hoch.z, model_view, projection, viewport, &unten_x, &unten_y, &unten_z);
+
+    return QRect(links_x,oben_y,rechts_x - links_x,unten_y - oben_y);
 
     return QRect();
 }

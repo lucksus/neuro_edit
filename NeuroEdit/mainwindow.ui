@@ -88,6 +88,10 @@
    <addaction name="actionSingle_Neuron"/>
    <addaction name="actionConnect"/>
    <addaction name="separator"/>
+   <addaction name="actionAxon_Node"/>
+   <addaction name="actionSynapse"/>
+   <addaction name="actionDendrite_Node"/>
+   <addaction name="separator"/>
    <addaction name="actionStart_Simulation"/>
    <addaction name="actionPause_Simulation"/>
   </widget>
@@ -220,6 +224,21 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionAxon_Node">
+   <property name="text">
+    <string>Axon Node</string>
+   </property>
+  </action>
+  <action name="actionSynapse">
+   <property name="text">
+    <string>Synapse</string>
+   </property>
+  </action>
+  <action name="actionDendrite_Node">
+   <property name="text">
+    <string>Dendrite Node</string>
    </property>
   </action>
  </widget>

@@ -91,6 +91,12 @@ void MainWindow::on_actionSingle_Neuron_triggered(bool){
     m_glscene.start_inserting(s);
 }
 
+void MainWindow::on_actionAxon_Node_triggered(bool){
+    std::set<SimulationObject*> s;
+    s.insert(new AxonNode);
+    m_glscene.start_inserting(s);
+}
+
 void MainWindow::on_actionStart_Simulation_triggered(bool){
     m_sim->start();
 }
