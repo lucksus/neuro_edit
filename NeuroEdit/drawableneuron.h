@@ -9,7 +9,7 @@ public:
     virtual void set_color_and_lightning();
     virtual void draw_geometry();
 
-    enum {NEURON_SIZE = 15};
+    enum {SIZE = 15};
 };
 
 #endif // DRAWABLENEURON_H

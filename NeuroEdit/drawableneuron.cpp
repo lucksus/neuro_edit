@@ -20,5 +20,5 @@ void DrawableNeuron::set_color_and_lightning(){
 }
 
 void DrawableNeuron::draw_geometry(){
-    glutSolidSphere(NEURON_SIZE,20,20);
+    glutSolidSphere(SIZE,20,20);
 }

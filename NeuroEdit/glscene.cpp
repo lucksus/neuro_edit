@@ -8,11 +8,8 @@
 #include "application.h"
 #include <assert.h>
 #include "drawable.h"
-
-#define NEURON_SIZE 15
-#define SYNAPSE_SIZE 5
-#define AXON_RADIUS 3
-#define SPIKE_SIZE 7
+#include "drawableneuron.h"
+#include "drawableaxonnode.h"
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent), m_mousedown_right(false), m_mousedown_left(false), m_fov(120.),
@@ -539,15 +536,16 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
 
     Neuron* neuron = dynamic_cast<Neuron*>(object);
     AxonNode* axon_node = dynamic_cast<AxonNode*>(object);
+    SpatialObject* spo = dynamic_cast<SpatialObject*>(object);
+    assert(spo);
     double x, y, z;
+    x = spo->position().x; y = spo->position().y; z = spo->position().z;
     double radius;
     if(neuron){
-        x = neuron->position().x; y = neuron->position().y; z = neuron->position().z;
-        radius = 20;
+        radius = DrawableNeuron::SIZE+3;
     }
     if(axon_node){
-        x = axon_node->position().x; y = axon_node->position().y; z = axon_node->position().z;
-        radius = 7;
+        radius = DrawableAxonNode::SIZE+3;
     }
 
     GLdouble x1,x2,y1,y2,z1,z2;

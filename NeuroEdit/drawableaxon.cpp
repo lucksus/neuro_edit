@@ -29,9 +29,9 @@ void DrawableAxon::draw_geometry(){
     Point vec = link->receiver()->position() - link->emitter()->position();
     double distance = vec.length();
     vec /= distance;
-    Point cylinder_start = link->emitter()->position() + vec*(DrawableNeuron::NEURON_SIZE-1);
-    Point cylinder_end = link->receiver()->position() - vec*(DrawableNeuron::NEURON_SIZE + 1.8*SYNAPSE_SIZE);
-    Point synapse_center = link->receiver()->position() - vec*(DrawableNeuron::NEURON_SIZE + SYNAPSE_SIZE);
+    Point cylinder_start = link->emitter()->position() + vec*(DrawableNeuron::SIZE-1);
+    Point cylinder_end = link->receiver()->position() - vec*(DrawableNeuron::SIZE + 1.8*SYNAPSE_SIZE);
+    Point synapse_center = link->receiver()->position() - vec*(DrawableNeuron::SIZE + SYNAPSE_SIZE);
 
     draw_cylinder(cylinder_start, cylinder_end, AXON_RADIUS, 32);
 
