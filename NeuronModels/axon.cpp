@@ -48,6 +48,8 @@ void Axon::update(double milli_seconds){
     if(m_emitter->is_spiking()){
         m_action_potentials.push_back(m_runtime);
     }
+
+    m_receiver->update(milli_seconds);
 }
 
 std::list<double> Axon::action_potentials_normalized(){
@@ -56,4 +58,9 @@ std::list<double> Axon::action_potentials_normalized(){
         result.push_back(1 - (time_to_go/m_runtime));
     }
     return result;
+}
+
+
+void Axon::set_emitter(SpikeEmitter* emitter){
+    m_emitter = emitter;
 }

@@ -1,6 +1,6 @@
 #ifndef DENDRITICNODE_H
 #define DENDRITICNODE_H
-
+#include <list>
 #include "spatialobject.h"
 
 class DendriticNode : public SpatialObject
@@ -11,13 +11,14 @@ public:
     virtual void update(double milli_seconds);
     virtual SimulationObject* clone();
 
-    void add_potential(double milli_volt);
+    void add_current(double volt_per_second);
 
-    double added_potential();
+    double added_current();
 
 private:
-    double m_added_potential;
+    double m_added_current;
     DendriticNode* m_parent;
+    std::list<DendriticNode*> m_children;
 };
 
 #endif // DENDRITICNODE_H

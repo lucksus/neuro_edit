@@ -2,21 +2,26 @@
 #define NEURON_H
 #include "spatialobject.h"
 
+class DendriticNode;
+class NeuronModel;
+class Axon;
+class SpikeNode;
 class Neuron : public SpatialObject
 {
 public:
     Neuron(Point position);
     Neuron(const Neuron& n);
     virtual ~Neuron() {};
-    virtual bool update(double milli_seconds, double current) = 0;
-    virtual double membrane_potential() = 0;
-    virtual void set_membrane_potential(double) = 0;
-    virtual bool is_spiking() = 0;
 
-    void add_synaptic_input(double current);
     void update(double milli_seconds);
+
+    void set_model(NeuronModel*);
 private:
-    double m_summed_synaptic_inputs;
+
+    NeuronModel* m_model;
+
+    DendriticNode* m_dendrides_root;
+    Axon* m_axon_root;
 };
 
 #endif // NEURON_H
