@@ -5,6 +5,7 @@ SpatialObject::SpatialObject()
 }
 
 SpatialObject::SpatialObject(const SpatialObject& spo)
+    : SimulationObject(*this)
 {
     m_position = spo.m_position;
 }

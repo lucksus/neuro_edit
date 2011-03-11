@@ -1,8 +1,8 @@
 #ifndef SPIKERECEIVER_H
 #define SPIKERECEIVER_H
-#include "simulationobject.h"
+#include "spatialobject.h"
 
-class SpikeReceiver : virtual public SimulationObject
+class SpikeReceiver : public virtual SpatialObject
 {
 public:
     void receive_spike();

@@ -8,9 +8,7 @@ public:
     Izhikevich(double a, double b, double c, double d);
     Izhikevich(const Izhikevich&);
 
-    virtual SimulationObject* clone();
-
-    virtual void update(double milli_seconds, double current);
+    virtual void update(double milli_seconds);
     virtual double membrane_potential();
     virtual void set_membrane_potential(double);
 

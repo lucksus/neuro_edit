@@ -17,6 +17,8 @@ public:
     void set_speed(double speed);
     std::list<double> action_potentials_normalized();
 
+    void set_emitter(SpikeEmitter* emitter);
+
 private:
     SpikeEmitter* m_emitter;
     SpikeReceiver* m_receiver;

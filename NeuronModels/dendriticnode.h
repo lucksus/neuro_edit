@@ -12,8 +12,9 @@ public:
     virtual SimulationObject* clone();
 
     void add_current(double volt_per_second);
-
     double added_current();
+
+    void reset();
 
 private:
     double m_added_current;

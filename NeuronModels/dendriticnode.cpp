@@ -12,14 +12,13 @@ void DendriticNode::update(double milli_seconds){
         child->update(milli_seconds);
     }
 
-    if(m_parent) m_parent->add_potential(m_added_current);
+    if(m_parent){
+        m_parent->add_current(m_added_current);
+        m_added_current = 0;
+    }
 }
 
 void DendriticNode::reset(){
-    BOOST_FOREACH(DendriticNode* child, m_children){
-        child->reset();
-    }
-
     m_added_current = 0;
 }
 
@@ -27,10 +26,10 @@ SimulationObject* DendriticNode::clone(){
     return new DendriticNode(this);
 }
 
-void DendriticNode::add_potential(double milli_volt){
+void DendriticNode::add_current(double milli_volt){
     m_added_current = milli_volt;
 }
 
-double DendriticNode::added_potential(){
+double DendriticNode::added_current(){
     return m_added_current;
 }

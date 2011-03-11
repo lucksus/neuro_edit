@@ -9,7 +9,8 @@ Izhikevich::Izhikevich(double a, double b, double c, double d)
     this->d = d;
 }
 
-Izhikevich::Izhikevich(const Izhikevich& i) :
+Izhikevich::Izhikevich(const Izhikevich& i)
+    : SpatialObject(*this), NeuronModel(*this)
 {
     m_v = i.m_v;
     m_u = i.m_u;
@@ -19,11 +20,8 @@ Izhikevich::Izhikevich(const Izhikevich& i) :
     d = i.d;
 }
 
-SimulationObject* Izhikevich::clone(){
-    return new Izhikevich(*this);
-}
-
-void Izhikevich::update(double milli_seconds, double current){
+void Izhikevich::update(double milli_seconds){
+    double current = dendritic_current();
     reset_spike_emitter();
 
     if(m_v >= 30){

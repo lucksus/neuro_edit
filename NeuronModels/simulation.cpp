@@ -6,9 +6,8 @@
 Simulation::Simulation():
     m_stop_request(false),
     m_network(0),
-    m_real_step(10),
-    m_simulation_step(.1)
-
+    m_simulation_step(.1),
+    m_real_step(10)
 {
 }
 

@@ -5,7 +5,7 @@
 class DendriticNode;
 class NeuronModel;
 class Axon;
-class SpikeNode;
+class AxonNode;
 class Neuron : public SpatialObject
 {
 public:

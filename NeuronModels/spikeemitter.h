@@ -1,8 +1,8 @@
 #ifndef SPIKEEMITTER_H
 #define SPIKEEMITTER_H
-#include "simulationobject.h"
+#include "spatialobject.h"
 
-class SpikeEmitter : virtual public SimulationObject
+class SpikeEmitter : public virtual SpatialObject
 {
 public:
     bool is_spiking();

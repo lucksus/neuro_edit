@@ -5,7 +5,7 @@
 Axon::Axon(SpikeEmitter* emitter, SpikeReceiver* receiver, double speed)
     : m_emitter(emitter), m_receiver(receiver), m_speed(speed)
 {
-    m_runtime = source->position().distance(destination->position()) / speed;
+    m_runtime = emitter->position().distance(receiver->position()) / speed;
 }
 
 SimulationObject* Axon::clone(){
@@ -16,10 +16,6 @@ SimulationObject* Axon::clone(){
 
 double Axon::speed(){
     return m_speed;
-}
-
-void Axon::set_weight(double weight){
-    m_weight = weight;
 }
 
 void Axon::set_speed(double speed){

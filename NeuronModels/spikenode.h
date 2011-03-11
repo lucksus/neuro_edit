@@ -6,11 +6,11 @@
 #include <set>
 
 class Axon;
-class AxonNode : public SpikeEmitter, public SpikeReceiver, public SpatialObject
+class AxonNode : public SpikeEmitter, public SpikeReceiver
 {
 public:
     virtual void update(double milli_seconds);
-    virtual SimulationObject* clone();
+    //virtual SimulationObject* clone();
 
     void add_receiver(Axon*);
     void remove_receiver(Axon*);

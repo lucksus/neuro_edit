@@ -1,5 +1,6 @@
 #include "current_inducer.h"
 #include "neuron.h"
+#include <assert.h>
 
 CurrentInducer::CurrentInducer(Neuron* n) :
         m_target(n), m_active(false)
@@ -20,5 +21,6 @@ void CurrentInducer::set_active(bool active){
 
 void CurrentInducer::update(double){
     if(m_active)
-        m_target->add_synaptic_input(m_current);
+        //m_target->add_synaptic_input(m_current);
+        assert(false);
 }

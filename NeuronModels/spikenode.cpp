@@ -12,15 +12,15 @@ void AxonNode::update(double milli_seconds){
     }
 }
 
-SimulationObject* AxonNode::clone(){
-    return new AxonNode(this);
-}
+//SimulationObject* AxonNode::clone(){
+//    return new AxonNode(this);
+//}
 
 
 void AxonNode::add_receiver(Axon* axon){
     m_receivers.insert(axon);
 }
 
-void AxonNode::remove_receiver(Axon*){
+void AxonNode::remove_receiver(Axon* axon){
     m_receivers.erase(axon);
 }

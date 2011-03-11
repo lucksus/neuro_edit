@@ -9,5 +9,5 @@ bool SpikeEmitter::is_spiking(){
 }
 
 void SpikeEmitter::emit_spike(){
-    m_spikin = true;
+    m_spiking = true;
 }
