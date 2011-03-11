@@ -2,11 +2,11 @@
 #define NEURON_H
 #include "spatialobject.h"
 #include "editableobject.h"
+#include "dendriticnode.h"
+#include "spikenode.h"
 
-class DendriticNode;
 class NeuronModel;
 class Axon;
-class AxonNode;
 class Neuron : public SpatialObject, public virtual EditableObject
 {
 public:
@@ -17,6 +17,7 @@ public:
     void update(double milli_seconds);
 
     void set_model(NeuronModel*);
+    double membrane_potential();
 
 
     virtual std::map<std::string, boost::any> properties();
@@ -25,8 +26,8 @@ private:
 
     NeuronModel* m_model;
 
-    DendriticNode* m_dendrides_root;
-    Axon* m_axon_root;
+    DendriticNode m_dendrides_root;
+    AxonNode m_axon_root;
 };
 
 #endif // NEURON_H

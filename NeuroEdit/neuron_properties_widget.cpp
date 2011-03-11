@@ -7,6 +7,7 @@
 #include <assert.h>
 #include "network.h"
 #include "current_inducer.h"
+#include "neuron.h"
 
 NeuronPropertiesWidget::NeuronPropertiesWidget(QWidget *parent) :
     QWidget(parent),
@@ -112,7 +113,8 @@ void NeuronPropertiesWidget::on_set_potential_button_clicked(){
     BOOST_FOREACH(SimulationObject* o, m_objects){
         Neuron* n = dynamic_cast<Neuron*>(o);
         assert(n);
-        n->set_membrane_potential(ui->currentSpinBox->value());
+        //n->set_membrane_potential(ui->currentSpinBox->value());
+        assert(false);
     }
 }
 

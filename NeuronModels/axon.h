@@ -19,6 +19,8 @@ public:
     std::list<double> action_potentials_normalized();
 
     void set_emitter(SpikeEmitter* emitter);
+    SpikeEmitter* emitter();
+    SpikeReceiver* receiver();
 
     virtual std::map<std::string, boost::any> properties();
     virtual void set_property(std::string, boost::any);

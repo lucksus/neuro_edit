@@ -477,12 +477,12 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
         if(!picking) glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
         if(moving) glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, gray);
 
-        Point vec = link->postsynaptic_neuron()->position() - link->presynaptic_neuron()->position();
+        Point vec = link->receiver()->position() - link->emitter()->position();
         double distance = vec.length();
         vec /= distance;
-        Point cylinder_start = link->presynaptic_neuron()->position() + vec*(NEURON_SIZE-1);
-        Point cylinder_end = link->postsynaptic_neuron()->position() - vec*(NEURON_SIZE + 1.8*SYNAPSE_SIZE);
-        Point synapse_center = link->postsynaptic_neuron()->position() - vec*(NEURON_SIZE + SYNAPSE_SIZE);
+        Point cylinder_start = link->emitter()->position() + vec*(NEURON_SIZE-1);
+        Point cylinder_end = link->receiver()->position() - vec*(NEURON_SIZE + 1.8*SYNAPSE_SIZE);
+        Point synapse_center = link->receiver()->position() - vec*(NEURON_SIZE + SYNAPSE_SIZE);
 
         draw_cylinder(cylinder_start, cylinder_end, AXON_RADIUS, 32);
 
@@ -494,7 +494,7 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
         glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, spike_yellow);
         BOOST_FOREACH(double spike, link->action_potentials_normalized()){
             glPushMatrix();
-            Point spike_center = link->presynaptic_neuron()->position() + vec*(spike*distance);
+            Point spike_center = link->emitter()->position() + vec*(spike*distance);
             glTranslatef(spike_center.x, spike_center.y, spike_center.z);
             glutSolidSphere(SPIKE_SIZE,20,20);
             glPopMatrix();
@@ -801,7 +801,8 @@ void GLScene::finish_connecting(){
             Neuron* source_neuron = dynamic_cast<Neuron*>(source);
             Neuron* dest_neuron = dynamic_cast<Neuron*>(dest);
             if(!source_neuron || !dest_neuron) continue;
-            m_network->add_object(new Axon(source_neuron,dest_neuron));
+            //m_network->add_object(new Axon(source_neuron,dest_neuron));
+            assert(false);
         }
     }
     m_connecting = false;

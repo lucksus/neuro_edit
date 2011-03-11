@@ -61,6 +61,14 @@ void Axon::set_emitter(SpikeEmitter* emitter){
     m_emitter = emitter;
 }
 
+SpikeEmitter* Axon::emitter(){
+    return m_emitter;
+}
+
+SpikeReceiver* Axon::receiver(){
+    return m_receiver;
+}
+
 
 std::map<std::string, boost::any> Axon::properties(){
     std::map<std::string, boost::any> result;

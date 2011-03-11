@@ -6,6 +6,7 @@
 #include <QCloseEvent>
 #include <boost/foreach.hpp>
 #include "about_dialog.h"
+#include "assert.h"
 
 MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),
@@ -86,7 +87,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionSingle_Neuron_triggered(bool){
     std::set<SimulationObject*> s;
-    s.insert(new Izhikevich(Point(),0.02, 0.2, -65, 8));
+    s.insert(new Neuron(Point()));
     m_glscene.start_inserting(s);
 }
 
@@ -166,7 +167,8 @@ void MainWindow::clear_clipboard(){
 std::set<SimulationObject*> MainWindow::cloned_clipboard(){
     std::set<SimulationObject*> objects;
     BOOST_FOREACH(SimulationObject* o, m_clipboard){
-        objects.insert(o->clone());
+        //objects.insert(o->clone());
+        assert(false);
     }
     return objects;
 }
@@ -175,10 +177,11 @@ std::set<SimulationObject*> MainWindow::selected_objects_cloned_and_self_centere
     std::set<SimulationObject*> objects;
     std::set<SpatialObject*> spatial_objects;
     BOOST_FOREACH(SimulationObject* o, m_glscene.selected_objects()){
-        SimulationObject* oc = o->clone();
-        objects.insert(oc);
-        SpatialObject* spo = dynamic_cast<SpatialObject*>(oc);
-        if(spo) spatial_objects.insert(spo);
+        //SimulationObject* oc = o->clone();
+        //objects.insert(oc);
+        //SpatialObject* spo = dynamic_cast<SpatialObject*>(oc);
+        //if(spo) spatial_objects.insert(spo);
+        assert(false);
     }
 
     Point center;
