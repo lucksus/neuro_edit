@@ -13,7 +13,7 @@ Neuron::Neuron(Point position)
 }
 
 Neuron::Neuron(const Neuron& n) :
-        SpatialObject(n)
+        EditableObject(n), SpatialObject(n)
 {
 }
 
@@ -30,4 +30,13 @@ void Neuron::set_model(NeuronModel* model){
     if(m_model) delete m_model;
     m_model = model;
     m_axon_root->set_emitter(m_model);
+}
+
+
+std::map<std::string, boost::any> Neuron::properties(){
+    return m_model->properties();
+}
+
+void Neuron::set_property(std::string name, boost::any value){
+    m_model->set_property(name, value);
 }

@@ -60,3 +60,14 @@ std::list<double> Axon::action_potentials_normalized(){
 void Axon::set_emitter(SpikeEmitter* emitter){
     m_emitter = emitter;
 }
+
+
+std::map<std::string, boost::any> Axon::properties(){
+    std::map<std::string, boost::any> result;
+    result["speed"] = m_speed;
+    return result;
+}
+
+void Axon::set_property(std::string name, boost::any value){
+    if("speed" == name) m_speed = boost::any_cast<double>(value);
+}

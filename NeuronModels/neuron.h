@@ -1,12 +1,13 @@
 #ifndef NEURON_H
 #define NEURON_H
 #include "spatialobject.h"
+#include "editableobject.h"
 
 class DendriticNode;
 class NeuronModel;
 class Axon;
 class AxonNode;
-class Neuron : public SpatialObject
+class Neuron : public SpatialObject, public virtual EditableObject
 {
 public:
     Neuron(Point position);
@@ -16,6 +17,10 @@ public:
     void update(double milli_seconds);
 
     void set_model(NeuronModel*);
+
+
+    virtual std::map<std::string, boost::any> properties();
+    virtual void set_property(std::string, boost::any);
 private:
 
     NeuronModel* m_model;

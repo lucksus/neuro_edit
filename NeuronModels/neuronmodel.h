@@ -1,8 +1,9 @@
 #ifndef NEURONMODEL_H
 #define NEURONMODEL_H
 #include "spikeemitter.h"
+#include "editableobject.h"
 
-class NeuronModel : public SpikeEmitter
+class NeuronModel : public SpikeEmitter, public virtual EditableObject
 {
 public:
     virtual void update(double milli_seconds) = 0;

@@ -25,6 +25,10 @@ public:
     double v();
     double u();
 
+
+    virtual std::map<std::string, boost::any> properties();
+    virtual void set_property(std::string, boost::any);
+
 private:
     double m_u,m_v;
     double a,b,c,d;

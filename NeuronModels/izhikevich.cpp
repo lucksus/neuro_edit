@@ -10,7 +10,7 @@ Izhikevich::Izhikevich(double a, double b, double c, double d)
 }
 
 Izhikevich::Izhikevich(const Izhikevich& i)
-    : SpatialObject(*this), NeuronModel(*this)
+    : EditableObject(i), SpatialObject(i), NeuronModel(i)
 {
     m_v = i.m_v;
     m_u = i.m_u;
@@ -52,3 +52,21 @@ double Izhikevich::v(){
 double Izhikevich::u(){
     return m_u;
 }
+
+
+std::map<std::string, boost::any> Izhikevich::properties(){
+    std::map<std::string, boost::any> result;
+    result["a"] = a;
+    result["b"] = b;
+    result["c"] = c;
+    result["d"] = d;
+    return result;
+}
+
+void Izhikevich::set_property(std::string name, boost::any value){
+    if("a" == name) a = boost::any_cast<double>(value);
+    if("b" == name) b = boost::any_cast<double>(value);
+    if("c" == name) c = boost::any_cast<double>(value);
+    if("d" == name) d = boost::any_cast<double>(value);
+}
+

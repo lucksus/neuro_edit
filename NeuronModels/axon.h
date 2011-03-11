@@ -4,9 +4,10 @@
 #include <list>
 #include "spikeemitter.h"
 #include "spikereceiver.h"
+#include "editableobject.h"
 
 class Neuron;
-class Axon : public SimulationObject
+class Axon : public SimulationObject, public EditableObject
 {
 public:
     Axon(SpikeEmitter* emitter, SpikeReceiver* receiver, double speed=5);
@@ -18,6 +19,9 @@ public:
     std::list<double> action_potentials_normalized();
 
     void set_emitter(SpikeEmitter* emitter);
+
+    virtual std::map<std::string, boost::any> properties();
+    virtual void set_property(std::string, boost::any);
 
 private:
     SpikeEmitter* m_emitter;

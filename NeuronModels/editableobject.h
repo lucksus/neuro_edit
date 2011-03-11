@@ -7,8 +7,6 @@
 class EditableObject
 {
 public:
-    EditableObject();
-
     virtual std::map<std::string, boost::any> properties();
     virtual void set_property(std::string, boost::any);
     virtual void set_properties(std::map<std::string, boost::any>);
