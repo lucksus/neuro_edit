@@ -26,7 +26,11 @@ SOURCES += main.cpp\
     izhikevich_systemstate_plotwidget.cpp \
     application.cpp \
     neuron_manipulator_widget.cpp \
-    about_dialog.cpp
+    about_dialog.cpp \
+    drawable.cpp \
+    drawableneuron.cpp \
+    drawableaxon.cpp \
+    drawableaxonnode.cpp
 
 HEADERS  += mainwindow.h \
     glscene.h \
@@ -38,7 +42,11 @@ HEADERS  += mainwindow.h \
     izhikevich_systemstate_plotwidget.h \
     application.h \
     neuron_manipulator_widget.h \
-    about_dialog.h
+    about_dialog.h \
+    drawable.h \
+    drawableneuron.h \
+    drawableaxon.h \
+    drawableaxonnode.h
 
 FORMS    += mainwindow.ui \
     neuron_properties_widget.ui \

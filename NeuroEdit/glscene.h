@@ -118,7 +118,6 @@ private:
     bool m_connecting;
     std::set<SimulationObject*> m_connection_sources;
     void finish_connecting();
-    void draw_cylinder(Point start, Point end, double radius, unsigned int slices);
 
 private slots:
     void camera_center_moving_update();
