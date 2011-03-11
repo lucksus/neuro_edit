@@ -2,7 +2,7 @@
 #include <QMouseEvent>
 #include <boost/foreach.hpp>
 #include "neuron.h"
-#include "link.h"
+#include "axon.h"
 #include <GLUT/glut.h>
 #include <algorithm>
 #include "application.h"
@@ -443,7 +443,7 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
     }
 
     Neuron* neuron = dynamic_cast<Neuron*>(o);
-    Link* link = dynamic_cast<Link*>(o);
+    Axon* link = dynamic_cast<Axon*>(o);
     if(neuron){
 
         if(!picking){
@@ -801,7 +801,7 @@ void GLScene::finish_connecting(){
             Neuron* source_neuron = dynamic_cast<Neuron*>(source);
             Neuron* dest_neuron = dynamic_cast<Neuron*>(dest);
             if(!source_neuron || !dest_neuron) continue;
-            m_network->add_object(new Link(source_neuron,dest_neuron));
+            m_network->add_object(new Axon(source_neuron,dest_neuron));
         }
     }
     m_connecting = false;

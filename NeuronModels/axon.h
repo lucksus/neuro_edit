@@ -2,26 +2,24 @@
 #define LINK_H
 #include "simulationobject.h"
 #include <list>
+#include "spikeemitter.h"
+#include "spikereceiver.h"
 
 class Neuron;
-class Link : public SimulationObject
+class Axon : public SimulationObject
 {
 public:
-    Link(Neuron* presynaptic_neuron, Neuron* postsynaptic_neuron, double weight=1, double speed=5);
+    Axon(SpikeEmitter* emitter, SpikeReceiver* receiver, double speed=5);
     virtual void update(double milli_seconds);
     virtual SimulationObject* clone();
 
-    Neuron* presynaptic_neuron();
-    Neuron* postsynaptic_neuron();
-    double weight();
     double speed();
-    void set_weight(double weight);
     void set_speed(double speed);
     std::list<double> action_potentials_normalized();
 
 private:
-    Neuron *m_presynaptic_neuron, *m_postsynaptic_neuron;
-    double m_weight;
+    SpikeEmitter* m_emitter;
+    SpikeReceiver* m_receiver;
     double m_speed; //mm per ms
     double m_runtime; //cached
     std::list<double> m_action_potentials;

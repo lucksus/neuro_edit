@@ -12,19 +12,29 @@ CONFIG += staticlib
 
 SOURCES += izhikevich.cpp \
            network.cpp \
-    link.cpp \
+    axon.cpp \
     neuron.cpp \
     simulationobject.cpp \
     spatialobject.cpp \
     simulation.cpp \
-    current_inducer.cpp
+    current_inducer.cpp \
+    synapse.cpp \
+    spikenode.cpp \
+    spikereceiver.cpp \
+    spikeemitter.cpp \
+    dendriticnode.cpp
 
 HEADERS += izhikevich.h \
            network.h \
     neuron.h \
-    link.h \
+    axon.h \
     simulationobject.h \
     spatialobject.h \
     point.h \
     simulation.h \
-    current_inducer.h
+    current_inducer.h \
+    synapse.h \
+    spikenode.h \
+    spikereceiver.h \
+    spikeemitter.h \
+    dendriticnode.h
