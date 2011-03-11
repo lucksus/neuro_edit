@@ -23,7 +23,8 @@ SOURCES += izhikevich.cpp \
     spikereceiver.cpp \
     spikeemitter.cpp \
     dendriticnode.cpp \
-    neuronmodel.cpp
+    neuronmodel.cpp \
+    editableobject.cpp
 
 HEADERS += izhikevich.h \
            network.h \
@@ -39,4 +40,5 @@ HEADERS += izhikevich.h \
     spikereceiver.h \
     spikeemitter.h \
     dendriticnode.h \
-    neuronmodel.h
+    neuronmodel.h \
+    editableobject.h
