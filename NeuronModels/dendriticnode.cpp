@@ -33,3 +33,16 @@ void DendriticNode::add_current(double milli_volt){
 double DendriticNode::added_current(){
     return m_added_current;
 }
+
+DendriticNode* DendriticNode::parent(){
+    return m_parent;
+}
+
+std::set<SimulationObject*> DendriticNode::children(){
+    std::set<SimulationObject*> result;
+    BOOST_FOREACH(DendriticNode* node, m_children){
+        result.insert(node);
+    }
+
+    return result;
+}

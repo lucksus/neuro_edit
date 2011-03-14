@@ -16,10 +16,13 @@ public:
 
     void reset();
 
+    DendriticNode* parent();
+    std::set<SimulationObject*> children();
+
 private:
     double m_added_current;
     DendriticNode* m_parent;
-    std::list<DendriticNode*> m_children;
+    std::set<DendriticNode*> m_children;
 };
 
 #endif // DENDRITICNODE_H

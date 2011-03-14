@@ -10,6 +10,7 @@
 #include "drawable.h"
 #include "drawableneuron.h"
 #include "drawableaxonnode.h"
+#include "drawabledendritenode.h"
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent), m_mousedown_right(false), m_mousedown_left(false), m_fov(120.),
@@ -211,7 +212,13 @@ void GLScene::keyReleaseEvent(QKeyEvent *e){
 }
 
 void GLScene::start_moving(const SpatialObject& o){
-    m_moving_objects = m_selected_objects;
+    m_moving_objects.clear();
+    BOOST_FOREACH(SimulationObject* object,m_selected_objects){
+        SpatialObject* spo = dynamic_cast<SpatialObject*>(object);
+        if(!spo) continue;
+        if(!spo->is_user_movable()) continue;
+        m_moving_objects.insert(spo);
+    }
     m_moving = true;
     m_moving_switch_plane_point = m_moving_start_point = m_moving_point = o.position();
 }
@@ -431,6 +438,12 @@ void GLScene::paint_objects(bool picking_run){
 }
 
 void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
+
+    if(!moving)     //child objects are not moved when parent is moved!
+    BOOST_FOREACH(SimulationObject* child, o->children()){
+        paint_object(child, picking, moving);
+    }
+
     glPushMatrix();
 
     if(picking){
@@ -445,7 +458,6 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
         if(!drawable->is_applicable_to(o)) continue;
         drawable->init_with_object(o);
         if(!picking) drawable->set_color_and_lightning();
-
         glPushMatrix();
 
         SpatialObject* spo = dynamic_cast<SpatialObject*>(o);
@@ -471,6 +483,11 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
     }
 
     glPopMatrix();
+}
+
+
+void GLScene::paint_drawable(Drawable* drawable, bool moving){
+
 }
 
 
@@ -536,6 +553,7 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
 
     Neuron* neuron = dynamic_cast<Neuron*>(object);
     AxonNode* axon_node = dynamic_cast<AxonNode*>(object);
+    DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(object);
     SpatialObject* spo = dynamic_cast<SpatialObject*>(object);
     assert(spo);
     double x, y, z;
@@ -546,6 +564,9 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
     }
     if(axon_node){
         radius = DrawableAxonNode::SIZE+3;
+    }
+    if(dendritic_node){
+        radius = DrawableDendriteNode::SIZE+3;
     }
 
     GLdouble x1,x2,y1,y2,z1,z2;

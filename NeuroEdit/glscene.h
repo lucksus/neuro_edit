@@ -6,6 +6,7 @@
 #include "neuron.h"
 #include <QTimer>
 
+class Drawable;
 class GLScene : public QGLWidget
 {
     Q_OBJECT
@@ -61,6 +62,7 @@ private:
     void paint_objects(bool picking_run = false);
     void paint_object(SimulationObject*, bool picking=false, bool moving=false);
     void paint_selection_marker(QRect);
+    void paint_drawable(Drawable* drawable, bool moving);
 
 
     bool m_mousedown_right, m_mousedown_left;

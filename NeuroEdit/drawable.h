@@ -1,5 +1,6 @@
 #ifndef DRAWABLE_H
 #define DRAWABLE_H
+#include <set>
 
 class SimulationObject;
 class Drawable

@@ -3,6 +3,9 @@
 #include "gl.h"
 #include <assert.h>
 #include <GLUT/glut.h>
+#include "dendriticnode.h"
+#include <boost/foreach.hpp>
+#include "drawabledendritenode.h"
 
 bool DrawableNeuron::is_applicable_to(SimulationObject* object){
     Neuron* n = dynamic_cast<Neuron*>(object);
@@ -15,10 +18,12 @@ void DrawableNeuron::set_color_and_lightning(){
     GLfloat transparent[] = {.9,.9,.9,0.5};
     glEnable(GL_LIGHTING);
     glEnable(GL_DITHER);
-    GLfloat green[] = {.2,1, std::max(0.,neuron->membrane_potential()+70.)/100.,1};
+    GLfloat green[] = {.2,1, std::max(0.,neuron->membrane_potential()+70.)/100.,.5};
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
+
 }
 
 void DrawableNeuron::draw_geometry(){
-    glutSolidSphere(SIZE,20,20);
+    //glutSolidSphere(SIZE,20,20);
+    glutSolidCube(SIZE);
 }

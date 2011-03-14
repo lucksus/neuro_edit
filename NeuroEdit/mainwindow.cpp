@@ -97,6 +97,14 @@ void MainWindow::on_actionAxon_Node_triggered(bool){
     m_glscene.start_inserting(s);
 }
 
+void MainWindow::on_actionDendrite_Node_triggered(bool){
+
+}
+
+void MainWindow::on_actionSynapse_triggered(bool){
+
+}
+
 void MainWindow::on_actionStart_Simulation_triggered(bool){
     m_sim->start();
 }
