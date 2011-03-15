@@ -4,6 +4,11 @@
 #include <list>
 #include "simulationobject.h"
 
+class Axon;
+class Synapse;
+class SpikeEmitter;
+class SpikeReceiver;
+class DendriticNode;
 class Network : public QObject
 {
 Q_OBJECT
@@ -12,6 +17,9 @@ public:
     void delete_object(SimulationObject*);
     std::list<SimulationObject*> objects();
     void simulate(double milli_seconds);
+
+    Axon* connect(SpikeEmitter*, SpikeReceiver*);
+    std::pair<Axon*, Synapse*> connect(SpikeEmitter*, DendriticNode*);
 
 signals:
     void object_added(SimulationObject*);

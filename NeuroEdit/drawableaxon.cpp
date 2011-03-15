@@ -14,15 +14,10 @@ bool DrawableAxon::is_applicable_to(SimulationObject* object){
 }
 
 void DrawableAxon::set_color_and_lightning(){
-    GLfloat gray[] = {.9,.9,.9,0.5};
     GLfloat green[] = {.0,.9,.0,0.5};
-    GLfloat spike_yellow[] = {.9,.9,.0,0.5};
-
     glEnable(GL_LIGHTING);
     glEnable(GL_DITHER);
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
-
-
 }
 
 void DrawableAxon::draw_geometry(){

@@ -4,6 +4,7 @@
 #include "drawableaxonnode.h"
 #include "drawabledendritenode.h"
 #include "drawabledendriteconnection.h"
+#include "drawablesynapse.h"
 
 void Drawable::init_with_object(SimulationObject* object){
     m_object = object;
@@ -26,4 +27,5 @@ Drawables::Drawables(){
     m_all_drawables.insert(new DrawableAxonNode);
     m_all_drawables.insert(new DrawableDendriteNode);
     m_all_drawables.insert(new DrawableDendriteConnection);
+    m_all_drawables.insert(new DrawableSynapse);
 }

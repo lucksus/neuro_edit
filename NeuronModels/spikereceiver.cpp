@@ -12,3 +12,11 @@ void SpikeReceiver::reset_received_spikes(){
 bool SpikeReceiver::spike_received(){
     return m_spike_received;
 }
+
+void SpikeReceiver::add_incoming_axon(Axon* axon){
+    m_incoming_axons.insert(axon);
+}
+
+std::set<Axon*> SpikeReceiver::incoming_axons(){
+    return m_incoming_axons;
+}

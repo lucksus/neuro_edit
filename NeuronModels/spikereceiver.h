@@ -2,10 +2,14 @@
 #define SPIKERECEIVER_H
 #include "spatialobject.h"
 
+class Axon;
 class SpikeReceiver : public virtual SpatialObject
 {
 public:
     void receive_spike();
+
+    void add_incoming_axon(Axon*);
+    std::set<Axon*> incoming_axons();
 
 protected:
     bool spike_received();
@@ -13,6 +17,7 @@ protected:
 
 private:
     bool m_spike_received;
+    std::set<Axon*> m_incoming_axons;
 
 };
 

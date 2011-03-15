@@ -1,8 +1,10 @@
 #include "synapse.h"
+#include "dendriticnode.h"
 
 Synapse::Synapse(DendriticNode* target)
     : m_postsynaptic_neuron(target)
 {
+    set_position(target->position());
 }
 
 Synapse::~Synapse(){

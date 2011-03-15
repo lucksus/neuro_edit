@@ -5,6 +5,7 @@
 #include "editableobject.h"
 
 class DendriticNode;
+class Axon;
 class Synapse : public SpikeReceiver, public virtual EditableObject
 {
 public:
