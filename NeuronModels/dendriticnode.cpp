@@ -1,5 +1,6 @@
 #include "dendriticnode.h"
 #include <boost/foreach.hpp>
+#include "synapse.h"
 
 DendriticNode::DendriticNode(DendriticNode* parent)
     : m_parent(parent)
@@ -45,4 +46,19 @@ std::set<SimulationObject*> DendriticNode::children(){
     }
 
     return result;
+}
+
+void DendriticNode::moved(Point new_position){
+    BOOST_FOREACH(Synapse* synapse, m_incoming_synapses){
+        synapse->set_position(new_position);
+    }
+}
+
+
+void DendriticNode::add_incoming_synapse(Synapse* synapse){
+    m_incoming_synapses.insert(synapse);
+}
+
+void DendriticNode::detach_incoming_synapse(Synapse* synapse){
+    m_incoming_synapses.erase(synapse);
 }

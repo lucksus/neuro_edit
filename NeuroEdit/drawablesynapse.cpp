@@ -42,4 +42,5 @@ Point DrawableSynapse::displacement(Synapse* synapse){
     vec /= vec.length();
 
     return vec * (START_DISTANCE+END_DISTANCE)/2;
+
 }

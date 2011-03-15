@@ -47,5 +47,6 @@ std::pair<Axon*, Synapse*> Network::connect(SpikeEmitter* emitter, DendriticNode
     Axon* axon = new Axon(emitter, synapse);
     add_object(axon);
     synapse->add_incoming_axon(axon);
+    node->add_incoming_synapse(synapse);
     return std::pair<Axon*,Synapse*>(axon,synapse);
 }

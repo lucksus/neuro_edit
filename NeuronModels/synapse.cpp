@@ -5,6 +5,7 @@ Synapse::Synapse(DendriticNode* target)
     : m_postsynaptic_neuron(target)
 {
     set_position(target->position());
+    set_user_movable(false);
 }
 
 Synapse::~Synapse(){
