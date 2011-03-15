@@ -29,5 +29,17 @@ void DrawableSynapse::draw_geometry(){
     vec /= synapse->incoming_axons().size();
     vec /= vec.length();
 
-    GLHelpFunctions::draw_frustum(vec*10,vec*2,1,6,32, true, true);
+    GLHelpFunctions::draw_frustum(vec*START_DISTANCE,vec*END_DISTANCE,START_SIZE,END_SIZE,32, true, true);
+}
+
+
+Point DrawableSynapse::displacement(Synapse* synapse){
+    Point vec(0,0,0);
+    BOOST_FOREACH(Axon* axon, synapse->incoming_axons()){
+        vec += axon->emitter()->position() - synapse->position();
+    }
+    vec /= synapse->incoming_axons().size();
+    vec /= vec.length();
+
+    return vec * (START_DISTANCE+END_DISTANCE)/2;
 }

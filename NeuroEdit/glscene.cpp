@@ -12,6 +12,7 @@
 #include "drawableaxonnode.h"
 #include "drawabledendritenode.h"
 #include "synapse.h"
+#include "drawablesynapse.h"
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent), m_mousedown_right(false), m_mousedown_left(false), m_fov(120.),
@@ -623,6 +624,7 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
     Axon* axon = dynamic_cast<Axon*>(object);
     AxonNode* axon_node = dynamic_cast<AxonNode*>(object);
     DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(object);
+    Synapse* synapse = dynamic_cast<Synapse*>(object);
     SpatialObject* spo = dynamic_cast<SpatialObject*>(object);
     //assert(spo);
 
@@ -651,8 +653,9 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
     }
 
     double x, y, z;
-    x = spo->position().x; y = spo->position().y; z = spo->position().z;
+
     double radius;
+    Point displacement(0,0,0);
     if(neuron){
         radius = DrawableNeuron::SIZE+3;
     }
@@ -662,6 +665,13 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
     if(dendritic_node){
         radius = DrawableDendriteNode::SIZE+3;
     }
+    if(synapse){
+        displacement = DrawableSynapse::displacement(synapse);
+        radius = (DrawableSynapse::START_DISTANCE - DrawableSynapse::END_DISTANCE)/2 + 3;
+    }
+
+    Point position = spo->position() + displacement;
+    x = position.x; y = position.y; z = position.z;
 
 
     GLdouble x1,x2,y1,y2,z1,z2;
