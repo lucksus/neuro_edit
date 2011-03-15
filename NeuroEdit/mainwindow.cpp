@@ -185,7 +185,11 @@ void MainWindow::on_actionPaste_triggered(bool){
 }
 
 void MainWindow::on_actionConnect_triggered(bool){
-    m_glscene.start_connecting(m_glscene.selected_objects());
+    std::set<SimulationObject*> selected = m_glscene.selected_objects();
+    assert(1 == selected.size());
+    SpikeEmitter* emitter = dynamic_cast<SpikeEmitter*>(*(selected.begin()));
+    assert(emitter);
+    m_glscene.start_connecting(emitter);
 }
 
 void MainWindow::on_actionAbout_triggered(bool){
@@ -238,11 +242,13 @@ void MainWindow::objects_selected(std::set<SimulationObject*> objects){
     ui->actionAxon_Node->setEnabled(false);
     ui->actionDendrite_Node->setEnabled(false);
     ui->actionSynapse->setEnabled(false);
+    ui->actionConnect->setEnabled(false);
 
     if(objects.size() != 1) return;
     SimulationObject* object = *(objects.begin());
     AxonNode* axon_node = dynamic_cast<AxonNode*>(object);
     DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(object);
+    SpikeEmitter* emitter = dynamic_cast<SpikeEmitter*>(object);
 
     if(axon_node){
         ui->actionAxon_Node->setEnabled(true);
@@ -251,5 +257,9 @@ void MainWindow::objects_selected(std::set<SimulationObject*> objects){
 
     if(dendritic_node){
         ui->actionDendrite_Node->setEnabled(true);
+    }
+
+    if(emitter){
+        ui->actionConnect->setEnabled(true);
     }
 }

@@ -9,9 +9,9 @@ class Synapse : public SpikeReceiver, public virtual EditableObject
 {
 public:
     Synapse(DendriticNode* target);
+    virtual ~Synapse();
 
     virtual void update(double milli_seconds);
-    virtual SimulationObject* clone();
 
     virtual std::map<std::string, boost::any> properties();
     virtual void set_property(std::string, boost::any);

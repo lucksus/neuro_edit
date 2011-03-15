@@ -24,7 +24,7 @@ public slots:
     void set_network(Network*);
     void start_inserting(std::set<SimulationObject*>);
     void deselect();
-    void start_connecting(std::set<SimulationObject*>);
+    void start_connecting(SpikeEmitter*);
 
 protected:
      void initializeGL();
@@ -119,7 +119,9 @@ private:
     //-----------------
     bool m_connecting;
     std::set<SimulationObject*> m_connection_sources;
+    SpikeEmitter* m_connection_source;
     void finish_connecting();
+    void paint_connecting_overlay();
 
 private slots:
     void camera_center_moving_update();

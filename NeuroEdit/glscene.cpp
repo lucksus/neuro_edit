@@ -11,13 +11,16 @@
 #include "drawableneuron.h"
 #include "drawableaxonnode.h"
 #include "drawabledendritenode.h"
+#include "synapse.h"
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent), m_mousedown_right(false), m_mousedown_left(false), m_fov(120.),
     m_moving_start_point(0,0,0), m_moving(false),
     m_shift_key_down(false), m_ctrl_key_down(false),
     m_selection_box(false),
-    m_network(0)
+    m_network(0),
+    m_connecting(false),
+    m_connection_source(0)
 {
     m_camera_config.distance = 100;
     setMouseTracking(true);
@@ -312,6 +315,7 @@ void GLScene::paintGL()
 
     paint_floor();
     if(m_moving) paint_moving_plane();
+    if(m_connecting) paint_connecting_overlay();
     paint_objects();
 
 
@@ -361,6 +365,16 @@ void GLScene::paintGL()
 
     glFlush();
     swapBuffers();
+}
+
+void GLScene::paint_connecting_overlay(){
+    Point mouse = mouse_on_plane(m_oldMouseX, m_oldMouseY, Point(0,0,0), Point(0,1,0));
+    glColor3f(0.,1.,0.);
+    glDisable(GL_LIGHTING);
+    glBegin(GL_LINES);
+        glVertex3f(m_connection_source->position().x, m_connection_source->position().y, m_connection_source->position().z);
+        glVertex3f(mouse.x, mouse.y, mouse.z);
+    glEnd();
 }
 
 void GLScene::paint_selection_marker(QRect rect){
@@ -831,22 +845,27 @@ void GLScene::camera_center_moving_update(){
 }
 
 
-void GLScene::start_connecting(std::set<SimulationObject*> objects){
-    m_connection_sources = objects;
+void GLScene::start_connecting(SpikeEmitter* emitter){
+    m_connection_source = emitter;
     m_connecting = true;
 }
 
 void GLScene::finish_connecting(){
-    if(m_selected_objects.empty()) return;
-    BOOST_FOREACH(SimulationObject* source, m_connection_sources){
-        BOOST_FOREACH(SimulationObject* dest, m_selected_objects){
-            Neuron* source_neuron = dynamic_cast<Neuron*>(source);
-            Neuron* dest_neuron = dynamic_cast<Neuron*>(dest);
-            if(!source_neuron || !dest_neuron) continue;
-            //m_network->add_object(new Axon(source_neuron,dest_neuron));
-            assert(false);
-        }
+    if(m_selected_objects.size() != 1) return;
+    SimulationObject* selected_object = *m_selected_objects.begin();
+    AxonNode* axon_node = dynamic_cast<AxonNode*>(selected_object);
+    DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(selected_object);
+
+    if(axon_node){
+        m_network->add_object(new Axon(m_connection_source, axon_node));
     }
+
+    if(dendritic_node){
+        Synapse* synapse = new Synapse(dendritic_node);
+        m_network->add_object(synapse);
+        m_network->add_object(new Axon(m_connection_source, synapse));
+    }
+
     m_connecting = false;
 }
 

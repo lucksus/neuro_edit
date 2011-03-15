@@ -5,7 +5,13 @@ Synapse::Synapse(DendriticNode* target)
 {
 }
 
+Synapse::~Synapse(){
 
+}
+
+void Synapse::update(double milli_seconds){
+
+}
 
 std::map<std::string, boost::any> Synapse::properties(){
     std::map<std::string, boost::any> result;
