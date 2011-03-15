@@ -5,6 +5,7 @@
 #include <axon.h>
 #include <assert.h>
 #include <GLUT/glut.h>
+#include "glhelpfunctions.h"
 
 bool DrawableSynapse::is_applicable_to(SimulationObject* object){
     Synapse* s = dynamic_cast<Synapse*>(object);
@@ -12,7 +13,7 @@ bool DrawableSynapse::is_applicable_to(SimulationObject* object){
 }
 
 void DrawableSynapse::set_color_and_lightning(){
-    GLfloat green[] = {.0,.9,.0,0.5};
+    GLfloat green[] = {.0,.9,.5,1};
     glEnable(GL_LIGHTING);
     glEnable(GL_DITHER);
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
@@ -27,10 +28,6 @@ void DrawableSynapse::draw_geometry(){
     }
     vec /= synapse->incoming_axons().size();
     vec /= vec.length();
-    vec *= 5;
 
-    glTranslatef(vec.x,vec.y,vec.z);
-
-
-    glutSolidSphere(5,20,20);
+    GLHelpFunctions::draw_frustum(vec*10,vec*2,1,6,32, true, true);
 }

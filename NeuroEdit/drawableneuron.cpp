@@ -6,6 +6,7 @@
 #include "dendriticnode.h"
 #include <boost/foreach.hpp>
 #include "drawabledendritenode.h"
+#include "glhelpfunctions.h"
 
 bool DrawableNeuron::is_applicable_to(SimulationObject* object){
     Neuron* n = dynamic_cast<Neuron*>(object);
@@ -25,5 +26,6 @@ void DrawableNeuron::set_color_and_lightning(){
 
 void DrawableNeuron::draw_geometry(){
     //glutSolidSphere(SIZE,20,20);
-    glutSolidCube(SIZE);
+    //glutSolidCube(SIZE);
+    GLHelpFunctions::draw_frustum(Point(-SIZE/2,0,0),Point(SIZE/2,0,0),SIZE,SIZE*2/4,4, true, true);
 }
