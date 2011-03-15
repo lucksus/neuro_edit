@@ -104,6 +104,9 @@
    <property name="text">
     <string>Single Neuron</string>
    </property>
+   <property name="shortcut">
+    <string>N</string>
+   </property>
   </action>
   <action name="actionSave">
    <property name="icon">
@@ -219,6 +222,9 @@
    </property>
    <property name="text">
     <string>Connect</string>
+   </property>
+   <property name="shortcut">
+    <string>C</string>
    </property>
   </action>
   <action name="actionAbout">
