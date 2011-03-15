@@ -229,6 +229,7 @@ void GLScene::start_inserting(std::set<SimulationObject*> objects){
     m_moving_switch_plane_point = m_moving_start_point = m_moving_point = m_camera_config.center_position;
     BOOST_FOREACH(SimulationObject* o, objects){
         SpatialObject* spo = dynamic_cast<SpatialObject*>(o);
+        if(!spo) continue;
         spo->set_position(spo->position()+m_camera_config.center_position);
     }
 }
@@ -298,6 +299,13 @@ void GLScene::resizeGL(int w, int h)
 
 void GLScene::paintGL()
 {
+
+    std::list<QRect> regions_of_selected_objects;
+    BOOST_FOREACH(SimulationObject* object, m_selected_objects){
+        if(!object) continue;
+        regions_of_selected_objects.push_back(occupied_2d_region_of_object(object));
+    }
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		// Clear The Screen And The Depth Buffer
 
     setup_projection_and_modelview_matrix();
@@ -316,16 +324,14 @@ void GLScene::paintGL()
     //renderText(20.,40.,0.,QString("%1").arg(m_moving_start_point.y));
     //renderText(20.,60.,0.,QString("%1").arg(m_moving_start_point.z));
 
-    std::list<QRect> regions_of_selected_objects;
-    BOOST_FOREACH(SimulationObject* object, m_selected_objects){
-        regions_of_selected_objects.push_back(occupied_2d_region_of_object(object));
-    }
+
 
 
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
+
 
 
 
@@ -428,7 +434,7 @@ void GLScene::paint_objects(bool picking_run){
     if(!picking_run){
         BOOST_FOREACH(SimulationObject* o, m_moving_objects){
             SpatialObject* spo = dynamic_cast<SpatialObject*>(o);
-            assert(spo);
+            if(!spo) continue;
             paint_object(spo,false,true);
          }
     }
@@ -543,6 +549,54 @@ Point GLScene::mouse_on_plane(int x, int y, Point plane_origin, Point normal){
 }
 
 QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
+
+    /*
+    makeCurrent();
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    setup_projection_and_modelview_matrix();
+    m_picking_names.clear();
+    paint_object(object, true);
+
+    glReadPixels(0,0,width(),height(),GL_RGB,GL_UNSIGNED_BYTE,(void *)m_pixel_buffer);
+
+
+    int minx=width(),miny=height(),maxx=-1,maxy=-1;
+    for(int y=0;y<height();y++){
+        for(int x=0;x<width();x++){
+            int number = m_pixel_buffer[(x + width()*y)*3];
+
+            if(number <= 0) continue;
+            //SimulationObject* o = m_picking_names[number-1];
+            //if(o != object) continue;
+            int realy = height() - y;
+            if(x < minx) minx=x;
+            if(x > maxx) maxx=x;
+            if(realy < miny) miny=realy;
+            if(realy > maxy) maxy=realy;
+
+        }
+    }
+
+    maxy = height() - maxy;
+    miny = height() - miny;
+    //maxx -= width()/2;
+    //minx -= width()/2;
+
+    minx -= 100;
+    maxx -= 100;
+
+    return QRect(minx,miny,maxx - minx,maxy - miny);;
+
+*/
+
+
+
+
+
+
+
+
     makeCurrent();
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT,viewport);
@@ -552,10 +606,36 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
     glGetDoublev(GL_PROJECTION_MATRIX, projection);
 
     Neuron* neuron = dynamic_cast<Neuron*>(object);
+    Axon* axon = dynamic_cast<Axon*>(object);
     AxonNode* axon_node = dynamic_cast<AxonNode*>(object);
     DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(object);
     SpatialObject* spo = dynamic_cast<SpatialObject*>(object);
-    assert(spo);
+    //assert(spo);
+
+    if(axon){
+        GLdouble start_x, start_y, start_z;
+        GLdouble x = axon->emitter()->position().x, y = axon->emitter()->position().y, z = axon->emitter()->position().z;
+        gluProject(x, y, z, model_view, projection, viewport, &start_x, &start_y, &start_z);
+        GLdouble end_x, end_y, end_z;
+        x = axon->receiver()->position().x; y = axon->receiver()->position().y; z = axon->receiver()->position().z;
+        gluProject(x, y, z, model_view, projection, viewport, &end_x, &end_y, &end_z);
+        //start_y = height() - start_y;
+        //end_y = height() - end_y;
+        int left,right,top,bottom;
+        if(start_x < end_x){
+            left = start_x; right = end_x;
+        }else{
+            left = end_x; right = start_x;
+        }
+        if(start_y > end_y){
+            top = start_y; bottom = end_y;
+        }else{
+            top = end_y; bottom = start_y;
+        }
+
+        return QRect(left, top, right - left, bottom - top);
+    }
+
     double x, y, z;
     x = spo->position().x; y = spo->position().y; z = spo->position().z;
     double radius;
@@ -568,6 +648,7 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
     if(dendritic_node){
         radius = DrawableDendriteNode::SIZE+3;
     }
+
 
     GLdouble x1,x2,y1,y2,z1,z2;
     gluUnProject(width()/2, height()/2, 0, model_view, projection, viewport, &x1, &y1, &z1);

@@ -25,6 +25,8 @@ void DrawableDendriteNode::draw_geometry(){
     if(!parent) return;
     Point relative = parent->position() - n->position();
 
+    glDisable(GL_LIGHTING);
+    glColor3f(1,1,1);
     glBegin(GL_LINE);
     glVertex3f(0,0,0);
     glVertex3f(relative.x,relative.y,relative.z);

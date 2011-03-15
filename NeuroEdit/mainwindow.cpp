@@ -7,6 +7,7 @@
 #include <boost/foreach.hpp>
 #include "about_dialog.h"
 #include "assert.h"
+#include "axon.h"
 
 MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),
@@ -92,12 +93,33 @@ void MainWindow::on_actionSingle_Neuron_triggered(bool){
 }
 
 void MainWindow::on_actionAxon_Node_triggered(bool){
+    //std::set<SimulationObject*> s;
+    //s.insert(new AxonNode);
+    //m_glscene.start_inserting(s);
+
+    std::set<SimulationObject*> selected = m_glscene.selected_objects();
+    assert(1 == selected.size());
+    AxonNode* parent = dynamic_cast<AxonNode*>(*(selected.begin()));
+    assert(parent);
+
+    AxonNode* new_node = new AxonNode;
+    Axon* axon = new Axon(parent, new_node);
     std::set<SimulationObject*> s;
-    s.insert(new AxonNode);
+    s.insert(new_node);
+    s.insert(axon);
     m_glscene.start_inserting(s);
 }
 
 void MainWindow::on_actionDendrite_Node_triggered(bool){
+    std::set<SimulationObject*> selected = m_glscene.selected_objects();
+    assert(1 == selected.size());
+    DendriticNode* parent = dynamic_cast<DendriticNode*>(*(selected.begin()));
+    assert(parent);
+
+    DendriticNode* new_node = new DendriticNode(parent);
+    std::set<SimulationObject*> s;
+    s.insert(new_node);
+    m_glscene.start_inserting(s);
 
 }
 
@@ -212,4 +234,22 @@ std::set<SimulationObject*> MainWindow::selected_objects_cloned_and_self_centere
 void MainWindow::objects_selected(std::set<SimulationObject*> objects){
     ui->actionCopy->setDisabled(objects.empty());
     ui->actionCut->setDisabled(objects.empty());
+
+    ui->actionAxon_Node->setEnabled(false);
+    ui->actionDendrite_Node->setEnabled(false);
+    ui->actionSynapse->setEnabled(false);
+
+    if(objects.size() != 1) return;
+    SimulationObject* object = *(objects.begin());
+    AxonNode* axon_node = dynamic_cast<AxonNode*>(object);
+    DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(object);
+
+    if(axon_node){
+        ui->actionAxon_Node->setEnabled(true);
+        ui->actionSynapse->setEnabled(true);
+    }
+
+    if(dendritic_node){
+        ui->actionDendrite_Node->setEnabled(true);
+    }
 }

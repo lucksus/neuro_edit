@@ -3,6 +3,7 @@
 #include <boost/foreach.hpp>
 #include <gl.h>
 #include "drawableneuron.h"
+#include "drawableaxonnode.h"
 #include <assert.h>
 #include <GLUT/glut.h>
 
@@ -29,16 +30,15 @@ void DrawableAxon::draw_geometry(){
     Point vec = link->receiver()->position() - link->emitter()->position();
     double distance = vec.length();
     vec /= distance;
-    Point cylinder_start = link->emitter()->position() + vec*(DrawableNeuron::SIZE-1);
-    Point cylinder_end = link->receiver()->position() - vec*(DrawableNeuron::SIZE + 1.8*SYNAPSE_SIZE);
-    Point synapse_center = link->receiver()->position() - vec*(DrawableNeuron::SIZE + SYNAPSE_SIZE);
+    Point cylinder_start = link->emitter()->position() + vec*(DrawableAxonNode::SIZE-1);
+    Point cylinder_end = link->receiver()->position() - vec*(DrawableAxonNode::SIZE);
 
     draw_cylinder(cylinder_start, cylinder_end, AXON_RADIUS, 32);
 
-    glPushMatrix();
-    glTranslatef(synapse_center.x, synapse_center.y, synapse_center.z);
-    glutSolidSphere(SYNAPSE_SIZE,20,20);
-    glPopMatrix();
+    //glPushMatrix();
+    //glTranslatef(synapse_center.x, synapse_center.y, synapse_center.z);
+    //glutSolidSphere(SYNAPSE_SIZE,20,20);
+    //glPopMatrix();
 
     GLfloat spike_yellow[] = {.9,.9,.0,0.5};
 
