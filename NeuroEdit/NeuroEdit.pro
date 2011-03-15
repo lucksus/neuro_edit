@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     drawableneuron.cpp \
     drawableaxon.cpp \
     drawableaxonnode.cpp \
-    drawabledendritenode.cpp
+    drawabledendritenode.cpp \
+    drawabledendriteconnection.cpp
 
 HEADERS  += mainwindow.h \
     glscene.h \
@@ -48,7 +49,8 @@ HEADERS  += mainwindow.h \
     drawableneuron.h \
     drawableaxon.h \
     drawableaxonnode.h \
-    drawabledendritenode.h
+    drawabledendritenode.h \
+    drawabledendriteconnection.h
 
 FORMS    += mainwindow.ui \
     neuron_properties_widget.ui \

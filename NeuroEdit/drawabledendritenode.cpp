@@ -18,17 +18,4 @@ void DrawableDendriteNode::set_color_and_lightning(){
 
 void DrawableDendriteNode::draw_geometry(){
     glutSolidCube(SIZE);
-
-    DendriticNode* n = dynamic_cast<DendriticNode*>(m_object);
-    assert(n);
-    DendriticNode* parent = n->parent();
-    if(!parent) return;
-    Point relative = parent->position() - n->position();
-
-    glDisable(GL_LIGHTING);
-    glColor3f(1,1,1);
-    glBegin(GL_LINE);
-    glVertex3f(0,0,0);
-    glVertex3f(relative.x,relative.y,relative.z);
-    glEnd();
 }
