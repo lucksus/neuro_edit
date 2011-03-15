@@ -52,6 +52,7 @@ struct Point{
 
     inline Point orthogonal(){
         Point p(1,1,-(x+y)/z);
+        if(0 == z) p = Point(0,0,1);
         p /= p.length();
         return p;
     }
