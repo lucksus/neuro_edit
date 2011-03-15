@@ -6,6 +6,7 @@
 #include "drawableaxonnode.h"
 #include <assert.h>
 #include <GLUT/glut.h>
+#include "glhelpfunctions.h"
 
 bool DrawableAxon::is_applicable_to(SimulationObject* object){
     Axon* n = dynamic_cast<Axon*>(object);
@@ -30,10 +31,15 @@ void DrawableAxon::draw_geometry(){
     Point vec = link->receiver()->position() - link->emitter()->position();
     double distance = vec.length();
     vec /= distance;
-    Point cylinder_start = link->emitter()->position() + vec*(DrawableAxonNode::SIZE-1);
-    Point cylinder_end = link->receiver()->position() - vec*(DrawableAxonNode::SIZE);
+    Point start = link->emitter()->position() + vec*(DrawableAxonNode::SIZE-1);
+    Point end = link->receiver()->position() - vec*(DrawableAxonNode::SIZE);
 
-    draw_cylinder(cylinder_start, cylinder_end, AXON_RADIUS, 32);
+    //glBegin(GL_LINES);
+    //glVertex3f(start.x,start.y,start.z);
+    //glVertex3f(end.x,end.y,end.z);
+    //glEnd();
+
+    GLHelpFunctions::draw_cylinder(start, end, AXON_RADIUS, 32);
 
     //glPushMatrix();
     //glTranslatef(synapse_center.x, synapse_center.y, synapse_center.z);
@@ -53,40 +59,4 @@ void DrawableAxon::draw_geometry(){
 }
 
 
-void DrawableAxon::draw_cylinder(Point start, Point end, double radius, unsigned int slices){
-    Point vec = end - start;
-    double length = vec.length();
-    vec /= length;
 
-    Point plane1 = vec.orthogonal();
-    Point plane2 = vec.cross(plane1);
-    plane2 /= plane2.length();
-
-    plane1 *= radius;
-    plane2 *= radius;
-
-    double pi = 3.141592653589793;
-    double fac = 2*pi/slices;
-
-    glCullFace(GL_BACK);
-    glEnable(GL_CULL_FACE);
-    glBegin(GL_QUADS);
-    for(unsigned int i=0; i<slices; i++){
-        Point offset1 = plane1*cos(i*fac) + plane2*sin(i*fac);
-        Point offset2 = plane1*cos((i+1)*fac) + plane2*sin((i+1)*fac);
-
-        Point temp = start + offset1;
-        glNormal3f(offset1.x, offset1.y, offset1.z);
-        glVertex3f(temp.x,temp.y,temp.z);
-        temp = start + offset2;
-        glNormal3f(offset2.x, offset2.y, offset2.z);
-        glVertex3f(temp.x,temp.y,temp.z);
-        temp = end + offset2;
-        glNormal3f(offset2.x, offset2.y, offset2.z);
-        glVertex3f(temp.x,temp.y,temp.z);
-        temp = end + offset1;
-        glNormal3f(offset1.x, offset1.y, offset1.z);
-        glVertex3f(temp.x,temp.y,temp.z);
-    }
-    glEnd();
-}

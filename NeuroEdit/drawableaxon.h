@@ -11,10 +11,7 @@ public:
     virtual void set_color_and_lightning();
     virtual void draw_geometry();
 
-    enum {SYNAPSE_SIZE = 5, SPIKE_SIZE = 7, AXON_RADIUS = 3};
-
-private:
-    void draw_cylinder(Point start, Point end, double radius, unsigned int slices);
+    enum {SYNAPSE_SIZE = 5, SPIKE_SIZE = 7, AXON_RADIUS = 2};
 };
 
 #endif // DRAWABLEAXON_H

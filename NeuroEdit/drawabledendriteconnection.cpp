@@ -3,6 +3,7 @@
 #include <gl.h>
 #include <GLUT/glut.h>
 #include <assert.h>
+#include "glhelpfunctions.h"
 
 bool DrawableDendriteConnection::is_applicable_to(SimulationObject* object){
     DendriticNode* n = dynamic_cast<DendriticNode*>(object);
@@ -10,9 +11,14 @@ bool DrawableDendriteConnection::is_applicable_to(SimulationObject* object){
 }
 
 void DrawableDendriteConnection::set_color_and_lightning(){
+    //glEnable(GL_DITHER);
+    //glDisable(GL_LIGHTING);
+    //glColor3f(1,1,1);
+
+    GLfloat green[] = {.0,.9,.6,0.8};
+    glEnable(GL_LIGHTING);
     glEnable(GL_DITHER);
-    glDisable(GL_LIGHTING);
-    glColor3f(1,1,1);
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
 }
 
 void DrawableDendriteConnection::draw_geometry(){
@@ -22,8 +28,6 @@ void DrawableDendriteConnection::draw_geometry(){
     if(!parent) return;
     Point relative = parent->position() - n->position();
 
-    glBegin(GL_LINES);
-    glVertex3f(0,0,0);
-    glVertex3f(relative.x,relative.y,relative.z);
-    glEnd();
+    GLHelpFunctions::draw_cylinder(Point(0,0,0), relative, 3, 4);
+
 }
