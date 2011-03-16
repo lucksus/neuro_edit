@@ -102,8 +102,8 @@ void MainWindow::on_actionAxon_Node_triggered(bool){
     AxonNode* parent = dynamic_cast<AxonNode*>(*(selected.begin()));
     assert(parent);
 
-    AxonNode* new_node = new AxonNode;
-    Axon* axon = new Axon(parent, new_node);
+    AxonNode* new_node = new AxonNode(parent->neuron());
+    Axon* axon = new Axon(parent->neuron(), parent, new_node);
     std::set<SimulationObject*> s;
     s.insert(new_node);
     s.insert(axon);
@@ -116,7 +116,7 @@ void MainWindow::on_actionDendrite_Node_triggered(bool){
     DendriticNode* parent = dynamic_cast<DendriticNode*>(*(selected.begin()));
     assert(parent);
 
-    DendriticNode* new_node = new DendriticNode(parent);
+    DendriticNode* new_node = new DendriticNode(parent->neuron(), parent);
     std::set<SimulationObject*> s;
     s.insert(new_node);
     m_glscene.start_inserting(s);

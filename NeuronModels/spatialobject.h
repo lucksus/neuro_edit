@@ -7,7 +7,7 @@
 class SpatialObject : public SimulationObject , public virtual EditableObject
 {
 public:
-    SpatialObject();
+    SpatialObject(Neuron*);
     SpatialObject(const SpatialObject&);
 
     Point position() const;

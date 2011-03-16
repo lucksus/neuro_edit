@@ -5,7 +5,7 @@
 class Izhikevich : public NeuronModel
 {
 public:
-    Izhikevich(double a, double b, double c, double d);
+    Izhikevich(Neuron*, double a, double b, double c, double d);
     Izhikevich(const Izhikevich&);
 
     virtual void update(double milli_seconds);

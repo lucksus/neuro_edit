@@ -5,6 +5,8 @@
 class SpikeEmitter : public virtual SpatialObject
 {
 public:
+    SpikeEmitter(Neuron*);
+
     bool is_spiking();
 
 protected:

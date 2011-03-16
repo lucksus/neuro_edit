@@ -1,5 +1,10 @@
 #include "spikeemitter.h"
 
+SpikeEmitter::SpikeEmitter(Neuron* neuron)
+    : SpatialObject(neuron)
+{
+}
+
 void SpikeEmitter::reset_spike_emitter(){
     m_spiking = false;
 }

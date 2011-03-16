@@ -1,5 +1,10 @@
 #include "spikereceiver.h"
 
+SpikeReceiver::SpikeReceiver(Neuron* neuron)
+    : SpatialObject(neuron)
+{
+}
+
 void SpikeReceiver::receive_spike(){
     m_spike_received = true;
 }

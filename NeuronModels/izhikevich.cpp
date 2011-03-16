@@ -1,7 +1,8 @@
 #include "izhikevich.h"
 #include <math.h>
 
-Izhikevich::Izhikevich(double a, double b, double c, double d)
+Izhikevich::Izhikevich(Neuron* neuron, double a, double b, double c, double d)
+    : SpatialObject(neuron), NeuronModel(neuron)
 {
     this->a = a;
     this->b = b;

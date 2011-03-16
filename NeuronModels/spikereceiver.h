@@ -6,6 +6,8 @@ class Axon;
 class SpikeReceiver : public virtual SpatialObject
 {
 public:
+    SpikeReceiver(Neuron*);
+
     void receive_spike();
 
     void add_incoming_axon(Axon*);

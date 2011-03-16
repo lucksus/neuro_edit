@@ -9,7 +9,7 @@ class Axon;
 class Synapse : public SpikeReceiver, public virtual EditableObject
 {
 public:
-    Synapse(DendriticNode* target);
+    Synapse(Neuron* neuron, DendriticNode* target);
     virtual ~Synapse();
 
     virtual void update(double milli_seconds);

@@ -10,9 +10,8 @@ class Neuron;
 class Axon : public SimulationObject, public EditableObject
 {
 public:
-    Axon(SpikeEmitter* emitter, SpikeReceiver* receiver, double speed=5);
+    Axon(Neuron* neuron, SpikeEmitter* emitter, SpikeReceiver* receiver, double speed=5);
     virtual void update(double milli_seconds);
-    virtual SimulationObject* clone();
 
     double speed();
     void set_speed(double speed);

@@ -8,18 +8,18 @@
 #include <assert.h>
 
 Neuron::Neuron(Point position)
-    : m_model(0), m_dendrides_root(0)
+    : SpatialObject(this), m_model(0), m_dendrides_root(this, 0), m_axon_root(this)
 {
     set_position(position);
-    set_model(new Izhikevich(0.02, 0.2, -65, 8));
+    set_model(new Izhikevich(this, 0.02, 0.2, -65, 8));
     m_axon_root.set_user_movable(false);
     m_dendrides_root.set_user_movable(false);
 }
 
-Neuron::Neuron(const Neuron& n) :
-        EditableObject(n), SpatialObject(n), m_dendrides_root(0)
-{
-}
+//Neuron::Neuron(const Neuron& n) :
+//        EditableObject(n), SpatialObject(n), m_dendrides_root(this, 0)
+//{
+//}
 
 void Neuron::update(double milli_seconds){
     m_dendrides_root.update(milli_seconds);

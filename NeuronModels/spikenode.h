@@ -9,6 +9,8 @@ class Axon;
 class AxonNode : public SpikeEmitter, public SpikeReceiver
 {
 public:
+    AxonNode(Neuron*);
+
     virtual void update(double milli_seconds);
     //virtual SimulationObject* clone();
 

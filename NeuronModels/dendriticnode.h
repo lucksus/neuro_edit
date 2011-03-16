@@ -7,10 +7,9 @@ class Synapse;
 class DendriticNode : public SpatialObject
 {
 public:
-    DendriticNode(DendriticNode* parent);
+    DendriticNode(Neuron* neuron, DendriticNode* parent);
 
     virtual void update(double milli_seconds);
-    virtual SimulationObject* clone();
 
     void add_current(double volt_per_second);
     double added_current();

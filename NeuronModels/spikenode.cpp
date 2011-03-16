@@ -2,6 +2,12 @@
 #include <boost/foreach.hpp>
 #include "axon.h"
 
+AxonNode::AxonNode(Neuron* neuron)
+    : SpatialObject(neuron), SpikeEmitter(neuron), SpikeReceiver(neuron)
+{
+
+}
+
 void AxonNode::update(double milli_seconds){
     reset_spike_emitter();
     if(spike_received()) emit_spike();

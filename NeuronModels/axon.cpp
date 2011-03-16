@@ -2,17 +2,12 @@
 #include <boost/foreach.hpp>
 #include "neuron.h"
 
-Axon::Axon(SpikeEmitter* emitter, SpikeReceiver* receiver, double speed)
-    : m_emitter(emitter), m_receiver(receiver), m_speed(speed)
+Axon::Axon(Neuron* neuron, SpikeEmitter* emitter, SpikeReceiver* receiver, double speed)
+    : SimulationObject(neuron), m_emitter(emitter), m_receiver(receiver), m_speed(speed)
 {
     m_runtime = emitter->position().distance(receiver->position()) / speed;
 }
 
-SimulationObject* Axon::clone(){
-    Axon* axon = new Axon(m_emitter, m_receiver, m_speed);
-    axon->m_action_potentials = m_action_potentials;
-    return axon;
-}
 
 double Axon::speed(){
     return m_speed;

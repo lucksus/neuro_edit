@@ -3,7 +3,7 @@
 #include <assert.h>
 
 CurrentInducer::CurrentInducer(Neuron* n) :
-        m_target(n), m_active(false)
+        SimulationObject(n), m_target(n), m_active(false)
 {
 }
 

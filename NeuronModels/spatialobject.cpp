@@ -1,7 +1,7 @@
 #include "spatialobject.h"
 
-SpatialObject::SpatialObject()
-    : m_is_user_movable(true)
+SpatialObject::SpatialObject(Neuron* neuron)
+    : SimulationObject(neuron), m_is_user_movable(true)
 {
 }
 
@@ -36,7 +36,7 @@ void SpatialObject::set_property(std::string name, boost::any value){
     if("position z" == name) m_position.z = boost::any_cast<double>(value);
 }
 
-void SpatialObject::moved(Point new_position){
+void SpatialObject::moved(Point){
 }
 
 bool SpatialObject::is_user_movable(){

@@ -2,8 +2,8 @@
 #include <boost/foreach.hpp>
 #include "synapse.h"
 
-DendriticNode::DendriticNode(DendriticNode* parent)
-    : m_parent(parent)
+DendriticNode::DendriticNode(Neuron* neuron, DendriticNode* parent)
+    : SpatialObject(neuron), m_parent(parent)
 {
 }
 
@@ -23,9 +23,6 @@ void DendriticNode::reset(){
     m_added_current = 0;
 }
 
-SimulationObject* DendriticNode::clone(){
-    return new DendriticNode(this);
-}
 
 void DendriticNode::add_current(double milli_volt){
     m_added_current = milli_volt;

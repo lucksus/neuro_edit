@@ -32,7 +32,7 @@ Axon* Network::connect(SpikeEmitter* emitter, SpikeReceiver* receiver){
     //assert(find(m_objects.begin(), m_objects.end(), emitter) != m_objects.end());
     //assert(find(m_objects.begin(), m_objects.end(), receiver) != m_objects.end());
 
-    Axon* axon = new Axon(emitter, receiver);
+    Axon* axon = new Axon(emitter->neuron(), emitter, receiver);
     add_object(axon);
     receiver->add_incoming_axon(axon);
     return axon;
@@ -42,9 +42,9 @@ std::pair<Axon*, Synapse*> Network::connect(SpikeEmitter* emitter, DendriticNode
     //assert(find(m_objects.begin(), m_objects.end(), emitter) != m_objects.end());
     //assert(find(m_objects.begin(), m_objects.end(), node) != m_objects.end());
 
-    Synapse* synapse = new Synapse(node);
+    Synapse* synapse = new Synapse(emitter->neuron(), node);
     add_object(synapse);
-    Axon* axon = new Axon(emitter, synapse);
+    Axon* axon = new Axon(emitter->neuron(), emitter, synapse);
     add_object(axon);
     synapse->add_incoming_axon(axon);
     node->add_incoming_synapse(synapse);

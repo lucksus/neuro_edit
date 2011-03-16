@@ -11,7 +11,7 @@ class Neuron : public SpatialObject, public virtual EditableObject
 {
 public:
     Neuron(Point position);
-    Neuron(const Neuron& n);
+    //Neuron(const Neuron& n);
     virtual ~Neuron() {};
 
     void update(double milli_seconds);

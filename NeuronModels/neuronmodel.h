@@ -6,6 +6,8 @@
 class NeuronModel : public SpikeEmitter, public virtual EditableObject
 {
 public:
+    NeuronModel(Neuron*);
+
     virtual void update(double milli_seconds) = 0;
     virtual double membrane_potential() = 0;
     virtual void set_membrane_potential(double) = 0;
