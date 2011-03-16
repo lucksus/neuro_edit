@@ -22,7 +22,7 @@ void NeuronManipulatorWidget::set_neurons(std::set<SimulationObject*> objects){
         if(n) m_neurons.insert(n);
     }
 
-    create_current_inducers();
+    //create_current_inducers();
 }
 
 void NeuronManipulatorWidget::create_current_inducers(){
