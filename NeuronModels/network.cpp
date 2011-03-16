@@ -11,7 +11,7 @@
 #include <boost/archive/xml_oarchive.hpp>
 //#include <boost/archive/binary_iarchive.hpp>
 //#include <boost/archive/binary_oarchive.hpp>
-#include <sstream>
+#include <fstream>
 #include "serializationhelper.h"
 #include <exception>
 #include "neuronmodel.h"
@@ -23,6 +23,16 @@
 template<class Archive>
 void register_classes(Archive& ar){
 
+}
+
+void Network::write_to_file(std::string filename){
+    std::ofstream file(filename.c_str());
+    serialize(file);
+}
+
+void Network::load_from_file(std::string filename){
+    std::ifstream file(filename.c_str());
+    deserialize(file);
 }
 
 void Network::serialize(std::ostream& stream){

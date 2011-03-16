@@ -16,15 +16,10 @@ class DendriticNode;
 class Network : public QObject
 {
 Q_OBJECT
+friend class boost::serialization::access;
 public:
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int)
-    {
-        ar & BOOST_SERIALIZATION_NVP(m_objects);
-    }
-
-    void serialize(std::ostream&);
-    void deserialize(std::istream&);
+    void write_to_file(std::string filename);
+    void load_from_file(std::string filename);
 
     void add_object(SimulationObject*);
     void delete_object(SimulationObject*);
@@ -39,6 +34,15 @@ signals:
     void object_deleted(SimulationObject*);
 private:
     std::list<SimulationObject*> m_objects;
+
+    void serialize(std::ostream&);
+    void deserialize(std::istream&);
+
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int)
+    {
+        ar & boost::serialization::make_nvp("SimulationObjects", m_objects);
+    }
 };
 
 

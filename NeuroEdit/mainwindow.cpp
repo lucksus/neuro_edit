@@ -165,32 +165,15 @@ void MainWindow::closeEvent(QCloseEvent *event){
 void MainWindow::on_actionSave_triggered(bool){
     QString fileName = QFileDialog::getSaveFileName(this,
         tr("Save network"), "", tr("NeuroEdit files (*.ne)"));
-    std::ofstream file(fileName.toStdString().c_str());
-    m_network->serialize(file);
+    if(fileName.isEmpty()) return;
+    m_network->write_to_file(fileName.toStdString());
 }
 
 void MainWindow::on_actionLoad_triggered(bool){
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Load network"), "", tr("NeuroEdit files (*.ne)"));
-    std::ifstream file(fileName.toStdString().c_str());
-/*
-    // get length of file:
-    file.seekg (0, ios::end);
-    int length = file.tellg();
-    file.seekg (0, ios::beg);
-
-    // allocate memory:
-    char* buffer = new char [length];
-
-    // read data as a block:
-    file.read (buffer,length);
-    file.close();
-
-    std::string content(buffer,length);
-    delete[] buffer;
-    std::cout << length << std::endl << content;*/
-    m_network->deserialize(file);
-
+    if(fileName.isEmpty()) return;
+    m_network->load_from_file(fileName.toStdString());
 }
 
 void MainWindow::on_actionQuit_triggered(bool){
