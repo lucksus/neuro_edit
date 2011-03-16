@@ -4,11 +4,15 @@
 #include "editableobject.h"
 #include "dendriticnode.h"
 #include "spikenode.h"
+#include <boost/serialization/access.hpp>
+#include <boost/type_traits/is_virtual_base_of.hpp>
+#include <boost/serialization/nvp.hpp>
 
 class NeuronModel;
 class Axon;
 class Neuron : public SpatialObject, public virtual EditableObject
 {
+friend class boost::serialization::access;
 public:
     Neuron(Point position);
     //Neuron(const Neuron& n);
@@ -25,6 +29,7 @@ public:
     virtual std::set<SimulationObject*> children();
 
 protected:
+    Neuron(){}
     virtual void moved(Point new_position);
 
 private:
@@ -35,6 +40,22 @@ private:
     AxonNode m_axon_root;
 
     void walk_dendrites_tree(DendriticNode* root, std::set<SimulationObject*>& nodes);
+
+
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int)
+    {
+        //ar & boost::serialization::base_object<SpatialObject>(*this);
+        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpatialObject);
+        ar & BOOST_SERIALIZATION_NVP(m_model);
+        ar & BOOST_SERIALIZATION_NVP(m_dendrides_root);
+        ar & BOOST_SERIALIZATION_NVP(m_axon_root);
+    }
 };
+
+namespace boost{
+template<>
+struct is_virtual_base_of<SpatialObject, Neuron>: public mpl::true_ {};
+}
 
 #endif // NEURON_H

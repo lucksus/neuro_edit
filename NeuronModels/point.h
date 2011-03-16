@@ -1,11 +1,20 @@
 #ifndef POINT_H
 #define POINT_H
 #include <math.h>
+#include <boost/serialization/nvp.hpp>
 
 struct Point{
     Point(){x=0;y=0;z=0;}
     Point(double x, double y, double z){
         this->x=x;this->y=y;this->z=z;
+    }
+
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int)
+    {
+        ar & BOOST_SERIALIZATION_NVP(x);
+        ar & BOOST_SERIALIZATION_NVP(y);
+        ar & BOOST_SERIALIZATION_NVP(z);
     }
 
     double x,y,z;

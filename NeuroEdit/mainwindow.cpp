@@ -8,6 +8,10 @@
 #include "about_dialog.h"
 #include "assert.h"
 #include "axon.h"
+#include <QFileDialog>
+#include <QFile>
+#include <fstream>
+#include <iostream>
 
 MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),
@@ -156,6 +160,37 @@ void MainWindow::closeEvent(QCloseEvent *event){
     m_sim->request_stop();
     usleep(1000);
     event->accept();
+}
+
+void MainWindow::on_actionSave_triggered(bool){
+    QString fileName = QFileDialog::getSaveFileName(this,
+        tr("Save network"), "", tr("NeuroEdit files (*.ne)"));
+    std::ofstream file(fileName.toStdString().c_str());
+    m_network->serialize(file);
+}
+
+void MainWindow::on_actionLoad_triggered(bool){
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Load network"), "", tr("NeuroEdit files (*.ne)"));
+    std::ifstream file(fileName.toStdString().c_str());
+/*
+    // get length of file:
+    file.seekg (0, ios::end);
+    int length = file.tellg();
+    file.seekg (0, ios::beg);
+
+    // allocate memory:
+    char* buffer = new char [length];
+
+    // read data as a block:
+    file.read (buffer,length);
+    file.close();
+
+    std::string content(buffer,length);
+    delete[] buffer;
+    std::cout << length << std::endl << content;*/
+    m_network->deserialize(file);
+
 }
 
 void MainWindow::on_actionQuit_triggered(bool){
