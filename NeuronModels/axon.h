@@ -40,10 +40,10 @@ private:
     void serialize(Archive & ar, const unsigned int)
     {
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SimulationObject);
-        ar & BOOST_SERIALIZATION_NVP(m_emitter);
-        ar & BOOST_SERIALIZATION_NVP(m_receiver);
-        ar & BOOST_SERIALIZATION_NVP(m_speed);
-        ar & BOOST_SERIALIZATION_NVP(m_action_potentials);
+        ar & boost::serialization::make_nvp("Emitter", m_emitter);
+        ar & boost::serialization::make_nvp("Receiver", m_receiver);
+        ar & boost::serialization::make_nvp("Speed", m_speed);
+        ar & boost::serialization::make_nvp("ActionPotentials", m_action_potentials);
     }
 };
 

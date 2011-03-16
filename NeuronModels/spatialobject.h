@@ -38,8 +38,8 @@ private:
     {
         //ar & boost::serialization::base_object<SimulationObject>(*this);
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SimulationObject);
-        ar & BOOST_SERIALIZATION_NVP(m_position);
-        ar & BOOST_SERIALIZATION_NVP(m_is_user_movable);
+        ar & boost::serialization::make_nvp("Position", m_position);
+        ar & boost::serialization::make_nvp("is_user_movable", m_is_user_movable);
     }
 };
 

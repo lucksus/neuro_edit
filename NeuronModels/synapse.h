@@ -32,9 +32,9 @@ private:
     {
         //ar & boost::serialization::base_object<SpikeReceiver>(*this);
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpikeReceiver);
-        ar & BOOST_SERIALIZATION_NVP(m_postsynaptic_neuron);
-        ar & BOOST_SERIALIZATION_NVP(m_weight);
-        ar & BOOST_SERIALIZATION_NVP(m_active_potentials);
+        ar & boost::serialization::make_nvp("PostsynapticDendriticNode", m_postsynaptic_neuron);
+        ar & boost::serialization::make_nvp("Weight", m_weight);
+        ar & boost::serialization::make_nvp("ActivePotentials", m_active_potentials);
     }
 };
 

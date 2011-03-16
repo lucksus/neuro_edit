@@ -47,9 +47,9 @@ private:
     {
         //ar & boost::serialization::base_object<SpatialObject>(*this);
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpatialObject);
-        ar & BOOST_SERIALIZATION_NVP(m_model);
-        ar & BOOST_SERIALIZATION_NVP(m_dendrides_root);
-        ar & BOOST_SERIALIZATION_NVP(m_axon_root);
+        ar & boost::serialization::make_nvp("NeuronModel", m_model);
+        ar & boost::serialization::make_nvp("DendridesRoot", m_dendrides_root);
+        ar & boost::serialization::make_nvp("AxonRoot", m_axon_root);
     }
 };
 

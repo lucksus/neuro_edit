@@ -32,8 +32,8 @@ private:
     {
         //ar & boost::serialization::base_object<SpatialObject>(*this);
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpatialObject);
-        ar & BOOST_SERIALIZATION_NVP(m_spike_received);
-        ar & BOOST_SERIALIZATION_NVP(m_incoming_axons);
+        ar & boost::serialization::make_nvp("spike_received", m_spike_received);
+        ar & boost::serialization::make_nvp("IncomingAxons", m_incoming_axons);
     }
 
 };

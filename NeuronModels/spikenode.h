@@ -32,7 +32,7 @@ private:
     void serialize(Archive & ar, const unsigned int){
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpikeEmitter);
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpikeReceiver);
-        ar & boost::serialization::make_nvp("m_receivers",m_receivers);
+        ar & boost::serialization::make_nvp("Receivers",m_receivers);
     }
 /*
     template<class Archive>

@@ -16,7 +16,7 @@ public:
     {
         //ar & boost::serialization::base_object<SpatialObject>(*this);
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpatialObject);
-        ar & BOOST_SERIALIZATION_NVP(m_spiking);
+        ar & boost::serialization::make_nvp("is_spiking", m_spiking);
     }
 
     bool is_spiking();

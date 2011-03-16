@@ -69,10 +69,10 @@ private:
     void serialize(Archive & ar, const unsigned int)
     {
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpatialObject);
-        ar & BOOST_SERIALIZATION_NVP(m_added_current);
-        ar & BOOST_SERIALIZATION_NVP(m_parent);
-        ar & BOOST_SERIALIZATION_NVP(m_children);
-        ar & BOOST_SERIALIZATION_NVP(m_incoming_synapses);
+        ar & boost::serialization::make_nvp("AddedCurrent", m_added_current);
+        ar & boost::serialization::make_nvp("Parent", m_parent);
+        ar & boost::serialization::make_nvp("Children", m_children);
+        ar & boost::serialization::make_nvp("IncomingSynapses", m_incoming_synapses);
     }
 };
 
