@@ -11,7 +11,7 @@ class SimulationObject
 friend class boost::serialization::access;
 public:
     SimulationObject(Neuron*);
-
+    virtual ~SimulationObject(){}
 
     virtual void update(double milli_seconds) = 0;
     virtual std::set<SimulationObject*> children();
