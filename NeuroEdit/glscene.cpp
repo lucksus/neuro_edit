@@ -15,13 +15,16 @@
 #include "drawablesynapse.h"
 
 GLScene::GLScene(QWidget *parent) :
-    QGLWidget(parent), m_mousedown_right(false), m_mousedown_left(false), m_fov(120.),
-    m_moving_start_point(0,0,0), m_moving(false),
+    QGLWidget(parent),
+    m_network(0),
+    m_mousedown_right(false), m_mousedown_left(false),
     m_shift_key_down(false), m_ctrl_key_down(false),
     m_selection_box(false),
-    m_network(0),
+    m_moving(false),
+    m_moving_start_point(0,0,0),
     m_connecting(false),
-    m_connection_source(0)
+    m_connection_source(0),
+    m_fov(120.)
 {
     m_camera_config.distance = 100;
     setMouseTracking(true);
@@ -73,7 +76,7 @@ void GLScene::mouseMoveEvent(QMouseEvent *e){
                 }else{
                     clicked_object = object_under_cursor(e->x(),e->y());
                     SpatialObject* spatial_object;
-                    if(spatial_object = dynamic_cast<SpatialObject*>(clicked_object)){
+                    if((spatial_object = dynamic_cast<SpatialObject*>(clicked_object))){
                         //movable object dragged -> start moving:
                         if(!m_selected_objects.count(clicked_object))
                             m_selected_objects.clear();
@@ -507,12 +510,6 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
 }
 
 
-void GLScene::paint_drawable(Drawable* drawable, bool moving){
-
-}
-
-
-
 SimulationObject* GLScene::object_under_cursor(int cursorX, int cursorY) {
         makeCurrent();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -844,8 +841,6 @@ void GLScene::camera_center_moving_update(){
         return;
     }
 
-    double x = m_camera_center_moving_param;
-    //double fac = 0.01*(x-1)*(x-1);
     double pi = 3.141592653589793;
     double fac = (sin(m_camera_center_moving_param*pi - pi/2) + 1) /2;
     m_camera_center_moving_param += 0.02;
