@@ -62,8 +62,8 @@ private:
 namespace boost{
 template<>
 struct is_virtual_base_of<SpikeEmitter, AxonNode>: public mpl::true_ {};
-//template<>
-//struct is_virtual_base_of<SpikeReceiver, AxonNode>: public mpl::true_ {};
+template<>
+struct is_virtual_base_of<SpikeReceiver, AxonNode>: public mpl::true_ {};
 }
 
 #endif // SPIKENODE_H

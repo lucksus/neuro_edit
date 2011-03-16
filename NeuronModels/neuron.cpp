@@ -8,12 +8,14 @@
 #include <assert.h>
 
 Neuron::Neuron(Point position)
-    : SpatialObject(this), m_model(0), m_dendrides_root(this, 0), m_axon_root(this)
+    : SpatialObject(this), m_model(0)
 {
+    m_dendrides_root = new DendriticNode(this, 0);
+    m_axon_root = new AxonNode(this);
     set_position(position);
     set_model(new Izhikevich(this, 0.02, 0.2, -65, 8));
-    m_axon_root.set_user_movable(false);
-    m_dendrides_root.set_user_movable(false);
+    m_axon_root->set_user_movable(false);
+    m_dendrides_root->set_user_movable(false);
 }
 
 //Neuron::Neuron(const Neuron& n) :
@@ -22,12 +24,12 @@ Neuron::Neuron(Point position)
 //}
 
 void Neuron::update(double milli_seconds){
-    m_dendrides_root.update(milli_seconds);
-    m_model->set_dendritic_current(m_dendrides_root.added_current());
+    m_dendrides_root->update(milli_seconds);
+    m_model->set_dendritic_current(m_dendrides_root->added_current());
     m_model->update(milli_seconds);
-    m_dendrides_root.reset();
-    if(m_model->is_spiking()) m_axon_root.receive_spike();
-    m_axon_root.update(milli_seconds);
+    m_dendrides_root->reset();
+    if(m_model->is_spiking()) m_axon_root->receive_spike();
+    m_axon_root->update(milli_seconds);
 }
 
 
@@ -51,8 +53,8 @@ void Neuron::set_property(std::string name, boost::any value){
 
 std::set<SimulationObject*> Neuron::children(){
     std::set<SimulationObject*> nodes;
-    walk_dendrites_tree(&m_dendrides_root, nodes);
-    nodes.insert(&m_axon_root);
+    walk_dendrites_tree(m_dendrides_root, nodes);
+    nodes.insert(m_axon_root);
     return nodes;
 }
 
@@ -69,6 +71,6 @@ void Neuron::walk_dendrites_tree(DendriticNode* root, std::set<SimulationObject*
 
 void Neuron::moved(Point new_position){
     Point p(-8,0,0);
-    m_dendrides_root.set_position(new_position + p);
-    m_axon_root.set_position(new_position - p);
+    m_dendrides_root->set_position(new_position + p);
+    m_axon_root->set_position(new_position - p);
 }

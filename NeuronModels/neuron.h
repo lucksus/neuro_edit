@@ -36,8 +36,8 @@ private:
 
     NeuronModel* m_model;
 
-    DendriticNode m_dendrides_root;
-    AxonNode m_axon_root;
+    DendriticNode* m_dendrides_root;
+    AxonNode* m_axon_root;
 
     void walk_dendrites_tree(DendriticNode* root, std::set<SimulationObject*>& nodes);
 
