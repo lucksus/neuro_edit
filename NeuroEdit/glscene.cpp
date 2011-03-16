@@ -250,7 +250,9 @@ void GLScene::finish_moving(){
         }
 
         SpatialObject* spo = dynamic_cast<SpatialObject*>(o);
-        if(spo) spo->set_position(spo->position() + offset);
+        if(!spo) continue;
+        if(!spo->is_user_movable()) continue;
+        spo->set_position(spo->position() + offset);
     }
 
     m_moving = false;

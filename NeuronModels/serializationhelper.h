@@ -3,6 +3,8 @@
 #include <set>
 
 class Neuron;
+class Network;
+class SimulationObject;
 class SerializationHelper
 {
 public:
@@ -10,6 +12,14 @@ public:
     bool is_to_be_serialized(Neuron*);
     void add_to_serialization_list(Neuron*);
     void set_serialize_all(bool);
+    void clear_serialization_list();
+
+
+    void serialize_network(std::ostream&, Network*);
+    Network* deserialize_network(std::istream&);
+
+    void serialize_objects(std::ostream&, std::set<SimulationObject*>);
+    std::set<SimulationObject*> deserialize_objects(std::istream&);
 
 private:
     SerializationHelper();

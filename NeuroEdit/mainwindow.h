@@ -67,9 +67,7 @@ private:
     Simulation* m_sim;
     SimulationSettingsWidget m_sim_settings_widget;
 
-    std::set<SimulationObject*> m_clipboard;
-    void clear_clipboard();
-    std::set<SimulationObject*> cloned_clipboard();
+    std::string m_clipboard;
     std::set<SimulationObject*> selected_objects_cloned_and_self_centered();
 };
 

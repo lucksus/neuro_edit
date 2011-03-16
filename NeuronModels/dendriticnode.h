@@ -7,7 +7,6 @@
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/type_traits/is_virtual_base_of.hpp>
-#include "serializationhelper.h"
 
 class DendriticNode : public SpatialObject
 {

@@ -12,6 +12,8 @@
 #include <QFile>
 #include <fstream>
 #include <iostream>
+#include <sstream>
+#include "serializationhelper.h"
 
 MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),
@@ -173,7 +175,10 @@ void MainWindow::on_actionLoad_triggered(bool){
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Load network"), "", tr("NeuroEdit files (*.ne)"));
     if(fileName.isEmpty()) return;
-    m_network->load_from_file(fileName.toStdString());
+    Network* n = Network::load_from_file(fileName.toStdString());
+    m_glscene.set_network(n);
+    delete m_network;
+    m_network = n;
 }
 
 void MainWindow::on_actionQuit_triggered(bool){
@@ -189,17 +194,23 @@ void MainWindow::on_actionCut_triggered(bool b){
 }
 
 void MainWindow::on_actionCopy_triggered(bool){
-    std::set<SimulationObject*> objects = selected_objects_cloned_and_self_centered();
-    if(objects.empty()) return;
-    clear_clipboard();
-    m_clipboard = objects;
+    if(m_glscene.selected_objects().empty()) return;
+    SerializationHelper::instance().clear_serialization_list();
+    BOOST_FOREACH(SimulationObject* object, m_glscene.selected_objects()){
+        SerializationHelper::instance().add_to_serialization_list(object->neuron());
+    }
+
+    std::stringstream stream;
+    SerializationHelper::instance().serialize_objects(stream, m_glscene.selected_objects());
+    m_clipboard = stream.str();
     ui->actionPaste->setEnabled(true);
 }
 
 void MainWindow::on_actionPaste_triggered(bool){
     if(m_clipboard.empty()) return;
     ui->actionPaste->setEnabled(true);
-    m_glscene.start_inserting(cloned_clipboard());
+    std::stringstream stream(m_clipboard);
+    m_glscene.start_inserting(SerializationHelper::instance().deserialize_objects(stream));
 }
 
 void MainWindow::on_actionConnect_triggered(bool){
@@ -215,21 +226,6 @@ void MainWindow::on_actionAbout_triggered(bool){
     dialog.exec();
 }
 
-void MainWindow::clear_clipboard(){
-    BOOST_FOREACH(SimulationObject* o, m_clipboard){
-        delete o;
-    }
-    m_clipboard.clear();
-}
-
-std::set<SimulationObject*> MainWindow::cloned_clipboard(){
-    std::set<SimulationObject*> objects;
-    BOOST_FOREACH(SimulationObject* o, m_clipboard){
-        //objects.insert(o->clone());
-        assert(false);
-    }
-    return objects;
-}
 
 std::set<SimulationObject*> MainWindow::selected_objects_cloned_and_self_centered(){
     std::set<SimulationObject*> objects;
