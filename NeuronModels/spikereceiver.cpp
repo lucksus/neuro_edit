@@ -1,7 +1,7 @@
 #include "spikereceiver.h"
 
 SpikeReceiver::SpikeReceiver(Neuron* neuron)
-    : SpatialObject(neuron)
+    : SpatialObject(neuron), m_spike_received(false)
 {
 }
 

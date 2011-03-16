@@ -3,7 +3,7 @@
 #include "synapse.h"
 
 DendriticNode::DendriticNode(Neuron* neuron, DendriticNode* parent)
-    : SpatialObject(neuron), m_parent(parent)
+    : SpatialObject(neuron), m_parent(parent), m_added_current(0)
 {
 }
 

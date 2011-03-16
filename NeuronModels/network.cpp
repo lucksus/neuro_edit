@@ -5,12 +5,12 @@
 #include <algorithm>
 #include <assert.h>
 #include "dendriticnode.h"
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
+//#include <boost/archive/text_oarchive.hpp>
+//#include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
+//#include <boost/archive/binary_iarchive.hpp>
+//#include <boost/archive/binary_oarchive.hpp>
 #include <sstream>
 #include "serializationhelper.h"
 #include <exception>
@@ -27,7 +27,7 @@ void register_classes(Archive& ar){
 
 void Network::serialize(std::ostream& stream){
     SerializationHelper::instance().set_serialize_all(true);
-    boost::archive::binary_oarchive archive(stream);
+    boost::archive::xml_oarchive archive(stream);
 
     //archive.register_type<SimulationObject>();
     //archive.register_type<SpatialObject>();
@@ -50,7 +50,7 @@ void Network::serialize(std::ostream& stream){
 }
 
 void Network::deserialize(std::istream& stream){
-    boost::archive::binary_iarchive archive(stream);
+    boost::archive::xml_iarchive archive(stream);
 
     //archive.register_type<SimulationObject>();
     //archive.register_type<SpatialObject>();

@@ -1,7 +1,7 @@
 #include "spikeemitter.h"
 
 SpikeEmitter::SpikeEmitter(Neuron* neuron)
-    : SpatialObject(neuron)
+    : SpatialObject(neuron), m_spiking(false)
 {
 }
 
