@@ -40,6 +40,7 @@ void Axon::update(double milli_seconds){
 
     //add aps to list, if source is spiking
     if(m_emitter->is_spiking()){
+        update_runtime();
         m_action_potentials.push_back(m_runtime);
     }
 

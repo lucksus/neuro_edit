@@ -46,6 +46,7 @@ private:
         ar & boost::serialization::make_nvp("Receiver", m_receiver);
         ar & boost::serialization::make_nvp("Speed", m_speed);
         ar & boost::serialization::make_nvp("ActionPotentials", m_action_potentials);
+        update_runtime();
     }
 };
 
