@@ -258,6 +258,7 @@ void GLScene::finish_moving(){
     m_moving = false;
     m_insert_moving = false;
     m_moving_objects.clear();
+    emit user_interaction();
     updateGL();
 }
 
