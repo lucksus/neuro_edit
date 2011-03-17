@@ -2,8 +2,8 @@
 #include "neuron.h"
 #include <assert.h>
 
-CurrentInducer::CurrentInducer(Neuron* n) :
-        SimulationObject(n), m_target(n), m_active(false)
+CurrentInducer::CurrentInducer(DendriticNode* n) :
+        SimulationObject(n->neuron()), m_target(n), m_active(false)
 {
 }
 
@@ -21,6 +21,5 @@ void CurrentInducer::set_active(bool active){
 
 void CurrentInducer::update(double){
     if(m_active)
-        //m_target->add_synaptic_input(m_current);
-        assert(false);
+        m_target->add_current(m_current);
 }

@@ -15,19 +15,19 @@ NeuronManipulatorWidget::~NeuronManipulatorWidget()
     delete ui;
 }
 
-void NeuronManipulatorWidget::set_neurons(std::set<SimulationObject*> objects){
-    m_neurons.clear();
+void NeuronManipulatorWidget::set_dendritic_nodes(std::set<SimulationObject*> objects){
+    m_dendritic_nodes.clear();
     BOOST_FOREACH(SimulationObject* o, objects){
-        Neuron* n = dynamic_cast<Neuron*>(o);
-        if(n) m_neurons.insert(n);
+        DendriticNode* n = dynamic_cast<DendriticNode*>(o);
+        if(n) m_dendritic_nodes.insert(n);
     }
 
-    //create_current_inducers();
+    create_current_inducers();
 }
 
 void NeuronManipulatorWidget::create_current_inducers(){
     delete_current_inducers();
-    BOOST_FOREACH(Neuron* n, m_neurons){
+    BOOST_FOREACH(DendriticNode* n, m_dendritic_nodes){
             CurrentInducer* ci = new CurrentInducer(n);
             m_current_inducers.insert(ci);
             Application::instance().simulation()->network()->add_object(ci);

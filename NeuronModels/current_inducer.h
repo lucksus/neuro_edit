@@ -2,11 +2,11 @@
 #define CURRENT_INDUCER_H
 #include "simulationobject.h"
 
-class Neuron;
+class DendriticNode;
 class CurrentInducer : public SimulationObject
 {
 public:
-    CurrentInducer(Neuron*);
+    CurrentInducer(DendriticNode*);
 
     virtual SimulationObject* clone();
     void set_current(double current);
@@ -15,7 +15,7 @@ public:
     virtual void update(double milliseconds);
 
 private:
-    Neuron* m_target;
+    DendriticNode* m_target;
     double m_current;
     bool m_active;
 };

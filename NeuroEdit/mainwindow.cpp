@@ -87,7 +87,7 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     connect(m_sim, SIGNAL(simulation_stopped()), &m_neuron_properties, SLOT(simulation_stopped()));
 
     connect(&m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_neuron_properties, SLOT(show_properties_for_objects(std::set<SimulationObject*>)));
-    connect(&m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_neuron_manipulator_widget, SLOT(set_neurons(std::set<SimulationObject*>)));
+    connect(&m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_neuron_manipulator_widget, SLOT(set_dendritic_nodes(std::set<SimulationObject*>)));
     connect(&m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_property_browser, SLOT(objects_selected(std::set<SimulationObject*>)));
     connect(&m_glscene, SIGNAL(neuron_selected(Neuron*)), &m_neuron_membrane_potential_widget, SLOT(set_neuron(Neuron*)));
     connect(&m_glscene, SIGNAL(neuron_selected(Neuron*)), &m_izhikevich_system_plot_widget, SLOT(set_neuron(Neuron*)));

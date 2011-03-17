@@ -145,9 +145,9 @@ void NeuronPropertiesWidget::create_current_inducers(){
     BOOST_FOREACH(SimulationObject* o, m_objects){
         Neuron* n = dynamic_cast<Neuron*>(o);
         if(n){
-            CurrentInducer* ci = new CurrentInducer(n);
-            m_current_inducers.insert(ci);
-            m_network->add_object(ci);
+            //CurrentInducer* ci = new CurrentInducer(n);
+            //m_current_inducers.insert(ci);
+            //m_network->add_object(ci);
         }
     }
 }

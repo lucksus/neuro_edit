@@ -4,12 +4,12 @@
 #include <QWidget>
 #include <set>
 #include "current_inducer.h"
-#include "neuron.h"
 
 namespace Ui {
     class NeuronManipulatorWidget;
 }
 
+class DendriticNode;
 class NeuronManipulatorWidget : public QWidget
 {
     Q_OBJECT
@@ -19,7 +19,7 @@ public:
     ~NeuronManipulatorWidget();
 
 public slots:
-    void set_neurons(std::set<SimulationObject*>);
+    void set_dendritic_nodes(std::set<SimulationObject*>);
 
 private slots:
     void on_apply_potential_button_pressed();
@@ -27,7 +27,7 @@ private slots:
 
 private:
     Ui::NeuronManipulatorWidget *ui;
-    std::set<Neuron*> m_neurons;
+    std::set<DendriticNode*> m_dendritic_nodes;
     std::set<CurrentInducer*> m_current_inducers;
 
     void create_current_inducers();
