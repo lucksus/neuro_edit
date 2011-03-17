@@ -10,6 +10,7 @@
 #include "neuron_membrane_plot_widget.h"
 #include "izhikevich_systemstate_plotwidget.h"
 #include "neuron_manipulator_widget.h"
+#include "propertybrowser.h"
 
 namespace Ui {
     class MainWindow;
@@ -66,6 +67,7 @@ private:
     IzhikevichSystemStatePlotWidget m_izhikevich_system_plot_widget;
     Simulation* m_sim;
     SimulationSettingsWidget m_sim_settings_widget;
+    PropertyBrowser m_property_browser;
 
     std::string m_clipboard;
     std::set<SimulationObject*> selected_objects_cloned_and_self_centered();

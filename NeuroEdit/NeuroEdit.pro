@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     drawabledendritenode.cpp \
     drawabledendriteconnection.cpp \
     glhelpfunctions.cpp \
-    drawablesynapse.cpp
+    drawablesynapse.cpp \
+    propertybrowser.cpp
 
 HEADERS  += mainwindow.h \
     glscene.h \
@@ -54,7 +55,8 @@ HEADERS  += mainwindow.h \
     drawabledendritenode.h \
     drawabledendriteconnection.h \
     glhelpfunctions.h \
-    drawablesynapse.h
+    drawablesynapse.h \
+    propertybrowser.h
 
 FORMS    += mainwindow.ui \
     neuron_properties_widget.ui \

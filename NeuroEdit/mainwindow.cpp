@@ -21,7 +21,8 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     m_glscene(this),
     m_neuron_properties(this),
     m_izhikevich_system_plot_widget(this),
-    m_sim(sim)
+    m_sim(sim),
+    m_property_browser(this)
 {
     ui->setupUi(this);
     m_network = m_sim->network();
@@ -36,6 +37,12 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     //dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     //dock->setWidget(&m_neuron_potential_plot);
     //addDockWidget(Qt::RightDockWidgetArea,dock);
+
+    dock = new QDockWidget(tr("Property Browser"), this);
+    dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    dock->setWidget(&m_property_browser);
+    addDockWidget(Qt::RightDockWidgetArea,dock);
+    ui->menuWindows->addAction(dock->toggleViewAction());
 
     dock = new QDockWidget(tr("Neuron membrane potential"), this);
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
