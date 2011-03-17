@@ -44,8 +44,8 @@ double Neuron::membrane_potential(){
 
 
 Properties Neuron::properties(){
-    Properties properties = SpatialObject::properties();
-    properties.merge(m_model->properties());
+    Properties properties = m_model->properties();
+    properties.merge(SpatialObject::properties());
     return properties;
 }
 
