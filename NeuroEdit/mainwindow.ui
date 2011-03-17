@@ -43,8 +43,6 @@
     <addaction name="actionCut"/>
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
-    <addaction name="separator"/>
-    <addaction name="actionConnect"/>
    </widget>
    <widget class="QMenu" name="menuWindows">
     <property name="title">
@@ -56,6 +54,10 @@
      <string>Insert</string>
     </property>
     <addaction name="actionSingle_Neuron"/>
+    <addaction name="actionConnect"/>
+    <addaction name="actionAxon_Node"/>
+    <addaction name="actionSynapse"/>
+    <addaction name="actionDendrite_Node"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -216,6 +218,9 @@
    </property>
   </action>
   <action name="actionConnect">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/Resources/connect.png</normaloff>:/icons/Resources/connect.png</iconset>
