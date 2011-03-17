@@ -15,6 +15,7 @@ public:
     boost::any value(std::string group, std::string property) const;
 
     void merge(const Properties&);
+    void intersect(const Properties&);
 
 private:
     std::string m_current_group;

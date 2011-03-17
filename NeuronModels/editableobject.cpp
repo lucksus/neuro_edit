@@ -40,6 +40,21 @@ void Properties::merge(const Properties& p){
     }
 }
 
+void Properties::intersect(const Properties& p){
+    std::map<std::string, std::map<std::string, boost::any> > temp;
+    BOOST_FOREACH(std::string group, p.groups()){
+        if(! groups().count(group)) continue;
+        BOOST_FOREACH(std::string name, p.properties(group)){
+                if(! properties(group).count(name)) continue;
+                temp[group][name] = value(group,name);
+        }
+    }
+    m_properties_in_groups = temp;
+}
+
+
+
+
 
 Properties EditableObject::properties(){
     return Properties();
