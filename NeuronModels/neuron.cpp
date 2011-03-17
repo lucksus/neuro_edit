@@ -43,12 +43,15 @@ double Neuron::membrane_potential(){
 }
 
 
-std::map<std::string, boost::any> Neuron::properties(){
-    return m_model->properties();
+Properties Neuron::properties(){
+    Properties properties = SpatialObject::properties();
+    properties.merge(m_model->properties());
+    return properties;
 }
 
-void Neuron::set_property(std::string name, boost::any value){
-    m_model->set_property(name, value);
+void Neuron::set_property(std::string group, std::string name, boost::any value){
+    SpatialObject::set_property(group,name,value);
+    m_model->set_property(group, name, value);
 }
 
 std::set<SimulationObject*> Neuron::children(){

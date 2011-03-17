@@ -18,8 +18,8 @@ public:
     Point position() const;
     void set_position(const Point& p);
 
-    virtual std::map<std::string, boost::any> properties();
-    virtual void set_property(std::string, boost::any);
+    virtual Properties properties();
+    virtual void set_property(std::string group, std::string name, boost::any value);
 
     virtual bool is_user_movable();
     void set_user_movable(bool user_movable);

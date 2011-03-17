@@ -17,8 +17,8 @@ public:
 
     virtual void update(double milli_seconds);
 
-    virtual std::map<std::string, boost::any> properties();
-    virtual void set_property(std::string, boost::any);
+    virtual Properties properties();
+    virtual void set_property(std::string group, std::string name, boost::any value);
 
 private:
     DendriticNode* m_postsynaptic_neuron;

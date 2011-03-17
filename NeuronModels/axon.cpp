@@ -65,12 +65,15 @@ SpikeReceiver* Axon::receiver(){
 }
 
 
-std::map<std::string, boost::any> Axon::properties(){
-    std::map<std::string, boost::any> result;
-    result["speed"] = m_speed;
-    return result;
+Properties Axon::properties(){
+    Properties properties = EditableObject::properties();
+    properties.set_group("Axon");
+    properties.add("speed", m_speed);
+    return properties;
 }
 
-void Axon::set_property(std::string name, boost::any value){
+void Axon::set_property(std::string group, std::string name, boost::any value){
+    EditableObject::set_property(group, name, value);
+    if("Axon" != group) return;
     if("speed" == name) m_speed = boost::any_cast<double>(value);
 }

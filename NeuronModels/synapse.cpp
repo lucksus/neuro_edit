@@ -16,12 +16,13 @@ void Synapse::update(double milli_seconds){
 
 }
 
-std::map<std::string, boost::any> Synapse::properties(){
-    std::map<std::string, boost::any> result;
-    result["weight"] = m_weight;
-    return result;
+Properties Synapse::properties(){
+    Properties properties = SpikeReceiver::properties();
+    properties.set_group("Synapse");
+    properties.add("weight", m_weight);
+    return properties;
 }
 
-void Synapse::set_property(std::string name, boost::any value){
-    if("weight" == name) m_weight = boost::any_cast<double>(value);
+void Synapse::set_property(std::string group, std::string name, boost::any value){
+    if("weight" == name && "Synapse" == group) m_weight = boost::any_cast<double>(value);
 }

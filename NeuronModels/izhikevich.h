@@ -30,8 +30,8 @@ public:
     double u();
 
 
-    virtual std::map<std::string, boost::any> properties();
-    virtual void set_property(std::string, boost::any);
+    virtual Properties properties();
+    virtual void set_property(std::string group, std::string name, boost::any value);
 
 private:
     double m_u,m_v;

@@ -25,8 +25,8 @@ public:
     SpikeEmitter* emitter();
     SpikeReceiver* receiver();
 
-    virtual std::map<std::string, boost::any> properties();
-    virtual void set_property(std::string, boost::any);
+    virtual Properties properties();
+    virtual void set_property(std::string group, std::string name, boost::any value);
 
 private:
     SpikeEmitter* m_emitter;

@@ -22,18 +22,15 @@ void SpatialObject::set_position(const Point& p){
 }
 
 
-std::map<std::string, boost::any> SpatialObject::properties(){
-    std::map<std::string, boost::any> result;
-    result["position x"] = m_position.x;
-    result["position y"] = m_position.y;
-    result["position z"] = m_position.z;
-    return result;
+Properties SpatialObject::properties(){
+    Properties properties = EditableObject::properties();
+    properties.add("Position", m_position);
+    return properties;
 }
 
-void SpatialObject::set_property(std::string name, boost::any value){
-    if("position x" == name) m_position.x = boost::any_cast<double>(value);
-    if("position y" == name) m_position.y = boost::any_cast<double>(value);
-    if("position z" == name) m_position.z = boost::any_cast<double>(value);
+void SpatialObject::set_property(std::string group, std::string name, boost::any value){
+    EditableObject::set_property(group,name,value);
+    if("Position" == name) m_position = boost::any_cast<Point>(value);
 }
 
 void SpatialObject::moved(Point){
