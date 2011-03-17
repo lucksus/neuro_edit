@@ -24,13 +24,23 @@ void SpatialObject::set_position(const Point& p){
 
 Properties SpatialObject::properties(){
     Properties properties = EditableObject::properties();
-    properties.add("Position", m_position);
+    properties.set_group("Position");
+    properties.add("x", m_position.x);
+    properties.add("y", m_position.y);
+    properties.add("z", m_position.z);
     return properties;
 }
 
 void SpatialObject::set_property(std::string group, std::string name, boost::any value){
     EditableObject::set_property(group,name,value);
-    if("Position" == name) m_position = boost::any_cast<Point>(value);
+
+    if(!m_is_user_movable) return;
+    if("Position" != group) return;
+    if("x" == name) m_position.x = boost::any_cast<double>(value);
+    if("y" == name) m_position.y = boost::any_cast<double>(value);
+    if("z" == name) m_position.z = boost::any_cast<double>(value);
+
+    set_position(m_position);
 }
 
 void SpatialObject::moved(Point){
