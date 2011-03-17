@@ -23,7 +23,11 @@ IzhikevichSystemStatePlotWidget::IzhikevichSystemStatePlotWidget(QWidget* parent
 }
 
 void IzhikevichSystemStatePlotWidget::set_neuron(Neuron* n){
-    Izhikevich* i = dynamic_cast<Izhikevich*>(n);
+    if(!n){
+        m_neuron=0;
+        return;
+    }
+    Izhikevich* i = dynamic_cast<Izhikevich*>(n->model());
     if(i != m_neuron) m_last_values.clear();
     m_neuron = i;
 }

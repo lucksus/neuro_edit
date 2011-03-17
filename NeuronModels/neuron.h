@@ -21,6 +21,7 @@ public:
     void update(double milli_seconds);
 
     void set_model(NeuronModel*);
+    NeuronModel* model();
     double membrane_potential();
 
     virtual Properties properties();

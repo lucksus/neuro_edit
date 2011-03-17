@@ -38,6 +38,10 @@ void Neuron::set_model(NeuronModel* model){
     m_model = model;
 }
 
+NeuronModel* Neuron::model(){
+    return m_model;
+}
+
 double Neuron::membrane_potential(){
     return m_model->membrane_potential();
 }
