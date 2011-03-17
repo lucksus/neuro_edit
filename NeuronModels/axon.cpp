@@ -5,9 +5,12 @@
 Axon::Axon(Neuron* neuron, SpikeEmitter* emitter, SpikeReceiver* receiver, double speed)
     : SimulationObject(neuron), m_emitter(emitter), m_receiver(receiver), m_speed(speed)
 {
-    m_runtime = emitter->position().distance(receiver->position()) / speed;
+    update_runtime();
 }
 
+void Axon::update_runtime(){
+    m_runtime = m_emitter->position().distance(m_receiver->position()) / m_speed;
+}
 
 double Axon::speed(){
     return m_speed;
@@ -74,6 +77,7 @@ Properties Axon::properties(){
 
 void Axon::set_property(std::string group, std::string name, boost::any value){
     EditableObject::set_property(group, name, value);
+    update_runtime();
     if("Axon" != group) return;
     if("speed" == name) m_speed = boost::any_cast<double>(value);
 }

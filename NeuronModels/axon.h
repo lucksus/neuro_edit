@@ -35,6 +35,8 @@ private:
     double m_runtime; //cached
     std::list<double> m_action_potentials;
 
+    void update_runtime();
+
     Axon() {}
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)
