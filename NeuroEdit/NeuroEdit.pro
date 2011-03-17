@@ -67,3 +67,5 @@ FORMS    += mainwindow.ui \
 RESOURCES += \
     icons.qrc
 ICON = Resources/logo.icns
+
+include(qtpropertybrowser/qtpropertybrowser.pri)
