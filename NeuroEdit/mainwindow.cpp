@@ -186,6 +186,7 @@ void MainWindow::on_actionLoad_triggered(bool){
     if(fileName.isEmpty()) return;
     Network* n = Network::load_from_file(fileName.toStdString());
     m_glscene.set_network(n);
+    m_sim->set_network(n);
     delete m_network;
     m_network = n;
 }
