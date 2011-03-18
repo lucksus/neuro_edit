@@ -24,6 +24,7 @@ public:
 
     void add_receiving_axon(Axon*);
     void remove_receiving_axon(Axon*);
+    std::set<Axon*> receiving_axons();
 
 private:
     std::set<Axon*> m_receivers;

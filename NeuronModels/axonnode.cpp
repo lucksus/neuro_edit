@@ -30,3 +30,7 @@ void AxonNode::add_receiving_axon(Axon* axon){
 void AxonNode::remove_receiving_axon(Axon* axon){
     m_receivers.erase(axon);
 }
+
+std::set<Axon*> AxonNode::receiving_axons(){
+    return m_receivers;
+}

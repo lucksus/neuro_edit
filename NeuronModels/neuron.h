@@ -41,6 +41,7 @@ private:
     AxonNode* m_axon_root;
 
     void walk_dendrites_tree(DendriticNode* root, std::set<SimulationObject*>& nodes);
+    void walk_axon_tree(AxonNode* root, std::set<SimulationObject*>& axon_objects);
 
 
     template<class Archive>

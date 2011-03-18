@@ -61,7 +61,7 @@ void Neuron::set_property(std::string group, std::string name, boost::any value)
 std::set<SimulationObject*> Neuron::children(){
     std::set<SimulationObject*> nodes;
     walk_dendrites_tree(m_dendrides_root, nodes);
-    nodes.insert(m_axon_root);
+    walk_axon_tree(m_axon_root, nodes);
     return nodes;
 }
 
@@ -72,6 +72,20 @@ void Neuron::walk_dendrites_tree(DendriticNode* root, std::set<SimulationObject*
         DendriticNode* n = dynamic_cast<DendriticNode*>(node);
         assert(n);
         walk_dendrites_tree(n, nodes);
+    }
+}
+
+void Neuron::walk_axon_tree(AxonNode* root, std::set<SimulationObject*>& axon_objects){
+    axon_objects.insert(root);
+    BOOST_FOREACH(Axon* axon, root->receiving_axons()){
+        axon_objects.insert(axon);
+        SpikeReceiver* receiver = axon->receiver();
+        AxonNode* node = dynamic_cast<AxonNode*>(receiver);
+        Synapse* synapse = dynamic_cast<Synapse*>(receiver);
+        if(synapse)
+            axon_objects.insert(synapse);
+        if(node)
+            walk_axon_tree(node, axon_objects);
     }
 }
 
