@@ -1,5 +1,5 @@
 #include "drawableaxonnode.h"
-#include "spikenode.h"
+#include "axonnode.h"
 #include <gl.h>
 #include <GLUT/glut.h>
 

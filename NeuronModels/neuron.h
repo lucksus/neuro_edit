@@ -3,7 +3,7 @@
 #include "spatialobject.h"
 #include "editableobject.h"
 #include "dendriticnode.h"
-#include "spikenode.h"
+#include "axonnode.h"
 #include <boost/serialization/access.hpp>
 #include <boost/type_traits/is_virtual_base_of.hpp>
 #include <boost/serialization/nvp.hpp>

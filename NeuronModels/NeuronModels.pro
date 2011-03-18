@@ -19,13 +19,13 @@ SOURCES += izhikevich.cpp \
     simulation.cpp \
     current_inducer.cpp \
     synapse.cpp \
-    spikenode.cpp \
     spikereceiver.cpp \
     spikeemitter.cpp \
     dendriticnode.cpp \
     neuronmodel.cpp \
     editableobject.cpp \
-    serializationhelper.cpp
+    serializationhelper.cpp \
+    axonnode.cpp
 
 HEADERS += izhikevich.h \
            network.h \
@@ -37,10 +37,10 @@ HEADERS += izhikevich.h \
     simulation.h \
     current_inducer.h \
     synapse.h \
-    spikenode.h \
     spikereceiver.h \
     spikeemitter.h \
     dendriticnode.h \
     neuronmodel.h \
     editableobject.h \
-    serializationhelper.h
+    serializationhelper.h \
+    axonnode.h

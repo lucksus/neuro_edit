@@ -5,7 +5,7 @@
 #include "neuron.h"
 #include "izhikevich.h"
 #include "axon.h"
-#include "spikenode.h"
+#include "axonnode.h"
 #include "synapse.h"
 #include "dendriticnode.h"
 #include "network.h"

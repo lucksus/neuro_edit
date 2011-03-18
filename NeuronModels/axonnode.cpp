@@ -1,4 +1,4 @@
-#include "spikenode.h"
+#include "axonnode.h"
 #include <boost/foreach.hpp>
 #include "axon.h"
 

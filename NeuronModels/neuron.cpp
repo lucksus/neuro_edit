@@ -2,7 +2,7 @@
 #include "dendriticnode.h"
 #include "neuronmodel.h"
 #include "axon.h"
-#include "spikenode.h"
+#include "axonnode.h"
 #include "izhikevich.h"
 #include <boost/foreach.hpp>
 #include <assert.h>

@@ -17,7 +17,7 @@
 #include <exception>
 #include "neuronmodel.h"
 #include "izhikevich.h"
-#include "spikenode.h"
+#include "axonnode.h"
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/foreach.hpp>
 #include "neuron.h"
