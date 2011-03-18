@@ -27,6 +27,7 @@ public:
 
     void add_incoming_synapse(Synapse*);
     void detach_incoming_synapse(Synapse*);
+    void add_child(DendriticNode*);
 
 protected:
     virtual void moved(Point new_position);

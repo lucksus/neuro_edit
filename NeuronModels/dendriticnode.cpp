@@ -5,6 +5,8 @@
 DendriticNode::DendriticNode(Neuron* neuron, DendriticNode* parent)
     : SpatialObject(neuron), m_parent(parent), m_added_current(0)
 {
+    if(parent)
+        parent->add_child(this);
 }
 
 
@@ -58,4 +60,8 @@ void DendriticNode::add_incoming_synapse(Synapse* synapse){
 
 void DendriticNode::detach_incoming_synapse(Synapse* synapse){
     m_incoming_synapses.erase(synapse);
+}
+
+void DendriticNode::add_child(DendriticNode* child){
+    m_children.insert(child);
 }
