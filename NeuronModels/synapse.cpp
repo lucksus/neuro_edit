@@ -26,3 +26,7 @@ Properties Synapse::properties(){
 void Synapse::set_property(std::string group, std::string name, boost::any value){
     if("weight" == name && "Synapse" == group) m_weight = boost::any_cast<double>(value);
 }
+
+Neuron* Synapse::postsynaptic_neuron(){
+    return m_postsynaptic_neuron->neuron();
+}

@@ -20,6 +20,8 @@ public:
     virtual Properties properties();
     virtual void set_property(std::string group, std::string name, boost::any value);
 
+    Neuron* postsynaptic_neuron();
+
 private:
     DendriticNode* m_postsynaptic_neuron;
     double m_weight;
