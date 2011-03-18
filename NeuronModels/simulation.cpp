@@ -2,6 +2,7 @@
 #include "network.h"
 #include <sys/time.h>
 #include <iostream>
+#include <QtCore/QMutexLocker>
 
 Simulation::Simulation():
     m_stop_request(false),
@@ -13,6 +14,10 @@ Simulation::Simulation():
 
 void Simulation::request_stop(){
     m_stop_request = true;
+}
+
+void Simulation::wait_till_finished(){
+    QMutexLocker locker(&m_mutex);
 }
 
 void Simulation::set_network(Network* network){
@@ -42,6 +47,7 @@ double Simulation::real_step(){
 
 void Simulation::run(){
     if(!m_network) return;
+    QMutexLocker locker(&m_mutex);
     m_time_ms = 0;
     emit simulation_started();
     while(!m_stop_request){

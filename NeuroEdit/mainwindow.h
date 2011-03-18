@@ -37,8 +37,10 @@ private slots:
      void on_actionStart_Simulation_triggered(bool);
      void on_actionPause_Simulation_triggered(bool);
 
+     void on_actionNew_triggered(bool);
      void on_actionSave_triggered(bool);
      void on_actionLoad_triggered(bool);
+     void on_actionClose_triggered(bool);
      void on_actionQuit_triggered(bool);
 
      void on_actionCut_triggered(bool);
@@ -56,11 +58,12 @@ private slots:
 
      void objects_selected(std::set<SimulationObject*>);
 
+     void network_changed(Network*);
+
 private:
     Ui::MainWindow *ui;
-    GLScene m_glscene;
+    GLScene* m_glscene;
     Network* m_network;
-    //NeuronPlotWidget m_neuron_potential_plot;
     NeuronPropertiesWidget m_neuron_properties;
     NeuronMembranePlotWidget m_neuron_membrane_potential_widget;
     NeuronManipulatorWidget m_neuron_manipulator_widget;
@@ -69,8 +72,12 @@ private:
     SimulationSettingsWidget m_sim_settings_widget;
     PropertyBrowser m_property_browser;
 
+    std::set<QDockWidget*> m_dock_widgets;
+
     std::string m_clipboard;
     std::set<SimulationObject*> selected_objects_cloned_and_self_centered();
+
+    void init_glscene();
 };
 
 #endif // MAINWINDOW_H

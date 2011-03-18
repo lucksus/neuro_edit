@@ -15,12 +15,19 @@ public:
     void destroy();
     void show_main_window();
 
+    void close_network();
+    void create_empty_network();
+    void load_network(std::string filename);
+    void save_network(std::string filename);
+
+    Network* network();
     Simulation* simulation();
 
     QWidget* main_window();
 
 signals:
     void refresh();
+    void new_network(Network*);
 
 private slots:
     void refresh_timeout();

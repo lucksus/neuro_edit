@@ -1,6 +1,7 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 #include <QtCore/QThread>
+#include <QtCore/QMutex>
 
 class Network;
 
@@ -10,6 +11,7 @@ Q_OBJECT
 public:
     Simulation();
     void request_stop();
+    void wait_till_finished();
 
     void set_network(Network*);
     Network* network();
@@ -36,6 +38,7 @@ private:
     double m_simulation_step;
     double m_real_step;
     double m_time_ms;
+    QMutex m_mutex;
 
 };
 
