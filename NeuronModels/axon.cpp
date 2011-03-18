@@ -6,6 +6,15 @@ Axon::Axon(Neuron* neuron, SpikeEmitter* emitter, SpikeReceiver* receiver, doubl
     : SimulationObject(neuron), m_emitter(emitter), m_receiver(receiver), m_speed(speed)
 {
     update_runtime();
+    AxonNode* node = dynamic_cast<AxonNode*>(emitter);
+    if(node)
+        node->add_receiving_axon(this);
+}
+
+Axon::~Axon(){
+    AxonNode* node = dynamic_cast<AxonNode*>(m_emitter);
+    if(node)
+        node->remove_receiving_axon(this);
 }
 
 void Axon::update_runtime(){

@@ -14,6 +14,7 @@ class Axon : public SimulationObject, public EditableObject
 friend class boost::serialization::access;
 public:
     Axon(Neuron* neuron, SpikeEmitter* emitter, SpikeReceiver* receiver, double speed=5);
+    virtual ~Axon();
 
     virtual void update(double milli_seconds);
 

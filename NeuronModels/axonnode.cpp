@@ -23,10 +23,10 @@ void AxonNode::update(double milli_seconds){
 //}
 
 
-void AxonNode::add_receiver(Axon* axon){
+void AxonNode::add_receiving_axon(Axon* axon){
     m_receivers.insert(axon);
 }
 
-void AxonNode::remove_receiver(Axon* axon){
+void AxonNode::remove_receiving_axon(Axon* axon){
     m_receivers.erase(axon);
 }

@@ -22,8 +22,8 @@ public:
     virtual void update(double milli_seconds);
     //virtual SimulationObject* clone();
 
-    void add_receiver(Axon*);
-    void remove_receiver(Axon*);
+    void add_receiving_axon(Axon*);
+    void remove_receiving_axon(Axon*);
 
 private:
     std::set<Axon*> m_receivers;
