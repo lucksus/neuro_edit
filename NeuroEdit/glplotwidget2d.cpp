@@ -55,6 +55,7 @@ void GLPlotWidget2d::resizeGL(int w, int h){
 
 void GLPlotWidget2d::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if(!isVisible()) return;
     setup_projection_matrix();
     paint_axis();
     paint_values();
