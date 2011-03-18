@@ -21,13 +21,11 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     ui(new Ui::MainWindow),
     m_glscene(0),
     m_network(0),
-    m_neuron_properties(this),
     m_izhikevich_system_plot_widget(this),
     m_sim(sim),
     m_property_browser(this)
 {
     ui->setupUi(this);
-    m_neuron_properties.set_network(m_network);
     m_sim_settings_widget.set_simulation(m_sim);
 
     QVBoxLayout* l = new QVBoxLayout;
@@ -64,14 +62,6 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     ui->menuWindows->addAction(dock->toggleViewAction());
     dock->hide();
 
-    dock = new QDockWidget(tr("Neuron properties"), this);
-    dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    dock->setWidget(&m_neuron_properties);
-    addDockWidget(Qt::LeftDockWidgetArea,dock);
-    m_dock_widgets.insert(dock);
-    ui->menuWindows->addAction(dock->toggleViewAction());
-    dock->hide();
-
     dock = new QDockWidget(tr("Neuron manipulator"), this);
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     dock->setWidget(&m_neuron_manipulator_widget);
@@ -95,8 +85,6 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     connect(m_sim, SIGNAL(simulation_stopped()), this, SLOT(simulation_stopped()));
     connect(m_sim, SIGNAL(simulation_started()), &m_sim_settings_widget, SLOT(simulation_started()));
     connect(m_sim, SIGNAL(simulation_stopped()), &m_sim_settings_widget, SLOT(simulation_stopped()));
-    connect(m_sim, SIGNAL(simulation_started()), &m_neuron_properties, SLOT(simulation_started()));
-    connect(m_sim, SIGNAL(simulation_stopped()), &m_neuron_properties, SLOT(simulation_stopped()));
 
     connect(&Application::instance(), SIGNAL(new_network(Network*)), this, SLOT(network_changed(Network*)));
 }
@@ -109,7 +97,6 @@ void MainWindow::init_glscene(){
     m_glscene->set_network(m_network);
     ui->center_frame->layout()->addWidget(m_glscene);
     m_glscene->setFocus();
-    connect(m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_neuron_properties, SLOT(show_properties_for_objects(std::set<SimulationObject*>)));
     connect(m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_neuron_manipulator_widget, SLOT(set_dendritic_nodes(std::set<SimulationObject*>)));
     connect(m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_property_browser, SLOT(objects_selected(std::set<SimulationObject*>)));
     connect(m_glscene, SIGNAL(neuron_selected(Neuron*)), &m_neuron_membrane_potential_widget, SLOT(set_neuron(Neuron*)));

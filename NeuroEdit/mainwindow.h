@@ -5,7 +5,6 @@
 #include <QTimer>
 #include "glscene.h"
 #include "simulation.h"
-#include "neuron_properties_widget.h"
 #include "simulation_settings_widget.h"
 #include "neuron_membrane_plot_widget.h"
 #include "izhikevich_systemstate_plotwidget.h"
@@ -64,7 +63,7 @@ private:
     Ui::MainWindow *ui;
     GLScene* m_glscene;
     Network* m_network;
-    NeuronPropertiesWidget m_neuron_properties;
+
     NeuronMembranePlotWidget m_neuron_membrane_potential_widget;
     NeuronManipulatorWidget m_neuron_manipulator_widget;
     IzhikevichSystemStatePlotWidget m_izhikevich_system_plot_widget;
