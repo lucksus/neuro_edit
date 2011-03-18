@@ -20,6 +20,8 @@ IzhikevichSystemStatePlotWidget::IzhikevichSystemStatePlotWidget(QWidget* parent
     add_x_line_at(-10,true);
     add_x_line_at(10,true);
     connect(&Application::instance(), SIGNAL(refresh()), this, SLOT(updateGL()));
+    setMinimumHeight(180);
+    setMinimumWidth(180);
 }
 
 void IzhikevichSystemStatePlotWidget::set_neuron(Neuron* n){

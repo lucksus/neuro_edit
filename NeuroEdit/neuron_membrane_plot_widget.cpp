@@ -14,6 +14,7 @@ NeuronMembranePlotWidget::NeuronMembranePlotWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     QLayout* layout = new QHBoxLayout();
+    layout->setContentsMargins(0,0,0,0);
     layout->addWidget(&m_plot);
     ui->frame->setLayout(layout);
     connect(ui->last_milliseconds, SIGNAL(valueChanged(double)), &m_plot, SLOT(set_time_intervall(double)));
