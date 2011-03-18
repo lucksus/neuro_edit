@@ -231,9 +231,23 @@ void GLScene::start_moving(const SpatialObject& o){
 }
 
 void GLScene::start_inserting(std::set<SimulationObject*> objects){
+    //this is to make sure that all child objects get moved together with toplevel objects:
+    std::set<SimulationObject*> children;
+    BOOST_FOREACH(SimulationObject* o, objects){
+        BOOST_FOREACH(SimulationObject* child, o->children()){
+            children.insert(child);
+        }
+    }
+    BOOST_FOREACH(SimulationObject* o, children){
+        objects.insert(o);
+    }
+
+
+
     m_moving_objects = objects;
     m_moving = m_insert_moving = true;
     m_moving_switch_plane_point = m_moving_start_point = m_moving_point = m_camera_config.center_position;
+
     BOOST_FOREACH(SimulationObject* o, objects){
         SpatialObject* spo = dynamic_cast<SpatialObject*>(o);
         if(!spo) continue;
