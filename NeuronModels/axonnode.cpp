@@ -16,6 +16,7 @@ void AxonNode::update(double milli_seconds){
     BOOST_FOREACH(Axon* receiver, m_receivers){
         receiver->update(milli_seconds);
     }
+    done();
 }
 
 //SimulationObject* AxonNode::clone(){

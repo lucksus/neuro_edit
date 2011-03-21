@@ -56,7 +56,11 @@ std::list<SimulationObject*> Network::objects(){
 
 void Network::simulate(double milli_seconds){
     BOOST_FOREACH(SimulationObject* o, m_objects){
-        o->update(milli_seconds);
+        o->reset_done();
+    }
+    BOOST_FOREACH(SimulationObject* o, m_objects){
+        if(!o->is_done())
+            o->update(milli_seconds);
     }
 }
 

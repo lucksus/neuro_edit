@@ -53,7 +53,9 @@ void Axon::update(double milli_seconds){
         m_action_potentials.push_back(m_runtime);
     }
 
-    m_receiver->update(milli_seconds);
+    if(!m_receiver->is_done())
+        m_receiver->update(milli_seconds);
+    done();
 }
 
 std::list<double> Axon::action_potentials_normalized(){

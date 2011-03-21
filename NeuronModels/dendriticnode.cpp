@@ -12,13 +12,15 @@ DendriticNode::DendriticNode(Neuron* neuron, DendriticNode* parent)
 
 void DendriticNode::update(double milli_seconds){
     BOOST_FOREACH(DendriticNode* child, m_children){
-        child->update(milli_seconds);
+        if(!child->is_done())
+            child->update(milli_seconds);
     }
 
     if(m_parent){
         m_parent->add_current(m_added_current);
         m_added_current = 0;
     }
+    done();
 }
 
 void DendriticNode::reset(){

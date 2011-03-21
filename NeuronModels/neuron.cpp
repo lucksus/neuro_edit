@@ -30,6 +30,7 @@ void Neuron::update(double milli_seconds){
     m_dendrides_root->reset();
     if(m_model->is_spiking()) m_axon_root->receive_spike();
     m_axon_root->update(milli_seconds);
+    done();
 }
 
 

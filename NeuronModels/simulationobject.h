@@ -18,11 +18,16 @@ public:
     virtual Neuron* neuron();
     //virtual SimulationObject* clone() = 0;
 
+    bool is_done();
+    void reset_done();
+
 protected:
     SimulationObject(){}
+    void done();
 
 private:
     Neuron* m_neuron;
+    bool m_done;
 
 
     template<class Archive>
