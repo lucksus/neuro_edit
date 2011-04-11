@@ -44,7 +44,7 @@ void Axon::update(double milli_seconds){
     }
 
     //remove arrived aps from list
-    while(m_action_potentials.front()<=0)
+    while((m_action_potentials.size() > 0) && (m_action_potentials.front()<=0))
         m_action_potentials.pop_front();
 
     //add aps to list, if source is spiking
