@@ -185,6 +185,7 @@ void MainWindow::closeEvent(QCloseEvent *event){
 
 void MainWindow::on_actionNew_triggered(bool){
     Application::instance().create_empty_network();
+    ui->actionSingle_Neuron->setEnabled(true);
 }
 
 void MainWindow::on_actionSave_triggered(bool){
@@ -199,10 +200,12 @@ void MainWindow::on_actionLoad_triggered(bool){
         tr("Load network"), "", tr("NeuroEdit files (*.ne)"));
     if(fileName.isEmpty()) return;
     Application::instance().load_network(fileName.toStdString());
+    ui->actionSingle_Neuron->setEnabled(true);
 }
 
 void MainWindow::on_actionClose_triggered(bool){
     Application::instance().close_network();
+    ui->actionSingle_Neuron->setEnabled(false);
 }
 
 void MainWindow::on_actionQuit_triggered(bool){

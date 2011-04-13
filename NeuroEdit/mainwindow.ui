@@ -118,6 +118,9 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionSingle_Neuron">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/Resources/add_neuron.png</normaloff>:/icons/Resources/add_neuron.png</iconset>
