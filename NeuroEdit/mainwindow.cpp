@@ -237,6 +237,13 @@ void MainWindow::on_actionPaste_triggered(bool){
     m_glscene->start_inserting(SerializationHelper::instance().deserialize_objects(stream));
 }
 
+void MainWindow::on_actionRemove_triggered(bool){
+    std::set<SimulationObject*> selected = m_glscene->selected_objects();
+    m_neuron_manipulator_widget.deactivate();
+    m_network->delete_objects(selected);
+    m_neuron_manipulator_widget.activate();
+}
+
 void MainWindow::on_actionConnect_triggered(bool){
     std::set<SimulationObject*> selected = m_glscene->selected_objects();
     assert(1 == selected.size());

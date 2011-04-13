@@ -18,6 +18,8 @@ public:
     void add_incoming_axon(Axon*);
     std::set<Axon*> incoming_axons();
 
+    virtual std::set<SimulationObject*> about_to_remove(SimulationObject *);
+
 protected:
     SpikeReceiver(){}
     bool spike_received();

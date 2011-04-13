@@ -1,4 +1,5 @@
 #include "spikereceiver.h"
+#include "axon.h"
 
 SpikeReceiver::SpikeReceiver(Neuron* neuron)
     : SpatialObject(neuron), m_spike_received(false)
@@ -24,4 +25,11 @@ void SpikeReceiver::add_incoming_axon(Axon* axon){
 
 std::set<Axon*> SpikeReceiver::incoming_axons(){
     return m_incoming_axons;
+}
+
+std::set<SimulationObject*> SpikeReceiver::about_to_remove(SimulationObject *object_to_be_deleted){
+    Axon* axon = dynamic_cast<Axon*>(object_to_be_deleted);
+    if(axon)
+        m_incoming_axons.erase(axon);
+    return SimulationObject::about_to_remove(object_to_be_deleted);
 }

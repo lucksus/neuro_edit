@@ -16,8 +16,6 @@ friend class boost::serialization::access;
 public:
     Neuron(Point position);
     //Neuron(const Neuron& n);
-    virtual ~Neuron() {};
-
     void update(double milli_seconds);
 
     void set_model(NeuronModel*);
@@ -28,6 +26,8 @@ public:
     virtual void set_property(std::string group, std::string name, boost::any value);
 
     virtual std::set<SimulationObject*> children();
+
+    std::set<SimulationObject*> about_to_remove(SimulationObject* object_to_be_deleted);
 
 protected:
     Neuron(){}

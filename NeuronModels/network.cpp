@@ -40,17 +40,59 @@ Network* Network::load_from_file(std::string filename){
 }
 
 void Network::add_object(SimulationObject* object){
-    m_objects.push_back(object);
+    m_objects.insert(object);
+    object->set_network(this);
     emit object_added(object);
 }
 
-void Network::delete_object(SimulationObject* object){
-    m_objects.remove(object);
-    delete object;
-    emit object_deleted(object);
+std::set<SimulationObject*> call_about_to_remove(std::set<SimulationObject*> objects, SimulationObject* object_to_be_deleted){
+    std::set<SimulationObject*> also_to_be_removed;
+    BOOST_FOREACH(SimulationObject* o, objects){
+        std::set<SimulationObject*> s = call_about_to_remove(o->children(), object_to_be_deleted);
+        BOOST_FOREACH(SimulationObject* oo, s){
+            also_to_be_removed.insert(oo);
+        }
+
+        s = o->about_to_remove(object_to_be_deleted);
+
+        BOOST_FOREACH(SimulationObject* oo, s){
+            also_to_be_removed.insert(oo);
+        }
+    }
+    return also_to_be_removed;
 }
 
-std::list<SimulationObject*> Network::objects(){
+void Network::delete_object(SimulationObject* object_to_be_deleted){
+
+    //Collect objects that can't live without object_to_be_deleted
+    //to delete them too..
+    std::set<SimulationObject*> also_to_be_removed, also_to_be_removed_old;
+    also_to_be_removed = call_about_to_remove(m_objects, object_to_be_deleted);
+    while(also_to_be_removed != also_to_be_removed_old){
+        also_to_be_removed_old = also_to_be_removed;
+        BOOST_FOREACH(SimulationObject* o, also_to_be_removed){
+            std::set<SimulationObject*> s = call_about_to_remove(m_objects,o);
+            BOOST_FOREACH(SimulationObject* oo, s){
+                also_to_be_removed.insert(oo);
+            }
+        }
+    }
+
+    also_to_be_removed.insert(object_to_be_deleted);
+    BOOST_FOREACH(SimulationObject* o, also_to_be_removed){
+        m_objects.erase(o);
+        delete o;
+        emit object_deleted(o);
+    }
+}
+
+void Network::delete_objects(std::set<SimulationObject*> objects){
+    BOOST_FOREACH(SimulationObject* object_to_delete, objects){
+        if(m_objects.count(object_to_delete)) delete_object(object_to_delete);
+    }
+}
+
+std::set<SimulationObject*> Network::objects(){
     return m_objects;
 }
 

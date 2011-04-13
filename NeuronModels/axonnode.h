@@ -28,6 +28,8 @@ public:
     void remove_receiving_axon(Axon*);
     std::set<Axon*> receiving_axons();
 
+    virtual std::set<SimulationObject*> about_to_remove(SimulationObject *);
+
 private:
     std::set<Axon*> m_receivers;
 

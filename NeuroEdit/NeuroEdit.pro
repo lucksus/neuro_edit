@@ -5,11 +5,12 @@
 #-------------------------------------------------
 
 QT       += core gui opengl
-
+CONFIG += debug
 TARGET = neuro_edit
 TEMPLATE = app
 INCLUDEPATH += ../NeuronModels
 LIBS += -L../NeuronModels -lneuron_models -lboost_serialization
+PRE_TARGETDEPS += ../NeuronModels/libneuron_models.a
 
 macx{
     LIBS += -framework GLUT

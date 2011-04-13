@@ -12,9 +12,11 @@ Axon::Axon(Neuron* neuron, SpikeEmitter* emitter, SpikeReceiver* receiver, doubl
 }
 
 Axon::~Axon(){
+    try{
     AxonNode* node = dynamic_cast<AxonNode*>(m_emitter);
     if(node)
         node->remove_receiving_axon(this);
+    }catch(...){}
 }
 
 void Axon::update_runtime(){
@@ -92,4 +94,16 @@ void Axon::set_property(std::string group, std::string name, boost::any value){
     update_runtime();
     if("Axon" != group) return;
     if("speed" == name) m_speed = boost::any_cast<double>(value);
+}
+
+
+std::set<SimulationObject*> Axon::about_to_remove(SimulationObject *object_to_be_deleted){
+    std::set<SimulationObject*> also_to_be_deleted = SimulationObject::about_to_remove(object_to_be_deleted);
+    if(m_receiver == object_to_be_deleted || m_emitter == object_to_be_deleted)
+        also_to_be_deleted.insert(this);
+    if(dynamic_cast<SpikeEmitter*>(object_to_be_deleted) == m_emitter)
+        m_emitter = 0;
+    if(dynamic_cast<SpikeReceiver*>(object_to_be_deleted) == m_receiver)
+        m_receiver = 0;
+    return also_to_be_deleted;
 }

@@ -45,6 +45,7 @@ private slots:
      void on_actionCut_triggered(bool);
      void on_actionCopy_triggered(bool);
      void on_actionPaste_triggered(bool);
+     void on_actionRemove_triggered(bool);
 
      void on_actionConnect_triggered(bool);
 

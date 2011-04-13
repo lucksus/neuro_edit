@@ -6,6 +6,7 @@
 #include "izhikevich.h"
 #include <boost/foreach.hpp>
 #include <assert.h>
+#include "network.h"
 
 Neuron::Neuron(Point position)
     : SpatialObject(this), m_model(0)
@@ -18,10 +19,6 @@ Neuron::Neuron(Point position)
     m_dendrides_root->set_user_movable(false);
 }
 
-//Neuron::Neuron(const Neuron& n) :
-//        EditableObject(n), SpatialObject(n), m_dendrides_root(this, 0)
-//{
-//}
 
 void Neuron::update(double milli_seconds){
     m_dendrides_root->update(milli_seconds);
@@ -95,4 +92,11 @@ void Neuron::moved(Point new_position){
     Point p(-8,0,0);
     m_dendrides_root->set_position(new_position + p);
     m_axon_root->set_position(new_position - p);
+}
+
+std::set<SimulationObject*> Neuron::about_to_remove(SimulationObject* object_to_be_deleted){
+    std::set<SimulationObject*> also_to_be_deleted = SimulationObject::about_to_remove(object_to_be_deleted);
+    if(object_to_be_deleted == m_dendrides_root || object_to_be_deleted == m_axon_root)
+        also_to_be_deleted.insert(this);
+    return also_to_be_deleted;
 }

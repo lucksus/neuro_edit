@@ -18,6 +18,8 @@ public:
     explicit NeuronManipulatorWidget(QWidget *parent = 0);
     ~NeuronManipulatorWidget();
 
+    void deactivate();
+    void activate();
 public slots:
     void set_dendritic_nodes(std::set<SimulationObject*>);
 
@@ -34,6 +36,8 @@ private:
     void delete_current_inducers();
     void activate_current_inducers();
     void deactivate_current_inducers();
+
+    bool m_deactivated;
 };
 
 #endif // NEURON_MANIPULATOR_WIDGET_H

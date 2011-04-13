@@ -35,3 +35,12 @@ void AxonNode::remove_receiving_axon(Axon* axon){
 std::set<Axon*> AxonNode::receiving_axons(){
     return m_receivers;
 }
+
+
+std::set<SimulationObject*> AxonNode::about_to_remove(SimulationObject *object_to_be_deleted){
+    Axon* axon = dynamic_cast<Axon*>(object_to_be_deleted);
+    if(axon){
+        m_receivers.erase(axon);
+    }
+    return SimulationObject::about_to_remove(object_to_be_deleted);
+}

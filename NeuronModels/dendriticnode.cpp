@@ -1,9 +1,10 @@
 #include "dendriticnode.h"
 #include <boost/foreach.hpp>
 #include "synapse.h"
+#include "network.h"
 
 DendriticNode::DendriticNode(Neuron* neuron, DendriticNode* parent)
-    : SpatialObject(neuron), m_parent(parent), m_added_current(0)
+    : SpatialObject(neuron), m_added_current(0), m_parent(parent)
 {
     if(parent)
         parent->add_child(this);
@@ -67,3 +68,27 @@ void DendriticNode::detach_incoming_synapse(Synapse* synapse){
 void DendriticNode::add_child(DendriticNode* child){
     m_children.insert(child);
 }
+
+std::set<SimulationObject*> DendriticNode::about_to_remove(SimulationObject *object_to_be_deleted){
+    DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(object_to_be_deleted);
+    Synapse* synapse = dynamic_cast<Synapse*>(object_to_be_deleted);
+    if(dendritic_node)
+        m_children.erase(dendritic_node);
+    if(synapse)
+        m_incoming_synapses.erase(synapse);
+
+    std::set<SimulationObject*> also_to_be_deleted = SimulationObject::about_to_remove(object_to_be_deleted);
+    if(this == object_to_be_deleted){
+        BOOST_FOREACH(DendriticNode* n, m_children){
+            also_to_be_deleted.insert(n);
+        }
+    }
+
+    return also_to_be_deleted;
+}
+
+
+
+
+
+

@@ -29,6 +29,8 @@ public:
     virtual Properties properties();
     virtual void set_property(std::string group, std::string name, boost::any value);
 
+    virtual std::set<SimulationObject*> about_to_remove(SimulationObject *);
+
 private:
     SpikeEmitter* m_emitter;
     SpikeReceiver* m_receiver;

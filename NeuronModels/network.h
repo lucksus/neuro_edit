@@ -24,7 +24,8 @@ public:
 
     void add_object(SimulationObject*);
     void delete_object(SimulationObject*);
-    std::list<SimulationObject*> objects();
+    void delete_objects(std::set<SimulationObject*>);
+    std::set<SimulationObject*> objects();
     void simulate(double milli_seconds);
 
     Axon* connect(SpikeEmitter*, SpikeReceiver*);
@@ -34,7 +35,7 @@ signals:
     void object_added(SimulationObject*);
     void object_deleted(SimulationObject*);
 private:
-    std::list<SimulationObject*> m_objects;
+    std::set<SimulationObject*> m_objects;
 
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)

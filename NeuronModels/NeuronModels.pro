@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       -= core gui
-
+CONFIG += debug
 TARGET = neuron_models
 TEMPLATE = lib
 CONFIG += staticlib

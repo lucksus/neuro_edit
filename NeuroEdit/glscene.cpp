@@ -846,9 +846,12 @@ void GLScene::deselect(){
     emit selection_changed(m_selected_objects);
 }
 
-void GLScene::object_deleted(SimulationObject* object){
-    m_selected_objects.erase(object);
+void GLScene::object_deleted(SimulationObject* object){    
     m_moving_objects.erase(object);
+    if(m_selected_objects.count(object)){
+        m_selected_objects.erase(object);
+        emit selection_changed(m_selected_objects);
+    }
 }
 
 void GLScene::camera_center_moving_update(){

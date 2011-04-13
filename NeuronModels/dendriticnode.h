@@ -29,6 +29,8 @@ public:
     void detach_incoming_synapse(Synapse*);
     void add_child(DendriticNode*);
 
+    virtual std::set<SimulationObject*> about_to_remove(SimulationObject *);
+
 protected:
     virtual void moved(Point new_position);
 
