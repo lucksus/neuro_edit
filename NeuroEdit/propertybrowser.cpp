@@ -80,7 +80,9 @@ void PropertyBrowser::populate_properties(Properties properties_to_show){
         if(group.length()) group_item = m_variantManager->addProperty(QtVariantPropertyManager::groupTypeId(), group.c_str());
         BOOST_FOREACH(std::string name, properties_to_show.properties(group)){
             boost::any value = properties.value(group, name);
-            QtVariantProperty* property = any_to_property(value, name);
+            std::string unit = properties.unit(group, name);
+            std::string description = properties.description(group, name);
+            QtVariantProperty* property = any_to_property(value, name, unit, description);
             if(!property) continue;
             if(group_item) group_item->addSubProperty(property);
             else addProperty(property);
@@ -101,11 +103,12 @@ QVariant PropertyBrowser::any_to_variant(boost::any value){
     return variant;
 }
 
-QtVariantProperty* PropertyBrowser::any_to_property(boost::any value, std::string name){
+QtVariantProperty* PropertyBrowser::any_to_property(boost::any value, std::string name, std::string unit, std::string description){
     QtVariantProperty* property = 0;
     try{
         double d = boost::any_cast<double>(value);
         property = m_variantManager->addProperty(QVariant::Double, name.c_str());
+        property->setToolTip(description.c_str());
         property->setValue(d);
     }catch(boost::bad_any_cast){
     }

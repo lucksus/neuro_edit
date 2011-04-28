@@ -9,12 +9,14 @@ class Properties{
 public:
     void add(std::string, boost::any);
     void set_group(std::string);
-    void description(std::string property, std::string description);
-    void unit(std::string property, std::string unit);
+    void set_description(std::string property, std::string set_description);
+    void set_unit(std::string property, std::string set_unit);
 
     std::set<std::string> groups() const;
     std::set<std::string> properties(std::string group) const;
     boost::any value(std::string group, std::string property) const;
+    std::string unit(std::string group, std::string property) const;
+    std::string description(std::string group, std::string property) const;
 
     void merge(const Properties&);
     void intersect(const Properties&);

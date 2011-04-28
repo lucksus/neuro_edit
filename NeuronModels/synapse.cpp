@@ -35,11 +35,11 @@ Properties Synapse::properties(){
     Properties properties = SpikeReceiver::properties();
     properties.set_group("Synapse");
     properties.add("weight", m_weight);
-    properties.description("weight", "Maximum current induced in postsynaptic neuron by one potential.");
-    properties.unit("weight", "mV/ms");
+    properties.set_description("weight", "Maximum current induced in postsynaptic neuron by one potential.");
+    properties.set_unit("weight", "mV/ms");
     properties.add("time constant", m_time_constant);
-    properties.description("time constant", "Part of potential that is substracted from potential every millisecond.");
-    properties.unit("time constant", "%");
+    properties.set_description("time constant", "Part of potential that is substracted from potential every millisecond.");
+    properties.set_unit("time constant", "%");
     return properties;
 }
 

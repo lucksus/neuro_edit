@@ -28,7 +28,7 @@ private:
 
     void populate_properties(Properties properties_to_show);
     QVariant any_to_variant(boost::any value);
-    QtVariantProperty* any_to_property(boost::any value, std::string name);
+    QtVariantProperty* any_to_property(boost::any value, std::string name, std::string unit, std::string description);
     boost::any variant_to_any(const QVariant& value, boost::any any_reference);
 
 };

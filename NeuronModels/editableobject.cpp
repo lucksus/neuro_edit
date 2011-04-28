@@ -10,11 +10,11 @@ void Properties::set_group(std::string group){
     m_current_group = group;
 }
 
-void Properties::description(std::string property, std::string description){
+void Properties::set_description(std::string property, std::string description){
     m_descriptions[m_current_group][property] = description;
 }
 
-void Properties::unit(std::string property, std::string unit){
+void Properties::set_unit(std::string property, std::string unit){
     m_units[m_current_group][property] = unit;
 }
 
@@ -39,6 +39,18 @@ std::set<std::string> Properties::properties(std::string group) const{
 
 boost::any Properties::value(std::string group, std::string property) const{
     return m_properties_in_groups.find(group)->second.find(property)->second;
+}
+
+std::string Properties::unit(std::string group, std::string property) const{
+    if(m_units.count(group) == 0) return std::string();
+    if(m_units.find(group)->second.count(property) == 0) return std::string();
+    return m_units.find(group)->second.find(property)->second;
+}
+
+std::string Properties::description(std::string group, std::string property) const{
+    if(m_descriptions.count(group) == 0) return std::string();
+    if(m_descriptions.find(group)->second.count(property) == 0) return std::string();
+    return m_descriptions.find(group)->second.find(property)->second;
 }
 
 void Properties::merge(const Properties& p){
