@@ -25,6 +25,7 @@ public:
 private:
     DendriticNode* m_postsynaptic_neuron;
     double m_weight;
+    double m_time_constant;
     std::list<double> m_active_potentials;
 
     Synapse() {}
@@ -36,6 +37,7 @@ private:
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpikeReceiver);
         ar & boost::serialization::make_nvp("PostsynapticDendriticNode", m_postsynaptic_neuron);
         ar & boost::serialization::make_nvp("Weight", m_weight);
+        ar & boost::serialization::make_nvp("Time constant", m_time_constant);
         ar & boost::serialization::make_nvp("ActivePotentials", m_active_potentials);
     }
 };
