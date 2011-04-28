@@ -29,6 +29,7 @@ double Axon::speed(){
 
 void Axon::set_speed(double speed){
     m_speed = speed;
+    update_runtime();
 }
 
 bool leq_zero(double d){
@@ -36,6 +37,14 @@ bool leq_zero(double d){
 }
 
 void Axon::update(double milli_seconds){
+
+    //add aps to list, if source is spiking
+    if(m_emitter->is_spiking()){
+        update_runtime();
+        m_action_potentials.push_back(m_runtime);
+    }
+
+    if(is_done()) return;
     //propagating action potentials
     BOOST_FOREACH(double& d, m_action_potentials){
         d -= milli_seconds;
@@ -49,15 +58,8 @@ void Axon::update(double milli_seconds){
     while((m_action_potentials.size() > 0) && (m_action_potentials.front()<=0))
         m_action_potentials.pop_front();
 
-    //add aps to list, if source is spiking
-    if(m_emitter->is_spiking()){
-        update_runtime();
-        m_action_potentials.push_back(m_runtime);
-    }
-
-    if(!m_receiver->is_done())
-        m_receiver->update(milli_seconds);
     done();
+    m_receiver->update(milli_seconds);
 }
 
 std::list<double> Axon::action_potentials_normalized(){
@@ -94,6 +96,7 @@ void Axon::set_property(std::string group, std::string name, boost::any value){
     update_runtime();
     if("Axon" != group) return;
     if("speed" == name) m_speed = boost::any_cast<double>(value);
+    update_runtime();
 }
 
 

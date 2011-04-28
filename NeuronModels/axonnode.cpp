@@ -9,14 +9,17 @@ AxonNode::AxonNode(Neuron* neuron)
 }
 
 void AxonNode::update(double milli_seconds){
+    if(is_done()) return;
     reset_spike_emitter();
     if(spike_received()) emit_spike();
     reset_received_spikes();
 
+    done();
+
     BOOST_FOREACH(Axon* receiver, m_receivers){
         receiver->update(milli_seconds);
     }
-    done();
+
 }
 
 //SimulationObject* AxonNode::clone(){

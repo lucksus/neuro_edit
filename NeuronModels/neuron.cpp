@@ -21,6 +21,7 @@ Neuron::Neuron(Point position)
 
 
 void Neuron::update(double milli_seconds){
+    if(is_done()) return;
     m_dendrides_root->update(milli_seconds);
     m_model->set_dendritic_current(m_dendrides_root->added_current());
     m_model->update(milli_seconds);
