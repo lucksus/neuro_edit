@@ -10,6 +10,14 @@ void Properties::set_group(std::string group){
     m_current_group = group;
 }
 
+void Properties::description(std::string property, std::string description){
+    m_descriptions[m_current_group][property] = description;
+}
+
+void Properties::unit(std::string property, std::string unit){
+    m_units[m_current_group][property] = unit;
+}
+
 std::set<std::string> Properties::groups() const{
     std::set<std::string> result;
     std::pair<std::string, std::map<std::string,boost::any> > it;

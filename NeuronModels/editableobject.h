@@ -9,6 +9,8 @@ class Properties{
 public:
     void add(std::string, boost::any);
     void set_group(std::string);
+    void description(std::string property, std::string description);
+    void unit(std::string property, std::string unit);
 
     std::set<std::string> groups() const;
     std::set<std::string> properties(std::string group) const;
@@ -20,6 +22,8 @@ public:
 private:
     std::string m_current_group;
     std::map<std::string, std::map<std::string, boost::any> > m_properties_in_groups;
+    std::map<std::string, std::map<std::string, std::string> > m_descriptions;
+    std::map<std::string, std::map<std::string, std::string> > m_units;
 };
 
 class EditableObject
