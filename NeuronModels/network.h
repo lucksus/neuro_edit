@@ -10,8 +10,7 @@
 
 class Axon;
 class Synapse;
-class SpikeEmitter;
-class SpikeReceiver;
+class SpikingObject;
 class DendriticNode;
 class Neuron;
 class Network : public QObject
@@ -26,10 +25,12 @@ public:
     void delete_object(SimulationObject*);
     void delete_objects(std::set<SimulationObject*>);
     std::set<SimulationObject*> objects();
-    void simulate(double milli_seconds);
 
-    Axon* connect(SpikeEmitter*, SpikeReceiver*);
-    std::pair<Axon*, Synapse*> connect(SpikeEmitter*, DendriticNode*);
+
+    Axon* connect(SpikingObject*, SpikingObject*);
+    std::pair<Axon*, Synapse*> connect(SpikingObject*, DendriticNode*);
+
+    void simulate(double milli_seconds);
 
 signals:
     void object_added(SimulationObject*);

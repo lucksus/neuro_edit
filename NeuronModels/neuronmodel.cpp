@@ -1,7 +1,7 @@
 #include "neuronmodel.h"
 
 NeuronModel::NeuronModel(Neuron* neuron)
-    : SpatialObject(neuron), SpikeEmitter(neuron)
+    : SpikingObject(neuron)
 {
 }
 

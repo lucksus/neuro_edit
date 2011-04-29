@@ -2,7 +2,7 @@
 #include "dendriticnode.h"
 
 Synapse::Synapse(Neuron* neuron, DendriticNode* target)
-    : SpatialObject(neuron), SpikeReceiver(neuron), m_postsynaptic_neuron(target), m_weight(30), m_time_constant(50)
+    : SpikingObject(neuron), m_postsynaptic_neuron(target), m_weight(30), m_time_constant(50)
 {
     set_position(target->position());
     set_user_movable(false);
@@ -32,7 +32,7 @@ void Synapse::update(double milli_seconds){
 }
 
 Properties Synapse::properties(){
-    Properties properties = SpikeReceiver::properties();
+    Properties properties = SpikingObject::properties();
     properties.set_group("Synapse");
     properties.add("weight", m_weight);
     properties.set_description("weight", "Maximum current induced in postsynaptic neuron by one potential.");

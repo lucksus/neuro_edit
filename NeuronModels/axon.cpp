@@ -2,7 +2,7 @@
 #include <boost/foreach.hpp>
 #include "neuron.h"
 
-Axon::Axon(Neuron* neuron, SpikeEmitter* emitter, SpikeReceiver* receiver, double speed)
+Axon::Axon(Neuron* neuron, SpikingObject* emitter, SpikingObject* receiver, double speed)
     : SimulationObject(neuron), m_emitter(emitter), m_receiver(receiver), m_speed(speed)
 {
     update_runtime();
@@ -71,15 +71,15 @@ std::list<double> Axon::action_potentials_normalized(){
 }
 
 
-void Axon::set_emitter(SpikeEmitter* emitter){
+void Axon::set_emitter(SpikingObject* emitter){
     m_emitter = emitter;
 }
 
-SpikeEmitter* Axon::emitter(){
+SpikingObject* Axon::emitter(){
     return m_emitter;
 }
 
-SpikeReceiver* Axon::receiver(){
+SpikingObject* Axon::receiver(){
     return m_receiver;
 }
 
@@ -104,9 +104,9 @@ std::set<SimulationObject*> Axon::about_to_remove(SimulationObject *object_to_be
     std::set<SimulationObject*> also_to_be_deleted = SimulationObject::about_to_remove(object_to_be_deleted);
     if(m_receiver == object_to_be_deleted || m_emitter == object_to_be_deleted)
         also_to_be_deleted.insert(this);
-    if(dynamic_cast<SpikeEmitter*>(object_to_be_deleted) == m_emitter)
+    if(dynamic_cast<SpikingObject*>(object_to_be_deleted) == m_emitter)
         m_emitter = 0;
-    if(dynamic_cast<SpikeReceiver*>(object_to_be_deleted) == m_receiver)
+    if(dynamic_cast<SpikingObject*>(object_to_be_deleted) == m_receiver)
         m_receiver = 0;
     return also_to_be_deleted;
 }

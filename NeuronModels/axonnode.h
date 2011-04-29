@@ -1,7 +1,6 @@
 #ifndef SPIKENODE_H
 #define SPIKENODE_H
-#include "spikeemitter.h"
-#include "spikereceiver.h"
+#include "spikingobject.h"
 #include "spatialobject.h"
 #include <set>
 #include <boost/foreach.hpp>
@@ -14,7 +13,7 @@
 #include "serializationhelper.h"
 #include "synapse.h"
 
-class AxonNode : public SpikeEmitter, public SpikeReceiver
+class AxonNode : public SpikingObject
 {
 friend class boost::serialization::access;
 public:
@@ -35,8 +34,7 @@ private:
 
     template<class Archive>
     void serialize(Archive & ar, const unsigned int){
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpikeEmitter);
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpikeReceiver);
+        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpikingObject);
 
         try{
             //this cast fails and throws std::bad_cast if ar is an iarchive.
@@ -48,7 +46,7 @@ private:
             //----------
             std::set<Axon*> axons;
             BOOST_FOREACH(Axon* axon, m_receivers){
-                SpikeReceiver* receiver = axon->receiver();
+                SpikingObject* receiver = axon->receiver();
                 Synapse* synapse = dynamic_cast<Synapse*>(receiver);
                 if(synapse)
                     if(!SerializationHelper::instance().is_to_be_serialized(synapse->postsynaptic_neuron()))
@@ -95,9 +93,7 @@ private:
 
 namespace boost{
 template<>
-struct is_virtual_base_of<SpikeEmitter, AxonNode>: public mpl::true_ {};
-template<>
-struct is_virtual_base_of<SpikeReceiver, AxonNode>: public mpl::true_ {};
+struct is_virtual_base_of<SpikingObject, AxonNode>: public mpl::true_ {};
 }
 
 #endif // SPIKENODE_H

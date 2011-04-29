@@ -78,7 +78,7 @@ void Neuron::walk_axon_tree(AxonNode* root, std::set<SimulationObject*>& axon_ob
     axon_objects.insert(root);
     BOOST_FOREACH(Axon* axon, root->receiving_axons()){
         axon_objects.insert(axon);
-        SpikeReceiver* receiver = axon->receiver();
+        SpikingObject* receiver = axon->receiver();
         AxonNode* node = dynamic_cast<AxonNode*>(receiver);
         Synapse* synapse = dynamic_cast<Synapse*>(receiver);
         if(synapse)

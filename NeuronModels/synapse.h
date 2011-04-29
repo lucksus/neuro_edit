@@ -1,14 +1,14 @@
 #ifndef SYNAPSE_H
 #define SYNAPSE_H
 #include <list>
-#include "spikereceiver.h"
+#include "spikingobject.h"
 #include "editableobject.h"
 #include <boost/serialization/nvp.hpp>
 #include <boost/type_traits/is_virtual_base_of.hpp>
 
 class DendriticNode;
 class Axon;
-class Synapse : public SpikeReceiver, public virtual EditableObject
+class Synapse : public SpikingObject, public virtual EditableObject
 {
 friend class boost::serialization::access;
 public:
@@ -34,7 +34,7 @@ private:
     void serialize(Archive & ar, const unsigned int)
     {
         //ar & boost::serialization::base_object<SpikeReceiver>(*this);
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpikeReceiver);
+        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpikingObject);
         ar & boost::serialization::make_nvp("PostsynapticDendriticNode", m_postsynaptic_neuron);
         ar & boost::serialization::make_nvp("Weight", m_weight);
         ar & boost::serialization::make_nvp("Time_constant", m_time_constant);
@@ -44,7 +44,7 @@ private:
 
 namespace boost{
 template<>
-struct is_virtual_base_of<SpikeReceiver, Synapse>: public mpl::true_ {};
+struct is_virtual_base_of<SpikingObject, Synapse>: public mpl::true_ {};
 }
 
 

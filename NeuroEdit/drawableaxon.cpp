@@ -7,6 +7,7 @@
 #include <assert.h>
 #include <GLUT/glut.h>
 #include "glhelpfunctions.h"
+#include "spikingobject.h"
 
 bool DrawableAxon::is_applicable_to(SimulationObject* object){
     Axon* n = dynamic_cast<Axon*>(object);

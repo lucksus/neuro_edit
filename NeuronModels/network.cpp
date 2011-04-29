@@ -107,7 +107,7 @@ void Network::simulate(double milli_seconds){
 }
 
 
-Axon* Network::connect(SpikeEmitter* emitter, SpikeReceiver* receiver){
+Axon* Network::connect(SpikingObject* emitter, SpikingObject* receiver){
     //assert(find(m_objects.begin(), m_objects.end(), emitter) != m_objects.end());
     //assert(find(m_objects.begin(), m_objects.end(), receiver) != m_objects.end());
 
@@ -117,7 +117,7 @@ Axon* Network::connect(SpikeEmitter* emitter, SpikeReceiver* receiver){
     return axon;
 }
 
-std::pair<Axon*, Synapse*> Network::connect(SpikeEmitter* emitter, DendriticNode* node){
+std::pair<Axon*, Synapse*> Network::connect(SpikingObject* emitter, DendriticNode* node){
     //assert(find(m_objects.begin(), m_objects.end(), emitter) != m_objects.end());
     //assert(find(m_objects.begin(), m_objects.end(), node) != m_objects.end());
 

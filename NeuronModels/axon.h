@@ -2,18 +2,17 @@
 #define LINK_H
 #include "simulationobject.h"
 #include <list>
-#include "spikeemitter.h"
-#include "spikereceiver.h"
 #include "editableobject.h"
 #include <boost/serialization/nvp.hpp>
 #include <boost/type_traits/is_virtual_base_of.hpp>
 
 class Neuron;
+class SpikingObject;
 class Axon : public SimulationObject, public EditableObject
 {
 friend class boost::serialization::access;
 public:
-    Axon(Neuron* neuron, SpikeEmitter* emitter, SpikeReceiver* receiver, double speed=5);
+    Axon(Neuron* neuron, SpikingObject* emitter, SpikingObject* receiver, double speed=5);
     virtual ~Axon();
 
     virtual void update(double milli_seconds);
@@ -22,9 +21,9 @@ public:
     void set_speed(double speed);
     std::list<double> action_potentials_normalized();
 
-    void set_emitter(SpikeEmitter* emitter);
-    SpikeEmitter* emitter();
-    SpikeReceiver* receiver();
+    void set_emitter(SpikingObject* emitter);
+    SpikingObject* emitter();
+    SpikingObject* receiver();
 
     virtual Properties properties();
     virtual void set_property(std::string group, std::string name, boost::any value);
@@ -32,8 +31,8 @@ public:
     virtual std::set<SimulationObject*> about_to_remove(SimulationObject *);
 
 private:
-    SpikeEmitter* m_emitter;
-    SpikeReceiver* m_receiver;
+    SpikingObject* m_emitter;
+    SpikingObject* m_receiver;
     double m_speed; //mm per ms
     double m_runtime; //cached
     std::list<double> m_action_potentials;
