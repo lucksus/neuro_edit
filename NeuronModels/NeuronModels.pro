@@ -25,7 +25,8 @@ SOURCES += izhikevich.cpp \
     neuronmodel.cpp \
     editableobject.cpp \
     serializationhelper.cpp \
-    axonnode.cpp
+    axonnode.cpp \
+    scriptengine.cpp
 
 HEADERS += izhikevich.h \
            network.h \
@@ -43,4 +44,5 @@ HEADERS += izhikevich.h \
     neuronmodel.h \
     editableobject.h \
     serializationhelper.h \
-    axonnode.h
+    axonnode.h \
+    scriptengine.h
