@@ -45,18 +45,6 @@ double Neuron::membrane_potential(){
     return m_model->membrane_potential();
 }
 
-
-Properties Neuron::properties(){
-    Properties properties = m_model->properties();
-    properties.merge(SpatialObject::properties());
-    return properties;
-}
-
-void Neuron::set_property(std::string group, std::string name, boost::any value){
-    SpatialObject::set_property(group,name,value);
-    m_model->set_property(group, name, value);
-}
-
 std::set<SimulationObject*> Neuron::children(){
     std::set<SimulationObject*> nodes;
     walk_dendrites_tree(m_dendrides_root, nodes);

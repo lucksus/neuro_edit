@@ -2,7 +2,6 @@
 #define PROPERTYBROWSER_H
 #include "qttreepropertybrowser.h"
 #include <set>
-#include "editableobject.h"
 #include "qtvariantproperty.h"
 
 class SimulationObject;

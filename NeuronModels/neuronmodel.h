@@ -1,10 +1,9 @@
 #ifndef NEURONMODEL_H
 #define NEURONMODEL_H
 #include "spikingobject.h"
-#include "editableobject.h"
 #include <boost/serialization/assume_abstract.hpp>
 
-class NeuronModel : public SpikingObject, public virtual EditableObject
+class NeuronModel : public SpikingObject
 {
 friend class boost::serialization::access;
 public:
@@ -26,4 +25,5 @@ private:
 
 BOOST_SERIALIZATION_ASSUME_ABSTRACT(NeuronModel);
 
+Q_DECLARE_METATYPE(NeuronModel*)
 #endif // NEURONMODEL_H

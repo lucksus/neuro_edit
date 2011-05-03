@@ -21,7 +21,6 @@ SOURCES += izhikevich.cpp \
     synapse.cpp \
     dendriticnode.cpp \
     neuronmodel.cpp \
-    editableobject.cpp \
     serializationhelper.cpp \
     axonnode.cpp \
     spikingobject.cpp
@@ -38,7 +37,6 @@ HEADERS += izhikevich.h \
     synapse.h \
     dendriticnode.h \
     neuronmodel.h \
-    editableobject.h \
     serializationhelper.h \
     axonnode.h \
     spikingobject.h

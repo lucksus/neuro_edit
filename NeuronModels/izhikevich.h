@@ -7,8 +7,14 @@
 
 class Izhikevich : public NeuronModel
 {
+Q_OBJECT
+Q_PROPERTY(double a READ get_a WRITE set_a)
+Q_PROPERTY(double b READ get_b WRITE set_b)
+Q_PROPERTY(double c READ get_c WRITE set_c)
+Q_PROPERTY(double d READ get_d WRITE set_d)
 friend class boost::serialization::access;
 public:
+    Izhikevich() {}
     Izhikevich(Neuron*, double a, double b, double c, double d);
     Izhikevich(const Izhikevich&);
 
@@ -29,15 +35,9 @@ public:
     double v();
     double u();
 
-
-    virtual Properties properties();
-    virtual void set_property(std::string group, std::string name, boost::any value);
-
 private:
     double m_u,m_v;
     double a,b,c,d;
-
-    Izhikevich() {}
 
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)
@@ -58,4 +58,5 @@ template<>
 struct is_virtual_base_of<NeuronModel, Izhikevich>: public mpl::true_ {};
 }
 
+Q_DECLARE_METATYPE(Izhikevich)
 #endif // NEURON_H

@@ -2,24 +2,28 @@
 #define SYNAPSE_H
 #include <list>
 #include "spikingobject.h"
-#include "editableobject.h"
 #include <boost/serialization/nvp.hpp>
 #include <boost/type_traits/is_virtual_base_of.hpp>
 
 class DendriticNode;
 class Axon;
-class Synapse : public SpikingObject, public virtual EditableObject
+class Synapse : public SpikingObject
 {
+Q_OBJECT
+Q_PROPERTY(double weight READ weight WRITE set_weight)
+Q_PROPERTY(double time_constant READ time_constant WRITE set_time_constant)
+Q_PROPERTY(Neuron* postsynaptic_neuron READ postsynaptic_neuron)
 friend class boost::serialization::access;
 public:
+    Synapse() {}
     Synapse(Neuron* neuron, DendriticNode* target);
     virtual ~Synapse();
-
     virtual void update(double milli_seconds);
 
-    virtual Properties properties();
-    virtual void set_property(std::string group, std::string name, boost::any value);
-
+    double weight() const;
+    void set_weight(double weight);
+    double time_constant() const;
+    void set_time_constant(double time_constant);
     Neuron* postsynaptic_neuron();
 
 private:
@@ -28,7 +32,7 @@ private:
     double m_time_constant;
     std::list<double> m_active_potentials;
 
-    Synapse() {}
+
 
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)
@@ -47,5 +51,5 @@ template<>
 struct is_virtual_base_of<SpikingObject, Synapse>: public mpl::true_ {};
 }
 
-
+Q_DECLARE_METATYPE(Synapse)
 #endif // SYNAPSE_H

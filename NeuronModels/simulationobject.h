@@ -4,19 +4,22 @@
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/assume_abstract.hpp>
 #include <boost/serialization/nvp.hpp>
+#include <QtCore/QObject>
 
 class Neuron;
 class Network;
-class SimulationObject
+class SimulationObject : public QObject
 {
+Q_OBJECT
 friend class boost::serialization::access;
 public:
     SimulationObject(Neuron*);
+    SimulationObject(const SimulationObject&);
     virtual ~SimulationObject(){}
 
     virtual void update(double milli_seconds) = 0;
-    virtual std::set<SimulationObject*> children();
-    virtual Neuron* neuron();
+    Q_INVOKABLE virtual std::set<SimulationObject*> children();
+    Q_INVOKABLE virtual Neuron* neuron();
     //virtual SimulationObject* clone() = 0;
 
     bool is_done();

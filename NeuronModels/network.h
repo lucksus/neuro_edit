@@ -18,6 +18,9 @@ class Network : public QObject
 Q_OBJECT
 friend class boost::serialization::access;
 public:
+    Network(){}
+    Network(const Network& n):QObject(), m_objects(n.m_objects){}
+public slots:
     void write_to_file(std::string filename);
     static Network* load_from_file(std::string filename);
 
@@ -30,6 +33,7 @@ public:
     Axon* connect(SpikingObject*, SpikingObject*);
     std::pair<Axon*, Synapse*> connect(SpikingObject*, DendriticNode*);
 
+public:
     void simulate(double milli_seconds);
 
 signals:

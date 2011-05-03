@@ -83,23 +83,6 @@ SpikingObject* Axon::receiver(){
     return m_receiver;
 }
 
-
-Properties Axon::properties(){
-    Properties properties = EditableObject::properties();
-    properties.set_group("Axon");
-    properties.add("speed", m_speed);
-    return properties;
-}
-
-void Axon::set_property(std::string group, std::string name, boost::any value){
-    EditableObject::set_property(group, name, value);
-    update_runtime();
-    if("Axon" != group) return;
-    if("speed" == name) m_speed = boost::any_cast<double>(value);
-    update_runtime();
-}
-
-
 std::set<SimulationObject*> Axon::about_to_remove(SimulationObject *object_to_be_deleted){
     std::set<SimulationObject*> also_to_be_deleted = SimulationObject::about_to_remove(object_to_be_deleted);
     if(m_receiver == object_to_be_deleted || m_emitter == object_to_be_deleted)

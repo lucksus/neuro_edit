@@ -1,11 +1,13 @@
 #include "propertybrowser.h"
-#include "editableobject.h"
 #include <boost/foreach.hpp>
 #include "simulationobject.h"
 #include <iostream>
 #include <QMetaObject>
 #include <QMetaProperty>
 #include "point.h"
+#include "neuronmodel.h"
+#include "izhikevich.h"
+#include <assert.h>
 
 PropertyBrowser::PropertyBrowser(QWidget* parent)
     : QtTreePropertyBrowser(parent), m_populating(false)
@@ -68,6 +70,11 @@ void PropertyBrowser::value_changed(QtProperty * p, const QVariant & value){
                 QVariant v;
                 v.setValue(p);
                 object->setProperty("position", v);
+            }else if(group->propertyName() == "Izhikevich Model"){
+                NeuronModel* nm = object->property("model").value<NeuronModel*>();
+                Izhikevich* iz = dynamic_cast<Izhikevich*>(nm);
+                assert(iz);
+                iz->setProperty(p->propertyName().toStdString().c_str(), value);
             }
         }
         object->setProperty(property->propertyName().toStdString().c_str(), value);
@@ -87,6 +94,8 @@ void PropertyBrowser::populate_properties(std::set<std::string> properties_to_sh
         QVariant property_value = object->property(property.c_str());
         QVariant::Type type = property_value.type();
 
+        if(QVariant::Invalid == type) continue;
+
         if(QVariant::UserType == type){
             if(QMetaType::type("Point") == QMetaType::type(property_value.typeName())){
                 Point p = property_value.value<Point>();
@@ -101,6 +110,19 @@ void PropertyBrowser::populate_properties(std::set<std::string> properties_to_sh
                 group_item->addSubProperty(y);
                 group_item->addSubProperty(z);
                 m_property_groups[x] = m_property_groups[y] = m_property_groups[z] = group_item;
+                addProperty(group_item);
+            }else if(QMetaType::type("NeuronModel*") == QMetaType::type(property_value.typeName())){
+                QObject* o = property_value.value<NeuronModel*>();
+                QtProperty* group_item = m_variantManager->addProperty(QtVariantPropertyManager::groupTypeId(), o->objectName().toStdString().c_str());
+                for(int i=0; i < o->metaObject()->propertyCount(); i++){
+                    std::string name = o->metaObject()->property(i).name();
+                    if("objectName" == name) continue;
+                    if("position" == name) continue;
+                    QtVariantProperty* sub_prop = m_variantManager->addProperty(QVariant::Double, name.c_str());
+                    sub_prop->setValue(o->property(name.c_str()));
+                    group_item->addSubProperty(sub_prop);
+                    m_property_groups[sub_prop] = group_item;
+                }
                 addProperty(group_item);
             }
         }else{

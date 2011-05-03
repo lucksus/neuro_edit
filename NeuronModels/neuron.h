@@ -1,7 +1,6 @@
 #ifndef NEURON_H
 #define NEURON_H
 #include "spatialobject.h"
-#include "editableobject.h"
 #include "dendriticnode.h"
 #include "axonnode.h"
 #include <boost/serialization/access.hpp>
@@ -10,10 +9,13 @@
 
 class NeuronModel;
 class Axon;
-class Neuron : public SpatialObject, public virtual EditableObject
+class Neuron : public SpatialObject
 {
+Q_OBJECT
+Q_PROPERTY(NeuronModel* model READ model WRITE set_model)
 friend class boost::serialization::access;
 public:
+    Neuron(){}
     Neuron(Point position);
     //Neuron(const Neuron& n);
     void update(double milli_seconds);
@@ -22,15 +24,11 @@ public:
     NeuronModel* model();
     double membrane_potential();
 
-    virtual Properties properties();
-    virtual void set_property(std::string group, std::string name, boost::any value);
-
     virtual std::set<SimulationObject*> children();
 
     std::set<SimulationObject*> about_to_remove(SimulationObject* object_to_be_deleted);
 
 protected:
-    Neuron(){}
     virtual void moved(Point new_position);
 
 private:
@@ -60,4 +58,5 @@ template<>
 struct is_virtual_base_of<SpatialObject, Neuron>: public mpl::true_ {};
 }
 
+Q_DECLARE_METATYPE(Neuron)
 #endif // NEURON_H

@@ -15,6 +15,7 @@
 
 class AxonNode : public SpikingObject
 {
+Q_OBJECT
 friend class boost::serialization::access;
 public:
     AxonNode() {}
@@ -40,7 +41,7 @@ private:
             //this cast fails and throws std::bad_cast if ar is an iarchive.
             //so this block gets executed when saving,
             //the catch block when loading.
-            dynamic_cast<boost::archive::detail::basic_oarchive&>(ar);
+            (void) dynamic_cast<boost::archive::detail::basic_oarchive&>(ar);
             //----------
             //---SAVE:--
             //----------
@@ -96,4 +97,5 @@ template<>
 struct is_virtual_base_of<SpikingObject, AxonNode>: public mpl::true_ {};
 }
 
+Q_DECLARE_METATYPE(AxonNode)
 #endif // SPIKENODE_H
