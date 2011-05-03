@@ -15,7 +15,7 @@ Q_OBJECT
 Q_PROPERTY(NeuronModel* model READ model WRITE set_model)
 friend class boost::serialization::access;
 public:
-    Neuron(){}
+    Neuron();
     Neuron(Point position);
     //Neuron(const Neuron& n);
     void update(double milli_seconds);
@@ -51,6 +51,8 @@ private:
         ar & boost::serialization::make_nvp("DendridesRoot", m_dendrides_root);
         ar & boost::serialization::make_nvp("AxonRoot", m_axon_root);
     }
+
+    static unsigned int s_serial;
 };
 
 namespace boost{

@@ -8,9 +8,16 @@
 #include <assert.h>
 #include "network.h"
 
+unsigned int Neuron::s_serial = 0;
+
+Neuron::Neuron(){
+    setObjectName(QString("Neuron_%1").arg(s_serial++));
+}
+
 Neuron::Neuron(Point position)
     : SpatialObject(this), m_model(0)
 {
+    setObjectName(QString("Neuron_%1").arg(s_serial++));
     m_dendrides_root = new DendriticNode(this, 0);
     m_axon_root = new AxonNode(this);
     set_position(position);
