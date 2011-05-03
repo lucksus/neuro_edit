@@ -10,6 +10,8 @@
 
 class SpatialObject : public SimulationObject , public virtual EditableObject
 {
+Q_OBJECT
+Q_PROPERTY(Point position READ position WRITE set_position)
 friend class boost::serialization::access;
 public:
     SpatialObject(Neuron*);

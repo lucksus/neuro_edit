@@ -26,6 +26,8 @@ void Application::init(){
     QCoreApplication::setOrganizationDomain("lucksus.eu");
     QCoreApplication::setApplicationName("neuro_edit");
 
+    qRegisterMetaType<Point>("Point");
+
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(refresh_timeout()));
     m_timer.start(1000/30);
