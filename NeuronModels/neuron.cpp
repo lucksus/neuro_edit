@@ -8,9 +8,16 @@
 #include <assert.h>
 #include "network.h"
 
+unsigned int Neuron::s_serial = 0;
+
+Neuron::Neuron(){
+    setObjectName(QString("Neuron_%1").arg(s_serial++));
+}
+
 Neuron::Neuron(Point position)
     : SpatialObject(this), m_model(0)
 {
+    setObjectName(QString("Neuron_%1").arg(s_serial++));
     m_dendrides_root = new DendriticNode(this, 0);
     m_axon_root = new AxonNode(this);
     set_position(position);
@@ -45,18 +52,6 @@ double Neuron::membrane_potential(){
     return m_model->membrane_potential();
 }
 
-
-Properties Neuron::properties(){
-    Properties properties = m_model->properties();
-    properties.merge(SpatialObject::properties());
-    return properties;
-}
-
-void Neuron::set_property(std::string group, std::string name, boost::any value){
-    SpatialObject::set_property(group,name,value);
-    m_model->set_property(group, name, value);
-}
-
 std::set<SimulationObject*> Neuron::children(){
     std::set<SimulationObject*> nodes;
     walk_dendrites_tree(m_dendrides_root, nodes);
@@ -78,7 +73,7 @@ void Neuron::walk_axon_tree(AxonNode* root, std::set<SimulationObject*>& axon_ob
     axon_objects.insert(root);
     BOOST_FOREACH(Axon* axon, root->receiving_axons()){
         axon_objects.insert(axon);
-        SpikeReceiver* receiver = axon->receiver();
+        SpikingObject* receiver = axon->receiver();
         AxonNode* node = dynamic_cast<AxonNode*>(receiver);
         Synapse* synapse = dynamic_cast<Synapse*>(receiver);
         if(synapse)

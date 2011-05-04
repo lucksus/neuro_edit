@@ -2,11 +2,26 @@
 #define POINT_H
 #include <math.h>
 #include <boost/serialization/nvp.hpp>
+#include <QtCore/QObject>
+#include <QtCore/QMetaType>
 
-struct Point{
-    Point(){x=0;y=0;z=0;}
-    Point(double x, double y, double z){
+struct Point : public QObject{
+Q_OBJECT
+Q_PROPERTY(double x READ get_x WRITE set_x)
+Q_PROPERTY(double y READ get_y WRITE set_y)
+Q_PROPERTY(double z READ get_z WRITE set_z)
+public:
+    Point():QObject(){x=0;y=0;z=0;}
+    Point(double x, double y, double z):QObject(){
         this->x=x;this->y=y;this->z=z;
+    }
+    Point(const Point& p):QObject(){
+        x=p.x;y=p.y;z=p.z;
+    }
+
+    Point& operator=(const Point& p){
+        x=p.x;y=p.y;z=p.z;
+        return *this;
     }
 
     template<class Archive>
@@ -18,6 +33,14 @@ struct Point{
     }
 
     double x,y,z;
+
+    inline double get_x(){return x;};
+    inline double get_y(){return y;};
+    inline double get_z(){return z;};
+    inline void set_x(double new_x){x=new_x;};
+    inline void set_y(double new_y){x=new_y;};
+    inline void set_z(double new_z){x=new_z;};
+
     inline double distance(Point p){
         Point diff = p - *this;
         return sqrt(pow((diff.x),2) + pow((diff.y),2) + pow((diff.z),2));
@@ -70,5 +93,7 @@ struct Point{
         return distance(Point(0,0,0));
     }
 };
+
+Q_DECLARE_METATYPE(Point)
 
 #endif // POINT_H

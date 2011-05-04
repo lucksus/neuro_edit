@@ -25,7 +25,7 @@ public slots:
     void set_network(Network*);
     void start_inserting(std::set<SimulationObject*>);
     void deselect();
-    void start_connecting(SpikeEmitter*);
+    void start_connecting(SpikingObject*);
 
 protected:
      void initializeGL();
@@ -119,7 +119,7 @@ private:
     //-----------------
     bool m_connecting;
     std::set<SimulationObject*> m_connection_sources;
-    SpikeEmitter* m_connection_source;
+    SpikingObject* m_connection_source;
     void finish_connecting();
     void paint_connecting_overlay();
 

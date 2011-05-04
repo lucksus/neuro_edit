@@ -870,7 +870,7 @@ void GLScene::camera_center_moving_update(){
 }
 
 
-void GLScene::start_connecting(SpikeEmitter* emitter){
+void GLScene::start_connecting(SpikingObject* emitter){
     m_connection_source = emitter;
     m_connecting = true;
 }
@@ -878,7 +878,7 @@ void GLScene::start_connecting(SpikeEmitter* emitter){
 void GLScene::finish_connecting(){
     if(m_selected_objects.size() != 1) return;
     SimulationObject* selected_object = *m_selected_objects.begin();
-    SpikeReceiver* spike_receiver = dynamic_cast<SpikeReceiver*>(selected_object);
+    SpikingObject* spike_receiver = dynamic_cast<SpikingObject*>(selected_object);
     DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(selected_object);
     if(spike_receiver) m_network->connect(m_connection_source, spike_receiver);
     if(dendritic_node) m_network->connect(m_connection_source, dendritic_node);

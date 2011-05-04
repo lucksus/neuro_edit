@@ -2,7 +2,6 @@
 #define PROPERTYBROWSER_H
 #include "qttreepropertybrowser.h"
 #include <set>
-#include "editableobject.h"
 #include "qtvariantproperty.h"
 
 class SimulationObject;
@@ -21,15 +20,15 @@ private slots:
     void value_changed(QtProperty * property, const QVariant & value);
 
 private:
-    std::set<EditableObject*> m_editable_objects;
+    std::set<QObject*> m_editable_objects;
     QtVariantPropertyManager *m_variantManager;
-    std::map<QtVariantProperty*, std::pair<std::string,std::string> > m_property_to_group_and_name;
+    std::map<QtVariantProperty*, std::string> m_property_to_name;
+    std::map<QtVariantProperty*, QtProperty*> m_property_groups;
     bool m_populating;
 
-    void populate_properties(Properties properties_to_show);
-    QVariant any_to_variant(boost::any value);
-    QtVariantProperty* any_to_property(boost::any value, std::string name, std::string unit, std::string description);
-    boost::any variant_to_any(const QVariant& value, boost::any any_reference);
+    void populate_properties(std::set<std::string> properties_to_show);
+    static std::set<std::string> properties(QObject* object);
+    static std::set<std::string> intersect(const std::set<std::string>& a, const std::set<std::string>& b);
 
 };
 

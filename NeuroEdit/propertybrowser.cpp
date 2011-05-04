@@ -1,8 +1,13 @@
 #include "propertybrowser.h"
-#include "editableobject.h"
 #include <boost/foreach.hpp>
 #include "simulationobject.h"
 #include <iostream>
+#include <QMetaObject>
+#include <QMetaProperty>
+#include "point.h"
+#include "neuronmodel.h"
+#include "izhikevich.h"
+#include <assert.h>
 
 PropertyBrowser::PropertyBrowser(QWidget* parent)
     : QtTreePropertyBrowser(parent), m_populating(false)
@@ -20,109 +25,128 @@ PropertyBrowser::PropertyBrowser(QWidget* parent)
 void PropertyBrowser::objects_selected(std::set<SimulationObject *> objects){
 
     m_editable_objects.clear();
-    m_property_to_group_and_name.clear();
-    BOOST_FOREACH(SimulationObject* o, objects){
-        EditableObject* e = dynamic_cast<EditableObject*>(o);
-        if(e) m_editable_objects.insert(e);
+    m_property_to_name.clear();
+    BOOST_FOREACH(SimulationObject* s, objects){
+        m_editable_objects.insert(s);
     }
 
     bool first = true;
-    Properties properties;
-    BOOST_FOREACH(EditableObject* e, m_editable_objects){
+    std::set<std::string> props;
+    BOOST_FOREACH(QObject* o, m_editable_objects){
         if(first){
-            properties = e->properties();
+            props = properties(o);
             first = false;
         }else{
-            properties.intersect(e->properties());
+            props = intersect(properties(o), props);
         }
     }
 
-    populate_properties(properties);
+    populate_properties(props);
 
 }
 
 void PropertyBrowser::read_values_from_objects(){
     if(m_populating || m_editable_objects.empty()) return;
-    EditableObject* object = *m_editable_objects.begin();
-    Properties properties = object->properties();
-    std::pair<QtVariantProperty*, std::pair<std::string, std::string> > it;
-    BOOST_FOREACH(it, m_property_to_group_and_name){
-            it.first->setValue(any_to_variant(properties.value(it.second.first, it.second.second)));
+    std::set<SimulationObject*> editable_objects;
+    BOOST_FOREACH(QObject* obj, m_editable_objects){
+        editable_objects.insert(static_cast<SimulationObject*>(obj));
     }
+    objects_selected(editable_objects);
 }
 
 void PropertyBrowser::value_changed(QtProperty * p, const QVariant & value){
     if(m_populating || m_editable_objects.empty()) return;
     QtVariantProperty* property = dynamic_cast<QtVariantProperty*>(p);
     if(!property) return;
-    EditableObject* object = *m_editable_objects.begin();
-    Properties properties = object->properties();
-    std::string group = m_property_to_group_and_name.find(property)->second.first;
-    std::string name = m_property_to_group_and_name.find(property)->second.second;
-    boost::any any_value = variant_to_any(value, properties.value(group,name));
 
-    BOOST_FOREACH(EditableObject* object, m_editable_objects){
-        object->set_property(group, name, any_value);
+    BOOST_FOREACH(QObject* object, m_editable_objects){
+        if(m_property_groups.count(property)){
+            QtProperty* group = m_property_groups.find(property)->second;
+            if(group->propertyName() == "position"){
+                Point p = object->property("position").value<Point>();
+                if(property->propertyName() == "x") p.x = value.value<double>();
+                if(property->propertyName() == "y") p.y = value.value<double>();
+                if(property->propertyName() == "z") p.z = value.value<double>();
+                QVariant v;
+                v.setValue(p);
+                object->setProperty("position", v);
+            }else if(group->propertyName() == "Izhikevich Model"){
+                NeuronModel* nm = object->property("model").value<NeuronModel*>();
+                Izhikevich* iz = dynamic_cast<Izhikevich*>(nm);
+                assert(iz);
+                iz->setProperty(p->propertyName().toStdString().c_str(), value);
+            }
+        }
+        object->setProperty(property->propertyName().toStdString().c_str(), value);
     }
 }
 
 
-void PropertyBrowser::populate_properties(Properties properties_to_show){
+void PropertyBrowser::populate_properties(std::set<std::string> properties_to_show){
     m_populating = true;
     clear();
 
     if(m_editable_objects.empty()) return;
-    EditableObject* object = *m_editable_objects.begin();
-    Properties properties = object->properties();
+    QObject* object = *m_editable_objects.begin();
 
-    BOOST_FOREACH(std::string group, properties_to_show.groups()){
-        QtProperty* group_item = 0;
-        if(group.length()) group_item = m_variantManager->addProperty(QtVariantPropertyManager::groupTypeId(), group.c_str());
-        BOOST_FOREACH(std::string name, properties_to_show.properties(group)){
-            boost::any value = properties.value(group, name);
-            std::string unit = properties.unit(group, name);
-            std::string description = properties.description(group, name);
-            QtVariantProperty* property = any_to_property(value, name, unit, description);
-            if(!property) continue;
-            if(group_item) group_item->addSubProperty(property);
-            else addProperty(property);
-            m_property_to_group_and_name[property] = std::pair<std::string,std::string>(group,name);
+    BOOST_FOREACH(std::string property, properties_to_show){
+
+        QVariant property_value = object->property(property.c_str());
+        QVariant::Type type = property_value.type();
+
+        if(QVariant::Invalid == type) continue;
+
+        if(QVariant::UserType == type){
+            if(QMetaType::type("Point") == QMetaType::type(property_value.typeName())){
+                Point p = property_value.value<Point>();
+                QtProperty* group_item = m_variantManager->addProperty(QtVariantPropertyManager::groupTypeId(), property.c_str());
+                QtVariantProperty* x = m_variantManager->addProperty(QVariant::Double, "x");
+                QtVariantProperty* y = m_variantManager->addProperty(QVariant::Double, "y");
+                QtVariantProperty* z = m_variantManager->addProperty(QVariant::Double, "z");
+                x->setValue(p.x);
+                y->setValue(p.y);
+                z->setValue(p.z);
+                group_item->addSubProperty(x);
+                group_item->addSubProperty(y);
+                group_item->addSubProperty(z);
+                m_property_groups[x] = m_property_groups[y] = m_property_groups[z] = group_item;
+                addProperty(group_item);
+            }else if(QMetaType::type("NeuronModel*") == QMetaType::type(property_value.typeName())){
+                QObject* o = property_value.value<NeuronModel*>();
+                QtProperty* group_item = m_variantManager->addProperty(QtVariantPropertyManager::groupTypeId(), o->objectName().toStdString().c_str());
+                for(int i=0; i < o->metaObject()->propertyCount(); i++){
+                    std::string name = o->metaObject()->property(i).name();
+                    if("objectName" == name) continue;
+                    if("position" == name) continue;
+                    QtVariantProperty* sub_prop = m_variantManager->addProperty(QVariant::Double, name.c_str());
+                    sub_prop->setValue(o->property(name.c_str()));
+                    group_item->addSubProperty(sub_prop);
+                    m_property_groups[sub_prop] = group_item;
+                }
+                addProperty(group_item);
+            }
+        }else{
+            QtVariantProperty* variant_property = m_variantManager->addProperty(type, property.c_str());
+            variant_property->setValue(property_value);
+            addProperty(variant_property);
         }
-        if(group_item) addProperty(group_item);
     }
     m_populating = false;
 }
 
-QVariant PropertyBrowser::any_to_variant(boost::any value){
-    QVariant variant;
-    try{
-        double d = boost::any_cast<double>(value);
-        variant = d;
-    }catch(boost::bad_any_cast){
+std::set<std::string> PropertyBrowser::properties(QObject* object){
+    std::set<std::string> props;
+    for(int i=0; i < object->metaObject()->propertyCount(); i++){
+        props.insert(object->metaObject()->property(i).name());
     }
-    return variant;
+    return props;
 }
 
-QtVariantProperty* PropertyBrowser::any_to_property(boost::any value, std::string name, std::string unit, std::string description){
-    QtVariantProperty* property = 0;
-    try{
-        double d = boost::any_cast<double>(value);
-        property = m_variantManager->addProperty(QVariant::Double, name.c_str());
-        property->setToolTip(description.c_str());
-        property->setValue(d);
-    }catch(boost::bad_any_cast){
+std::set<std::string> PropertyBrowser::intersect(const std::set<std::string>& a, const std::set<std::string>& b){
+    std::set<std::string> result;
+    BOOST_FOREACH(std::string s, a){
+        if(b.count(s) == 0) continue;
+        result.insert(s);
     }
-    return property;
-}
-
-boost::any PropertyBrowser::variant_to_any(const QVariant& value, boost::any any_reference){
-    boost::any result;
-    try{
-        boost::any_cast<double>(any_reference);
-        result = value.toDouble();
-
-    }catch(boost::bad_any_cast){
-    }
-
     return result;
 }

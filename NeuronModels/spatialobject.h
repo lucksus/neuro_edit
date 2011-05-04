@@ -2,14 +2,15 @@
 #define SPATIALOBJECT_H
 #include "simulationobject.h"
 #include "point.h"
-#include "editableobject.h"
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/assume_abstract.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/type_traits/is_virtual_base_of.hpp>
 
-class SpatialObject : public SimulationObject , public virtual EditableObject
+class SpatialObject : public SimulationObject
 {
+Q_OBJECT
+Q_PROPERTY(Point position READ position WRITE set_position)
 friend class boost::serialization::access;
 public:
     SpatialObject(Neuron*);
@@ -17,9 +18,6 @@ public:
 
     Point position() const;
     void set_position(const Point& p);
-
-    virtual Properties properties();
-    virtual void set_property(std::string group, std::string name, boost::any value);
 
     virtual bool is_user_movable();
     void set_user_movable(bool user_movable);

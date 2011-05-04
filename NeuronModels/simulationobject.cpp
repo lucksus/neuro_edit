@@ -7,6 +7,11 @@ SimulationObject::SimulationObject(Neuron* neuron)
 
 }
 
+SimulationObject::SimulationObject(const SimulationObject& s)
+    : QObject(), m_network(s.m_network), m_neuron(s.m_neuron), m_done(s.m_done)
+{
+}
+
 
 std::set<SimulationObject*> SimulationObject::children(){
     return std::set<SimulationObject*>();

@@ -3,9 +3,9 @@
 #include "axon.h"
 
 AxonNode::AxonNode(Neuron* neuron)
-    : SpatialObject(neuron), SpikeEmitter(neuron), SpikeReceiver(neuron)
+    : SpatialObject(neuron), SpikingObject(neuron)
 {
-
+    set_user_movable(true);
 }
 
 void AxonNode::update(double milli_seconds){

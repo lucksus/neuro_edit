@@ -1,6 +1,6 @@
 #include "application.h"
 #include <QCoreApplication>
-
+#include "izhikevich.h"
 
 Application::Application():
         m_splash(QPixmap(":/images/splash")),
@@ -25,6 +25,17 @@ void Application::init(){
     QCoreApplication::setOrganizationName("lucksus");
     QCoreApplication::setOrganizationDomain("lucksus.eu");
     QCoreApplication::setApplicationName("neuro_edit");
+
+    qRegisterMetaType<Point>("Point");
+    qRegisterMetaType<Axon>("Axon");
+    qRegisterMetaType<AxonNode>("AxonNode");
+    qRegisterMetaType<DendriticNode>("DendriticNode");
+    qRegisterMetaType<Izhikevich>("Izhikevich");
+    qRegisterMetaType<Network>("Network");
+    qRegisterMetaType<Neuron>("Neuron");
+    qRegisterMetaType<Neuron*>("Neuron*");
+    qRegisterMetaType<NeuronModel*>("NeuronModel*");
+    qRegisterMetaType<Synapse>("Synapse");
 
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(refresh_timeout()));

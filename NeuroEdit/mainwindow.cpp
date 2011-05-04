@@ -250,7 +250,7 @@ void MainWindow::on_actionRemove_triggered(bool){
 void MainWindow::on_actionConnect_triggered(bool){
     std::set<SimulationObject*> selected = m_glscene->selected_objects();
     assert(1 == selected.size());
-    SpikeEmitter* emitter = dynamic_cast<SpikeEmitter*>(*(selected.begin()));
+    SpikingObject* emitter = dynamic_cast<SpikingObject*>(*(selected.begin()));
     assert(emitter);
     m_glscene->start_connecting(emitter);
 }
@@ -296,7 +296,7 @@ void MainWindow::objects_selected(std::set<SimulationObject*> objects){
     SimulationObject* object = *(objects.begin());
     AxonNode* axon_node = dynamic_cast<AxonNode*>(object);
     DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(object);
-    SpikeEmitter* emitter = dynamic_cast<SpikeEmitter*>(object);
+    SpikingObject* emitter = dynamic_cast<SpikingObject*>(object);
 
     if(axon_node){
         ui->actionAxon_Node->setEnabled(true);

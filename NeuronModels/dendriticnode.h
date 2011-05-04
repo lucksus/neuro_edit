@@ -83,4 +83,5 @@ template<>
 struct is_virtual_base_of<SpatialObject, DendriticNode>: public mpl::true_ {};
 }
 
+Q_DECLARE_METATYPE(DendriticNode)
 #endif // DENDRITICNODE_H

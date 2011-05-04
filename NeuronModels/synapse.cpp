@@ -2,7 +2,7 @@
 #include "dendriticnode.h"
 
 Synapse::Synapse(Neuron* neuron, DendriticNode* target)
-    : SpatialObject(neuron), SpikeReceiver(neuron), m_postsynaptic_neuron(target), m_weight(30), m_time_constant(50)
+    : SpatialObject(neuron), SpikingObject(neuron), m_postsynaptic_neuron(target), m_weight(30), m_time_constant(50)
 {
     set_position(target->position());
     set_user_movable(false);
@@ -31,21 +31,18 @@ void Synapse::update(double milli_seconds){
 
 }
 
-Properties Synapse::properties(){
-    Properties properties = SpikeReceiver::properties();
-    properties.set_group("Synapse");
-    properties.add("weight", m_weight);
-    properties.set_description("weight", "Maximum current induced in postsynaptic neuron by one potential.");
-    properties.set_unit("weight", "mV/ms");
-    properties.add("time constant", m_time_constant);
-    properties.set_description("time constant", "Part of potential that is substracted from potential every millisecond.");
-    properties.set_unit("time constant", "%");
-    return properties;
+double Synapse::weight() const{
+    return m_weight;
+}
+void Synapse::set_weight(double weight){
+    m_weight = weight;
 }
 
-void Synapse::set_property(std::string group, std::string name, boost::any value){
-    if("weight" == name && "Synapse" == group) m_weight = boost::any_cast<double>(value);
-    if("time constant" == name && "Synapse" == group) m_time_constant = boost::any_cast<double>(value);
+double Synapse::time_constant() const{
+    return m_time_constant;
+}
+void Synapse::set_time_constant(double time_constant){
+    m_time_constant = time_constant;
 }
 
 Neuron* Synapse::postsynaptic_neuron(){
