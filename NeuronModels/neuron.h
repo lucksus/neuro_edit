@@ -61,4 +61,5 @@ struct is_virtual_base_of<SpatialObject, Neuron>: public mpl::true_ {};
 }
 
 Q_DECLARE_METATYPE(Neuron)
+Q_DECLARE_METATYPE(Neuron*)
 #endif // NEURON_H
