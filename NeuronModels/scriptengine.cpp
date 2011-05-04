@@ -1,12 +1,15 @@
 #include "scriptengine.h"
+#include <QtGui/QAction>
+#include "network.h"
 
 ScriptEngine::ScriptEngine(Network* network)
 {
     QScriptValue objectValue = m_engine.newQObject(network);
     m_engine.globalObject().setProperty("network", objectValue);
-
 }
 
+ScriptEngine::ScriptEngine(Application*){
+}
 
 void ScriptEngine::evaluate(const QString& code){
     m_debugger.detach();

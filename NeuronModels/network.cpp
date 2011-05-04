@@ -27,13 +27,17 @@ void register_classes(Archive& ar){
 
 }
 
-void Network::write_to_file(std::string filename){
+void Network::write_to_file(const std::string& filename){
     std::ofstream file(filename.c_str());
     SerializationHelper::instance().set_serialize_all(true);
     SerializationHelper::instance().serialize_network(file, this);
 }
 
-Network* Network::load_from_file(std::string filename){
+void Network::write_to_file(const QString& filename){
+    write_to_file(filename.toStdString());
+}
+
+Network* Network::load_from_file(const std::string& filename){
     std::ifstream file(filename.c_str());
     Network* n = SerializationHelper::instance().deserialize_network(file);
     return n;
@@ -92,7 +96,7 @@ void Network::delete_objects(std::set<SimulationObject*> objects){
     }
 }
 
-std::set<SimulationObject*> Network::objects(){
+std::set<SimulationObject*> Network::objects_as_std_set(){
     return m_objects;
 }
 
@@ -128,4 +132,35 @@ std::pair<Axon*, Synapse*> Network::connect(SpikingObject* emitter, DendriticNod
     synapse->add_incoming_axon(axon);
     node->add_incoming_synapse(synapse);
     return std::pair<Axon*,Synapse*>(axon,synapse);
+}
+
+
+QObjectList Network::objects(){
+    QObjectList list;
+    BOOST_FOREACH(SimulationObject* o, m_objects){
+        list.append(o);
+    }
+    return list;
+}
+
+QStringList Network::scripts() const{
+    QStringList list;
+    std::pair<std::string, std::string> s;
+    BOOST_FOREACH(s, m_scripts){
+        list.append(s.first.c_str());
+    }
+    return list;
+}
+
+QString Network::script(const QString& name) const{
+    return QString(m_scripts.find(name.toStdString())->first.c_str());
+}
+
+void Network::set_script(const QString& name, const QString& script){
+    m_scripts[name.toStdString()] = script.toStdString();
+}
+
+
+void Network::run_script(const QString& name){
+    m_script_engine.evaluate(script(name));
 }

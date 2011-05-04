@@ -473,7 +473,7 @@ void GLScene::paint_objects(bool picking_run){
             paint_object(spo,false,true);
          }
     }
-    BOOST_FOREACH(SimulationObject* o, m_network->objects()){
+    BOOST_FOREACH(SimulationObject* o, m_network->objects_as_std_set()){
         paint_object(o,picking_run);
     }
 }

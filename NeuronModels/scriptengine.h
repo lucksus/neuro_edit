@@ -2,12 +2,14 @@
 #define SCRIPTENGINE_H
 #include <QtScript/QScriptEngine>
 #include <QtScriptTools/QScriptEngineDebugger>
-#include "network.h"
 
+class Network;
+class Application;
 class ScriptEngine
 {
 public:
     ScriptEngine(Network*);
+    ScriptEngine(Application*);
     void evaluate(const QString&);
     void debug(const QString&);
 
