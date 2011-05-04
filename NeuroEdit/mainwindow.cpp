@@ -78,6 +78,14 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     ui->menuWindows->addAction(dock->toggleViewAction());
     dock->hide();
 
+    dock = new QDockWidget(tr("Scripts Window"), this);
+    dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    dock->setWidget(&m_scripts_window);
+    addDockWidget(Qt::RightDockWidgetArea,dock);
+    m_dock_widgets.insert(dock);
+    ui->menuWindows->addAction(dock->toggleViewAction());
+    dock->hide();
+
 
 
 

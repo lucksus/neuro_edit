@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui opengl
+QT       += core gui opengl script scripttools
 CONFIG += debug
 TARGET = neuro_edit
 TEMPLATE = app
@@ -35,7 +35,9 @@ SOURCES += main.cpp\
     drawabledendriteconnection.cpp \
     glhelpfunctions.cpp \
     drawablesynapse.cpp \
-    propertybrowser.cpp
+    propertybrowser.cpp \
+    scriptswindow.cpp \
+    scriptsyntaxhighlighter.cpp
 
 HEADERS  += mainwindow.h \
     glscene.h \
@@ -55,14 +57,17 @@ HEADERS  += mainwindow.h \
     drawabledendriteconnection.h \
     glhelpfunctions.h \
     drawablesynapse.h \
-    propertybrowser.h
+    propertybrowser.h \
+    scriptswindow.h \
+    scriptsyntaxhighlighter.h
 
 FORMS    += mainwindow.ui \
     izhikevich_properties_widget.ui \
     simulation_settings_widget.ui \
     neuron_membrane_plot_widget.ui \
     neuron_manipulator_widget.ui \
-    about_dialog.ui
+    about_dialog.ui \
+    scriptswindow.ui
 
 RESOURCES += \
     icons.qrc
