@@ -3,7 +3,7 @@
 #include "axon.h"
 
 AxonNode::AxonNode(Neuron* neuron)
-    : SpikingObject(neuron)
+    : SpatialObject(neuron), SpikingObject(neuron)
 {
     set_user_movable(true);
 }
