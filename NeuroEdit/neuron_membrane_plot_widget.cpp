@@ -4,6 +4,7 @@
 #include "neuron.h"
 #include "application.h"
 #include "simulation.h"
+#include "controller.h"
 
 typedef std::pair<double,double> double_pair;
 
@@ -37,11 +38,11 @@ GLMembranePlot::GLMembranePlot(QWidget* parent) :
 {
     setup();
     connect(&Application::instance(), SIGNAL(refresh()), this, SLOT(updateGL()));
-    connect(&Application::instance(), SIGNAL(new_simulation(Simulation*)), this, SLOT(new_simulation(Simulation*)));
+    connect(&Controller::instance(), SIGNAL(new_simulation(Simulation*)), this, SLOT(new_simulation(Simulation*)));
 }
 
 void GLMembranePlot::new_simulation(Simulation*){
-    connect(Application::instance().simulation(), SIGNAL(simulation_started()), this, SLOT(simulation_started()));
+    connect(Controller::instance().simulation(), SIGNAL(simulation_started()), this, SLOT(simulation_started()));
 }
 
 void GLMembranePlot::setup(){
@@ -75,7 +76,7 @@ void GLMembranePlot::update_values(){
     if(!m_neuron)
         return;
 
-    double new_time = Application::instance().simulation()->time_ms();
+    double new_time = Controller::instance().simulation()->time_ms();
     if(m_time == new_time) return;
     double milliseconds = new_time - m_time;
     m_time = new_time;

@@ -3,13 +3,10 @@
 #include <QtScript/QScriptEngine>
 #include <QtScriptTools/QScriptEngineDebugger>
 
-class Network;
-class Application;
 class ScriptEngine
 {
 public:
-    ScriptEngine(Network*);
-    ScriptEngine(Application*);
+    ScriptEngine();
     void evaluate(const QString&);
     void debug(const QString&);
 

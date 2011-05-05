@@ -24,7 +24,8 @@ SOURCES += izhikevich.cpp \
     serializationhelper.cpp \
     axonnode.cpp \
     scriptengine.cpp \
-    spikingobject.cpp
+    spikingobject.cpp \
+    controller.cpp
 
 HEADERS += izhikevich.h \
            network.h \
@@ -41,4 +42,5 @@ HEADERS += izhikevich.h \
     serializationhelper.h \
     axonnode.h \
     scriptengine.h \
-    spikingobject.h
+    spikingobject.h \
+    controller.h

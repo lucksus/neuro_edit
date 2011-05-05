@@ -15,6 +15,7 @@
 #include <sstream>
 #include "serializationhelper.h"
 #include "application.h"
+#include "controller.h"
 
 MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),
@@ -85,7 +86,7 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     ui->menuWindows->addAction(dock->toggleViewAction());
     dock->hide();
 
-    connect(&Application::instance(), SIGNAL(new_simulation(Simulation*)), this, SLOT(simulation_changed(Simulation*)));
+    connect(&Controller::instance(), SIGNAL(new_simulation(Simulation*)), this, SLOT(simulation_changed(Simulation*)));
 }
 
 void MainWindow::init_glscene(){
@@ -152,7 +153,7 @@ void MainWindow::on_actionSynapse_triggered(bool){
 }
 
 void MainWindow::on_actionStart_Simulation_triggered(bool){
-    m_sim->start();
+    Controller::instance().simulation()->start();
 }
 
 
@@ -185,7 +186,7 @@ void MainWindow::closeEvent(QCloseEvent *event){
 }
 
 void MainWindow::on_actionNew_triggered(bool){
-    Application::instance().create_new_simulation();
+    Controller::instance().create_new_simulation();
     ui->actionSingle_Neuron->setEnabled(true);
 }
 
@@ -193,19 +194,19 @@ void MainWindow::on_actionSave_triggered(bool){
     QString fileName = QFileDialog::getSaveFileName(this,
         tr("Save network"), "", tr("NeuroEdit files (*.ne)"));
     if(fileName.isEmpty()) return;
-    Application::instance().save_simulation(fileName.toStdString());
+    Controller::instance().save_simulation(fileName.toStdString());
 }
 
 void MainWindow::on_actionLoad_triggered(bool){
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Load network"), "", tr("NeuroEdit files (*.ne)"));
     if(fileName.isEmpty()) return;
-    Application::instance().load_simulation(fileName.toStdString());
+    Controller::instance().load_simulation(fileName.toStdString());
     ui->actionSingle_Neuron->setEnabled(true);
 }
 
 void MainWindow::on_actionClose_triggered(bool){
-    Application::instance().close_simulation();
+    Controller::instance().close_simulation();
     ui->actionSingle_Neuron->setEnabled(false);
 }
 

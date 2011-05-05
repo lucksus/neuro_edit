@@ -3,6 +3,7 @@
 #include <boost/foreach.hpp>
 #include "application.h"
 #include <algorithm>
+#include "controller.h"
 
 NeuronManipulatorWidget::NeuronManipulatorWidget(QWidget *parent) :
     QWidget(parent),
@@ -33,7 +34,7 @@ void NeuronManipulatorWidget::create_current_inducers(){
     BOOST_FOREACH(DendriticNode* n, m_dendritic_nodes){
             CurrentInducer* ci = new CurrentInducer(n);
             m_current_inducers.insert(ci);
-            Application::instance().simulation()->network()->add_object(ci);
+            Controller::instance().simulation()->network()->add_object(ci);
     }
 }
 
@@ -41,7 +42,7 @@ void NeuronManipulatorWidget::delete_current_inducers(){
     std::set<CurrentInducer*> temp = m_current_inducers;
     m_current_inducers.clear();
     BOOST_FOREACH(CurrentInducer* ci, temp){
-        Application::instance().simulation()->network()->delete_object(ci);
+        Controller::instance().simulation()->network()->delete_object(ci);
     }
 }
 

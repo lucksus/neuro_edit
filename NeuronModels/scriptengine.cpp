@@ -1,15 +1,21 @@
 #include "scriptengine.h"
 #include <QtGui/QAction>
+#include "controller.h"
+#include "simulation.h"
 #include "network.h"
 
-ScriptEngine::ScriptEngine(Network* network)
+ScriptEngine::ScriptEngine()
 {
-    QScriptValue objectValue = m_engine.newQObject(network);
+    Simulation* sim = Controller::instance().simulation();
+    if(!sim) return;
+    QScriptValue objectValue = m_engine.newQObject(sim);
+    m_engine.globalObject().setProperty("simulation", objectValue);
+    Network* net = sim->network();
+    if(!net) return;
+    objectValue = m_engine.newQObject(net);
     m_engine.globalObject().setProperty("network", objectValue);
 }
 
-ScriptEngine::ScriptEngine(Application*){
-}
 
 void ScriptEngine::evaluate(const QString& code){
     m_debugger.detach();
