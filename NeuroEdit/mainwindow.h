@@ -59,7 +59,7 @@ private slots:
 
      void objects_selected(std::set<SimulationObject*>);
 
-     void network_changed(Network*);
+     void simulation_changed(Simulation*);
 
 private:
     Ui::MainWindow *ui;

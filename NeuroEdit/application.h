@@ -5,6 +5,7 @@
 #include "network.h"
 #include <QTimer>
 #include <QSplashScreen>
+#include "scriptengine.h"
 
 class Application : public QObject
 {
@@ -15,19 +16,18 @@ public:
     void destroy();
     void show_main_window();
 
-    void close_network();
-    void create_empty_network();
-    void load_network(std::string filename);
-    void save_network(std::string filename);
+    void close_simulation();
+    void create_new_simulation();
+    void load_simulation(std::string filename);
+    void save_simulation(std::string filename);
 
-    Network* network();
     Simulation* simulation();
 
     QWidget* main_window();
 
 signals:
     void refresh();
-    void new_network(Network*);
+    void new_simulation(Simulation*);
 
 private slots:
     void refresh_timeout();
@@ -38,7 +38,6 @@ private:
     QSplashScreen m_splash;
     MainWindow* m_main_window;
     Simulation* m_simulation;
-    Network* m_network;
 
     QTimer m_timer;
 

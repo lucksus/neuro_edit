@@ -4,6 +4,7 @@
 
 class Neuron;
 class Network;
+class Simulation;
 class SimulationObject;
 class SerializationHelper
 {
@@ -14,6 +15,8 @@ public:
     void set_serialize_all(bool);
     void clear_serialization_list();
 
+    void serialize_simulation(std::ostream&, Simulation*);
+    Simulation* deserialize_simulation(std::istream&);
 
     void serialize_network(std::ostream&, Network*);
     Network* deserialize_network(std::istream&);

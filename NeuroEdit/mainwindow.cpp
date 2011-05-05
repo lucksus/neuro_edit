@@ -26,7 +26,6 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     m_property_browser(this)
 {
     ui->setupUi(this);
-    m_sim_settings_widget.set_simulation(m_sim);
 
     QVBoxLayout* l = new QVBoxLayout;
     l->setContentsMargins(0,0,0,0);
@@ -86,15 +85,7 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     ui->menuWindows->addAction(dock->toggleViewAction());
     dock->hide();
 
-
-
-
-    connect(m_sim, SIGNAL(simulation_started()), this, SLOT(simulation_started()));
-    connect(m_sim, SIGNAL(simulation_stopped()), this, SLOT(simulation_stopped()));
-    connect(m_sim, SIGNAL(simulation_started()), &m_sim_settings_widget, SLOT(simulation_started()));
-    connect(m_sim, SIGNAL(simulation_stopped()), &m_sim_settings_widget, SLOT(simulation_stopped()));
-
-    connect(&Application::instance(), SIGNAL(new_network(Network*)), this, SLOT(network_changed(Network*)));
+    connect(&Application::instance(), SIGNAL(new_simulation(Simulation*)), this, SLOT(simulation_changed(Simulation*)));
 }
 
 void MainWindow::init_glscene(){
@@ -186,13 +177,15 @@ void MainWindow::simulation_time_passed(double){
 }
 
 void MainWindow::closeEvent(QCloseEvent *event){
-    m_sim->request_stop();
-    usleep(1000);
+    if(m_sim){
+        m_sim->request_stop();
+        usleep(1000);
+    }
     event->accept();
 }
 
 void MainWindow::on_actionNew_triggered(bool){
-    Application::instance().create_empty_network();
+    Application::instance().create_new_simulation();
     ui->actionSingle_Neuron->setEnabled(true);
 }
 
@@ -200,19 +193,19 @@ void MainWindow::on_actionSave_triggered(bool){
     QString fileName = QFileDialog::getSaveFileName(this,
         tr("Save network"), "", tr("NeuroEdit files (*.ne)"));
     if(fileName.isEmpty()) return;
-    Application::instance().save_network(fileName.toStdString());
+    Application::instance().save_simulation(fileName.toStdString());
 }
 
 void MainWindow::on_actionLoad_triggered(bool){
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Load network"), "", tr("NeuroEdit files (*.ne)"));
     if(fileName.isEmpty()) return;
-    Application::instance().load_network(fileName.toStdString());
+    Application::instance().load_simulation(fileName.toStdString());
     ui->actionSingle_Neuron->setEnabled(true);
 }
 
 void MainWindow::on_actionClose_triggered(bool){
-    Application::instance().close_network();
+    Application::instance().close_simulation();
     ui->actionSingle_Neuron->setEnabled(false);
 }
 
@@ -320,8 +313,21 @@ void MainWindow::objects_selected(std::set<SimulationObject*> objects){
     }
 }
 
-void MainWindow::network_changed(Network* n){
-    m_network = n;
+void MainWindow::simulation_changed(Simulation* s){
+    //disconnect(m_sim, SIGNAL(simulation_started()), this, SLOT(simulation_started()));
+    //disconnect(m_sim, SIGNAL(simulation_stopped()), this, SLOT(simulation_stopped()));
+    //disconnect(m_sim, SIGNAL(simulation_started()), &m_sim_settings_widget, SLOT(simulation_started()));
+    //disconnect(m_sim, SIGNAL(simulation_stopped()), &m_sim_settings_widget, SLOT(simulation_stopped()));
+    m_sim = s;
+    connect(m_sim, SIGNAL(simulation_started()), this, SLOT(simulation_started()));
+    connect(m_sim, SIGNAL(simulation_stopped()), this, SLOT(simulation_stopped()));
+    connect(m_sim, SIGNAL(simulation_started()), &m_sim_settings_widget, SLOT(simulation_started()));
+    connect(m_sim, SIGNAL(simulation_stopped()), &m_sim_settings_widget, SLOT(simulation_stopped()));
+    m_sim_settings_widget.set_simulation(m_sim);
+
+    if(m_sim) m_network = m_sim->network();
+    else m_network = 0;
+
     BOOST_FOREACH(QDockWidget* dock, m_dock_widgets){
         //removeDockWidget(dock);
         dock->hide();

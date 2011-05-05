@@ -138,7 +138,7 @@
      <normaloff>:/icons/Resources/save.png</normaloff>:/icons/Resources/save.png</iconset>
    </property>
    <property name="text">
-    <string>Save</string>
+    <string>Save Simulation</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -150,7 +150,7 @@
      <normaloff>:/icons/Resources/load.png</normaloff>:/icons/Resources/load.png</iconset>
    </property>
    <property name="text">
-    <string>Load</string>
+    <string>Load Simulation</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>

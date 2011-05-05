@@ -3,6 +3,8 @@
 #include <sys/time.h>
 #include <iostream>
 #include <QtCore/QMutexLocker>
+#include <fstream>
+#include "serializationhelper.h"
 
 Simulation::Simulation():
     m_stop_request(false),
@@ -18,6 +20,22 @@ void Simulation::request_stop(){
 
 void Simulation::wait_till_finished(){
     QMutexLocker locker(&m_mutex);
+}
+
+void Simulation::write_to_file(const std::string& filename){
+    std::ofstream file(filename.c_str());
+    SerializationHelper::instance().set_serialize_all(true);
+    SerializationHelper::instance().serialize_simulation(file, this);
+}
+
+void Simulation::write_to_file(const QString& filename){
+    write_to_file(filename.toStdString());
+}
+
+Simulation* Simulation::load_from_file(const std::string& filename){
+    std::ifstream file(filename.c_str());
+    Simulation* n = SerializationHelper::instance().deserialize_simulation(file);
+    return n;
 }
 
 void Simulation::set_network(Network* network){

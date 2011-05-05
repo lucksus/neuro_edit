@@ -37,6 +37,10 @@ GLMembranePlot::GLMembranePlot(QWidget* parent) :
 {
     setup();
     connect(&Application::instance(), SIGNAL(refresh()), this, SLOT(updateGL()));
+    connect(&Application::instance(), SIGNAL(new_simulation(Simulation*)), this, SLOT(new_simulation(Simulation*)));
+}
+
+void GLMembranePlot::new_simulation(Simulation*){
     connect(Application::instance().simulation(), SIGNAL(simulation_started()), this, SLOT(simulation_started()));
 }
 

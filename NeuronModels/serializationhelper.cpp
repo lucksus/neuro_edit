@@ -9,6 +9,7 @@
 #include "synapse.h"
 #include "dendriticnode.h"
 #include "network.h"
+#include "simulation.h"
 
 SerializationHelper& SerializationHelper::instance(){
     static SerializationHelper sh;
@@ -35,7 +36,45 @@ SerializationHelper::SerializationHelper()
 {
 }
 
+void SerializationHelper::serialize_simulation(std::ostream& stream, Simulation* simulation){
+    boost::archive::xml_oarchive archive(stream);
+    archive.register_type<Neuron>();
+    archive.register_type<Izhikevich>();
+    archive.register_type<Axon>();
+    archive.register_type<AxonNode>();
+    archive.register_type<Synapse>();
+    archive.register_type<DendriticNode>();
+    archive.register_type<Network>();
+    archive.register_type<Simulation>();
 
+    try{
+    archive << boost::serialization::make_nvp("simulation",*simulation);
+    }
+    catch(std::exception const& e) { std::cout << e.what() << std::endl;}
+       catch(...) { std::cout << "whoops!" << std::endl; }
+}
+
+Simulation* SerializationHelper::deserialize_simulation(std::istream& stream){
+    boost::archive::xml_iarchive archive(stream);
+    archive.register_type<Neuron>();
+    archive.register_type<Izhikevich>();
+    archive.register_type<Axon>();
+    archive.register_type<AxonNode>();
+    archive.register_type<Synapse>();
+    archive.register_type<DendriticNode>();
+    archive.register_type<Network>();
+    archive.register_type<Simulation>();
+
+    Simulation* s = new Simulation;
+    try{
+        archive >> boost::serialization::make_nvp("simulation",*s);
+    }catch(std::exception const& e) {
+        std::cout << e.what() << std::endl;
+    }
+    catch(...) { std::cout << "whoops!" << std::endl; }
+
+    return s;
+}
 
 void SerializationHelper::serialize_network(std::ostream& stream, Network* network){
     boost::archive::xml_oarchive archive(stream);

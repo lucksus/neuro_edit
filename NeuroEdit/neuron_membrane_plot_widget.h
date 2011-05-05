@@ -10,7 +10,7 @@ namespace Ui {
 }
 
 class Neuron;
-
+class Simulation;
 class GLMembranePlot : public GLPlotWidget2d{
 Q_OBJECT
 public:
@@ -19,6 +19,7 @@ public:
 public slots:
     void set_neuron(Neuron*);
     void set_time_intervall(double milliseconds);
+    void new_simulation(Simulation*);
 
 protected:
     virtual list<GLPlotWidget2d::Point2DWithAlpha> data();

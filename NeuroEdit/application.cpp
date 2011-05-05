@@ -6,7 +6,6 @@ Application::Application():
         m_splash(QPixmap(":/images/splash")),
         m_main_window(0),
         m_simulation(0),
-        m_network(0),
         m_timer(this)
 {
     m_splash.setWindowFlags( Qt::WindowStaysOnTopHint | m_splash.windowFlags() );
@@ -41,9 +40,6 @@ void Application::init(){
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(refresh_timeout()));
     m_timer.start(1000/30);
 
-    m_simulation = new Simulation;
-    m_network = new Network;
-    m_simulation->set_network(m_network);
     m_main_window = new MainWindow(m_simulation);
 }
 
@@ -55,31 +51,30 @@ void Application::show_main_window(){
     m_main_window->show();
 }
 
-void Application::close_network(){
+void Application::close_simulation(){
+    if(0 == m_simulation) return;
     m_simulation->request_stop();
     m_simulation->wait_till_finished();
-    if(m_network) delete m_network;
-    m_network = 0;
-    m_simulation->set_network(m_network);
-    emit new_network(m_network);
+    delete m_simulation;
+    m_simulation = 0;
+    emit new_simulation(0);
 }
 
-void Application::create_empty_network(){
-    close_network();
-    m_network = new Network;
-    m_simulation->set_network(m_network);
-    emit new_network(m_network);
+void Application::create_new_simulation(){
+    close_simulation();
+    m_simulation = new Simulation;
+    m_simulation->set_network(new Network);
+    emit new_simulation(m_simulation);
 }
 
-void Application::load_network(std::string filename){
-    close_network();
-    m_network = Network::load_from_file(filename);
-    m_simulation->set_network(m_network);
-    emit new_network(m_network);
+void Application::load_simulation(std::string filename){
+    close_simulation();
+    m_simulation = Simulation::load_from_file(filename);
+    emit new_simulation(m_simulation);
 }
 
-void Application::save_network(std::string filename){
-    m_network->write_to_file(filename);
+void Application::save_simulation(std::string filename){
+    m_simulation->write_to_file(filename);
 }
 
 
