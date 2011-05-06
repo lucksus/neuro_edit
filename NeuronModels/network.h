@@ -40,7 +40,7 @@ public:
     Q_INVOKABLE QString script(const QString&) const;
     Q_INVOKABLE void set_script(const QString& name, const QString& script);
     Q_INVOKABLE void run_script(const QString& name);
-
+    Q_INVOKABLE void remove_script(const QString& name);
 
     Q_INVOKABLE Axon* connect(SpikingObject*, SpikingObject*);
     std::pair<Axon*, Synapse*> connect(SpikingObject*, DendriticNode*);

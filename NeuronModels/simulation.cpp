@@ -5,6 +5,7 @@
 #include <QtCore/QMutexLocker>
 #include <fstream>
 #include "serializationhelper.h"
+#include <boost/foreach.hpp>
 
 Simulation::Simulation():
     m_stop_request(false),
@@ -93,3 +94,29 @@ double Simulation::time_ms(){
     return m_time_ms;
 }
 
+
+QStringList Simulation::scripts() const{
+    QStringList list;
+    std::pair<std::string, std::string> s;
+    BOOST_FOREACH(s, m_scripts){
+        list.append(s.first.c_str());
+    }
+    return list;
+}
+
+QString Simulation::script(const QString& name) const{
+    return QString(m_scripts.find(name.toStdString())->second.c_str());
+}
+
+void Simulation::set_script(const QString& name, const QString& script){
+    m_scripts[name.toStdString()] = script.toStdString();
+}
+
+
+void Simulation::run_script(const QString& name){
+    m_script_engine.evaluate(script(name));
+}
+
+void Simulation::remove_script(const QString& name){
+    m_scripts.erase(name.toStdString());
+}

@@ -5,9 +5,11 @@
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/assume_abstract.hpp>
 #include <boost/serialization/nvp.hpp>
+#include <boost/serialization/map.hpp>
+#include "scriptengine.h"
+#include <QtCore/QStringList>
 
 class Network;
-
 class Simulation : public QThread
 {
 Q_OBJECT
@@ -28,8 +30,13 @@ public:
 
     double simulation_step();
     double real_step();
-
     double time_ms();
+
+    Q_INVOKABLE QStringList scripts() const;
+    Q_INVOKABLE QString script(const QString&) const;
+    Q_INVOKABLE void set_script(const QString& name, const QString& script);
+    Q_INVOKABLE void run_script(const QString& name);
+    Q_INVOKABLE void remove_script(const QString& name);
 
 signals:
     void not_matching_speed();
@@ -46,7 +53,10 @@ private:
     double m_simulation_step;
     double m_real_step;
     double m_time_ms;
+    std::map<std::string, std::string> m_scripts;
     QMutex m_mutex;
+
+    ScriptEngine m_script_engine;
 
 
     template<class Archive>
@@ -56,6 +66,7 @@ private:
         ar & boost::serialization::make_nvp("Simulation_Step",m_simulation_step);
         ar & boost::serialization::make_nvp("Real_Step",m_real_step);
         ar & boost::serialization::make_nvp("Time",m_time_ms);
+        ar & boost::serialization::make_nvp("Scripts", m_scripts);
     }
 
 };

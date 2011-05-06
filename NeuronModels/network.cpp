@@ -153,7 +153,7 @@ QStringList Network::scripts() const{
 }
 
 QString Network::script(const QString& name) const{
-    return QString(m_scripts.find(name.toStdString())->first.c_str());
+    return QString(m_scripts.find(name.toStdString())->second.c_str());
 }
 
 void Network::set_script(const QString& name, const QString& script){
@@ -164,3 +164,8 @@ void Network::set_script(const QString& name, const QString& script){
 void Network::run_script(const QString& name){
     m_script_engine.evaluate(script(name));
 }
+
+void Network::remove_script(const QString& name){
+    m_scripts.erase(name.toStdString());
+}
+
