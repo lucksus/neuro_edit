@@ -52,12 +52,12 @@ QScriptValue Neuron_ctor(QScriptContext *ctx, QScriptEngine *eng)
     return eng->newQObject(new Neuron(p));
  }
 
-QScriptValue print(QScriptContext *ctx, QScriptEngine *eng)
+QScriptValue print(QScriptContext *ctx, QScriptEngine*)
 {
     for(int i=0;i<ctx->argumentCount();i++){
         Controller::instance().output_from_script(ctx->argument(i).toString());
     }
-    return QScriptValue;
+    return QScriptValue();
 }
 
 
