@@ -108,7 +108,26 @@ void ScriptsWindow::on_saveButton_clicked(){
 }
 
 void ScriptsWindow::on_playButton_clicked(){
-
+    QString return_value;
+    QString script_name;
+    QModelIndex index;
+    switch(ui->tabWidget->currentIndex()){
+    case 0:
+        if(!ui->simulationScriptsList->selectionModel()) return;
+        if(ui->simulationScriptsList->selectionModel()->selectedRows().empty()) return;
+        index = ui->simulationScriptsList->selectionModel()->selectedRows().first();
+        script_name = m_simulation_scripts.data(index, Qt::DisplayRole).toString();
+        return_value = Controller::instance().simulation()->run_script(script_name);
+        break;
+    case 1:
+        if(!ui->networkScriptsList->selectionModel()) return;
+        if(ui->networkScriptsList->selectionModel()->selectedRows().empty()) return;
+        index = ui->networkScriptsList->selectionModel()->selectedRows().first();
+        script_name = m_network_scripts.data(index, Qt::DisplayRole).toString();
+        Controller::instance().simulation()->network()->run_script(script_name);
+        break;
+    }
+    ui->outputListWidget->addItem(return_value);
 }
 
 void ScriptsWindow::on_pauseButton_clicked(){
