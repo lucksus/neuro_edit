@@ -31,6 +31,7 @@ ScriptsWindow::ScriptsWindow(QWidget *parent) :
     connect(&m_simulation_scripts, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(simulationScriptsNameChanged(QModelIndex,QModelIndex)));
     connect(&m_network_scripts, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(networkScriptsNameChanged(QModelIndex,QModelIndex)));
     //connect(ui->simulationScriptsList, SIGNAL(activated(QModelIndex)), this, SLOT(simulationScriptSelected(QModelIndex)));
+    connect(&Controller::instance(), SIGNAL(script_output(QString)), this, SLOT(script_output(QString)));
 }
 
 void ScriptsWindow::simulationScriptSelected(const QItemSelection & selected, const QItemSelection &){
@@ -176,4 +177,8 @@ void ScriptsWindow::networkScriptsNameChanged(QModelIndex index,QModelIndex){
 void ScriptsWindow::showEvent(QShowEvent *event){
     QWidget::showEvent(event);
     read_name_lists();
+}
+
+void ScriptsWindow::script_output(QString output){
+    ui->outputListWidget->addItem(output);
 }

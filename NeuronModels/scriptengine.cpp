@@ -11,6 +11,7 @@ ScriptEngine::ScriptEngine(Simulation* sim){
     //m_engine.setGlobalObject(m_engine.newQObject(sim));
     m_engine.globalObject().setProperty("simulation", m_engine.newQObject(sim));
     add_constructors();
+    add_global_functions();
 }
 
 ScriptEngine::ScriptEngine(Network* net){
@@ -18,6 +19,7 @@ ScriptEngine::ScriptEngine(Network* net){
     //m_engine.setGlobalObject(m_engine.newQObject(net));
     m_engine.globalObject().setProperty("network", m_engine.newQObject(net));
     add_constructors();
+    add_global_functions();
 }
 
 
@@ -50,7 +52,19 @@ QScriptValue Neuron_ctor(QScriptContext *ctx, QScriptEngine *eng)
     return eng->newQObject(new Neuron(p));
  }
 
+QScriptValue print(QScriptContext *ctx, QScriptEngine *eng)
+{
+    for(int i=0;i<ctx->argumentCount();i++){
+        Controller::instance().output_from_script(ctx->argument(i).toString());
+    }
+    return QScriptValue;
+}
+
 
 void ScriptEngine::add_constructors(){
     m_engine.globalObject().setProperty("Neuron", m_engine.newFunction(Neuron_ctor));
+}
+
+void ScriptEngine::add_global_functions(){
+    m_engine.globalObject().setProperty("print", m_engine.newFunction(print));
 }

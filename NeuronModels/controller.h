@@ -18,8 +18,12 @@ public:
 
     Simulation* simulation();
 
+public slots:
+    void output_from_script(QString);
+
 signals:
     void new_simulation(Simulation*);
+    void script_output(QString);
 
 private:
     Controller();

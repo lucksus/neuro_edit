@@ -67,3 +67,7 @@ void Controller::save_simulation(std::string filename){
 Simulation* Controller::simulation(){
     return m_simulation;
 }
+
+void Controller::output_from_script(QString output){
+    emit script_output(output);
+}

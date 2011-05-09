@@ -18,6 +18,7 @@ private:
     QScriptEngineDebugger m_debugger;
 
     void add_constructors();
+    void add_global_functions();
 
 };
 

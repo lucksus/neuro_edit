@@ -49,6 +49,7 @@ protected slots:
     void textChanged();
     void simulationScriptsNameChanged(QModelIndex,QModelIndex);
     void networkScriptsNameChanged(QModelIndex,QModelIndex);
+    void script_output(QString);
 
 protected:
     void showEvent(QShowEvent *event);
