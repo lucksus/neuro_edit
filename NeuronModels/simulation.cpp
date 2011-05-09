@@ -6,12 +6,14 @@
 #include <fstream>
 #include "serializationhelper.h"
 #include <boost/foreach.hpp>
+#include <stdexcept>
 
 Simulation::Simulation():
     m_stop_request(false),
     m_network(0),
     m_simulation_step(.1),
-    m_real_step(10)
+    m_real_step(10),
+    m_script_engine(this)
 {
 }
 
@@ -105,6 +107,7 @@ QStringList Simulation::scripts() const{
 }
 
 QString Simulation::script(const QString& name) const{
+    if(m_scripts.count(name.toStdString()) < 1) throw std::logic_error(QString("Script %1 not found!").arg(name).toStdString());
     return QString(m_scripts.find(name.toStdString())->second.c_str());
 }
 
@@ -113,8 +116,8 @@ void Simulation::set_script(const QString& name, const QString& script){
 }
 
 
-void Simulation::run_script(const QString& name){
-    m_script_engine.evaluate(script(name));
+QString Simulation::run_script(const QString& name){
+    return m_script_engine.evaluate(script(name));
 }
 
 void Simulation::remove_script(const QString& name){

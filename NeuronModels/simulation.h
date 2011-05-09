@@ -13,11 +13,15 @@ class Network;
 class Simulation : public QThread
 {
 Q_OBJECT
+Q_PROPERTY(Network* network READ network WRITE set_network)
+Q_PROPERTY(double simulation_step READ simulation_step WRITE set_simulation_step)
+Q_PROPERTY(double real_step READ real_step WRITE set_real_step)
+Q_PROPERTY(double time READ time_ms)
 friend class boost::serialization::access;
 public:
     Simulation();
-    void request_stop();
-    void wait_till_finished();
+    Q_INVOKABLE void request_stop();
+    Q_INVOKABLE void wait_till_finished();
 
     void write_to_file(const std::string& filename);
     Q_INVOKABLE void write_to_file(const QString& filename);
@@ -35,7 +39,7 @@ public:
     Q_INVOKABLE QStringList scripts() const;
     Q_INVOKABLE QString script(const QString&) const;
     Q_INVOKABLE void set_script(const QString& name, const QString& script);
-    Q_INVOKABLE void run_script(const QString& name);
+    Q_INVOKABLE QString run_script(const QString& name);
     Q_INVOKABLE void remove_script(const QString& name);
 
 signals:

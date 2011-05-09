@@ -23,8 +23,8 @@ class Network : public QObject
 Q_OBJECT
 friend class boost::serialization::access;
 public:
-    Network():m_script_engine(){}
-    Network(const Network& n):QObject(), m_objects(n.m_objects), m_script_engine(){}
+    Network():m_script_engine(this){}
+    Network(const Network& n):QObject(), m_objects(n.m_objects), m_script_engine(this){}
 
     void write_to_file(const std::string& filename);
     Q_INVOKABLE void write_to_file(const QString& filename);
@@ -64,5 +64,7 @@ private:
     }
 };
 
+Q_DECLARE_METATYPE(Network)
+Q_DECLARE_METATYPE(Network*)
 
 #endif // NETWORK_H

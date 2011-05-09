@@ -3,16 +3,21 @@
 #include <QtScript/QScriptEngine>
 #include <QtScriptTools/QScriptEngineDebugger>
 
+class Simulation;
+class Network;
 class ScriptEngine
 {
 public:
-    ScriptEngine();
-    void evaluate(const QString&);
+    ScriptEngine(Simulation*);
+    ScriptEngine(Network*);
+    QString evaluate(const QString&);
     void debug(const QString&);
 
 private:
     QScriptEngine m_engine;
     QScriptEngineDebugger m_debugger;
+
+    void add_constructors();
 
 };
 
