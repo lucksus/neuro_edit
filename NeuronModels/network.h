@@ -45,6 +45,12 @@ public:
     Q_INVOKABLE Axon* connect(SpikingObject*, SpikingObject*);
     std::pair<Axon*, Synapse*> connect(SpikingObject*, DendriticNode*);
 
+    static QScriptValue networkToScriptValue(QScriptEngine *engine, Network* const &in)
+    { return engine->newQObject(in); }
+
+    static void networkFromScriptValue(const QScriptValue &object, Network* &out)
+    { out = qobject_cast<Network*>(object.toQObject()); }
+
 public:
     void simulate(double milli_seconds);
 

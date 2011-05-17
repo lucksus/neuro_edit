@@ -5,6 +5,7 @@
 #include "network.h"
 #include "point.h"
 #include "neuron.h"
+#include <QtCore/QMetaType>
 
 ScriptEngine::ScriptEngine(Simulation* sim){
     if(!sim) return;
@@ -12,6 +13,7 @@ ScriptEngine::ScriptEngine(Simulation* sim){
     m_engine.globalObject().setProperty("simulation", m_engine.newQObject(sim));
     add_constructors();
     add_global_functions();
+    add_conversion_functions();
 }
 
 ScriptEngine::ScriptEngine(Network* net){
@@ -20,6 +22,7 @@ ScriptEngine::ScriptEngine(Network* net){
     m_engine.globalObject().setProperty("network", m_engine.newQObject(net));
     add_constructors();
     add_global_functions();
+    add_conversion_functions();
 }
 
 
@@ -67,4 +70,8 @@ void ScriptEngine::add_constructors(){
 
 void ScriptEngine::add_global_functions(){
     m_engine.globalObject().setProperty("print", m_engine.newFunction(print));
+}
+
+void ScriptEngine::add_conversion_functions(){
+    qScriptRegisterMetaType(&m_engine, &Network::networkToScriptValue, &Network::networkFromScriptValue);
 }
