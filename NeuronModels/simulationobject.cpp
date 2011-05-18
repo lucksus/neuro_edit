@@ -4,7 +4,7 @@
 SimulationObject::SimulationObject(Neuron* neuron)
     : m_network(0), m_neuron(neuron), m_done(false)
 {
-
+    bad_hacks[0] = bad_hacks[1] = bad_hacks[2] = 0;
 }
 
 SimulationObject::SimulationObject(const SimulationObject& s)

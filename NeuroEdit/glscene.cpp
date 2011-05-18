@@ -476,6 +476,15 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
         paint_object(child, picking, moving);
     }
 
+    if(o->bad_hacks[0] == 0){
+        BOOST_FOREACH(Drawable* drawable, Drawables::instance().get_all_drawables()){
+            if(!drawable->is_applicable_to(o)) continue;
+            o->bad_hacks[0] = drawable;
+        }
+    }
+    Drawable* drawable = static_cast<Drawable*>(o->bad_hacks[0]);
+    drawable->init_with_object(o);
+
     glPushMatrix();
 
     if(picking){
@@ -486,30 +495,26 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
     }
 
 
-    BOOST_FOREACH(Drawable* drawable, Drawables::instance().get_all_drawables()){
-        if(!drawable->is_applicable_to(o)) continue;
-        drawable->init_with_object(o);
-        if(!picking) drawable->set_color_and_lightning();
-        glPushMatrix();
 
-        if(moving){
-            assert(o);
-            glEnable(GL_LIGHTING);
-            glEnable(GL_DITHER);
-            GLfloat transparent[] = {.9,.9,.9,0.5};
-            glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, transparent);
-            Point offset = m_moving_point - m_moving_start_point;
-            Point position = o->position() + offset;
-            glTranslatef(position.x,position.y,position.z);
-        }else{
-            Point pos = o->position();
-            glTranslatef(pos.x, pos.y, pos.z);
-        }
 
-        drawable->draw_geometry();
+    //if(!picking) drawable->set_color_and_lightning();
 
-        glPopMatrix();
+    if(moving){
+        assert(o);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_DITHER);
+        GLfloat transparent[] = {.9,.9,.9,0.5};
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, transparent);
+        Point offset = m_moving_point - m_moving_start_point;
+        Point position = o->position() + offset;
+        glTranslatef(position.x,position.y,position.z);
+    }else{
+        Point pos = o->position();
+        glTranslatef(pos.x, pos.y, pos.z);
     }
+
+    drawable->draw_geometry();
+
 
     glPopMatrix();
 }

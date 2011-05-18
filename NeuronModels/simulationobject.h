@@ -49,6 +49,8 @@ public:
     static void fromScriptValue(const QScriptValue &object, SimulationObject* &out)
     { out = qobject_cast<SimulationObject*>(object.toQObject()); }
 
+    void* bad_hacks[3];
+
 protected:
     SimulationObject(){}
     void done();
