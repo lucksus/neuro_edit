@@ -24,8 +24,12 @@ void DrawableNeuron::set_color_and_lightning(){
 
 }
 
-void DrawableNeuron::draw_geometry(){
+void DrawableNeuron::draw_geometry_impl(){
     //glutSolidSphere(SIZE,20,20);
     //glutSolidCube(SIZE);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DITHER);
+    GLfloat green[] = {.2,1,.7,1};
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
     GLHelpFunctions::draw_frustum(Point(-SIZE/2,0,0),Point(SIZE/2,0,0),SIZE,SIZE*2/4,4, true, true);
 }

@@ -19,7 +19,7 @@ void DrawableSynapse::set_color_and_lightning(){
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
 }
 
-void DrawableSynapse::draw_geometry(){
+void DrawableSynapse::draw_geometry_impl(){
     Synapse* synapse = dynamic_cast<Synapse*>(m_object);
     assert(synapse);
     Point vec(0,0,0);

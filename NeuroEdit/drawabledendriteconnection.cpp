@@ -21,7 +21,7 @@ void DrawableDendriteConnection::set_color_and_lightning(){
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
 }
 
-void DrawableDendriteConnection::draw_geometry(){
+void DrawableDendriteConnection::draw_geometry_impl(){
     DendriticNode* n = dynamic_cast<DendriticNode*>(m_object);
     assert(n);
     DendriticNode* parent = n->parent();

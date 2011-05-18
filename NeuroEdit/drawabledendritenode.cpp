@@ -16,6 +16,6 @@ void DrawableDendriteNode::set_color_and_lightning(){
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
 }
 
-void DrawableDendriteNode::draw_geometry(){
+void DrawableDendriteNode::draw_geometry_impl(){
     glutSolidCube(SIZE);
 }

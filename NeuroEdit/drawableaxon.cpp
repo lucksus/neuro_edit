@@ -21,7 +21,7 @@ void DrawableAxon::set_color_and_lightning(){
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
 }
 
-void DrawableAxon::draw_geometry(){
+void DrawableAxon::draw_geometry_impl(){
     Axon* link = dynamic_cast<Axon*>(m_object);
     assert(link);
     Point vec = link->receiver()->position() - link->emitter()->position();

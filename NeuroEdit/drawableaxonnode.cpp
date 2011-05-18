@@ -15,7 +15,7 @@ void DrawableAxonNode::set_color_and_lightning(){
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
 }
 
-void DrawableAxonNode::draw_geometry(){
+void DrawableAxonNode::draw_geometry_impl(){
     glutSolidSphere(SIZE,20,20);
 }
 
