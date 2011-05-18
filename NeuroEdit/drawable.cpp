@@ -5,9 +5,22 @@
 #include "drawabledendritenode.h"
 #include "drawabledendriteconnection.h"
 #include "drawablesynapse.h"
+#include <assert.h>
 
 void Drawable::init_with_object(SimulationObject* object){
     m_object = object;
+}
+
+void Drawable::draw_geometry(){
+    if(m_display_list != 0){
+        glCallList(m_display_list);
+    }else{
+        m_display_list=glGenLists(1);
+        assert(m_display_list != 0);
+        glNewList(m_display_list,GL_COMPILE);
+        draw_geometry_impl();
+        glEndList();
+    }
 }
 
 std::set<Drawable*> Drawables::m_all_drawables;

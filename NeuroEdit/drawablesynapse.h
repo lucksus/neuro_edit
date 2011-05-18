@@ -9,7 +9,7 @@ class DrawableSynapse : public Drawable
 public:
     virtual bool is_applicable_to(SimulationObject*);
     virtual void set_color_and_lightning();
-    virtual void draw_geometry();
+    virtual void draw_geometry_impl();
 
     enum {START_DISTANCE=10, END_DISTANCE=2, START_SIZE=1, END_SIZE=6};
 
