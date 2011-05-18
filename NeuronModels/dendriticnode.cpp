@@ -4,7 +4,7 @@
 #include "network.h"
 
 DendriticNode::DendriticNode(Neuron* neuron, DendriticNode* parent)
-    : SpatialObject(neuron), m_added_current(0), m_parent(parent)
+    : SimulationObject(neuron), m_added_current(0), m_parent(parent)
 {
     if(parent)
         parent->add_child(this);

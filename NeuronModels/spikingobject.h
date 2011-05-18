@@ -1,13 +1,13 @@
 #ifndef SPIKINGOBJECT_H
 #define SPIKINGOBJECT_H
-#include "spatialobject.h"
+#include "simulationobject.h"
 #include <boost/type_traits/is_virtual_base_of.hpp>
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/assume_abstract.hpp>
 #include <boost/serialization/nvp.hpp>
 
 class Axon;
-class SpikingObject : public virtual SpatialObject
+class SpikingObject : public virtual SimulationObject
 {
 friend class boost::serialization::access;
 public:
@@ -36,7 +36,7 @@ private:
     void serialize(Archive & ar, const unsigned int)
     {
         //ar & boost::serialization::base_object<SpatialObject>(*this);
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpatialObject);
+        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SimulationObject);
         ar & boost::serialization::make_nvp("spike_received", m_spike_received);
         ar & boost::serialization::make_nvp("IncomingAxons", m_incoming_axons);
         ar & boost::serialization::make_nvp("is_spiking", m_spiking);
@@ -47,7 +47,7 @@ BOOST_SERIALIZATION_ASSUME_ABSTRACT(SpikingObject);
 
 namespace boost{
 template<>
-struct is_virtual_base_of<SpatialObject, SpikingObject>: public mpl::true_ {};
+struct is_virtual_base_of<SimulationObject, SpikingObject>: public mpl::true_ {};
 }
 
 #endif // SPIKINGOBJECT_H

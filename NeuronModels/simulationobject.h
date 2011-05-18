@@ -7,12 +7,14 @@
 #include <boost/archive/detail/basic_oarchive.hpp>
 #include <QtCore/QObject>
 #include <QtScript/QScriptEngine>
+#include "point.h"
 
 class Neuron;
 class Network;
 class SimulationObject : public QObject
 {
 Q_OBJECT
+Q_PROPERTY(Point position READ position WRITE set_position)
 friend class boost::serialization::access;
 public:
     SimulationObject(Neuron*);
@@ -29,6 +31,12 @@ public:
 
     void set_network(Network*);
 
+    Point position() const;
+    void set_position(const Point& p);
+
+    virtual bool is_user_movable();
+    void set_user_movable(bool user_movable);
+
     //! Called when network wants to delete an object. Called before the object is deleted.
     /*!
      * Objects may return a list of objects that need to be delete too in consequence.
@@ -44,17 +52,23 @@ public:
 protected:
     SimulationObject(){}
     void done();
+    virtual void moved(Point new_position);
 
     Network* m_network;
 
 private:
     Neuron* m_neuron;
     bool m_done;
+    Point m_position;
+    bool m_is_user_movable;
+
 
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)
     {
         ar & BOOST_SERIALIZATION_NVP(m_neuron);
+        ar & boost::serialization::make_nvp("Position", m_position);
+        ar & boost::serialization::make_nvp("is_user_movable", m_is_user_movable);
 
         try{
             //this cast fails and throws std::bad_cast if ar is an iarchive.

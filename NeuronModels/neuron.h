@@ -1,6 +1,6 @@
 #ifndef NEURON_H
 #define NEURON_H
-#include "spatialobject.h"
+#include "simulationobject.h"
 #include "dendriticnode.h"
 #include "axonnode.h"
 #include <boost/serialization/access.hpp>
@@ -9,7 +9,7 @@
 
 class NeuronModel;
 class Axon;
-class Neuron : public SpatialObject
+class Neuron : public SimulationObject
 {
 Q_OBJECT
 Q_PROPERTY(NeuronModel* model READ model WRITE set_model)
@@ -46,7 +46,7 @@ private:
     void serialize(Archive & ar, const unsigned int)
     {
         //ar & boost::serialization::base_object<SpatialObject>(*this);
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpatialObject);
+        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SimulationObject);
         ar & boost::serialization::make_nvp("NeuronModel", m_model);
         ar & boost::serialization::make_nvp("DendridesRoot", m_dendrides_root);
         ar & boost::serialization::make_nvp("AxonRoot", m_axon_root);
@@ -57,7 +57,7 @@ private:
 
 namespace boost{
 template<>
-struct is_virtual_base_of<SpatialObject, Neuron>: public mpl::true_ {};
+struct is_virtual_base_of<SimulationObject, Neuron>: public mpl::true_ {};
 }
 
 Q_DECLARE_METATYPE(Neuron)

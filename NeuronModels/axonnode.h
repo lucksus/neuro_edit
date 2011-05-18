@@ -1,7 +1,6 @@
 #ifndef SPIKENODE_H
 #define SPIKENODE_H
 #include "spikingobject.h"
-#include "spatialobject.h"
 #include <set>
 #include <boost/foreach.hpp>
 #include "axon.h"

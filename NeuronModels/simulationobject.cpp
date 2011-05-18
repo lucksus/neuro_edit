@@ -38,6 +38,27 @@ void SimulationObject::set_network(Network* network){
     m_network = network;
 }
 
+Point SimulationObject::position() const{
+    return m_position;
+}
+
+void SimulationObject::set_position(const Point& p){
+    moved(p);
+    m_position = p;
+}
+
+void SimulationObject::moved(Point){
+}
+
+bool SimulationObject::is_user_movable(){
+    return m_is_user_movable;
+}
+
+void SimulationObject::set_user_movable(bool user_movable){
+    m_is_user_movable = user_movable;
+}
+
+
 
 std::set<SimulationObject*> SimulationObject::about_to_remove(SimulationObject* object_to_be_deleted){
     if(this == object_to_be_deleted){

@@ -2,7 +2,7 @@
 #include "axon.h"
 
 SpikingObject::SpikingObject(Neuron* neuron)
-: SpatialObject(neuron), m_spiking(false), m_spike_received(false)
+: SimulationObject(neuron), m_spiking(false), m_spike_received(false)
 {
 }
 

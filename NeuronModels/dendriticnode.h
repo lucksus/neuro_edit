@@ -1,14 +1,14 @@
 #ifndef DENDRITICNODE_H
 #define DENDRITICNODE_H
 #include <list>
-#include "spatialobject.h"
+#include "simulationobject.h"
 #include "synapse.h"
 #include <boost/foreach.hpp>
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/type_traits/is_virtual_base_of.hpp>
 
-class DendriticNode : public SpatialObject
+class DendriticNode : public SimulationObject
 {
 friend class boost::serialization::access;
 public:
@@ -70,7 +70,7 @@ private:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)
     {
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SpatialObject);
+        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SimulationObject);
         ar & boost::serialization::make_nvp("AddedCurrent", m_added_current);
         ar & boost::serialization::make_nvp("Parent", m_parent);
         ar & boost::serialization::make_nvp("Children", m_children);
@@ -80,7 +80,7 @@ private:
 
 namespace boost{
 template<>
-struct is_virtual_base_of<SpatialObject, DendriticNode>: public mpl::true_ {};
+struct is_virtual_base_of<SimulationObject, DendriticNode>: public mpl::true_ {};
 }
 
 Q_DECLARE_METATYPE(DendriticNode)

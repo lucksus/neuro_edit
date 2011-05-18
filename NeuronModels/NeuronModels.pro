@@ -15,7 +15,6 @@ SOURCES += izhikevich.cpp \
     axon.cpp \
     neuron.cpp \
     simulationobject.cpp \
-    spatialobject.cpp \
     simulation.cpp \
     current_inducer.cpp \
     synapse.cpp \
@@ -32,7 +31,6 @@ HEADERS += izhikevich.h \
     neuron.h \
     axon.h \
     simulationobject.h \
-    spatialobject.h \
     point.h \
     simulation.h \
     current_inducer.h \

@@ -75,15 +75,14 @@ void GLScene::mouseMoveEvent(QMouseEvent *e){
                     m_selection_box_current[1] = e->y();
                 }else{
                     clicked_object = object_under_cursor(e->x(),e->y());
-                    SpatialObject* spatial_object;
-                    if((spatial_object = dynamic_cast<SpatialObject*>(clicked_object))){
+                    if(clicked_object){
                         //movable object dragged -> start moving:
                         if(!m_selected_objects.count(clicked_object))
                             m_selected_objects.clear();
                         if(m_selected_objects.empty())
                             add_to_selection(clicked_object);
 
-                        start_moving(*spatial_object);
+                        start_moving(*clicked_object);
                     }else{
                         //background dragged -> start multiselection
                         m_selection_box_origin[0] = e->x();
@@ -148,7 +147,7 @@ void GLScene::mouseReleaseEvent(QMouseEvent* e){
 }
 
 void GLScene::mouseDoubleClickEvent(QMouseEvent *e){
-    SpatialObject* object = dynamic_cast<SpatialObject*>(object_under_cursor(e->x(),e->y()));
+    SimulationObject* object = object_under_cursor(e->x(),e->y());
     if(!object) return;
 
     m_camera_center_moving_target = object->position();
@@ -218,13 +217,11 @@ void GLScene::keyReleaseEvent(QKeyEvent *e){
     }
 }
 
-void GLScene::start_moving(const SpatialObject& o){
+void GLScene::start_moving(const SimulationObject& o){
     m_moving_objects.clear();
     BOOST_FOREACH(SimulationObject* object,m_selected_objects){
-        SpatialObject* spo = dynamic_cast<SpatialObject*>(object);
-        if(!spo) continue;
-        if(!spo->is_user_movable()) continue;
-        m_moving_objects.insert(spo);
+        if(!object->is_user_movable()) continue;
+        m_moving_objects.insert(object);
     }
     m_moving = true;
     m_moving_switch_plane_point = m_moving_start_point = m_moving_point = o.position();
@@ -249,9 +246,7 @@ void GLScene::start_inserting(std::set<SimulationObject*> objects){
     m_moving_switch_plane_point = m_moving_start_point = m_moving_point = m_camera_config.center_position;
 
     BOOST_FOREACH(SimulationObject* o, objects){
-        SpatialObject* spo = dynamic_cast<SpatialObject*>(o);
-        if(!spo) continue;
-        spo->set_position(spo->position()+m_camera_config.center_position);
+        o->set_position(o->position()+m_camera_config.center_position);
     }
 }
 
@@ -263,10 +258,8 @@ void GLScene::finish_moving(){
             m_network->add_object(o);
         }
 
-        SpatialObject* spo = dynamic_cast<SpatialObject*>(o);
-        if(!spo) continue;
-        if(!spo->is_user_movable()) continue;
-        spo->set_position(spo->position() + offset);
+        if(!o->is_user_movable()) continue;
+        o->set_position(o->position() + offset);
     }
 
     m_moving = false;
@@ -468,9 +461,7 @@ void GLScene::paint_floor(){
 void GLScene::paint_objects(bool picking_run){
     if(!picking_run){
         BOOST_FOREACH(SimulationObject* o, m_moving_objects){
-            SpatialObject* spo = dynamic_cast<SpatialObject*>(o);
-            if(!spo) continue;
-            paint_object(spo,false,true);
+            paint_object(o,false,true);
          }
     }
     BOOST_FOREACH(SimulationObject* o, m_network->objects_as_std_set()){
@@ -501,21 +492,18 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
         if(!picking) drawable->set_color_and_lightning();
         glPushMatrix();
 
-        SpatialObject* spo = dynamic_cast<SpatialObject*>(o);
-
         if(moving){
-            assert(spo);
+            assert(o);
             glEnable(GL_LIGHTING);
             glEnable(GL_DITHER);
             GLfloat transparent[] = {.9,.9,.9,0.5};
             glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, transparent);
             Point offset = m_moving_point - m_moving_start_point;
-            Point position = spo->position() + offset;
+            Point position = o->position() + offset;
             glTranslatef(position.x,position.y,position.z);
         }else{
-            if(spo){
-                glTranslatef(spo->position().x, spo->position().y, spo->position().z);
-            }
+            Point pos = o->position();
+            glTranslatef(pos.x, pos.y, pos.z);
         }
 
         drawable->draw_geometry();
@@ -639,7 +627,7 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
     AxonNode* axon_node = dynamic_cast<AxonNode*>(object);
     DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(object);
     Synapse* synapse = dynamic_cast<Synapse*>(object);
-    SpatialObject* spo = dynamic_cast<SpatialObject*>(object);
+    //SpatialObject* spo = dynamic_cast<SpatialObject*>(object);
     //assert(spo);
 
     if(axon){
@@ -684,7 +672,7 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
         radius = (DrawableSynapse::START_DISTANCE - DrawableSynapse::END_DISTANCE)/2 + 3;
     }
 
-    Point position = spo->position() + displacement;
+    Point position = object->position() + displacement;
     x = position.x; y = position.y; z = position.z;
 
 

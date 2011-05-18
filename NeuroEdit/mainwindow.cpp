@@ -265,7 +265,6 @@ void MainWindow::on_actionAbout_triggered(bool){
 
 std::set<SimulationObject*> MainWindow::selected_objects_cloned_and_self_centered(){
     std::set<SimulationObject*> objects;
-    std::set<SpatialObject*> spatial_objects;
     BOOST_FOREACH(SimulationObject* o, m_glscene->selected_objects()){
         //SimulationObject* oc = o->clone();
         //objects.insert(oc);
@@ -275,11 +274,11 @@ std::set<SimulationObject*> MainWindow::selected_objects_cloned_and_self_centere
     }
 
     Point center;
-    BOOST_FOREACH(SpatialObject* o, spatial_objects){
+    BOOST_FOREACH(SimulationObject* o, objects){
         center += o->position();
     }
-    center /= spatial_objects.size();
-    BOOST_FOREACH(SpatialObject* o, spatial_objects){
+    center /= objects.size();
+    BOOST_FOREACH(SimulationObject* o, objects){
         o->set_position(o->position()-center);
     }
     return objects;

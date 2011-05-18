@@ -15,7 +15,7 @@ Neuron::Neuron(){
 }
 
 Neuron::Neuron(Point position)
-    : SpatialObject(this), m_model(0)
+    : SimulationObject(this), m_model(0)
 {
     setObjectName(QString("Neuron_%1").arg(s_serial++));
     m_dendrides_root = new DendriticNode(this, 0);

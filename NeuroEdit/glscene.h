@@ -98,7 +98,7 @@ private:
     Point m_moving_point;
     Point m_moving_switch_plane_point;
     std::set<SimulationObject*> m_moving_objects;
-    void start_moving(const SpatialObject&);
+    void start_moving(const SimulationObject&);
     void finish_moving();
     void abort_moving();
     void paint_moving_plane();
