@@ -6,6 +6,7 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/archive/detail/basic_oarchive.hpp>
 #include <QtCore/QObject>
+#include <QtScript/QScriptEngine>
 
 class Neuron;
 class Network;
@@ -33,6 +34,12 @@ public:
      * Objects may return a list of objects that need to be delete too in consequence.
      */
     virtual std::set<SimulationObject*> about_to_remove(SimulationObject*);
+
+    static QScriptValue toScriptValue(QScriptEngine *engine, SimulationObject* const &in)
+    { return engine->newQObject(in); }
+
+    static void fromScriptValue(const QScriptValue &object, SimulationObject* &out)
+    { out = qobject_cast<SimulationObject*>(object.toQObject()); }
 
 protected:
     SimulationObject(){}
@@ -71,5 +78,5 @@ private:
 };
 
 BOOST_SERIALIZATION_ASSUME_ABSTRACT(SimulationObject);
-
+Q_DECLARE_METATYPE(SimulationObject*);
 #endif // SIMULATIONOBJECT_H

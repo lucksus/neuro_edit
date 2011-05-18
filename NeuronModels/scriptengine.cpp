@@ -74,4 +74,5 @@ void ScriptEngine::add_global_functions(){
 
 void ScriptEngine::add_conversion_functions(){
     qScriptRegisterMetaType(&m_engine, &Network::networkToScriptValue, &Network::networkFromScriptValue);
+    qScriptRegisterMetaType(&m_engine, &SimulationObject::toScriptValue, &SimulationObject::fromScriptValue);
 }
