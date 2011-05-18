@@ -7,7 +7,7 @@ class Drawable
 {
 public:
     virtual bool is_applicable_to(SimulationObject*) = 0;
-    virtual void init_with_object(SimulationObject*);
+    inline void init_with_object(SimulationObject* object){m_object = object;}
     virtual void set_color_and_lightning() = 0;
     virtual void draw_geometry() = 0;
 

@@ -6,10 +6,6 @@
 #include "drawabledendriteconnection.h"
 #include "drawablesynapse.h"
 
-void Drawable::init_with_object(SimulationObject* object){
-    m_object = object;
-}
-
 std::set<Drawable*> Drawables::m_all_drawables;
 
 Drawables& Drawables::instance(){
