@@ -476,44 +476,29 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
         paint_object(child, picking, moving);
     }
 
-    if(o->bad_hacks[0] == 0){
+    if(o->bad_hacks[GLScene::DRAWABLE_POINTER] == 0){
         BOOST_FOREACH(Drawable* drawable, Drawables::instance().get_all_drawables()){
             if(!drawable->is_applicable_to(o)) continue;
-            o->bad_hacks[0] = drawable;
+            o->bad_hacks[GLScene::DRAWABLE_POINTER] = drawable;
         }
     }
-    Drawable* drawable = static_cast<Drawable*>(o->bad_hacks[0]);
+    Drawable* drawable = static_cast<Drawable*>(o->bad_hacks[GLScene::DRAWABLE_POINTER]);
+    if(!drawable) return;
     drawable->init_with_object(o);
 
     glPushMatrix();
 
-    if(picking){
-        glColor3ub(m_picking_names.size()+1,0,0);
-        m_picking_names.push_back(o);
-        glDisable(GL_DITHER);
-        glDisable(GL_LIGHTING);
-    }
-
-
-
-
-    //if(!picking) drawable->set_color_and_lightning();
-
+    Point pos = o->position();
     if(moving){
-        assert(o);
-        glEnable(GL_LIGHTING);
-        glEnable(GL_DITHER);
-        GLfloat transparent[] = {.9,.9,.9,0.5};
-        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, transparent);
         Point offset = m_moving_point - m_moving_start_point;
-        Point position = o->position() + offset;
-        glTranslatef(position.x,position.y,position.z);
-    }else{
-        Point pos = o->position();
-        glTranslatef(pos.x, pos.y, pos.z);
+        pos += offset;
     }
 
-    drawable->draw_geometry();
+    glTranslatef(pos.x, pos.y, pos.z);
+
+    if(picking) drawable->draw_picking();
+    else if(moving) drawable->draw_moving();
+    else drawable->draw();
 
 
     glPopMatrix();
@@ -524,7 +509,7 @@ SimulationObject* GLScene::object_under_cursor(int cursorX, int cursorY) {
         makeCurrent();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         setup_projection_and_modelview_matrix();
-        m_picking_names.clear();
+        //m_picking_names.clear();
         paint_objects(true);
 
         GLint viewport[4];
@@ -533,9 +518,10 @@ SimulationObject* GLScene::object_under_cursor(int cursorX, int cursorY) {
         pixel[0] = pixel[1] = pixel[2] = 0;
         glReadPixels(cursorX,viewport[3]-cursorY,1,1,GL_RGB,GL_UNSIGNED_BYTE,(void *)pixel);
 
-        if (pixel[0]>0)
-            return m_picking_names[pixel[0]-1];
-        else return 0;
+        return Drawable::object_for_picking_name(boost::make_tuple(pixel[0],pixel[1],pixel[2]));
+        //if (pixel[0]>0)
+        //    return m_picking_names[pixel[0]-1];
+        //else return 0;
 
 }
 
@@ -749,7 +735,6 @@ std::set<SimulationObject*> GLScene::objects_in_selection_box(){
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     setup_projection_and_modelview_matrix();
-    m_picking_names.clear();
     paint_objects(true);
 
     int width = right-left;
@@ -759,13 +744,11 @@ std::set<SimulationObject*> GLScene::objects_in_selection_box(){
 
     std::set<SimulationObject*> result;
     for(int x=0;x<width*height*3;x+=3){
-        if(m_pixel_buffer[x] > 0){
-            SimulationObject* o = m_picking_names[m_pixel_buffer[x]-1];
-            result.insert(o);
-            //GLubyte bla = m_pixel_buffer[x];
-            //GLubyte a = bla;
-            //bla = a;
-        }
+        GLuint r = m_pixel_buffer[x];
+        GLuint g = m_pixel_buffer[x+1];
+        GLuint b = m_pixel_buffer[x+2];
+        SimulationObject* o = Drawable::object_for_picking_name(boost::make_tuple(r,g,b));
+        if(o) result.insert(o);
     }
 
     return result;

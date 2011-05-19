@@ -16,6 +16,8 @@ public:
 
     std::set<SimulationObject*> selected_objects();
 
+    enum SimulationObjectHacks{DRAWABLE_POINTER=1, PICKING_DISPLAY_LIST=2};
+
 signals:
     void selection_changed(std::set<SimulationObject*>);
     void neuron_selected(Neuron*);
@@ -69,8 +71,6 @@ private:
     int m_oldMouseX;
     int m_oldMouseY;
     bool m_shift_key_down, m_ctrl_key_down;
-
-    std::vector<SimulationObject*> m_picking_names;
 
     //----------------
     // selection box

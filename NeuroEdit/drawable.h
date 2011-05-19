@@ -2,22 +2,35 @@
 #define DRAWABLE_H
 #include <set>
 #include <OpenGL/gl.h>
+#include <boost/tuple/tuple.hpp>
+#include <list>
 
 class SimulationObject;
 class Drawable
 {
 public:
-    Drawable():m_display_list(0){}
+    Drawable():m_display_list(0),m_moving_display_list(0){}
     virtual bool is_applicable_to(SimulationObject*) = 0;
     inline void init_with_object(SimulationObject* object){m_object = object;}
     virtual void set_color_and_lightning() = 0;
-    void draw_geometry();
+    void draw();
+    void draw_moving();
+    void draw_picking();
     virtual void draw_geometry_impl() = 0;
+
+    static SimulationObject* object_for_picking_name(const boost::tuple<GLuint,GLuint,GLuint>&);
 
 protected:
     SimulationObject* m_object;
     GLuint m_display_list;
+    GLuint m_moving_display_list;
+
+    static void increment_picking_name();
+    static boost::tuple<GLuint,GLuint,GLuint> s_next_picking_name;
+    static std::list< std::pair<boost::tuple<GLuint,GLuint,GLuint>, SimulationObject*> > s_picking_names;
 };
+
+
 
 
 #include <set>
