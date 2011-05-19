@@ -89,6 +89,7 @@ private:
             std::string name;
             ar & boost::serialization::make_nvp("Name",name);
             setObjectName(name.c_str());
+            bad_hacks[0] = bad_hacks[1] = bad_hacks[2] = 0;
         }
     }
 };
