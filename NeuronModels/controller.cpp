@@ -11,6 +11,8 @@
 #include "neuronmodel.h"
 #include "synapse.h"
 #include "simulation.h"
+#include <stdexcept>
+
 Controller::Controller()
 {
 }
@@ -57,11 +59,18 @@ void Controller::create_new_simulation(){
 void Controller::load_simulation(std::string filename){
     close_simulation();
     m_simulation = Simulation::load_from_file(filename);
+    m_simulation_filename = filename;
     emit new_simulation(m_simulation);
 }
 
 void Controller::save_simulation(std::string filename){
     m_simulation->write_to_file(filename);
+    m_simulation_filename = filename;
+}
+
+void Controller::save_simulation(){
+    if(m_simulation_filename == "") throw std::logic_error("simulation filename not set!");
+    save_simulation(m_simulation_filename);
 }
 
 Simulation* Controller::simulation(){

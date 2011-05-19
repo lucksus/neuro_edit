@@ -16,6 +16,7 @@
 #include "serializationhelper.h"
 #include "application.h"
 #include "controller.h"
+#include <stdexcept>
 
 MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),
@@ -191,7 +192,15 @@ void MainWindow::on_actionNew_triggered(bool){
     ui->actionSingle_Neuron->setEnabled(true);
 }
 
-void MainWindow::on_actionSave_triggered(bool){
+void MainWindow::on_actionSave_triggered(bool b){
+    try{
+        Controller::instance().save_simulation();
+    }catch(std::logic_error){
+        on_actionSave_as_triggered(b);
+    }
+}
+
+void MainWindow::on_actionSave_as_triggered(bool){
     QString fileName = QFileDialog::getSaveFileName(this,
         tr("Save network"), "", tr("NeuroEdit files (*.ne)"));
     if(fileName.isEmpty()) return;

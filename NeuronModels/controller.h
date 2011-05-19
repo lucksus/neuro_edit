@@ -15,6 +15,7 @@ public:
     void create_new_simulation();
     void load_simulation(std::string filename);
     void save_simulation(std::string filename);
+    void save_simulation();
 
     Simulation* simulation();
 
@@ -28,6 +29,7 @@ signals:
 private:
     Controller();
     Simulation* m_simulation;
+    std::string m_simulation_filename;
 };
 
 #endif // CONTROLLER_H

@@ -39,6 +39,7 @@ private slots:
 
      void on_actionNew_triggered(bool);
      void on_actionSave_triggered(bool);
+     void on_actionSave_as_triggered(bool);
      void on_actionLoad_triggered(bool);
      void on_actionClose_triggered(bool);
      void on_actionQuit_triggered(bool);
