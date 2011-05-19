@@ -3,6 +3,7 @@
 #include <gl.h>
 #include <GLUT/glut.h>
 #include <assert.h>
+#include "glhelpfunctions.h"
 
 bool DrawableDendriteNode::is_applicable_to(SimulationObject* object){
     DendriticNode* n = dynamic_cast<DendriticNode*>(object);
@@ -18,4 +19,12 @@ void DrawableDendriteNode::set_color_and_lightning(){
 
 void DrawableDendriteNode::draw_geometry_impl(){
     glutSolidCube(SIZE);
+
+    DendriticNode* n = dynamic_cast<DendriticNode*>(m_object);
+    assert(n);
+    DendriticNode* parent = n->parent();
+    if(!parent) return;
+    Point relative = parent->position() - n->position();
+
+    GLHelpFunctions::draw_cylinder(Point(0,0,0), relative, 3, 4);
 }

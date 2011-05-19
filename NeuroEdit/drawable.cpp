@@ -3,7 +3,6 @@
 #include "drawableaxon.h"
 #include "drawableaxonnode.h"
 #include "drawabledendritenode.h"
-#include "drawabledendriteconnection.h"
 #include "drawablesynapse.h"
 #include <assert.h>
 #include "simulationobject.h"
@@ -107,6 +106,5 @@ Drawables::Drawables(){
     m_all_drawables.insert(new DrawableAxon);
     m_all_drawables.insert(new DrawableAxonNode);
     m_all_drawables.insert(new DrawableDendriteNode);
-    m_all_drawables.insert(new DrawableDendriteConnection);
     m_all_drawables.insert(new DrawableSynapse);
 }
