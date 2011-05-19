@@ -13,12 +13,12 @@ boost::tuple<GLuint,GLuint,GLuint> Drawable::s_next_picking_name;
 std::list< std::pair<boost::tuple<GLuint,GLuint,GLuint>, SimulationObject*> >Drawable::s_picking_names;
 
 void Drawable::draw(){
-    if(m_display_list != 0){
+    if(m_display_list != 0 && !m_dont_use_display_lists){
         glCallList(m_display_list);
     }else{
         m_display_list=glGenLists(1);
         assert(m_display_list != 0);
-        glNewList(m_display_list,GL_COMPILE);
+        glNewList(m_display_list,GL_COMPILE_AND_EXECUTE);
         set_color_and_lightning();
         draw_geometry_impl();
         glEndList();
@@ -26,12 +26,12 @@ void Drawable::draw(){
 }
 
 void Drawable::draw_moving(){
-    if(m_moving_display_list != 0){
+    if(m_moving_display_list != 0 && !m_dont_use_display_lists){
         glCallList(m_moving_display_list);
     }else{
         m_moving_display_list=glGenLists(1);
         assert(m_moving_display_list != 0);
-        glNewList(m_moving_display_list,GL_COMPILE);
+        glNewList(m_moving_display_list,GL_COMPILE_AND_EXECUTE);
         glEnable(GL_LIGHTING);
         glEnable(GL_DITHER);
         GLfloat transparent[] = {.9,.9,.9,0.5};
@@ -47,20 +47,16 @@ bool operator<(const boost::tuple<GLuint,GLuint,GLuint>& a, const boost::tuple<G
 
 void Drawable::draw_picking(){
     void* &list = m_object->bad_hacks[GLScene::PICKING_DISPLAY_LIST];
-    if(list != 0){
+    if(list != 0 && !m_dont_use_display_lists){
         glCallList(*static_cast<GLuint*>(list));
     }else{
-        list = new GLuint;
+        if(list == 0) list = new GLuint;
         GLuint* real_list = static_cast<GLuint*>(list);
         *real_list = glGenLists(1);
         assert(*real_list != 0);
-        glNewList(*real_list,GL_COMPILE);
+        glNewList(*real_list,GL_COMPILE_AND_EXECUTE);
         increment_picking_name();
-        GLuint r,g,b;
-        r = s_next_picking_name.get<0>();
-        g = s_next_picking_name.get<1>();
-        b = s_next_picking_name.get<2>();
-        glColor3ub(r,g,b);
+        glColor3ub(s_next_picking_name.get<0>(),s_next_picking_name.get<1>(),s_next_picking_name.get<2>());
         s_picking_names.push_back( std::pair<boost::tuple<GLuint,GLuint,GLuint>, SimulationObject*>(s_next_picking_name,m_object) );
         glDisable(GL_DITHER);
         glDisable(GL_LIGHTING);

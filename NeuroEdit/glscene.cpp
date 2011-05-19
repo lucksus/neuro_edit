@@ -488,13 +488,15 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
 
     glPushMatrix();
 
-    Point pos = o->position();
-    if(moving){
-        Point offset = m_moving_point - m_moving_start_point;
-        pos += offset;
-    }
+    if(drawable->do_translate_bevor_drawing()){
+        Point pos = o->position();
+        if(moving){
+            Point offset = m_moving_point - m_moving_start_point;
+            pos += offset;
+        }
 
-    glTranslatef(pos.x, pos.y, pos.z);
+        glTranslatef(pos.x, pos.y, pos.z);
+    }
 
     if(picking) drawable->draw_picking();
     else if(moving) drawable->draw_moving();
