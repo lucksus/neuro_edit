@@ -2,13 +2,13 @@
 #include <boost/foreach.hpp>s
 
 SimulationObject::SimulationObject(Neuron* neuron)
-    : m_network(0), m_neuron(neuron), m_done(false)
+    : m_network(0), m_neuron(neuron), m_done(false), m_is_user_movable(true)
 {
     bad_hacks[0] = bad_hacks[1] = bad_hacks[2] = 0;
 }
 
 SimulationObject::SimulationObject(const SimulationObject& s)
-    : QObject(), m_network(s.m_network), m_neuron(s.m_neuron), m_done(s.m_done)
+    : QObject(), m_network(s.m_network), m_neuron(s.m_neuron), m_done(s.m_done), m_is_user_movable(true)
 {
 }
 
