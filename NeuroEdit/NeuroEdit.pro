@@ -32,7 +32,6 @@ SOURCES += main.cpp\
     drawableaxon.cpp \
     drawableaxonnode.cpp \
     drawabledendritenode.cpp \
-    drawabledendriteconnection.cpp \
     glhelpfunctions.cpp \
     drawablesynapse.cpp \
     propertybrowser.cpp \
@@ -54,7 +53,6 @@ HEADERS  += mainwindow.h \
     drawableaxon.h \
     drawableaxonnode.h \
     drawabledendritenode.h \
-    drawabledendriteconnection.h \
     glhelpfunctions.h \
     drawablesynapse.h \
     propertybrowser.h \
