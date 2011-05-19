@@ -64,7 +64,7 @@ void GLScene::mouseMoveEvent(QMouseEvent *e){
                 m_camera_config.azimuth += deltaX;
                 if(m_camera_config.elevation >  90) m_camera_config.elevation =  90;
                 if(m_camera_config.elevation < -90) m_camera_config.elevation = -90;
-                updateGL();
+                //updateGL();
         }
 
 
@@ -103,7 +103,7 @@ void GLScene::mouseMoveEvent(QMouseEvent *e){
 
         m_oldMouseX = e->x();
         m_oldMouseY = e->y();
-        updateGL();
+        //updateGL();
 }
 
 void GLScene::mousePressEvent(QMouseEvent* e){
@@ -141,7 +141,7 @@ void GLScene::mouseReleaseEvent(QMouseEvent* e){
                 if(m_connecting){
                     finish_connecting();
                 }
-                updateGL();
+                //updateGL();
             }
         }
 }
@@ -163,7 +163,7 @@ void GLScene::wheelEvent(QWheelEvent *e){
         m_camera_config.distance -= e->delta()*pow(2,m_camera_config.distance/10000.f);
         if( m_camera_config.distance<70) m_camera_config.distance=70;
         if( m_camera_config.distance>10000) m_camera_config.distance=10000;
-        updateGL();
+        //updateGL();
 }
 
 void GLScene::keyPressEvent(QKeyEvent *e){
@@ -184,20 +184,20 @@ void GLScene::keyPressEvent(QKeyEvent *e){
     case Qt::Key_Shift:
         m_shift_key_down = true;
         m_moving_switch_plane_point = m_moving_point;
-        if(m_moving) updateGL();
+        //if(m_moving) updateGL();
         break;
     case Qt::Key_Control:
         m_ctrl_key_down = true;
         m_moving_switch_plane_point = m_moving_point;
-        if(m_moving) updateGL();
+        //if(m_moving) updateGL();
         break;
     case Qt::Key_Escape:
         abort_moving();
-        updateGL();
+        //updateGL();
         break;
     }
 
-    updateGL();
+    //updateGL();
 
     e->accept();
 }
@@ -207,12 +207,12 @@ void GLScene::keyReleaseEvent(QKeyEvent *e){
     case Qt::Key_Shift:
         m_shift_key_down = false;
         m_moving_switch_plane_point = m_moving_point;
-        if(m_moving) updateGL();
+        //if(m_moving) updateGL();
         break;
     case Qt::Key_Control:
         m_ctrl_key_down = false;
         m_moving_switch_plane_point = m_moving_point;
-        if(m_moving) updateGL();
+        //if(m_moving) updateGL();
         break;
     }
 }
@@ -266,7 +266,7 @@ void GLScene::finish_moving(){
     m_insert_moving = false;
     m_moving_objects.clear();
     emit user_interaction();
-    updateGL();
+    //updateGL();
 }
 
 void GLScene::abort_moving(){
