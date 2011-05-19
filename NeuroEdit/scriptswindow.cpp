@@ -4,8 +4,8 @@
 #include "simulation.h"
 #include "application.h"
 #include "controller.h"
-
-
+#include <QtCore/QFile>
+#include <QtGui/QFileDialog>
 
 ScriptsWindow::ScriptsWindow(QWidget *parent) :
     QWidget(parent),
@@ -36,7 +36,13 @@ ScriptsWindow::ScriptsWindow(QWidget *parent) :
 
 void ScriptsWindow::simulationScriptSelected(const QItemSelection & selected, const QItemSelection &){
     QModelIndex index = selected.indexes().first();
-    if(QModelIndex() == index) ui->textEdit->setText("");
+    if(QModelIndex() == index){
+        ui->tabWidget_right->setEnabled(false);
+        ui->textEdit->setText("");
+        return;
+    }
+    ui->tabWidget_right->setEnabled(true);
+    ui->textEdit->setEnabled(true);
     QString script_name = m_simulation_scripts.data(index, Qt::DisplayRole).toString();
     ui->textEdit->setText(Controller::instance().simulation()->script(script_name));
     m_current_script = script_name;
@@ -44,7 +50,13 @@ void ScriptsWindow::simulationScriptSelected(const QItemSelection & selected, co
 
 void ScriptsWindow::networkScriptSelected(const QItemSelection & selected, const QItemSelection &){
     QModelIndex index = selected.indexes().first();
-    if(QModelIndex() == index) ui->textEdit->setText("");
+    if(QModelIndex() == index){
+        ui->tabWidget_right->setEnabled(false);
+        ui->textEdit->setText("");
+        return;
+    }
+    ui->tabWidget_right->setEnabled(true);
+    ui->textEdit->setEnabled(true);
     QString script_name = m_network_scripts.data(index, Qt::DisplayRole).toString();
     ui->textEdit->setText(Controller::instance().simulation()->network()->script(script_name));
     m_current_script = script_name;
@@ -80,6 +92,8 @@ void ScriptsWindow::on_simulationPlusButton_clicked(){
 void ScriptsWindow::on_simulationMinusButton_clicked(){
     Controller::instance().simulation()->remove_script(m_current_script);
     read_name_lists();
+    ui->tabWidget_right->setEnabled(false);
+    ui->textEdit->setText("");
 }
 
 void ScriptsWindow::on_networkPlusButton_clicked(){
@@ -101,11 +115,21 @@ void ScriptsWindow::on_networkMinusButton_clicked(){
 }
 
 void ScriptsWindow::on_loadButton_clicked(){
-
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Open script"), "", tr("Javascript files (*.js)"));
+    if(fileName.isEmpty()) return;
+    QFile file(fileName);
+    file.open(QIODevice::ReadOnly);
+    ui->textEdit->setText(file.readAll());
 }
 
 void ScriptsWindow::on_saveButton_clicked(){
-
+    QString fileName = QFileDialog::getSaveFileName(this,
+        tr("Save script"), "", tr("Javascript files (*.js)"));
+    if(fileName.isEmpty()) return;
+    QFile file(fileName);
+    file.open(QIODevice::WriteOnly);
+    file.write(ui->textEdit->toPlainText().toUtf8());
 }
 
 void ScriptsWindow::on_playButton_clicked(){

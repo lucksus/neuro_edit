@@ -85,6 +85,7 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     m_dock_widgets.insert(dock);
     ui->menuWindows->addAction(dock->toggleViewAction());
     dock->hide();
+    dock->setFloating(true);
 
     connect(&Controller::instance(), SIGNAL(new_simulation(Simulation*)), this, SLOT(simulation_changed(Simulation*)));
 }
