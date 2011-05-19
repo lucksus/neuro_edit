@@ -7,9 +7,10 @@
 #include <assert.h>
 #include "simulationobject.h"
 #include "glscene.h"
+#include <boost/tuple/tuple_comparison.hpp>
 
 boost::tuple<GLuint,GLuint,GLuint> Drawable::s_next_picking_name;
-std::list< std::pair<boost::tuple<GLuint,GLuint,GLuint>, SimulationObject*> >Drawable::s_picking_names;
+std::map<boost::tuple<GLuint,GLuint,GLuint>, SimulationObject*> Drawable::s_picking_names;
 
 void Drawable::draw(){
     if(m_display_list != 0 && !m_dont_use_display_lists){
@@ -40,9 +41,6 @@ void Drawable::draw_moving(){
     }
 }
 
-bool operator<(const boost::tuple<GLuint,GLuint,GLuint>& a, const boost::tuple<GLuint,GLuint,GLuint>& b){
-    return a.get<0>() < b.get<0>() && a.get<1>() < b.get<1>() && a.get<2>() < b.get<2>();
-}
 
 void Drawable::draw_picking(){
     void* &list = m_object->bad_hacks[GLScene::PICKING_DISPLAY_LIST];
@@ -56,7 +54,7 @@ void Drawable::draw_picking(){
         glNewList(*real_list,GL_COMPILE_AND_EXECUTE);
         increment_picking_name();
         glColor3ub(s_next_picking_name.get<0>(),s_next_picking_name.get<1>(),s_next_picking_name.get<2>());
-        s_picking_names.push_back( std::pair<boost::tuple<GLuint,GLuint,GLuint>, SimulationObject*>(s_next_picking_name,m_object) );
+        s_picking_names[s_next_picking_name] = m_object;
         glDisable(GL_DITHER);
         glDisable(GL_LIGHTING);
         draw_geometry_impl();
@@ -81,13 +79,9 @@ void Drawable::increment_picking_name(){
 }
 
 SimulationObject* Drawable::object_for_picking_name(const boost::tuple<GLuint,GLuint,GLuint>& name){
-    std::pair<boost::tuple<GLuint,GLuint,GLuint>, SimulationObject*> it;
-    BOOST_FOREACH(it, s_picking_names){
-        boost::tuple<GLuint,GLuint,GLuint> bla = it.first;
-        if(bla.get<0>() == name.get<0>() && bla.get<1>() == name.get<1>() && bla.get<2>() == name.get<2>()) return it.second;
-    }
-    //assert(false);
-    return 0;
+    std::map<boost::tuple<GLuint,GLuint,GLuint>, SimulationObject*>::iterator it = s_picking_names.find(name);
+    if(it == s_picking_names.end()) return 0;
+    return it->second;
 }
 
 std::set<Drawable*> Drawables::m_all_drawables;

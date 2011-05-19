@@ -3,7 +3,7 @@
 #include <set>
 #include <OpenGL/gl.h>
 #include <boost/tuple/tuple.hpp>
-#include <list>
+#include <map>
 
 class SimulationObject;
 class Drawable
@@ -30,7 +30,7 @@ protected:
 
     static void increment_picking_name();
     static boost::tuple<GLuint,GLuint,GLuint> s_next_picking_name;
-    static std::list< std::pair<boost::tuple<GLuint,GLuint,GLuint>, SimulationObject*> > s_picking_names;
+    static std::map<boost::tuple<GLuint,GLuint,GLuint>, SimulationObject*> s_picking_names;
 
 private:
     bool m_dont_use_display_lists;
