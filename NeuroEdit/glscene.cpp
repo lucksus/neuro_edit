@@ -317,11 +317,7 @@ void GLScene::resizeGL(int w, int h)
 void GLScene::paintGL()
 {
 
-    std::list<QRect> regions_of_selected_objects;
-    BOOST_FOREACH(SimulationObject* object, m_selected_objects){
-        if(!object) continue;
-        regions_of_selected_objects.push_back(occupied_2d_region_of_object(object));
-    }
+
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		// Clear The Screen And The Depth Buffer
 
@@ -351,6 +347,11 @@ void GLScene::paintGL()
     glPushMatrix();
 
 
+    std::list<QRect> regions_of_selected_objects;
+    BOOST_FOREACH(SimulationObject* object, m_selected_objects){
+        if(!object) continue;
+        regions_of_selected_objects.push_back(occupied_2d_region_of_object(object));
+    }
 
 
     glClear(GL_DEPTH_BUFFER_BIT);
