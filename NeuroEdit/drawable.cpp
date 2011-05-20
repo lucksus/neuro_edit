@@ -84,6 +84,11 @@ SimulationObject* Drawable::object_for_picking_name(const boost::tuple<GLuint,GL
     return it->second;
 }
 
+void Drawable::reset_display_lists(){
+    m_display_list = 0;
+    m_moving_display_list = 0;
+}
+
 std::set<Drawable*> Drawables::m_all_drawables;
 
 Drawables& Drawables::instance(){

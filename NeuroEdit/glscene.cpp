@@ -36,6 +36,10 @@ GLScene::GLScene(QWidget *parent) :
 
     connect(&Application::instance(), SIGNAL(refresh()), this, SLOT(updateGL()));
     connect(&m_camera_center_moving_timer, SIGNAL(timeout()), this, SLOT(camera_center_moving_update()));
+
+    BOOST_FOREACH(Drawable* d, Drawables::instance().get_all_drawables()){
+        d->reset_display_lists();
+    }
 }
 
 GLScene::~GLScene(){

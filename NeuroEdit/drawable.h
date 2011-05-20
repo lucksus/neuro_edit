@@ -21,6 +21,8 @@ public:
 
     static SimulationObject* object_for_picking_name(const boost::tuple<GLuint,GLuint,GLuint>&);
 
+    void reset_display_lists();
+
 protected:
     SimulationObject* m_object;
     GLuint m_display_list;
