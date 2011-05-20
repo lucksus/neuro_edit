@@ -426,7 +426,7 @@ void GLScene::setup_projection_and_modelview_matrix(){
     //Set up projection matrix
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(m_fov, 1., 0.1, 10000.);
+    gluPerspective(m_fov, static_cast<double>(width())/height(), 0.1, 10000.);
 
     //m_moving_start_point = mouse_on_plane(m_oldMouseX, m_oldMouseY, Point(0,0,0), Point(0,0,-1));
     //Set up modelview matrix
