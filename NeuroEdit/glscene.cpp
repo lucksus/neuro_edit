@@ -334,9 +334,9 @@ void GLScene::paintGL()
 
 
 
-    glColor3f(1.f,1.f,1.f);
-    renderText(300,0.,0.,QString("x"));
-    renderText(0.,0.,300,QString("z"));
+    //glColor3f(1.f,1.f,1.f);
+    //renderText(300,0.,0.,QString("x"));
+    //renderText(0.,0.,300,QString("z"));
 
     //renderText(20.,20.,0.,QString("%1").arg(m_moving_start_point.x));
     //renderText(20.,40.,0.,QString("%1").arg(m_moving_start_point.y));
