@@ -16,6 +16,8 @@ void DrawableAxonNode::set_color_and_lightning(){
 }
 
 void DrawableAxonNode::draw_geometry_impl(){
-    glutSolidSphere(SIZE,20,20);
+    GLUquadricObj* obj = gluNewQuadric();
+    gluSphere(obj,SIZE,20,20);
+    gluDeleteQuadric(obj);
 }
 

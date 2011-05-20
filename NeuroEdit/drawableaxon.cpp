@@ -8,6 +8,7 @@
 #include <GLUT/glut.h>
 #include "glhelpfunctions.h"
 #include "spikingobject.h"
+#include <glu.h>
 
 bool DrawableAxon::is_applicable_to(SimulationObject* object){
     Axon* n = dynamic_cast<Axon*>(object);
@@ -49,7 +50,9 @@ void DrawableAxon::draw_geometry_impl(){
         glPushMatrix();
         Point spike_center = link->emitter()->position() + vec*(spike*distance);
         glTranslatef(spike_center.x, spike_center.y, spike_center.z);
-        glutSolidSphere(SPIKE_SIZE,20,20);
+        GLUquadricObj* obj = gluNewQuadric();
+        gluSphere(obj,SPIKE_SIZE,20,20);
+        gluDeleteQuadric(obj);
         glPopMatrix();
     }
 }
