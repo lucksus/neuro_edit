@@ -17,6 +17,7 @@
 #include "application.h"
 #include "controller.h"
 #include <stdexcept>
+#include <QtCore/QSettings>
 
 MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),
@@ -89,6 +90,8 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     dock->setFloating(true);
 
     connect(&Controller::instance(), SIGNAL(new_simulation(Simulation*)), this, SLOT(simulation_changed(Simulation*)));
+
+    populateRecentlyUsedMenu();
 }
 
 void MainWindow::init_glscene(){
@@ -205,6 +208,7 @@ void MainWindow::on_actionSave_as_triggered(bool){
         tr("Save network"), "", tr("NeuroEdit files (*.ne)"));
     if(fileName.isEmpty()) return;
     Controller::instance().save_simulation(fileName.toStdString());
+    addFileToRecentlyUsed(fileName);
 }
 
 void MainWindow::on_actionLoad_triggered(bool){
@@ -213,6 +217,7 @@ void MainWindow::on_actionLoad_triggered(bool){
     if(fileName.isEmpty()) return;
     Controller::instance().load_simulation(fileName.toStdString());
     ui->actionSingle_Neuron->setEnabled(true);
+    addFileToRecentlyUsed(fileName);
 }
 
 void MainWindow::on_actionClose_triggered(bool){
@@ -350,4 +355,60 @@ void MainWindow::simulation_changed(Simulation* s){
         if(&m_property_browser == dock->widget())
             dock->show();
     }
+}
+
+QStringList MainWindow::recentlyUsedFiles() const{
+        QSettings settings;
+        settings.beginGroup("application/recently_used");
+        QStringList recentFiles;
+        QString key;
+        foreach(key, settings.allKeys())
+                recentFiles.insert(key.toInt(), settings.value(key).toString());
+        return recentFiles;
+}
+
+void MainWindow::setRecentlyUsedFiles(QStringList files){
+        QSettings settings;
+        settings.beginGroup("application/recently_used");
+        QString key;
+        foreach(key, settings.allKeys())
+                settings.remove(key);
+        for(int x = 0; x < files.size(); x++)
+                settings.setValue(QString("%1").arg(x), files[x]);
+}
+
+void MainWindow::openRecentlyUsedFile(){
+        QAction* recentFile = qobject_cast<QAction*>(sender());
+        if(recentFile) Controller::instance().load_simulation(recentFile->text().toStdString());
+}
+
+void MainWindow::populateRecentlyUsedMenu(){
+        ui->menuOpen_Recent->clear();
+        QString filePath;
+        QAction* action;
+        foreach(filePath, recentlyUsedFiles()){
+                if(!filePath.isEmpty()){
+                        action = ui->menuOpen_Recent->addAction(filePath);
+                        connect(action, SIGNAL(triggered()), this, SLOT(openRecentlyUsedFile()));
+                }
+        }
+        if(ui->menuOpen_Recent->isEmpty()) return;
+        ui->menuOpen_Recent->addSeparator();
+        action = ui->menuOpen_Recent->addAction("Clear");
+        connect(action, SIGNAL(triggered()), this, SLOT(clearRecentlyUsedFiles()));
+}
+
+void MainWindow::addFileToRecentlyUsed(QString filePath){
+        QList<QString> recentFiles = recentlyUsedFiles();
+        if(!recentFiles.empty())
+                if(recentFiles[0] == filePath) return;
+        recentFiles.removeAll(filePath);
+        recentFiles.prepend(filePath);
+        setRecentlyUsedFiles(recentFiles);
+        populateRecentlyUsedMenu();
+}
+
+void MainWindow::clearRecentlyUsedFiles(){
+        setRecentlyUsedFiles(QList<QString>());
+        populateRecentlyUsedMenu();
 }

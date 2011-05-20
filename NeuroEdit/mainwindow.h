@@ -62,6 +62,13 @@ private slots:
 
      void simulation_changed(Simulation*);
 
+     QStringList recentlyUsedFiles() const;
+     void setRecentlyUsedFiles(QStringList files);
+     void openRecentlyUsedFile();
+     void populateRecentlyUsedMenu();
+     void addFileToRecentlyUsed(QString filePath);
+     void clearRecentlyUsedFiles();
+
 private:
     Ui::MainWindow *ui;
     GLScene* m_glscene;
