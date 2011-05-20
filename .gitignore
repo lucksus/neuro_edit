@@ -1,7 +1,12 @@
+neuro_edit.app
+*Makefile*
 *.pro.user
 build/*
 *.o
 moc_*.cpp
+ui_*.h
+qrc_*.cpp
+*.moc
 NeuronModels/Makefile
 NeuronModels/izhikevich.o
 NeuronModels/libneuron_models.1.0.0.dylib
