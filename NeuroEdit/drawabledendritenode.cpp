@@ -1,6 +1,9 @@
 #include "drawabledendritenode.h"
 #include "dendriticnode.h"
-#include <gl.h>
+#ifdef WIN32
+#include <Windows.h>
+#endif
+#include <GL/gl.h>
 #include <GLUT/glut.h>
 #include <assert.h>
 #include "glhelpfunctions.h"

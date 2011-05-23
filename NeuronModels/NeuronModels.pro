@@ -10,6 +10,10 @@ TARGET = neuron_models
 TEMPLATE = lib
 CONFIG += staticlib
 
+win32{
+	INCLUDEPATH += c:\boost\include
+}
+
 SOURCES += izhikevich.cpp \
            network.cpp \
     axon.cpp \

@@ -1,6 +1,9 @@
 #include "drawableaxonnode.h"
 #include "axonnode.h"
-#include <gl.h>
+#ifdef WIN32
+#include <Windows.h>
+#endif
+#include <GL/gl.h>
 #include <GLUT/glut.h>
 
 bool DrawableAxonNode::is_applicable_to(SimulationObject* object){

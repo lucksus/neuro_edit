@@ -1,5 +1,8 @@
 #include "glhelpfunctions.h"
-#include "gl.h"
+#ifdef WIN32
+#include <Windows.h>
+#endif
+#include <GL/gl.h>
 
 void GLHelpFunctions::draw_cylinder(Point start, Point end, double radius, unsigned int slices){
     Point vec = end - start;

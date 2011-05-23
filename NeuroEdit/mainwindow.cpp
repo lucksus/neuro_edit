@@ -185,7 +185,7 @@ void MainWindow::simulation_time_passed(double){
 void MainWindow::closeEvent(QCloseEvent *event){
     if(m_sim){
         m_sim->request_stop();
-        usleep(1000);
+		m_sim->wait_till_finished();
     }
     event->accept();
 }

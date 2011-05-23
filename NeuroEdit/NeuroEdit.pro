@@ -9,12 +9,24 @@ CONFIG += debug
 TARGET = neuro_edit
 TEMPLATE = app
 INCLUDEPATH += ../NeuronModels
-LIBS += -L../NeuronModels -lneuron_models -lboost_serialization
 PRE_TARGETDEPS += ../NeuronModels/libneuron_models.a
 
-macx{
-    LIBS += -framework GLUT
+macx:LIBS += -framework GLUT
+
+win32{
+	INCLUDEPATH += c:\boost\include
+	LIBS += -Lc:\boost\lib -llibboost_serialization-vc80-mt
+}else{
+	LIBS += -lboost_serialization
 }
+
+build_pass:CONFIG(debug, debug|release) {
+	LIBS += -L../NeuronModels/debug
+} else {
+    LIBS += -L../NeuronModels/release
+}
+
+LIBS += -L../NeuronModels -lneuron_models
 
 SOURCES += main.cpp\
         mainwindow.cpp \

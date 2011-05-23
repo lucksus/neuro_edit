@@ -3,7 +3,7 @@
 #include <boost/foreach.hpp>
 #include "neuron.h"
 #include "axon.h"
-#include <GLUT/glut.h>
+
 #include <algorithm>
 #include "application.h"
 #include <assert.h>
@@ -767,7 +767,14 @@ void GLScene::paint_moving_plane(){
     double dist = destination.distance(p);
     glDisable(GL_LIGHTING);
     glColor3f(.0,.0,.8);
-    for(double step=10;step < std::max(2*dist,150.);step*=1.5){
+	double my_max;
+#ifdef WIN32
+	my_max = _cpp_max(2*dist,150.);
+#else
+	my_max = std::max(2*dist,150.);
+#endif
+
+    for(double step=10;step < my_max;step*=1.5){
         if(!m_shift_key_down && !m_ctrl_key_down){
             //parallel to x-z-achsis
             glBegin(GL_LINE_STRIP);
