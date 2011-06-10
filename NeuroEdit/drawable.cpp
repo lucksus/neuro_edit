@@ -13,6 +13,12 @@ boost::tuple<GLuint,GLuint,GLuint> Drawable::s_next_picking_name;
 std::map<boost::tuple<GLuint,GLuint,GLuint>, SimulationObject*> Drawable::s_picking_names;
 
 void Drawable::draw(){
+    if(m_dont_use_display_lists){
+        set_color_and_lightning();
+        draw_geometry_impl();
+        return;
+    }
+
     if(m_display_list != 0 && !m_dont_use_display_lists){
         glCallList(m_display_list);
     }else{
