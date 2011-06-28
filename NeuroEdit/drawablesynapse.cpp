@@ -2,8 +2,10 @@
 #include "synapse.h"
 #ifdef WIN32
 #include <Windows.h>
-#endif
 #include <GL/gl.h>
+#else
+#include <gl.h>
+#endif
 #include <boost/foreach.hpp>
 #include <axon.h>
 #include <assert.h>

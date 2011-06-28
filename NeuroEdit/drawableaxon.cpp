@@ -3,15 +3,19 @@
 #include <boost/foreach.hpp>
 #ifdef WIN32
 #include <Windows.h>
-#endif
 #include <GL/gl.h>
+#include <GL/glu.h>
+#else
+#include <gl.h>
+#include <glu.h>
+#endif
 #include "drawableneuron.h"
 #include "drawableaxonnode.h"
 #include <assert.h>
 #include <GLUT/glut.h>
 #include "glhelpfunctions.h"
 #include "spikingobject.h"
-#include <GL/glu.h>
+
 
 bool DrawableAxon::is_applicable_to(SimulationObject* object){
     Axon* n = dynamic_cast<Axon*>(object);

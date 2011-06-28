@@ -3,8 +3,10 @@
 #include <set>
 #ifdef WIN32
 #include <Windows.h>
-#endif
 #include <GL/gl.h>
+#else
+#include <gl.h>
+#endif
 #include <boost/tuple/tuple.hpp>
 #include <map>
 

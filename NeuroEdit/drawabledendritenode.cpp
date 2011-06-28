@@ -2,8 +2,10 @@
 #include "dendriticnode.h"
 #ifdef WIN32
 #include <Windows.h>
-#endif
 #include <GL/gl.h>
+#else
+#include <gl.h>
+#endif
 #include <GLUT/glut.h>
 #include <assert.h>
 #include "glhelpfunctions.h"

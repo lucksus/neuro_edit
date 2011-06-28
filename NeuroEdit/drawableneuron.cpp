@@ -2,8 +2,10 @@
 #include "neuron.h"
 #ifdef WIN32
 #include <Windows.h>
-#endif
 #include <GL/gl.h>
+#else
+#include <gl.h>
+#endif
 #include <assert.h>
 #include "dendriticnode.h"
 #include <boost/foreach.hpp>
