@@ -1,8 +1,10 @@
 #include "drawableneuron.h"
 #include "neuron.h"
-#include "gl.h"
+#ifdef WIN32
+#include <Windows.h>
+#endif
+#include <GL/gl.h>
 #include <assert.h>
-#include <GLUT/glut.h>
 #include "dendriticnode.h"
 #include <boost/foreach.hpp>
 #include "drawabledendritenode.h"

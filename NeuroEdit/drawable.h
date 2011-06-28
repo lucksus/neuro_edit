@@ -1,7 +1,10 @@
 #ifndef DRAWABLE_H
 #define DRAWABLE_H
 #include <set>
-#include <OpenGL/gl.h>
+#ifdef WIN32
+#include <Windows.h>
+#endif
+#include <GL/gl.h>
 #include <boost/tuple/tuple.hpp>
 #include <map>
 

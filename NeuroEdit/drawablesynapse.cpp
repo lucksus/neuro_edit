@@ -1,10 +1,12 @@
 #include "drawablesynapse.h"
 #include "synapse.h"
-#include <gl.h>
+#ifdef WIN32
+#include <Windows.h>
+#endif
+#include <GL/gl.h>
 #include <boost/foreach.hpp>
 #include <axon.h>
 #include <assert.h>
-#include <GLUT/glut.h>
 #include "glhelpfunctions.h"
 
 bool DrawableSynapse::is_applicable_to(SimulationObject* object){

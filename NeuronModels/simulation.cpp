@@ -1,6 +1,6 @@
 #include "simulation.h"
 #include "network.h"
-#include <sys/time.h>
+#include <QtCore/QTime>
 #include <iostream>
 #include <QtCore/QMutexLocker>
 #include <fstream>
@@ -72,17 +72,13 @@ void Simulation::run(){
     m_time_ms = 0;
     emit simulation_started();
     while(!m_stop_request){
-        struct timeval start, end;
-        long real_time, seconds, useconds;
-        gettimeofday(&start, NULL);
+		QTime time;
+		time.start();
         m_network->simulate(m_simulation_step);
         m_time_ms += m_simulation_step;
-        gettimeofday(&end, NULL);
-        seconds  = end.tv_sec  - start.tv_sec;
-        useconds = end.tv_usec - start.tv_usec;
-        real_time = seconds/1000000 + useconds;
+		int real_time_ms = time.elapsed();
 
-        long diff = m_real_step*1000 - real_time;
+        long diff = m_real_step - real_time_ms;
 
         if(diff < 0) emit not_matching_speed();
         else usleep(diff);

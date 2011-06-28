@@ -1,6 +1,6 @@
 #include <QtGui/QApplication>
 #include "application.h"
-
+/*
 #include <stdio.h>
 #include <execinfo.h>
 #include <signal.h>
@@ -19,12 +19,12 @@ void handler(int sig) {
   backtrace_symbols_fd(array, size, 2);
   exit(1);
 }
-
+*/
 
 int main(int argc, char *argv[])
 {
 
-    signal(SIGSEGV, handler);   // install our handler
+    //signal(SIGSEGV, handler);   // install our handler
     QApplication qa(argc, argv);
     qa.processEvents();
     Application::instance().init();
