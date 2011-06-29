@@ -81,7 +81,7 @@ void Simulation::run(){
         long diff = m_real_step - real_time_ms;
 
         if(diff < 0) emit not_matching_speed();
-        else usleep(diff);
+        else msleep(diff);
         //emit simulation_milliseconds_passed(m_simulation_step);
     }
     m_stop_request = false;
