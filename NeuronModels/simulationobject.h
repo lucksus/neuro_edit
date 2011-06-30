@@ -11,12 +11,14 @@
 
 class Neuron;
 class Network;
+class Simulation;
 class SimulationObject : public QObject
 {
 Q_OBJECT
 Q_PROPERTY(Point position READ position WRITE set_position)
 friend class boost::serialization::access;
 public:
+    SimulationObject(Simulation*);
     SimulationObject(Neuron*);
     SimulationObject(const SimulationObject&);
     virtual ~SimulationObject(){}
@@ -24,6 +26,7 @@ public:
     virtual void update(double milli_seconds) = 0;
     Q_INVOKABLE virtual std::set<SimulationObject*> children();
     Q_INVOKABLE virtual Neuron* neuron();
+    Q_INVOKABLE Simulation* simulation();
     //virtual SimulationObject* clone() = 0;
 
     bool is_done();
@@ -63,6 +66,7 @@ private:
     bool m_done;
     Point m_position;
     bool m_is_user_movable;
+    Simulation* m_simulation;
 
 
     template<class Archive>

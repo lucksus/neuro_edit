@@ -8,6 +8,8 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/type_traits/is_virtual_base_of.hpp>
 
+class CurrentInducer;
+
 class DendriticNode : public SimulationObject
 {
 friend class boost::serialization::access;
@@ -27,6 +29,8 @@ public:
 
     void add_incoming_synapse(Synapse*);
     void detach_incoming_synapse(Synapse*);
+    void add_current_inducer(CurrentInducer*);
+    void detach_current_inducer(CurrentInducer*);
     void add_child(DendriticNode*);
 
     virtual std::set<SimulationObject*> about_to_remove(SimulationObject *);
@@ -39,6 +43,7 @@ private:
     DendriticNode* m_parent;
     std::set<DendriticNode*> m_children;
     std::set<Synapse*> m_incoming_synapses;
+    std::set<CurrentInducer*> m_current_inducers;
 /*
     template<class Archive>
     void save(Archive & ar, const unsigned int) const

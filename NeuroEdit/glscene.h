@@ -6,6 +6,7 @@
 #include "neuron.h"
 #include <QTimer>
 
+class CurrentInducer;
 class Drawable;
 class GLScene : public QGLWidget
 {
@@ -18,6 +19,40 @@ public:
 
     enum SimulationObjectHacks{DRAWABLE_POINTER=1, PICKING_DISPLAY_LIST=2};
 
+
+    template<class SimObjectType>
+    SimulationObject* find_nearest_2d(const int& mousex, const int& mousey){
+        makeCurrent();
+        setup_projection_and_modelview_matrix();
+        GLint viewport[4];
+        glGetIntegerv(GL_VIEWPORT,viewport);
+        GLdouble model_view[16];
+        glGetDoublev(GL_MODELVIEW_MATRIX, model_view);
+        GLdouble projection[16];
+        glGetDoublev(GL_PROJECTION_MATRIX, projection);
+
+        SimulationObject* nearest = 0;
+        double distance;
+        BOOST_FOREACH(SimulationObject* o, m_network->objects_as_std_set()){
+            if(dynamic_cast<SimObjectType>(o)){
+                GLdouble x,y,z;
+                gluProject(o->position().x, o->position().y, o->position().z, model_view, projection, viewport, &x, &y, &z);
+                y = height() - y;
+                Point a(x,y,0);
+                Point b(mousex,mousey,0);
+                double dist = a.distance(b);
+                if(nearest == 0){
+                    nearest = o;
+                    distance = dist;
+                }else if(dist < distance){
+                    nearest = o;
+                    distance = dist;
+                }
+            }
+        }
+        return nearest;
+    }
+
 signals:
     void selection_changed(std::set<SimulationObject*>);
     void neuron_selected(Neuron*);
@@ -28,6 +63,7 @@ public slots:
     void start_inserting(std::set<SimulationObject*>);
     void deselect();
     void start_connecting(SpikingObject*);
+    void start_inserting_current_inducer();
 
 protected:
      void initializeGL();
@@ -122,6 +158,15 @@ private:
     SpikingObject* m_connection_source;
     void finish_connecting();
     void paint_connecting_overlay();
+
+
+    //-----------------
+    //inserting current inducer:
+    //-----------------
+    bool m_inserting_current_inducer;
+    CurrentInducer* m_phony_current_inducer;
+    void finish_inserting_current_inducer(SimulationObject*);
+
 
 private slots:
     void camera_center_moving_update();

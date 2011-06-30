@@ -13,6 +13,7 @@
 #include "drawabledendritenode.h"
 #include "synapse.h"
 #include "drawablesynapse.h"
+#include "current_inducer.h"
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent),
@@ -24,7 +25,9 @@ GLScene::GLScene(QWidget *parent) :
     m_moving_start_point(0,0,0),
     m_connecting(false),
     m_connection_source(0),
-    m_fov(120.)
+    m_fov(120.),
+    m_inserting_current_inducer(false),
+    m_phony_current_inducer(0)
 {
     m_camera_config.distance = 100;
     setMouseTracking(true);
@@ -105,6 +108,14 @@ void GLScene::mouseMoveEvent(QMouseEvent *e){
             m_moving_point = mouse_on_plane(e->x(),e->y(),m_moving_switch_plane_point, normal);
         }
 
+        if(m_inserting_current_inducer){
+            assert(m_phony_current_inducer);
+            SimulationObject* dn = find_nearest_2d<DendriticNode*>(e->x(),e->y());
+            if(dn){
+                m_phony_current_inducer->set_position(dn->position());
+            }
+        }
+
         m_oldMouseX = e->x();
         m_oldMouseY = e->y();
         //updateGL();
@@ -144,6 +155,9 @@ void GLScene::mouseReleaseEvent(QMouseEvent* e){
                 }
                 if(m_connecting){
                     finish_connecting();
+                }
+                if(m_inserting_current_inducer){
+                    finish_inserting_current_inducer(find_nearest_2d<DendriticNode*>(e->x(),e->y()));
                 }
                 //updateGL();
             }
@@ -197,6 +211,8 @@ void GLScene::keyPressEvent(QKeyEvent *e){
         break;
     case Qt::Key_Escape:
         abort_moving();
+        m_connecting = false;
+        finish_inserting_current_inducer(0);
         //updateGL();
         break;
     }
@@ -876,3 +892,23 @@ void GLScene::finish_connecting(){
     m_connecting = false;
 }
 
+void GLScene::start_inserting_current_inducer(){
+    m_phony_current_inducer = new CurrentInducer(m_network->simulation());
+    m_inserting_current_inducer = true;
+    m_moving_point = m_moving_start_point = Point(0,0,0);
+    m_moving_objects.insert(m_phony_current_inducer);
+}
+
+void GLScene::finish_inserting_current_inducer(SimulationObject* o){
+    BOOST_FOREACH(SimulationObject* mo, m_moving_objects){
+        delete mo;
+    }
+    m_moving_objects.clear();
+    m_inserting_current_inducer = false;
+    m_phony_current_inducer = false;
+
+    DendriticNode* dn = dynamic_cast<DendriticNode*>(o);
+    if(!dn) return;
+
+    m_network->add_object(new CurrentInducer(dn));
+}

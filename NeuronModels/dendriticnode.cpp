@@ -2,6 +2,7 @@
 #include <boost/foreach.hpp>
 #include "synapse.h"
 #include "network.h"
+#include "current_inducer.h"
 
 DendriticNode::DendriticNode(Neuron* neuron, DendriticNode* parent)
     : SimulationObject(neuron), m_added_current(0), m_parent(parent)
@@ -53,6 +54,9 @@ void DendriticNode::moved(Point new_position){
     BOOST_FOREACH(Synapse* synapse, m_incoming_synapses){
         synapse->set_position(new_position);
     }
+    BOOST_FOREACH(CurrentInducer* ci, m_current_inducers){
+        ci->set_position(new_position);
+    }
 }
 
 
@@ -62,6 +66,14 @@ void DendriticNode::add_incoming_synapse(Synapse* synapse){
 
 void DendriticNode::detach_incoming_synapse(Synapse* synapse){
     m_incoming_synapses.erase(synapse);
+}
+
+void DendriticNode::add_current_inducer(CurrentInducer* ci){
+    m_current_inducers.insert(ci);
+}
+
+void DendriticNode::detach_current_inducer(CurrentInducer* ci){
+    m_current_inducers.erase(ci);
 }
 
 void DendriticNode::add_child(DendriticNode* child){

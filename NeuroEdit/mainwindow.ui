@@ -84,6 +84,8 @@
     <addaction name="actionAxon_Node"/>
     <addaction name="actionSynapse"/>
     <addaction name="actionDendrite_Node"/>
+    <addaction name="actionCurrent_Inducer"/>
+    <addaction name="actionSamples"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -328,6 +330,22 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionCurrent_Inducer">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Current Inducer</string>
+   </property>
+  </action>
+  <action name="actionSamples">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Samples</string>
    </property>
   </action>
  </widget>

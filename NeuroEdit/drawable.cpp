@@ -4,6 +4,7 @@
 #include "drawableaxonnode.h"
 #include "drawabledendritenode.h"
 #include "drawablesynapse.h"
+#include "drawablecurrentinducer.h"
 #include <assert.h>
 #include "simulationobject.h"
 #include "glscene.h"
@@ -112,4 +113,5 @@ Drawables::Drawables(){
     m_all_drawables.insert(new DrawableAxonNode);
     m_all_drawables.insert(new DrawableDendriteNode);
     m_all_drawables.insert(new DrawableSynapse);
+    m_all_drawables.insert(new DrawableCurrentInducer);
 }

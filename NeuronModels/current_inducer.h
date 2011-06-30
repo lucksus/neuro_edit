@@ -6,7 +6,9 @@ class DendriticNode;
 class CurrentInducer : public SimulationObject
 {
 public:
+    CurrentInducer(Simulation*);
     CurrentInducer(DendriticNode*);
+    ~CurrentInducer();
 
     virtual SimulationObject* clone();
     void set_current(double current);

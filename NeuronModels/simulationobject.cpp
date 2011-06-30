@@ -1,14 +1,21 @@
 #include "simulationobject.h"
-#include <boost/foreach.hpp>s
+#include <boost/foreach.hpp>
+#include "neuron.h"
+
+SimulationObject::SimulationObject(Simulation* s)
+    : m_network(0), m_neuron(0), m_done(false), m_is_user_movable(true), m_simulation(s)
+{
+    bad_hacks[0] = bad_hacks[1] = bad_hacks[2] = 0;
+}
 
 SimulationObject::SimulationObject(Neuron* neuron)
-    : m_network(0), m_neuron(neuron), m_done(false), m_is_user_movable(true)
+    : m_network(0), m_neuron(neuron), m_done(false), m_is_user_movable(true), m_simulation(neuron->m_simulation)
 {
     bad_hacks[0] = bad_hacks[1] = bad_hacks[2] = 0;
 }
 
 SimulationObject::SimulationObject(const SimulationObject& s)
-    : QObject(), m_network(s.m_network), m_neuron(s.m_neuron), m_done(s.m_done), m_is_user_movable(true)
+    : QObject(), m_network(s.m_network), m_neuron(s.m_neuron), m_done(s.m_done), m_is_user_movable(true), m_simulation(s.m_simulation)
 {
     bad_hacks[0] = bad_hacks[1] = bad_hacks[2] = 0;
 }
@@ -21,6 +28,10 @@ std::set<SimulationObject*> SimulationObject::children(){
 
 Neuron* SimulationObject::neuron(){
     return m_neuron;
+}
+
+Simulation* SimulationObject::simulation(){
+    return m_simulation;
 }
 
 bool SimulationObject::is_done(){

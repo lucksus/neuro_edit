@@ -52,7 +52,7 @@ void Controller::close_simulation(){
 void Controller::create_new_simulation(){
     close_simulation();
     m_simulation = new Simulation;
-    m_simulation->set_network(new Network);
+    m_simulation->set_network(new Network(m_simulation));
     emit new_simulation(m_simulation);
 }
 

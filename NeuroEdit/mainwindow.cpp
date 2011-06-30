@@ -157,6 +157,14 @@ void MainWindow::on_actionSynapse_triggered(bool){
 
 }
 
+void MainWindow::on_actionCurrent_Inducer_triggered(bool){
+    m_glscene->start_inserting_current_inducer();
+}
+
+void MainWindow::on_actionSamples_triggered(bool){
+
+}
+
 void MainWindow::on_actionStart_Simulation_triggered(bool){
     Controller::instance().simulation()->start();
 }
@@ -193,6 +201,7 @@ void MainWindow::closeEvent(QCloseEvent *event){
 void MainWindow::on_actionNew_triggered(bool){
     Controller::instance().create_new_simulation();
     ui->actionSingle_Neuron->setEnabled(true);
+    ui->actionCurrent_Inducer->setEnabled(true);
 }
 
 void MainWindow::on_actionSave_triggered(bool b){
@@ -217,12 +226,14 @@ void MainWindow::on_actionLoad_triggered(bool){
     if(fileName.isEmpty()) return;
     Controller::instance().load_simulation(fileName.toStdString());
     ui->actionSingle_Neuron->setEnabled(true);
+    ui->actionCurrent_Inducer->setEnabled(true);
     addFileToRecentlyUsed(fileName);
 }
 
 void MainWindow::on_actionClose_triggered(bool){
     Controller::instance().close_simulation();
     ui->actionSingle_Neuron->setEnabled(false);
+    ui->actionCurrent_Inducer->setEnabled(false);
 }
 
 void MainWindow::on_actionQuit_triggered(bool){

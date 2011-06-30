@@ -18,13 +18,15 @@ class Synapse;
 class SpikingObject;
 class DendriticNode;
 class Neuron;
+class Simulation;
 class Network : public QObject
 {
 Q_OBJECT
 friend class boost::serialization::access;
 public:
     Network():m_script_engine(this){}
-    Network(const Network& n):QObject(), m_objects(n.m_objects), m_script_engine(this){}
+    Network(Simulation* sim):m_script_engine(this),m_simulation(sim){}
+    Network(const Network& n):QObject(), m_objects(n.m_objects), m_script_engine(this), m_simulation(n.m_simulation){}
 
     void write_to_file(const std::string& filename);
     Q_INVOKABLE void write_to_file(const QString& filename);
@@ -41,6 +43,7 @@ public:
     Q_INVOKABLE void set_script(const QString& name, const QString& script);
     Q_INVOKABLE void run_script(const QString& name);
     Q_INVOKABLE void remove_script(const QString& name);
+    Q_INVOKABLE Simulation* simulation(){return m_simulation;};
 
     Q_INVOKABLE Axon* connect(SpikingObject*, SpikingObject*);
     std::pair<Axon*, Synapse*> connect(SpikingObject*, DendriticNode*);
@@ -61,6 +64,7 @@ private:
     std::set<SimulationObject*> m_objects;
     std::map<std::string, std::string> m_scripts;
     ScriptEngine m_script_engine;
+    Simulation* m_simulation;
 
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)
