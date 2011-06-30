@@ -5,6 +5,9 @@
 class DendriticNode;
 class CurrentInducer : public SimulationObject
 {
+Q_OBJECT
+Q_PROPERTY(double current READ current WRITE set_current)
+Q_PROPERTY(bool active READ active WRITE set_active)
 public:
     CurrentInducer(Simulation*);
     CurrentInducer(DendriticNode*);
@@ -12,7 +15,9 @@ public:
 
     virtual SimulationObject* clone();
     void set_current(double current);
+    double current();
     void set_active(bool);
+    bool active();
 
     virtual void update(double milliseconds);
 

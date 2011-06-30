@@ -29,8 +29,16 @@ void CurrentInducer::set_current(double current){
     m_current = current;
 }
 
+double CurrentInducer::current(){
+    return m_current;
+}
+
 void CurrentInducer::set_active(bool active){
     m_active = active;
+}
+
+bool CurrentInducer::active(){
+    return m_active;
 }
 
 void CurrentInducer::update(double){
