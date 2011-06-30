@@ -64,14 +64,6 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     ui->menuWindows->addAction(dock->toggleViewAction());
     dock->hide();
 
-    dock = new QDockWidget(tr("Neuron manipulator"), this);
-    dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    dock->setWidget(&m_neuron_manipulator_widget);
-    addDockWidget(Qt::RightDockWidgetArea,dock);
-    m_dock_widgets.insert(dock);
-    ui->menuWindows->addAction(dock->toggleViewAction());
-    dock->hide();
-
     dock = new QDockWidget(tr("Simulation settings"), this);
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     dock->setWidget(&m_sim_settings_widget);
@@ -102,7 +94,6 @@ void MainWindow::init_glscene(){
     m_glscene->set_network(m_network);
     ui->center_frame->layout()->addWidget(m_glscene);
     m_glscene->setFocus();
-    connect(m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_neuron_manipulator_widget, SLOT(set_dendritic_nodes(std::set<SimulationObject*>)));
     connect(m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), &m_property_browser, SLOT(objects_selected(std::set<SimulationObject*>)));
     connect(m_glscene, SIGNAL(neuron_selected(Neuron*)), &m_neuron_membrane_potential_widget, SLOT(set_neuron(Neuron*)));
     connect(m_glscene, SIGNAL(neuron_selected(Neuron*)), &m_izhikevich_system_plot_widget, SLOT(set_neuron(Neuron*)));
@@ -270,9 +261,7 @@ void MainWindow::on_actionPaste_triggered(bool){
 
 void MainWindow::on_actionRemove_triggered(bool){
     std::set<SimulationObject*> selected = m_glscene->selected_objects();
-    m_neuron_manipulator_widget.deactivate();
     m_network->delete_objects(selected);
-    m_neuron_manipulator_widget.activate();
 }
 
 void MainWindow::on_actionConnect_triggered(bool){

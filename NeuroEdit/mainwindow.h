@@ -8,7 +8,6 @@
 #include "simulation_settings_widget.h"
 #include "neuron_membrane_plot_widget.h"
 #include "izhikevich_systemstate_plotwidget.h"
-#include "neuron_manipulator_widget.h"
 #include "propertybrowser.h"
 #include "scriptswindow.h"
 
@@ -77,7 +76,6 @@ private:
     Network* m_network;
 
     NeuronMembranePlotWidget m_neuron_membrane_potential_widget;
-    NeuronManipulatorWidget m_neuron_manipulator_widget;
     IzhikevichSystemStatePlotWidget m_izhikevich_system_plot_widget;
     Simulation* m_sim;
     SimulationSettingsWidget m_sim_settings_widget;

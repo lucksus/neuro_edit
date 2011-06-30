@@ -37,7 +37,6 @@ SOURCES += main.cpp\
     glplotwidget2d.cpp \
     izhikevich_systemstate_plotwidget.cpp \
     application.cpp \
-    neuron_manipulator_widget.cpp \
     about_dialog.cpp \
     drawable.cpp \
     drawableneuron.cpp \
@@ -59,7 +58,6 @@ HEADERS  += mainwindow.h \
     glplotwidget2d.h \
     izhikevich_systemstate_plotwidget.h \
     application.h \
-    neuron_manipulator_widget.h \
     about_dialog.h \
     drawable.h \
     drawableneuron.h \
