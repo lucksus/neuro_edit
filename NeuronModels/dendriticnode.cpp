@@ -83,10 +83,13 @@ void DendriticNode::add_child(DendriticNode* child){
 std::set<SimulationObject*> DendriticNode::about_to_remove(SimulationObject *object_to_be_deleted){
     DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(object_to_be_deleted);
     Synapse* synapse = dynamic_cast<Synapse*>(object_to_be_deleted);
+    CurrentInducer* ci = dynamic_cast<CurrentInducer*>(object_to_be_deleted);
     if(dendritic_node)
         m_children.erase(dendritic_node);
     if(synapse)
         m_incoming_synapses.erase(synapse);
+    if(ci)
+        m_current_inducers.erase(ci);
 
     std::set<SimulationObject*> also_to_be_deleted = SimulationObject::about_to_remove(object_to_be_deleted);
     if(this == object_to_be_deleted){

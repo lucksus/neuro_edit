@@ -16,11 +16,6 @@ CurrentInducer::CurrentInducer(DendriticNode* n) :
     n->add_current_inducer(this);
 }
 
-CurrentInducer::~CurrentInducer(){
-    if(m_target)
-        m_target->detach_current_inducer(this);
-}
-
 SimulationObject* CurrentInducer::clone(){
     return new CurrentInducer(*this);
 }

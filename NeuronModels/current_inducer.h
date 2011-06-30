@@ -11,7 +11,6 @@ Q_PROPERTY(bool active READ active WRITE set_active)
 public:
     CurrentInducer(Simulation*);
     CurrentInducer(DendriticNode*);
-    ~CurrentInducer();
 
     virtual SimulationObject* clone();
     void set_current(double current);
