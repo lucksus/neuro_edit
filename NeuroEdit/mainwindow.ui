@@ -339,6 +339,9 @@
    <property name="text">
     <string>Current Inducer</string>
    </property>
+   <property name="shortcut">
+    <string>I</string>
+   </property>
   </action>
   <action name="actionSamples">
    <property name="enabled">
