@@ -11,6 +11,7 @@
 #include "drawableneuron.h"
 #include "drawableaxonnode.h"
 #include "drawabledendritenode.h"
+#include "drawablecurrentinducer.h"
 #include "synapse.h"
 #include "drawablesynapse.h"
 #include "current_inducer.h"
@@ -641,6 +642,7 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
     AxonNode* axon_node = dynamic_cast<AxonNode*>(object);
     DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(object);
     Synapse* synapse = dynamic_cast<Synapse*>(object);
+    CurrentInducer* current_inducer = dynamic_cast<CurrentInducer*>(object);
     //SpatialObject* spo = dynamic_cast<SpatialObject*>(object);
     //assert(spo);
 
@@ -684,6 +686,11 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
     if(synapse){
         displacement = DrawableSynapse::displacement(synapse);
         radius = (DrawableSynapse::START_DISTANCE - DrawableSynapse::END_DISTANCE)/2 + 3;
+    }
+    if(current_inducer){
+        double r = (DrawableCurrentInducer::HEIGHT2-DrawableCurrentInducer::HEIGHT1)/2 + 3;
+        displacement = Point(0,r,-3);
+        radius = r;
     }
 
     Point position = object->position() + displacement;
