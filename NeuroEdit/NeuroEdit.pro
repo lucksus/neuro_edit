@@ -48,7 +48,8 @@ SOURCES += main.cpp\
     propertybrowser.cpp \
     scriptswindow.cpp \
     scriptsyntaxhighlighter.cpp \
-    drawablecurrentinducer.cpp
+    drawablecurrentinducer.cpp \
+    drawablesamples.cpp
 
 HEADERS  += mainwindow.h \
     glscene.h \
@@ -69,7 +70,8 @@ HEADERS  += mainwindow.h \
     propertybrowser.h \
     scriptswindow.h \
     scriptsyntaxhighlighter.h \
-    drawablecurrentinducer.h
+    drawablecurrentinducer.h \
+    drawablesamples.h
 
 FORMS    += mainwindow.ui \
     izhikevich_properties_widget.ui \

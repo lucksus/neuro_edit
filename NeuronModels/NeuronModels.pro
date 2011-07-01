@@ -28,7 +28,8 @@ SOURCES += izhikevich.cpp \
     axonnode.cpp \
     scriptengine.cpp \
     spikingobject.cpp \
-    controller.cpp
+    controller.cpp \
+    samples.cpp
 
 HEADERS += izhikevich.h \
            network.h \
@@ -45,4 +46,5 @@ HEADERS += izhikevich.h \
     axonnode.h \
     scriptengine.h \
     spikingobject.h \
-    controller.h
+    controller.h \
+    samples.h
