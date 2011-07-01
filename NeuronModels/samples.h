@@ -26,6 +26,7 @@ public:
 
     void add_current_inducer(CurrentInducer*);
     void remove_current_inducer(CurrentInducer*);
+    const std::list<CurrentInducer*>& current_inducers();
     void set_samples(const std::vector<sample>& samples);
     std::vector<sample> samples();
 

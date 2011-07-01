@@ -49,6 +49,10 @@ void Samples::remove_current_inducer(CurrentInducer* ci){
     m_current_inducers.remove(ci);
 }
 
+const std::list<CurrentInducer*>& Samples::current_inducers(){
+    return m_current_inducers;
+}
+
 void Samples::set_samples(const std::vector<sample>& samples){
     m_samples = samples;
 }
