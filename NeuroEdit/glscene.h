@@ -21,7 +21,7 @@ public:
 
 
     template<class SimObjectType>
-    SimulationObject* find_nearest_2d(const int& mousex, const int& mousey){
+    std::pair<SimulationObject*,double> find_nearest_2d(const int& mousex, const int& mousey){
         makeCurrent();
         setup_projection_and_modelview_matrix();
         GLint viewport[4];
@@ -50,7 +50,7 @@ public:
                 }
             }
         }
-        return nearest;
+        return std::pair<SimulationObject*,double>(nearest,distance);
     }
 
 signals:
@@ -62,7 +62,7 @@ public slots:
     void set_network(Network*);
     void start_inserting(std::set<SimulationObject*>);
     void deselect();
-    void start_connecting(SpikingObject*);
+    void start_connecting(SimulationObject*);
     void start_inserting_current_inducer();
 
 protected:
@@ -154,8 +154,8 @@ private:
     //connecting:
     //-----------------
     bool m_connecting;
-    std::set<SimulationObject*> m_connection_sources;
-    SpikingObject* m_connection_source;
+    SimulationObject* m_connection_source;
+    SimulationObject* m_current_connection_target;
     void finish_connecting();
     void paint_connecting_overlay();
 

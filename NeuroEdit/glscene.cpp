@@ -15,6 +15,7 @@
 #include "synapse.h"
 #include "drawablesynapse.h"
 #include "current_inducer.h"
+#include "samples.h"
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent),
@@ -26,6 +27,7 @@ GLScene::GLScene(QWidget *parent) :
     m_moving_start_point(0,0,0),
     m_connecting(false),
     m_connection_source(0),
+    m_current_connection_target(0),
     m_fov(120.),
     m_inserting_current_inducer(false),
     m_phony_current_inducer(0)
@@ -109,9 +111,24 @@ void GLScene::mouseMoveEvent(QMouseEvent *e){
             m_moving_point = mouse_on_plane(e->x(),e->y(),m_moving_switch_plane_point, normal);
         }
 
+        if(m_connecting){
+            assert(m_connection_source);
+            if(dynamic_cast<AxonNode*>(m_connection_source)){
+                std::pair<SimulationObject*,double> axon_node = find_nearest_2d<AxonNode*>(e->x(),e->y());
+                std::pair<SimulationObject*,double> dendritic_node = find_nearest_2d<DendriticNode*>(e->x(),e->y());
+                if(axon_node.first) m_current_connection_target = axon_node.first;
+                if(dendritic_node.first) m_current_connection_target = dendritic_node.first;
+                if(axon_node.first && dendritic_node.first)
+                    if(axon_node.second < dendritic_node.second) m_current_connection_target = axon_node.first;
+            }
+            if(dynamic_cast<Samples*>(m_connection_source)){
+                m_current_connection_target = find_nearest_2d<CurrentInducer*>(e->x(),e->y()).first;
+            }
+        }
+
         if(m_inserting_current_inducer){
             assert(m_phony_current_inducer);
-            SimulationObject* dn = find_nearest_2d<DendriticNode*>(e->x(),e->y());
+            SimulationObject* dn = find_nearest_2d<DendriticNode*>(e->x(),e->y()).first;
             if(dn){
                 m_phony_current_inducer->set_position(dn->position());
             }
@@ -158,7 +175,7 @@ void GLScene::mouseReleaseEvent(QMouseEvent* e){
                     finish_connecting();
                 }
                 if(m_inserting_current_inducer){
-                    finish_inserting_current_inducer(find_nearest_2d<DendriticNode*>(e->x(),e->y()));
+                    finish_inserting_current_inducer(find_nearest_2d<DendriticNode*>(e->x(),e->y()).first);
                 }
                 //updateGL();
             }
@@ -404,12 +421,12 @@ void GLScene::paintGL()
 }
 
 void GLScene::paint_connecting_overlay(){
-    Point mouse = mouse_on_plane(m_oldMouseX, m_oldMouseY, Point(0,0,0), Point(0,1,0));
+    if(!m_connection_source || !m_current_connection_target) return;
     glColor3f(0.,1.,0.);
     glDisable(GL_LIGHTING);
     glBegin(GL_LINES);
         glVertex3f(m_connection_source->position().x, m_connection_source->position().y, m_connection_source->position().z);
-        glVertex3f(mouse.x, mouse.y, mouse.z);
+        glVertex3f(m_current_connection_target->position().x, m_current_connection_target->position().y, m_current_connection_target->position().z);
     glEnd();
 }
 
@@ -883,18 +900,24 @@ void GLScene::camera_center_moving_update(){
 }
 
 
-void GLScene::start_connecting(SpikingObject* emitter){
+void GLScene::start_connecting(SimulationObject* emitter){
     m_connection_source = emitter;
     m_connecting = true;
 }
 
 void GLScene::finish_connecting(){
-    if(m_selected_objects.size() != 1) return;
-    SimulationObject* selected_object = *m_selected_objects.begin();
-    SpikingObject* spike_receiver = dynamic_cast<SpikingObject*>(selected_object);
-    DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(selected_object);
-    if(spike_receiver) m_network->connect(m_connection_source, spike_receiver);
-    if(dendritic_node) m_network->connect(m_connection_source, dendritic_node);
+    SpikingObject* spike_receiver = dynamic_cast<SpikingObject*>(m_current_connection_target);
+    DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(m_current_connection_target);
+    CurrentInducer* current_inducer = dynamic_cast<CurrentInducer*>(m_current_connection_target);
+
+    AxonNode* axon_node = dynamic_cast<AxonNode*>(m_connection_source);
+    if(axon_node){
+        if(spike_receiver) m_network->connect(axon_node, spike_receiver);
+        if(dendritic_node) m_network->connect(axon_node, dendritic_node);
+    }
+
+    Samples* samples = dynamic_cast<Samples*>(m_connection_source);
+    if(samples && current_inducer) samples->add_current_inducer(current_inducer);
 
     m_connecting = false;
 }

@@ -18,6 +18,7 @@
 #include "controller.h"
 #include <stdexcept>
 #include <QtCore/QSettings>
+#include "samples.h"
 
 MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),
@@ -153,7 +154,9 @@ void MainWindow::on_actionCurrent_Inducer_triggered(bool){
 }
 
 void MainWindow::on_actionSamples_triggered(bool){
-
+    std::set<SimulationObject*> s;
+    s.insert(new Samples(m_network->simulation()));
+    m_glscene->start_inserting(s);
 }
 
 void MainWindow::on_actionStart_Simulation_triggered(bool){
@@ -193,6 +196,7 @@ void MainWindow::on_actionNew_triggered(bool){
     Controller::instance().create_new_simulation();
     ui->actionSingle_Neuron->setEnabled(true);
     ui->actionCurrent_Inducer->setEnabled(true);
+    ui->actionSamples->setEnabled(true);
 }
 
 void MainWindow::on_actionSave_triggered(bool b){
@@ -218,6 +222,7 @@ void MainWindow::on_actionLoad_triggered(bool){
     Controller::instance().load_simulation(fileName.toStdString());
     ui->actionSingle_Neuron->setEnabled(true);
     ui->actionCurrent_Inducer->setEnabled(true);
+    ui->actionSamples->setEnabled(true);
     addFileToRecentlyUsed(fileName);
 }
 
@@ -225,6 +230,7 @@ void MainWindow::on_actionClose_triggered(bool){
     Controller::instance().close_simulation();
     ui->actionSingle_Neuron->setEnabled(false);
     ui->actionCurrent_Inducer->setEnabled(false);
+    ui->actionSamples->setEnabled(false);
 }
 
 void MainWindow::on_actionQuit_triggered(bool){
@@ -267,9 +273,10 @@ void MainWindow::on_actionRemove_triggered(bool){
 void MainWindow::on_actionConnect_triggered(bool){
     std::set<SimulationObject*> selected = m_glscene->selected_objects();
     assert(1 == selected.size());
-    SpikingObject* emitter = dynamic_cast<SpikingObject*>(*(selected.begin()));
-    assert(emitter);
-    m_glscene->start_connecting(emitter);
+    SpikingObject* spiking_object = dynamic_cast<SpikingObject*>(*(selected.begin()));
+    Samples* samples = dynamic_cast<Samples*>(*(selected.begin()));
+    assert(spiking_object || samples);
+    m_glscene->start_connecting(*(selected.begin()));
 }
 
 void MainWindow::on_actionAbout_triggered(bool){
@@ -313,6 +320,7 @@ void MainWindow::objects_selected(std::set<SimulationObject*> objects){
     AxonNode* axon_node = dynamic_cast<AxonNode*>(object);
     DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(object);
     SpikingObject* emitter = dynamic_cast<SpikingObject*>(object);
+    Samples* samples = dynamic_cast<Samples*>(object);
 
     if(axon_node){
         ui->actionAxon_Node->setEnabled(true);
@@ -323,7 +331,7 @@ void MainWindow::objects_selected(std::set<SimulationObject*> objects){
         ui->actionDendrite_Node->setEnabled(true);
     }
 
-    if(emitter){
+    if(emitter || samples){
         ui->actionConnect->setEnabled(true);
     }
 }
