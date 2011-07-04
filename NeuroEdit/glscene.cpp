@@ -16,6 +16,7 @@
 #include "drawablesynapse.h"
 #include "current_inducer.h"
 #include "samples.h"
+#include "drawablesamples.h"
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent),
@@ -660,6 +661,7 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
     DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(object);
     Synapse* synapse = dynamic_cast<Synapse*>(object);
     CurrentInducer* current_inducer = dynamic_cast<CurrentInducer*>(object);
+    Samples* samples = dynamic_cast<Samples*>(object);
     //SpatialObject* spo = dynamic_cast<SpatialObject*>(object);
     //assert(spo);
 
@@ -708,6 +710,9 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
         double r = (DrawableCurrentInducer::HEIGHT2-DrawableCurrentInducer::HEIGHT1)/2 + 3;
         displacement = Point(0,r,-3);
         radius = r;
+    }
+    if(samples){
+        radius = DrawableSamples::SIZE + 3;
     }
 
     Point position = object->position() + displacement;
