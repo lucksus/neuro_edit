@@ -32,6 +32,9 @@ public:
 
     void read_from_photoss_signal_file(std::string filename);
 
+    virtual std::list<std::string> user_actions();
+    virtual void do_user_action(std::string);
+
 private:
     std::vector<sample> m_samples;
     std::list<CurrentInducer*> m_current_inducers;
