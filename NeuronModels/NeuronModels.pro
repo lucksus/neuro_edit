@@ -30,6 +30,7 @@ SOURCES += izhikevich.cpp \
     spikingobject.cpp \
     controller.cpp \
     samples.cpp \
+    photosssignalimporter.cpp \
     userinteractionadapter.cpp
 
 HEADERS += izhikevich.h \
@@ -49,4 +50,5 @@ HEADERS += izhikevich.h \
     spikingobject.h \
     controller.h \
     samples.h \
+    photosssignalimporter.h \
     userinteractionadapter.h
