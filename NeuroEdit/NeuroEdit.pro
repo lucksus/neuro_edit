@@ -49,7 +49,8 @@ SOURCES += main.cpp\
     scriptswindow.cpp \
     scriptsyntaxhighlighter.cpp \
     drawablecurrentinducer.cpp \
-    drawablesamples.cpp
+    drawablesamples.cpp \
+    guiuserinteractionadapter.cpp
 
 HEADERS  += mainwindow.h \
     glscene.h \
@@ -71,7 +72,8 @@ HEADERS  += mainwindow.h \
     scriptswindow.h \
     scriptsyntaxhighlighter.h \
     drawablecurrentinducer.h \
-    drawablesamples.h
+    drawablesamples.h \
+    guiuserinteractionadapter.h
 
 FORMS    += mainwindow.ui \
     izhikevich_properties_widget.ui \

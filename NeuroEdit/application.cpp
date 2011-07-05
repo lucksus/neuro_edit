@@ -1,5 +1,6 @@
 #include "application.h"
 #include "controller.h"
+#include "guiuserinteractionadapter.h"
 
 Application::Application():
         m_splash(QPixmap(":/images/splash")),
@@ -22,6 +23,8 @@ void Application::init(){
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(refresh_timeout()));
     m_timer.start(1000/30);
     Controller::instance().init();
+
+    UserInteractionAdapter::install_instance(new GuiUserInteractionAdapter);
 
     m_main_window = new MainWindow(Controller::instance().simulation());
 }

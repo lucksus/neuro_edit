@@ -29,7 +29,8 @@ SOURCES += izhikevich.cpp \
     scriptengine.cpp \
     spikingobject.cpp \
     controller.cpp \
-    samples.cpp
+    samples.cpp \
+    userinteractionadapter.cpp
 
 HEADERS += izhikevich.h \
            network.h \
@@ -47,4 +48,5 @@ HEADERS += izhikevich.h \
     scriptengine.h \
     spikingobject.h \
     controller.h \
-    samples.h
+    samples.h \
+    userinteractionadapter.h
