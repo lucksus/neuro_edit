@@ -1,10 +1,9 @@
 <RCC>
-    <qresource prefix="/Visualizer" >
+    <qresource prefix="/Visualizer">
         <file>Bild.png</file>
         <file>Lupe.png</file>
         <file>auswahl.png</file>
         <file>kreuz.png</file>
-        <file>matlab.png</file>
         <file>navigator.png</file>
         <file>photoss.png</file>
         <file>text.png</file>

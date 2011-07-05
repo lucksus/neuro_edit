@@ -37,7 +37,6 @@ private slots:
 	void on_actionNavigationsmodus_triggered(bool checked);
 	void on_actionAuswahlmodus_triggered(bool checked);
 	void on_actionZoom_triggered(bool checked);
-	void on_actionTo_Matlab_triggered();
 	void on_actionTo_Ascii_triggered();
 	void on_actionTo_Image_triggered();
 	void showMouseCoordinatesInStatusBar(float x, float y);

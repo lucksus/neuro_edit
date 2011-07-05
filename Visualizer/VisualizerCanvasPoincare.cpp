@@ -5,9 +5,14 @@
 #include <cmath>
 #include <limits>
 #include <boost/foreach.hpp>
-#include "gpc_math.h"
+#include <algorithm>
 
-using namespace GPC;
+#define pi 3.14159256
+
+double log(double,int){
+    assert(false);
+    return 0;
+}
 
 VisualizerCanvasPoincare::VisualizerCanvasPoincare(QWidget* parent, VisualizerContext3D* context)
 : VisualizerCanvas(parent, context), m_context(context), m_sphere_model(0), m_data_models(0)
@@ -254,8 +259,7 @@ vector<double> VisualizerCanvasPoincare::getAlphaValues( VisualizerData3D* data 
 		highest = log(highest + 1.0f, 10);
 
 		if ( (highest - lowest) / highest < 1e-6 ) {							// Im Falle, das alle Intensitäten (nahezu) gleich sind...
-			intensities.swap( vector<double>( data->getData().size(), 1.0f ) );
-			return intensities;	// Gleichverteilung zurückgeben, denn die Intensitäten sind ja auch gleichverteilt.
+                        return vector<double>( data->getData().size(), 1.0f );	// Gleichverteilung zurückgeben, denn die Intensitäten sind ja auch gleichverteilt.
 		}
 
 		for (uint i = 0; i < intensities.size(); ++i) {

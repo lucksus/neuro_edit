@@ -6,7 +6,6 @@
 #include "VisualizerContext2D.h"
 #include "VisualizerCanvasPoincare.h"
 #include "VisualizerContext3D.h"
-#include "VisualizerContextMatlabExporter.h"
 #include "VisualizerContextAsciiExporter.h"
 #include <QFileDialog>
 #include <QMessageBox>
@@ -52,7 +51,6 @@ void VisualizerWidget::initializeCanvasAndGUI(VisualizerContext* context) {
 
 	if ( context_3d ) {
 		ui.actionAuswahlmodus->setEnabled(false);
-		ui.actionTo_Matlab->setEnabled(false);
 		ui.actionTo_Ascii->setEnabled(false);
 		ui.actionZoom->setEnabled(false);
 	}	
@@ -131,14 +129,6 @@ void VisualizerWidget::show(){
 	m_canvas->refresh();
 	m_treeWidget->updateFromContext();
 	QWidget::show();
-}
-
-void VisualizerWidget::on_actionTo_Matlab_triggered(){
-	VisualizerCanvas2D* m_canvas_2d = dynamic_cast<VisualizerCanvas2D*>(m_canvas);
-	if (!m_canvas_2d) return;
-
-	VisualizerContextMatlabExporter exporter(m_context);
-	exporter.doExport(m_canvas_2d->getXMinOfVisualRange(), m_canvas_2d->getXMaxOfVisualRange(), m_canvas_2d->getYMinOfVisualRange(), m_canvas_2d->getYMaxOfVisualRange());
 }
 
 void VisualizerWidget::on_actionTo_Ascii_triggered(){

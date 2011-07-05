@@ -34,7 +34,6 @@ HEADERS += BoolEditor.h \
            VisualizerContext2D.h \
 		   VisualizerContext3D.h \
            VisualizerContextAsciiExporter.h \
-           VisualizerContextMatlabExporter.h \
            VisualizerData.h \
            VisualizerData2D.h \
            VisualizerData2DList.h \
@@ -58,7 +57,6 @@ SOURCES += BoolEditor.cpp \
            VisualizerContext2D.cpp \
 		   VisualizerContext3D.cpp \
            VisualizerContextAsciiExporter.cpp \
-           VisualizerContextMatlabExporter.cpp \
            VisualizerData.cpp \
            VisualizerData2D.cpp \
            VisualizerData2DList.cpp \

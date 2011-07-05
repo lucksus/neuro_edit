@@ -12,6 +12,8 @@
 #include <boost/foreach.hpp>
 #include "VisualizerContext2D.h"
 
+#define _isnan(x) (x!=x)
+
 bool isZero(vector<double> numbers, unsigned int i){
 	double step=numbers[numbers.size()-1]-numbers[numbers.size()-2];
 	return (numbers[i]-(step/2))*(numbers[i]+(step/2)) < 0.f;
@@ -60,7 +62,7 @@ void VisualizerCanvas2D::adaptMaxMinValues(VisualizerData2D* data, bool consider
 	float minx=0,maxx=0,miny=0,maxy=0;
 	bool firstTime = true;
 	VisualizerData2DList* dataList;
-	if(dataList = dynamic_cast<VisualizerData2DList*>(data)){
+        if((dataList = dynamic_cast<VisualizerData2DList*>(data))){
 		vector<double> xvalues = dataList->getXValues();
 		vector<vector<double> > yvalues = dataList->getYValues();
 		for(unsigned int n=0;n<yvalues.size();++n)
@@ -118,7 +120,7 @@ void VisualizerCanvas2D::createDisplayList(VisualizerData2D* data){
 	makeCurrent();
 	GLuint newList = glGenLists (1);
 	VisualizerData2DList* dataList;
-	if(dataList = dynamic_cast<VisualizerData2DList*>(data)){
+        if((dataList = dynamic_cast<VisualizerData2DList*>(data))){
 		vector<double> xvalues = dataList->getXValues();
 		vector< vector<double> > yvalues = dataList->getYValues();
 		
