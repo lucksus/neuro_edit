@@ -19,6 +19,7 @@ qrc_*.cpp
 *.pro.old
 *.ncb
 *.suo
+*lib*.a
 mt.dep
 BuildLog.htm
 *.manifest
