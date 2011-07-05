@@ -8,8 +8,8 @@ QT       += core gui opengl script scripttools
 CONFIG += debug
 TARGET = neuro_edit
 TEMPLATE = app
-INCLUDEPATH += ../NeuronModels
-PRE_TARGETDEPS += ../NeuronModels/libneuron_models.a
+INCLUDEPATH += ../NeuronModels ../Visualizer
+PRE_TARGETDEPS += ../NeuronModels/libneuron_models.a ../Visualizer/libVisualizer.a
 
 macx:LIBS += -framework GLUT
 
@@ -21,12 +21,12 @@ win32{
 }
 
 build_pass:CONFIG(debug, debug|release) {
-	LIBS += -L../NeuronModels/debug
+        LIBS += -L../NeuronModels/debug -L../Visualizer/debug
 } else {
-    LIBS += -L../NeuronModels/release
+    LIBS += -L../NeuronModels/release -L../Visualizer/debug
 }
 
-LIBS += -L../NeuronModels -lneuron_models
+LIBS += -L../NeuronModels -lneuron_models -L../Visualizer -lVisualizer
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -50,7 +50,8 @@ SOURCES += main.cpp\
     scriptsyntaxhighlighter.cpp \
     drawablecurrentinducer.cpp \
     drawablesamples.cpp \
-    guiuserinteractionadapter.cpp
+    guiuserinteractionadapter.cpp \
+    menuobjectrightclick.cpp
 
 HEADERS  += mainwindow.h \
     glscene.h \
@@ -73,7 +74,8 @@ HEADERS  += mainwindow.h \
     scriptsyntaxhighlighter.h \
     drawablecurrentinducer.h \
     drawablesamples.h \
-    guiuserinteractionadapter.h
+    guiuserinteractionadapter.h \
+    menuobjectrightclick.h
 
 FORMS    += mainwindow.ui \
     izhikevich_properties_widget.ui \
