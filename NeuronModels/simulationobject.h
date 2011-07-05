@@ -54,6 +54,10 @@ public:
 
     void* bad_hacks[3];
 
+
+    virtual std::list<std::string> user_actions() {return std::list<std::string>();}
+    virtual void do_user_action(std::string) {}
+
 protected:
     SimulationObject(){}
     void done();

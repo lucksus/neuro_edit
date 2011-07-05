@@ -17,6 +17,7 @@
 #include "current_inducer.h"
 #include "samples.h"
 #include "drawablesamples.h"
+#include "menuobjectrightclick.h"
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent),
@@ -179,6 +180,18 @@ void GLScene::mouseReleaseEvent(QMouseEvent* e){
                     finish_inserting_current_inducer(find_nearest_2d<DendriticNode*>(e->x(),e->y()).first);
                 }
                 //updateGL();
+            }
+        }
+
+        if(e->button() == Qt::RightButton){
+            SimulationObject* o = object_under_cursor(e->x(),e->y());
+            if(o){
+                std::list<std::string> actions = o->user_actions();
+                if(actions.size() > 0){
+                    MenuObjectRightClick menu(o);
+                    menu.popup(mapToGlobal(e->pos()));
+                    menu.exec();
+                }
             }
         }
 }
