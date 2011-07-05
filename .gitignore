@@ -48,3 +48,6 @@ build/ui_mainwindow.h
 NeuronModels/libneuron_models.a
 NeuroEdit/NeuroEdit.pro.user.2.1pre1
 NeuronModels/NeuronModels.pro.user.2.1pre1
+*.xcodeproj*
+*build*
+Info.plist
