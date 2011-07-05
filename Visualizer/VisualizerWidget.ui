@@ -1,0 +1,554 @@
+<ui version="4.0" >
+ <class>VisualizerWidget</class>
+ <widget class="QMainWindow" name="VisualizerWidget" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>820</width>
+    <height>584</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Visualizer</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset resource="Resources/Visualizer.qrc" >:/Visualizer/photoss.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <layout class="QHBoxLayout" >
+    <item>
+     <widget class="QSplitter" name="splitter" >
+      <property name="orientation" >
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QGroupBox" name="glViewBox" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+         <horstretch>3</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize" >
+        <size>
+         <width>400</width>
+         <height>400</height>
+        </size>
+       </property>
+       <property name="cursor" >
+        <cursorShape>ArrowCursor</cursorShape>
+       </property>
+       <property name="title" >
+        <string>View</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget" >
+       <layout class="QVBoxLayout" >
+        <item>
+         <widget class="QGroupBox" name="objectsBox" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="title" >
+           <string>Objects:</string>
+          </property>
+          <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>2</number>
+           </property>
+           <property name="topMargin" >
+            <number>0</number>
+           </property>
+           <property name="rightMargin" >
+            <number>2</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>2</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>0</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>0</number>
+           </property>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_2" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="title" >
+           <string>Coordinates:</string>
+          </property>
+          <layout class="QGridLayout" >
+           <item row="0" column="0" >
+            <widget class="QLabel" name="label" >
+             <property name="enabled" >
+              <bool>true</bool>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>X1:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" >
+            <widget class="QLineEdit" name="x1Label" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="palette" >
+              <palette>
+               <active>
+                <colorrole role="Text" >
+                 <brush brushstyle="SolidPattern" >
+                  <color alpha="255" >
+                   <red>255</red>
+                   <green>0</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </active>
+               <inactive>
+                <colorrole role="Text" >
+                 <brush brushstyle="SolidPattern" >
+                  <color alpha="255" >
+                   <red>255</red>
+                   <green>0</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </inactive>
+               <disabled>
+                <colorrole role="Text" >
+                 <brush brushstyle="SolidPattern" >
+                  <color alpha="255" >
+                   <red>112</red>
+                   <green>111</green>
+                   <blue>113</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </disabled>
+              </palette>
+             </property>
+             <property name="readOnly" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" >
+            <widget class="QLabel" name="label_3" >
+             <property name="enabled" >
+              <bool>true</bool>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Y1:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1" >
+            <widget class="QLineEdit" name="y1Label" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="palette" >
+              <palette>
+               <active>
+                <colorrole role="Text" >
+                 <brush brushstyle="SolidPattern" >
+                  <color alpha="255" >
+                   <red>255</red>
+                   <green>0</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </active>
+               <inactive>
+                <colorrole role="Text" >
+                 <brush brushstyle="SolidPattern" >
+                  <color alpha="255" >
+                   <red>255</red>
+                   <green>0</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </inactive>
+               <disabled>
+                <colorrole role="Text" >
+                 <brush brushstyle="SolidPattern" >
+                  <color alpha="255" >
+                   <red>112</red>
+                   <green>111</green>
+                   <blue>113</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </disabled>
+              </palette>
+             </property>
+             <property name="readOnly" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" >
+            <widget class="QLabel" name="label_5" >
+             <property name="enabled" >
+              <bool>true</bool>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>X2:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1" >
+            <widget class="QLineEdit" name="x2Label" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="palette" >
+              <palette>
+               <active>
+                <colorrole role="Text" >
+                 <brush brushstyle="SolidPattern" >
+                  <color alpha="255" >
+                   <red>0</red>
+                   <green>178</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </active>
+               <inactive>
+                <colorrole role="Text" >
+                 <brush brushstyle="SolidPattern" >
+                  <color alpha="255" >
+                   <red>0</red>
+                   <green>178</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </inactive>
+               <disabled>
+                <colorrole role="Text" >
+                 <brush brushstyle="SolidPattern" >
+                  <color alpha="255" >
+                   <red>112</red>
+                   <green>111</green>
+                   <blue>113</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </disabled>
+              </palette>
+             </property>
+             <property name="readOnly" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" >
+            <widget class="QLabel" name="label_7" >
+             <property name="enabled" >
+              <bool>true</bool>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Y2:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1" >
+            <widget class="QLineEdit" name="y2Label" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="palette" >
+              <palette>
+               <active>
+                <colorrole role="Text" >
+                 <brush brushstyle="SolidPattern" >
+                  <color alpha="255" >
+                   <red>0</red>
+                   <green>178</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </active>
+               <inactive>
+                <colorrole role="Text" >
+                 <brush brushstyle="SolidPattern" >
+                  <color alpha="255" >
+                   <red>0</red>
+                   <green>178</green>
+                   <blue>0</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </inactive>
+               <disabled>
+                <colorrole role="Text" >
+                 <brush brushstyle="SolidPattern" >
+                  <color alpha="255" >
+                   <red>112</red>
+                   <green>111</green>
+                   <blue>113</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </disabled>
+              </palette>
+             </property>
+             <property name="readOnly" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0" colspan="2" >
+            <widget class="QLabel" name="label_9" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Diff:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0" >
+            <widget class="QLabel" name="label_10" >
+             <property name="enabled" >
+              <bool>true</bool>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>X:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1" >
+            <widget class="QLineEdit" name="xDiffLabel" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="readOnly" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0" >
+            <widget class="QLabel" name="label_12" >
+             <property name="enabled" >
+              <bool>true</bool>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Y:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1" >
+            <widget class="QLineEdit" name="yDiffLabel" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="readOnly" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>820</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuBla" >
+    <property name="title" >
+     <string>Mode</string>
+    </property>
+    <addaction name="actionNavigationsmodus" />
+    <addaction name="actionAuswahlmodus" />
+    <addaction name="actionZoom" />
+   </widget>
+   <widget class="QMenu" name="menuExport" >
+    <property name="title" >
+     <string>Export</string>
+    </property>
+    <addaction name="actionTo_Matlab" />
+    <addaction name="actionTo_Ascii" />
+    <addaction name="actionTo_Image" />
+   </widget>
+   <addaction name="menuBla" />
+   <addaction name="menuExport" />
+  </widget>
+  <widget class="QStatusBar" name="statusbar" />
+  <widget class="QToolBar" name="toolBar" >
+   <property name="windowTitle" >
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea" >
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionNavigationsmodus" />
+   <addaction name="actionAuswahlmodus" />
+   <addaction name="actionZoom" />
+   <addaction name="separator" />
+   <addaction name="actionAlign" />
+  </widget>
+  <action name="actionNavigationsmodus" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="Resources/Visualizer.qrc" >:/Visualizer/navigator.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Navigation</string>
+   </property>
+  </action>
+  <action name="actionAuswahlmodus" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="Resources/Visualizer.qrc" >:/Visualizer/auswahl.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Selection</string>
+   </property>
+  </action>
+  <action name="actionTo_Matlab" >
+   <property name="icon" >
+    <iconset resource="Resources/Visualizer.qrc" >:/Visualizer/matlab.png</iconset>
+   </property>
+   <property name="text" >
+    <string>to Matlab(TM)</string>
+   </property>
+  </action>
+  <action name="actionTo_Ascii" >
+   <property name="icon" >
+    <iconset resource="Resources/Visualizer.qrc" >:/Visualizer/text.png</iconset>
+   </property>
+   <property name="text" >
+    <string>to text file...</string>
+   </property>
+  </action>
+  <action name="actionZoom" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="Resources/Visualizer.qrc" >:/Visualizer/Lupe.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Zoom</string>
+   </property>
+  </action>
+  <action name="actionTo_Image" >
+   <property name="icon" >
+    <iconset resource="Resources/Visualizer.qrc" >:/Visualizer/Bild.png</iconset>
+   </property>
+   <property name="text" >
+    <string>to image...</string>
+   </property>
+  </action>
+  <action name="actionAlign" >
+   <property name="icon" >
+    <iconset resource="Resources/Visualizer.qrc" >:/Visualizer/kreuz.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Align</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="Resources/Visualizer.qrc" />
+ </resources>
+ <connections/>
+</ui>
