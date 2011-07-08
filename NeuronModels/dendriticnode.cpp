@@ -101,7 +101,9 @@ std::set<SimulationObject*> DendriticNode::about_to_remove(SimulationObject *obj
     return also_to_be_deleted;
 }
 
-
+std::set<Synapse*> DendriticNode::incoming_synapses(){
+    return m_incoming_synapses;
+}
 
 
 

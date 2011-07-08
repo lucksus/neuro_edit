@@ -9,6 +9,7 @@ CONFIG += debug
 TARGET = neuron_models
 TEMPLATE = lib
 CONFIG += staticlib
+INCLUDEPATH += ../math
 
 win32{
 	INCLUDEPATH += c:\boost\include
@@ -31,7 +32,8 @@ SOURCES += izhikevich.cpp \
     controller.cpp \
     samples.cpp \
     photosssignalimporter.cpp \
-    userinteractionadapter.cpp
+    userinteractionadapter.cpp \
+    lsmcolumn.cpp
 
 HEADERS += izhikevich.h \
            network.h \
@@ -51,4 +53,5 @@ HEADERS += izhikevich.h \
     controller.h \
     samples.h \
     photosssignalimporter.h \
-    userinteractionadapter.h
+    userinteractionadapter.h \
+    lsmcolumn.h

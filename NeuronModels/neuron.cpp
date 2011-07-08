@@ -53,14 +53,18 @@ double Neuron::membrane_potential(){
 }
 
 std::set<SimulationObject*> Neuron::children(){
-    std::set<SimulationObject*> nodes;
-    walk_dendrites_tree(m_dendrides_root, nodes);
-    walk_axon_tree(m_axon_root, nodes);
-    return nodes;
+    std::set<SimulationObject*> children;
+    std::set<DendriticNode*> dendrites;
+    walk_dendrites_tree(m_dendrides_root, dendrites);
+    walk_axon_tree(m_axon_root, children);
+    BOOST_FOREACH(DendriticNode* dn, dendrites){
+        children.insert(dn);
+    }
+    return children;
 }
 
 
-void Neuron::walk_dendrites_tree(DendriticNode* root, std::set<SimulationObject*>& nodes){
+void Neuron::walk_dendrites_tree(DendriticNode* root, std::set<DendriticNode*>& nodes){
     nodes.insert(root);
     BOOST_FOREACH(SimulationObject* node, root->children()){
         DendriticNode* n = dynamic_cast<DendriticNode*>(node);
@@ -96,3 +100,24 @@ std::set<SimulationObject*> Neuron::about_to_remove(SimulationObject* object_to_
         also_to_be_deleted.insert(this);
     return also_to_be_deleted;
 }
+
+AxonNode* Neuron::axon_root(){
+    return m_axon_root;
+}
+
+DendriticNode* Neuron::dendrites_root(){
+    return m_dendrides_root;
+}
+
+std::set<Synapse*> Neuron::incoming_synapses(){
+    std::set<Synapse*> synapses;
+    std::set<DendriticNode*> dendritic_nodes;
+    walk_dendrites_tree(m_dendrides_root, dendritic_nodes);
+    BOOST_FOREACH(DendriticNode* dn, dendritic_nodes){
+        BOOST_FOREACH(Synapse* synapse, dn->incoming_synapses()){
+            synapses.insert(synapse);
+        }
+    }
+    return incoming_synapses();
+}
+

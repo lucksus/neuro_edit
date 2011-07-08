@@ -35,6 +35,8 @@ public:
 
     virtual std::set<SimulationObject*> about_to_remove(SimulationObject *);
 
+    std::set<Synapse*> incoming_synapses();
+
 protected:
     virtual void moved(Point new_position);
 

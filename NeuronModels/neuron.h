@@ -9,6 +9,7 @@
 
 class NeuronModel;
 class Axon;
+class Synapse;
 class Neuron : public SimulationObject
 {
 Q_OBJECT
@@ -28,6 +29,10 @@ public:
 
     std::set<SimulationObject*> about_to_remove(SimulationObject* object_to_be_deleted);
 
+    AxonNode* axon_root();
+    DendriticNode* dendrites_root();
+    std::set<Synapse*> incoming_synapses();
+
 protected:
     virtual void moved(Point new_position);
 
@@ -38,7 +43,7 @@ private:
     DendriticNode* m_dendrides_root;
     AxonNode* m_axon_root;
 
-    void walk_dendrites_tree(DendriticNode* root, std::set<SimulationObject*>& nodes);
+    void walk_dendrites_tree(DendriticNode* root, std::set<DendriticNode*>& nodes);
     void walk_axon_tree(AxonNode* root, std::set<SimulationObject*>& axon_objects);
 
 
