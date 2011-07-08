@@ -168,10 +168,12 @@ void GLScene::mouseReleaseEvent(QMouseEvent* e){
                 }else{
 
                     SimulationObject* o = object_under_cursor(e->x(),e->y());
-                    if(m_shift_key_down)
-                        add_to_selection(o);
-                    else
-                        select(o);
+                    if(o){
+                        if(m_shift_key_down)
+                            add_to_selection(o);
+                        else
+                            select(o);
+                    }
                 }
                 if(m_connecting){
                     finish_connecting();
