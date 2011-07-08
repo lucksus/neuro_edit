@@ -16,10 +16,10 @@ LSMColumn::LSMColumn(Simulation* sim)
 
 void LSMColumn::create_2d_grid(unsigned int width, unsigned int height, double distance){
     Point center = position();
-    for(unsigned int x=0;x<width;x++){
-        for(unsigned int y=0;y<height;y++){
+    for(int x=0;x<width;x++){
+        for(int y=0;y<height;y++){
             Point neuron_pos = center;
-            neuron_pos += Point((x-width/2)*distance,(y-height/2)*distance,0);
+            neuron_pos += Point(0,(y-height/2)*distance,(x-width/2)*distance);
             Neuron* neuron = new Neuron(neuron_pos);
             m_neurons.insert(neuron);
             simulation()->network()->add_object(neuron);
@@ -67,5 +67,24 @@ void LSMColumn::connect_input_neuron_randomly(SpikingObject* input, unsigned int
     }
     BOOST_FOREACH(unsigned int index, indices){
         simulation()->network()->connect(input, neurons[index]->dendrites_root());
+    }
+}
+
+std::set<Neuron*> LSMColumn::neurons(){
+    return m_neurons;
+}
+
+
+std::list<std::string> LSMColumn::user_actions(){
+    std::list<std::string> actions;
+    actions.push_back("Create 2D grid...");
+    actions.push_back("Create connections...");
+    actions.push_back("Set synapse weights...");
+    return actions;
+}
+
+void LSMColumn::do_user_action(std::string action){
+    if("Create 2D grid..." == action){
+        create_2d_grid(10,10,10);
     }
 }

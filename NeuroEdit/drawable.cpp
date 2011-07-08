@@ -6,6 +6,7 @@
 #include "drawablesynapse.h"
 #include "drawablecurrentinducer.h"
 #include "drawablesamples.h"
+#include "drawablelsmcolumn.h"
 #include <assert.h>
 #include "simulationobject.h"
 #include "glscene.h"
@@ -116,4 +117,5 @@ Drawables::Drawables(){
     m_all_drawables.insert(new DrawableSynapse);
     m_all_drawables.insert(new DrawableCurrentInducer);
     m_all_drawables.insert(new DrawableSamples);
+    m_all_drawables.insert(new DrawableLSMColumn);
 }

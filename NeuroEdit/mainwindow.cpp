@@ -19,6 +19,7 @@
 #include <stdexcept>
 #include <QtCore/QSettings>
 #include "samples.h"
+#include "lsmcolumn.h"
 
 MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),
@@ -159,6 +160,12 @@ void MainWindow::on_actionSamples_triggered(bool){
     m_glscene->start_inserting(s);
 }
 
+void MainWindow::on_actionLSM_column_triggered(bool){
+    std::set<SimulationObject*> s;
+    s.insert(new LSMColumn(m_network->simulation()));
+    m_glscene->start_inserting(s);
+}
+
 void MainWindow::on_actionStart_Simulation_triggered(bool){
     Controller::instance().simulation()->start();
 }
@@ -197,6 +204,7 @@ void MainWindow::on_actionNew_triggered(bool){
     ui->actionSingle_Neuron->setEnabled(true);
     ui->actionCurrent_Inducer->setEnabled(true);
     ui->actionSamples->setEnabled(true);
+    ui->actionLSM_column->setEnabled(true);
 }
 
 void MainWindow::on_actionSave_triggered(bool b){
@@ -223,6 +231,7 @@ void MainWindow::on_actionLoad_triggered(bool){
     ui->actionSingle_Neuron->setEnabled(true);
     ui->actionCurrent_Inducer->setEnabled(true);
     ui->actionSamples->setEnabled(true);
+    ui->actionLSM_column->setEnabled(true);
     addFileToRecentlyUsed(fileName);
 }
 
@@ -231,6 +240,7 @@ void MainWindow::on_actionClose_triggered(bool){
     ui->actionSingle_Neuron->setEnabled(false);
     ui->actionCurrent_Inducer->setEnabled(false);
     ui->actionSamples->setEnabled(false);
+    ui->actionLSM_column->setEnabled(false);
 }
 
 void MainWindow::on_actionQuit_triggered(bool){

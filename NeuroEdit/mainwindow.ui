@@ -86,6 +86,7 @@
     <addaction name="actionDendrite_Node"/>
     <addaction name="actionCurrent_Inducer"/>
     <addaction name="actionSamples"/>
+    <addaction name="actionLSM_column"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -349,6 +350,17 @@
    </property>
    <property name="text">
     <string>Samples</string>
+   </property>
+  </action>
+  <action name="actionLSM_column">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>LSM column</string>
+   </property>
+   <property name="shortcut">
+    <string>L</string>
    </property>
   </action>
  </widget>

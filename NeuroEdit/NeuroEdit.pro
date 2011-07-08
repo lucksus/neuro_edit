@@ -9,7 +9,7 @@ CONFIG += debug
 TARGET = neuro_edit
 TEMPLATE = app
 INCLUDEPATH += ../NeuronModels ../Visualizer
-PRE_TARGETDEPS += ../NeuronModels/libneuron_models.a ../Visualizer/libVisualizer.a
+PRE_TARGETDEPS += ../NeuronModels/libneuron_models.a ../Visualizer/libVisualizer.a ../math/libmath.a
 
 macx:LIBS += -framework GLUT
 
@@ -26,7 +26,7 @@ build_pass:CONFIG(debug, debug|release) {
     LIBS += -L../NeuronModels/release -L../Visualizer/debug
 }
 
-LIBS += -L../NeuronModels -lneuron_models -L../Visualizer -lVisualizer
+LIBS += -L../NeuronModels -lneuron_models -L../Visualizer -lVisualizer -L../math -lmath
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -51,7 +51,8 @@ SOURCES += main.cpp\
     drawablecurrentinducer.cpp \
     drawablesamples.cpp \
     guiuserinteractionadapter.cpp \
-    menuobjectrightclick.cpp
+    menuobjectrightclick.cpp \
+    drawablelsmcolumn.cpp
 
 HEADERS  += mainwindow.h \
     glscene.h \
@@ -75,7 +76,8 @@ HEADERS  += mainwindow.h \
     drawablecurrentinducer.h \
     drawablesamples.h \
     guiuserinteractionadapter.h \
-    menuobjectrightclick.h
+    menuobjectrightclick.h \
+    drawablelsmcolumn.h
 
 FORMS    += mainwindow.ui \
     izhikevich_properties_widget.ui \
