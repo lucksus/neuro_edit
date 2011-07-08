@@ -3,6 +3,9 @@
 #include "simulationobject.h"
 #include <vector>
 #include <list>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/list.hpp>
+#include "current_inducer.h"
 
 struct sample{
     double time;
@@ -20,6 +23,7 @@ class CurrentInducer;
 
 class Samples : public SimulationObject
 {
+friend class boost::serialization::access;
 public:
     Samples(Simulation*);
     virtual void update(double milli_seconds);
@@ -36,6 +40,7 @@ public:
     virtual void do_user_action(std::string);
 
 private:
+    Samples(){};
     std::vector<sample> m_samples;
     std::list<CurrentInducer*> m_current_inducers;
 
@@ -50,5 +55,10 @@ private:
         ar & boost::serialization::make_nvp("current_induces", m_current_inducers);
     }
 };
+
+namespace boost{
+template<>
+struct is_virtual_base_of<SimulationObject, Samples>: public mpl::true_ {};
+}
 
 #endif // SAMPLES_H

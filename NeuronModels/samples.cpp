@@ -27,7 +27,7 @@ void Samples::update(double){
             ci->set_current(value);
         }
 
-    }catch(std::out_of_range()){
+    }catch(std::out_of_range){
 
     }
 }

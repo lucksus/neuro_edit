@@ -3,7 +3,7 @@
 #include <assert.h>
 
 CurrentInducer::CurrentInducer(Simulation* s)
- : SimulationObject(s), m_target(0), m_active(false)
+ : SimulationObject(s), m_target(0), m_current(0), m_active(false)
 {
     set_user_movable(false);
 }

@@ -10,6 +10,7 @@
 #include "dendriticnode.h"
 #include "network.h"
 #include "simulation.h"
+#include "samples.h"
 
 SerializationHelper& SerializationHelper::instance(){
     static SerializationHelper sh;
@@ -46,6 +47,8 @@ void SerializationHelper::serialize_simulation(std::ostream& stream, Simulation*
     archive.register_type<DendriticNode>();
     archive.register_type<Network>();
     archive.register_type<Simulation>();
+    archive.register_type<Samples>();
+    archive.register_type<CurrentInducer>();
 
     try{
     archive << boost::serialization::make_nvp("simulation",*simulation);
@@ -64,6 +67,8 @@ Simulation* SerializationHelper::deserialize_simulation(std::istream& stream){
     archive.register_type<DendriticNode>();
     archive.register_type<Network>();
     archive.register_type<Simulation>();
+    archive.register_type<Samples>();
+    archive.register_type<CurrentInducer>();
 
     Simulation* s = new Simulation;
     try{
@@ -89,6 +94,8 @@ void SerializationHelper::serialize_network(std::ostream& stream, Network* netwo
     archive.register_type<AxonNode>();
     archive.register_type<Synapse>();
     archive.register_type<DendriticNode>();
+    archive.register_type<Samples>();
+    archive.register_type<CurrentInducer>();
 
     try{
     archive << boost::serialization::make_nvp("network",*network);
@@ -110,6 +117,8 @@ Network* SerializationHelper::deserialize_network(std::istream& stream){
     archive.register_type<AxonNode>();
     archive.register_type<Synapse>();
     archive.register_type<DendriticNode>();
+    archive.register_type<Samples>();
+    archive.register_type<CurrentInducer>();
 
     Network* n = new Network;
     try{
@@ -135,6 +144,8 @@ void SerializationHelper::serialize_objects(std::ostream& stream, std::set<Simul
     archive.register_type<AxonNode>();
     archive.register_type<Synapse>();
     archive.register_type<DendriticNode>();
+    archive.register_type<Samples>();
+    archive.register_type<CurrentInducer>();
 
     try{
     archive << boost::serialization::make_nvp("objects",objects);
@@ -156,6 +167,8 @@ std::set<SimulationObject*> SerializationHelper::deserialize_objects(std::istrea
     archive.register_type<AxonNode>();
     archive.register_type<Synapse>();
     archive.register_type<DendriticNode>();
+    archive.register_type<Samples>();
+    archive.register_type<CurrentInducer>();
 
     std::set<SimulationObject*> objects;
     try{

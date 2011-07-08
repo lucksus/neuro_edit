@@ -80,6 +80,7 @@ private:
         ar & boost::serialization::make_nvp("Parent", m_parent);
         ar & boost::serialization::make_nvp("Children", m_children);
         ar & boost::serialization::make_nvp("IncomingSynapses", m_incoming_synapses);
+        ar & boost::serialization::make_nvp("AttachedCurrentInducers", m_current_inducers);
     }
 };
 
