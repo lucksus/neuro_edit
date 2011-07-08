@@ -11,4 +11,5 @@ CONFIG += staticlib
 # Input
 HEADERS += RandomGenerator.h \
     math_constants.h
-SOURCES += RandomGenerator.cpp
+SOURCES += RandomGenerator.cpp \
+    math_constants.cpp

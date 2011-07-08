@@ -33,15 +33,23 @@ void LSMColumn::create_connections(double distance_constant){
             if(n1==n2) continue;
             double distance = n1->position().distance(n2->position());
             double rand = NeuroMath::RandomGenerator::getInstance()->uniform(0,1);
-            if(rand < pow(NeuroMath::e, -distance * distance_constant)){
+            if(rand < pow(NeuroMath::e(), -distance * distance_constant)){
                 simulation()->network()->connect(n1->axon_root(), n2->dendrites_root());
             }
         }
     }
 }
 
-void LSMColumn::set_synapse_weights(double mean, double sigma){
-
+void LSMColumn::set_synapse_weights(double mean, double var){
+    std::set<Synapse*> all_synapses;
+    BOOST_FOREACH(Neuron* n, m_neurons){
+        BOOST_FOREACH(Synapse* synapse, n->incoming_synapses()){
+            all_synapses.insert(synapse);
+        }
+    }
+    BOOST_FOREACH(Synapse* synapse, all_synapses){
+        synapse->set_weight(NeuroMath::RandomGenerator::getInstance()->gauss(mean, var));
+    }
 }
 
 void LSMColumn::connect_input_neuron_with_all(SpikingObject* input){

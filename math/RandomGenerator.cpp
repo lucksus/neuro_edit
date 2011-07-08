@@ -180,13 +180,13 @@ double NeuroMath::RandomGenerator::_gauss(const double mean, const double var){
 double NeuroMath::RandomGenerator::_poisson(const double mean){
 	double x, y;
 	double z;
-        const double max = 1.0 / sqrt(2.0*pi*mean);
+        const double max = 1.0 / sqrt(2.0*pi()*mean);
 	//  ofstream o("poisson.dat");
 
 	do {
 		x = uniform(0.0, 2.0*mean);
 		y = uniform(0.0, max);
-                z = x * ::log(mean/x) - 0.5 * ::log(2.0*pi*x) + (x-mean);
+                z = x * ::log(mean/x) - 0.5 * ::log(2.0*pi()*x) + (x-mean);
 		z = exp(z);
 	} while ( y > z ); /* enddo */
 
@@ -219,7 +219,7 @@ double NeuroMath::RandomGenerator::_fastpoisson(const double lambda){
 		}
 		do {
 			do {
-                                y = tan(pi*uniform(0,1));
+                                y = tan(pi()*uniform(0,1));
 				em = sq*y+lambda;
 			} while (em < 0.0);
 			em = floor(em);

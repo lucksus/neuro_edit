@@ -3,8 +3,8 @@
 
 namespace NeuroMath{
 
-double pi=3.14159265;
-double e=2.71828183;
+double pi();
+double e();
 
 };
 
