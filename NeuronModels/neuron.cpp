@@ -118,6 +118,6 @@ std::set<Synapse*> Neuron::incoming_synapses(){
             synapses.insert(synapse);
         }
     }
-    return incoming_synapses();
+    return synapses;
 }
 
