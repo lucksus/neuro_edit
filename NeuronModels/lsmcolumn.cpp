@@ -93,6 +93,10 @@ void LSMColumn::do_user_action(std::string action){
     if("Create connections..." == action){
         create_connections(30);
     }
+
+    if("Set synapse weights..." == action){
+        set_synapse_weights(60,25);
+    }
 }
 
 void LSMColumn::moved(Point new_position, Point old_position){
