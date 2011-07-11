@@ -48,6 +48,8 @@ GLScene::GLScene(QWidget *parent) :
     BOOST_FOREACH(Drawable* d, Drawables::instance().get_all_drawables()){
         d->reset_display_lists();
     }
+    m_last_paint_time.start();
+    m_currently_painting = false;
 }
 
 GLScene::~GLScene(){
@@ -371,6 +373,9 @@ void GLScene::resizeGL(int w, int h)
 void GLScene::paintGL()
 {
 
+    if(m_currently_painting || m_last_paint_time.elapsed() < 30) return;
+    m_currently_painting = true;
+    m_last_paint_time.restart();
 
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		// Clear The Screen And The Depth Buffer
@@ -434,6 +439,7 @@ void GLScene::paintGL()
 
     glFlush();
     swapBuffers();
+    m_currently_painting = false;
 }
 
 void GLScene::paint_connecting_overlay(){

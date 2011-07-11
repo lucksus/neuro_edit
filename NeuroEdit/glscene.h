@@ -5,6 +5,7 @@
 #include "network.h"
 #include "neuron.h"
 #include <QTimer>
+#include <QTime>
 
 class CurrentInducer;
 class Drawable;
@@ -172,7 +173,8 @@ private slots:
     void camera_center_moving_update();
 private:
 
-
+    QTime m_last_paint_time;
+    bool m_currently_painting;
     double m_fov;
 };
 
