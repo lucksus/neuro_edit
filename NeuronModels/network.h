@@ -36,6 +36,7 @@ public:
     Q_INVOKABLE void delete_object(SimulationObject*);
     void delete_objects(std::set<SimulationObject*>);
     std::set<SimulationObject*> objects_as_std_set();
+    std::set<SimulationObject*> objects_with_children_as_std_set();
     Q_INVOKABLE QObjectList objects();
 
     Q_INVOKABLE QStringList scripts() const;

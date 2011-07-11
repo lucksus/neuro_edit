@@ -34,7 +34,7 @@ public:
 
         SimulationObject* nearest = 0;
         double distance;
-        BOOST_FOREACH(SimulationObject* o, m_network->objects_as_std_set()){
+        BOOST_FOREACH(SimulationObject* o, m_network->objects_with_children_as_std_set()){
             if(dynamic_cast<SimObjectType>(o)){
                 GLdouble x,y,z;
                 gluProject(o->position().x, o->position().y, o->position().z, model_view, projection, viewport, &x, &y, &z);

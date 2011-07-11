@@ -100,6 +100,23 @@ std::set<SimulationObject*> Network::objects_as_std_set(){
     return m_objects;
 }
 
+void walk_children_recursive(SimulationObject* root, std::set<SimulationObject*>& all){
+    all.insert(root);
+    BOOST_FOREACH(SimulationObject* child, root->children()){
+        walk_children_recursive(child,all);
+    }
+}
+
+std::set<SimulationObject*> Network::objects_with_children_as_std_set(){
+    std::set<SimulationObject*> all;
+    BOOST_FOREACH(SimulationObject* o, m_objects){
+        walk_children_recursive(o, all);
+    }
+
+    return all;
+}
+
+
 void Network::simulate(double milli_seconds){
     BOOST_FOREACH(SimulationObject* o, m_objects){
         o->reset_done();
