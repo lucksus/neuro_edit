@@ -85,6 +85,13 @@ std::list<std::string> LSMColumn::user_actions(){
 
 void LSMColumn::do_user_action(std::string action){
     if("Create 2D grid..." == action){
-        create_2d_grid(10,10,10);
+        create_2d_grid(10,10,30);
+    }
+}
+
+void LSMColumn::moved(Point new_position, Point old_position){
+    Point vec = new_position - old_position;
+    BOOST_FOREACH(Neuron* n, m_neurons){
+        n->set_position(n->position() + vec);
     }
 }

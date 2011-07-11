@@ -56,10 +56,14 @@ Point SimulationObject::position() const{
 
 void SimulationObject::set_position(const Point& p){
     moved(p);
+    moved(p,m_position);
     m_position = p;
 }
 
 void SimulationObject::moved(Point){
+}
+
+void SimulationObject::moved(Point, Point){
 }
 
 bool SimulationObject::is_user_movable(){

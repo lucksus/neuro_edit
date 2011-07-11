@@ -62,6 +62,7 @@ protected:
     SimulationObject(){}
     void done();
     virtual void moved(Point new_position);
+    virtual void moved(Point new_position, Point old_position);
 
     Network* m_network;
 

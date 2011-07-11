@@ -27,6 +27,9 @@ public:
     virtual std::list<std::string> user_actions();
     virtual void do_user_action(std::string);
 
+protected:
+    virtual void moved(Point new_position, Point old_position);
+
 private:
     LSMColumn(){}
     std::set<Neuron*> m_neurons;
