@@ -6,6 +6,7 @@
 #include "math_constants.h"
 #include <math.h>
 #include <vector>
+#include "userinteractionadapter.h"
 
 LSMColumn::LSMColumn(Simulation* sim)
     : SimulationObject(sim)
@@ -87,15 +88,37 @@ std::list<std::string> LSMColumn::user_actions(){
 
 void LSMColumn::do_user_action(std::string action){
     if("Create 2D grid..." == action){
-        create_2d_grid(10,10,30);
+        std::vector<string> names;
+        names.push_back("Width");
+        names.push_back("Height");
+        names.push_back("Distance");
+        std::vector<std::pair<double,double> > limits;
+        limits.push_back(std::pair<double,double>(0,std::numeric_limits<double>::max()));
+        limits.push_back(std::pair<double,double>(0,std::numeric_limits<double>::max()));
+        limits.push_back(std::pair<double,double>(10,std::numeric_limits<double>::max()));
+        std::vector<double> values = UserInteractionAdapter::instance()->get_double_values(names, "LSMColumn "+objectName().toStdString(), "Parameters for 2D grid", limits);
+        if(values.size() != 3) return;
+        create_2d_grid(values[0],values[1],values[2]);
     }
 
     if("Create connections..." == action){
-        create_connections(30);
+        std::vector<string> names;
+        names.push_back("Distance with probability=0.5");
+        std::vector<std::pair<double,double> > limits;
+        limits.push_back(std::pair<double,double>(0,std::numeric_limits<double>::max()));
+        std::vector<double> values = UserInteractionAdapter::instance()->get_double_values(names, "LSMColumn "+objectName().toStdString(), "Parameter for connection creation", limits);
+        if(values.size() != 1) return;
+        create_connections(values[0]);
     }
 
     if("Set synapse weights..." == action){
-        set_synapse_weights(60,25);
+        std::vector<string> names;
+        names.push_back("Mean");
+        names.push_back("Variance");
+        std::vector<std::pair<double,double> > limits;
+        std::vector<double> values = UserInteractionAdapter::instance()->get_double_values(names, "LSMColumn "+objectName().toStdString(), "Setting synapse weights with normal distribution", limits);
+        if(values.size() != 2) return;
+        set_synapse_weights(values[0],values[1]);
     }
 }
 
