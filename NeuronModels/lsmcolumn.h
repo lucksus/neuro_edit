@@ -7,10 +7,11 @@
 class Simulation;
 class LSMColumn : public SimulationObject
 {
+friend class boost::serialization::access;
 public:
     LSMColumn(Simulation*);
 
-    virtual void update(double milli_seconds){};
+    virtual void update(double){};
 
     static LSMColumn* create_2d_column(unsigned int width, unsigned int height);
 
@@ -33,6 +34,18 @@ protected:
 private:
     LSMColumn(){}
     std::set<Neuron*> m_neurons;
+
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int)
+    {
+        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SimulationObject);
+        ar & boost::serialization::make_nvp("neurons", m_neurons);
+    }
 };
+
+namespace boost{
+template<>
+struct is_virtual_base_of<SimulationObject, LSMColumn>: public mpl::true_ {};
+}
 
 #endif // LSMCOLUMN_H
