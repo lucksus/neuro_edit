@@ -56,18 +56,21 @@ void Drawable::draw_picking(){
     if(list != 0 && !m_dont_use_display_lists){
         glCallList(*static_cast<GLuint*>(list));
     }else{
-        if(list == 0) list = new GLuint;
-        GLuint* real_list = static_cast<GLuint*>(list);
-        *real_list = glGenLists(1);
-        assert(*real_list != 0);
-        glNewList(*real_list,GL_COMPILE_AND_EXECUTE);
+        if(!m_dont_use_display_lists){
+            if(list == 0) list = new GLuint;
+            GLuint* real_list = static_cast<GLuint*>(list);
+            *real_list = glGenLists(1);
+            assert(*real_list != 0);
+            glNewList(*real_list,GL_COMPILE_AND_EXECUTE);
+        }
         increment_picking_name();
         glColor3ub(s_next_picking_name.get<0>(),s_next_picking_name.get<1>(),s_next_picking_name.get<2>());
         s_picking_names[s_next_picking_name] = m_object;
         glDisable(GL_DITHER);
         glDisable(GL_LIGHTING);
         draw_geometry_impl();
-        glEndList();
+        if(!m_dont_use_display_lists)
+            glEndList();
     }
 }
 
