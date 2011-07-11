@@ -118,10 +118,11 @@ std::set<SimulationObject*> Network::objects_with_children_as_std_set(){
 
 
 void Network::simulate(double milli_seconds){
-    BOOST_FOREACH(SimulationObject* o, m_objects){
+    std::set<SimulationObject*> all = objects_with_children_as_std_set();
+    BOOST_FOREACH(SimulationObject* o, all){
         o->reset_done();
     }
-    BOOST_FOREACH(SimulationObject* o, m_objects){
+    BOOST_FOREACH(SimulationObject* o, all){
         if(!o->is_done())
             o->update(milli_seconds);
     }
