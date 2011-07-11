@@ -12,7 +12,7 @@ public:
     virtual void set_color_and_lightning();
     virtual void draw_geometry_impl();
 
-    enum {START_DISTANCE=10, END_DISTANCE=2, START_SIZE=1, END_SIZE=6};
+    enum {START_DISTANCE=10, END_DISTANCE=2, START_SIZE=1, END_SIZE=6, SIZE_AT_WEIGHT_30=4};
 
     static Point displacement(Synapse*);
 };
