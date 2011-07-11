@@ -938,7 +938,7 @@ void GLScene::finish_connecting(){
 
     AxonNode* axon_node = dynamic_cast<AxonNode*>(m_connection_source);
     if(axon_node){
-        if(spike_receiver) m_network->connect(axon_node, spike_receiver);
+        if(spike_receiver && (axon_node != spike_receiver)) m_network->connect(axon_node, spike_receiver);
         if(dendritic_node) m_network->connect(axon_node, dendritic_node);
     }
 
