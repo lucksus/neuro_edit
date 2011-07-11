@@ -101,3 +101,14 @@ void LSMColumn::moved(Point new_position, Point old_position){
         n->set_position(n->position() + vec);
     }
 }
+
+
+std::set<SimulationObject*> LSMColumn::about_to_remove(SimulationObject* o){
+    std::set<SimulationObject*> also_to_remove;
+    if(this == o){
+        BOOST_FOREACH(Neuron* n, m_neurons){
+            also_to_remove.insert(n);
+        }
+    }
+    return also_to_remove;
+}

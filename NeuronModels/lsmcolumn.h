@@ -28,6 +28,8 @@ public:
     virtual std::list<std::string> user_actions();
     virtual void do_user_action(std::string);
 
+    virtual std::set<SimulationObject*> about_to_remove(SimulationObject*);
+
 protected:
     virtual void moved(Point new_position, Point old_position);
 
