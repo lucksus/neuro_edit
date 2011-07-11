@@ -8,7 +8,7 @@ QT       += core gui opengl script scripttools
 CONFIG += debug
 TARGET = neuro_edit
 TEMPLATE = app
-INCLUDEPATH += ../NeuronModels ../Visualizer
+INCLUDEPATH += ../NeuronModels ../Visualizer ../math
 PRE_TARGETDEPS += ../NeuronModels/libneuron_models.a ../Visualizer/libVisualizer.a ../math/libmath.a
 
 macx:LIBS += -framework GLUT
