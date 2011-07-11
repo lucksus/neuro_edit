@@ -12,7 +12,7 @@ public:
     virtual void set_color_and_lightning();
     virtual void draw_geometry_impl();
 
-    enum {SIZE = 10};
+    enum {SIZE = 30};
 
     QRect occupied_screen_region();
 

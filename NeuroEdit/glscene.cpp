@@ -505,6 +505,7 @@ void GLScene::paint_floor(){
     int size = 1000;
     glDisable(GL_LIGHTING);
     glColor3f(0.5f,0.5f,0.5f);
+    glLineWidth(1);
     glBegin(GL_LINES);
     for(float x = -size; x <= size; x += step){
         glVertex3i(x,0,-size);
@@ -787,6 +788,7 @@ void GLScene::paint_selection_box(){
     down = height() -down;
     glColor3f(1.,1.,0.);
     glDisable(GL_LIGHTING);
+    glLineWidth(1);
     glBegin(GL_LINE_STRIP);
         glVertex3i(left,up,-1);
         glVertex3i(left,down,-1);

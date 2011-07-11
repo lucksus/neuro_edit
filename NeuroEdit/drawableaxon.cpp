@@ -23,10 +23,11 @@ bool DrawableAxon::is_applicable_to(SimulationObject* object){
 }
 
 void DrawableAxon::set_color_and_lightning(){
-    GLfloat green[] = {.0,.9,.0,0.5};
-    glEnable(GL_LIGHTING);
+    GLfloat green[] = {.6,.9,.6,0.5};
+    glDisable(GL_LIGHTING);
     glEnable(GL_DITHER);
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
+    glColor4fv(green);
+    //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
 }
 
 void DrawableAxon::draw_geometry_impl(){
@@ -43,7 +44,12 @@ void DrawableAxon::draw_geometry_impl(){
     //glVertex3f(end.x,end.y,end.z);
     //glEnd();
 
-    GLHelpFunctions::draw_cylinder(start, end, AXON_RADIUS, 32);
+    glLineWidth(3);
+    glBegin(GL_LINES);
+        glVertex3f(start.x,start.y,start.z);
+        glVertex3f(end.x,end.y,end.z);
+    glEnd();
+    //GLHelpFunctions::draw_cylinder(start, end, AXON_RADIUS, 32);
 
     //glPushMatrix();
     //glTranslatef(synapse_center.x, synapse_center.y, synapse_center.z);
@@ -52,6 +58,7 @@ void DrawableAxon::draw_geometry_impl(){
 
     GLfloat spike_yellow[] = {.9,.9,.0,0.5};
 
+    glColor4fv(spike_yellow);
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, spike_yellow);
     BOOST_FOREACH(double spike, link->action_potentials_normalized()){
         glPushMatrix();

@@ -51,6 +51,7 @@ void DrawableLSMColumn::draw_geometry_impl(){
 
     glDisable(GL_LIGHTING);
     glColor3f(0.8,0.8,0.8);
+    glLineWidth(2);
     glBegin(GL_LINE_STRIP);
     glVertex3d(0,min_y,min_z);
     glVertex3d(0,max_y,min_z);
