@@ -27,13 +27,15 @@ void LSMColumn::create_2d_grid(unsigned int width, unsigned int height, double d
     }
 }
 
-void LSMColumn::create_connections(double distance_constant){
+void LSMColumn::create_connections(double dist1){
+    double alpha = 0.693147 / dist1; //ln(0.5)
     BOOST_FOREACH(Neuron* n1, m_neurons){
         BOOST_FOREACH(Neuron* n2, m_neurons){
             if(n1==n2) continue;
             double distance = n1->position().distance(n2->position());
             double rand = NeuroMath::RandomGenerator::getInstance()->uniform(0,1);
-            if(rand < pow(NeuroMath::e(), -distance * distance_constant)){
+            double e = pow(NeuroMath::e(), -distance * alpha);
+            if(rand < e){
                 simulation()->network()->connect(n1->axon_root(), n2->dendrites_root());
             }
         }
@@ -86,6 +88,10 @@ std::list<std::string> LSMColumn::user_actions(){
 void LSMColumn::do_user_action(std::string action){
     if("Create 2D grid..." == action){
         create_2d_grid(10,10,30);
+    }
+
+    if("Create connections..." == action){
+        create_connections(30);
     }
 }
 
