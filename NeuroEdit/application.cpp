@@ -1,6 +1,7 @@
 #include "application.h"
 #include "controller.h"
 #include "guiuserinteractionadapter.h"
+#include "Visualizer.h"
 
 Application::Application():
         m_splash(QPixmap(":/images/splash")),
@@ -21,7 +22,9 @@ void Application::init(){
     QTimer::singleShot(1500, this, SLOT(hide_splash()));
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(refresh_timeout()));
-    m_timer.start(1000/30);
+    connect(&m_slow_timer, SIGNAL(timeout()), this, SLOT(refresh_visualizer()));
+    m_timer.start(1000/25);
+    m_slow_timer.start(200);
     Controller::instance().init();
 
     UserInteractionAdapter::install_instance(new GuiUserInteractionAdapter);
@@ -47,4 +50,11 @@ QWidget* Application::main_window(){
 
 void Application::hide_splash(){
     m_splash.finish(m_main_window);
+}
+
+void Application::refresh_visualizer(){
+    Simulation* sim = Controller::instance().simulation();
+    if(!sim) return;
+    if(!sim->is_running()) return;
+    Visualizer::getInstance().setTime(sim->time_ms());
 }

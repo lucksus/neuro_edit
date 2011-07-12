@@ -13,7 +13,8 @@ Simulation::Simulation():
     m_network(0),
     m_simulation_step(.1),
     m_real_step(10),
-    m_script_engine(this)
+    m_script_engine(this),
+    m_is_running(false)
 {
 }
 
@@ -71,6 +72,7 @@ void Simulation::run(){
     QMutexLocker locker(&m_mutex);
     m_time_ms = 0;
     emit simulation_started();
+    m_is_running = true;
     while(!m_stop_request){
 		QTime time;
 		time.start();
@@ -84,6 +86,7 @@ void Simulation::run(){
         else msleep(diff);
         //emit simulation_milliseconds_passed(m_simulation_step);
     }
+    m_is_running = false;
     m_stop_request = false;
     emit simulation_stopped();
 }
@@ -118,4 +121,8 @@ QString Simulation::run_script(const QString& name){
 
 void Simulation::remove_script(const QString& name){
     m_scripts.erase(name.toStdString());
+}
+
+bool Simulation::is_running(){
+    return m_is_running;
 }

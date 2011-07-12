@@ -41,6 +41,7 @@ public:
     Q_INVOKABLE void set_script(const QString& name, const QString& script);
     Q_INVOKABLE QString run_script(const QString& name);
     Q_INVOKABLE void remove_script(const QString& name);
+    Q_INVOKABLE bool is_running();
 
 signals:
     void not_matching_speed();
@@ -53,6 +54,7 @@ protected:
 
 private:
     bool m_stop_request;
+    bool m_is_running;
     Network* m_network;
     double m_simulation_step;
     double m_real_step;

@@ -21,6 +21,7 @@ signals:
 private slots:
     void refresh_timeout();
     void hide_splash();
+    void refresh_visualizer();
 
 private:
     Application();
@@ -28,6 +29,7 @@ private:
     MainWindow* m_main_window;
 
     QTimer m_timer;
+    QTimer m_slow_timer;
 
 };
 
