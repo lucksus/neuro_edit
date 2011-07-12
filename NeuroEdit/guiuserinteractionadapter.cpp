@@ -18,6 +18,8 @@ void GuiUserInteractionAdapter::display_samples(const std::vector<sample>& sampl
     context->setDescription("Samples");
     context->addAxis("Time", "ms");
     context->addAxis("Sample values", "V/s");
+    context->setShowTime(true);
+    context->setTimeColor(1.,1.,0.,0.7);
 
     VisualizerData2D* data = new VisualizerData2D;
     data->setName("Sample values");
