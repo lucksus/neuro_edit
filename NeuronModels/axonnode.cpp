@@ -45,5 +45,5 @@ std::set<SimulationObject*> AxonNode::about_to_remove(SimulationObject *object_t
     if(axon){
         m_receivers.erase(axon);
     }
-    return SimulationObject::about_to_remove(object_to_be_deleted);
+    return SpikingObject::about_to_remove(object_to_be_deleted);
 }

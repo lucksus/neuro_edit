@@ -13,8 +13,8 @@ Simulation::Simulation():
     m_network(0),
     m_simulation_step(.1),
     m_real_step(10),
-    m_script_engine(this),
-    m_is_running(false)
+    m_is_running(false),
+    m_script_engine(this)
 {
 }
 

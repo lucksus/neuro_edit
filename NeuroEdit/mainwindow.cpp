@@ -111,7 +111,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionSingle_Neuron_triggered(bool){
     std::set<SimulationObject*> s;
-    s.insert(new Neuron(Point()));
+    s.insert(new Neuron(Controller::instance().simulation(),Point()));
     m_glscene->start_inserting(s);
 }
 
@@ -156,13 +156,13 @@ void MainWindow::on_actionCurrent_Inducer_triggered(bool){
 
 void MainWindow::on_actionSamples_triggered(bool){
     std::set<SimulationObject*> s;
-    s.insert(new Samples(m_network->simulation()));
+    s.insert(new Samples(Controller::instance().simulation()));
     m_glscene->start_inserting(s);
 }
 
 void MainWindow::on_actionLSM_column_triggered(bool){
     std::set<SimulationObject*> s;
-    s.insert(new LSMColumn(m_network->simulation()));
+    s.insert(new LSMColumn(Controller::instance().simulation()));
     m_glscene->start_inserting(s);
 }
 

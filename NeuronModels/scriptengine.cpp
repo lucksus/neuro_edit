@@ -52,7 +52,7 @@ QScriptValue Neuron_ctor(QScriptContext *ctx, QScriptEngine *eng)
         p.y = point.property("y").toNumber();
         p.z = point.property("z").toNumber();
     }else assert(false);
-    return eng->newQObject(new Neuron(p));
+    return eng->newQObject(new Neuron(Controller::instance().simulation(), p));
  }
 
 QScriptValue print(QScriptContext *ctx, QScriptEngine*)

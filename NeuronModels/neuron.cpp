@@ -14,9 +14,10 @@ Neuron::Neuron(){
     setObjectName(QString("Neuron_%1").arg(s_serial++));
 }
 
-Neuron::Neuron(Point position)
-    : SimulationObject(this), m_model(0)
+Neuron::Neuron(Simulation* sim, Point position)
+    : SimulationObject(sim), m_model(0)
 {
+    SimulationObject::set_neuron(this);
     setObjectName(QString("Neuron_%1").arg(s_serial++));
     m_dendrides_root = new DendriticNode(this, 0);
     m_axon_root = new AxonNode(this);

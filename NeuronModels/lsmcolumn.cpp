@@ -21,7 +21,7 @@ void LSMColumn::create_2d_grid(unsigned int width, unsigned int height, double d
         for(int y=0;y<height;y++){
             Point neuron_pos = center;
             neuron_pos += Point(0,(y-static_cast<int>(height)/2)*distance,(x-static_cast<int>(width)/2)*distance);
-            Neuron* neuron = new Neuron(neuron_pos);
+            Neuron* neuron = new Neuron(simulation(), neuron_pos);
             m_neurons.insert(neuron);
             simulation()->network()->add_object(neuron);
         }

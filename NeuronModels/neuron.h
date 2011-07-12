@@ -17,7 +17,7 @@ Q_PROPERTY(NeuronModel* model READ model WRITE set_model)
 friend class boost::serialization::access;
 public:
     Neuron();
-    Neuron(Point position);
+    Neuron(Simulation* sim, Point position);
     //Neuron(const Neuron& n);
     void update(double milli_seconds);
 
@@ -37,7 +37,6 @@ protected:
     virtual void moved(Point new_position);
 
 private:
-
     NeuronModel* m_model;
 
     DendriticNode* m_dendrides_root;

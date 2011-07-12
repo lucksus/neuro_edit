@@ -25,6 +25,9 @@ std::set<SimulationObject*> SimulationObject::children(){
     return std::set<SimulationObject*>();
 }
 
+void SimulationObject::set_neuron(Neuron* neuron){
+    m_neuron = neuron;
+}
 
 Neuron* SimulationObject::neuron(){
     return m_neuron;

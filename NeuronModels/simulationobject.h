@@ -34,6 +34,7 @@ public:
     void reset_done();
 
     void set_network(Network*);
+    void set_neuron(Neuron*);
 
     Point position() const;
     void set_position(const Point& p);
@@ -60,7 +61,7 @@ public:
     virtual void do_user_action(std::string) {}
 
 protected:
-    SimulationObject(){}
+    SimulationObject():m_neuron(0), m_simulation(0){}
     void done();
     virtual void moved(Point new_position);
     virtual void moved(Point new_position, Point old_position);
@@ -83,6 +84,7 @@ private:
         ar & BOOST_SERIALIZATION_NVP(m_neuron);
         ar & boost::serialization::make_nvp("Position", m_position);
         ar & boost::serialization::make_nvp("is_user_movable", m_is_user_movable);
+        ar & boost::serialization::make_nvp("Simulation", m_simulation);
 
         try{
             //this cast fails and throws std::bad_cast if ar is an iarchive.
