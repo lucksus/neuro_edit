@@ -1,6 +1,7 @@
 #include "axon.h"
 #include <boost/foreach.hpp>
 #include "neuron.h"
+#include <boost/thread/locks.hpp>
 
 Axon::Axon(Neuron* neuron, SpikingObject* emitter, SpikingObject* receiver, double speed)
     : SimulationObject(neuron), m_emitter(emitter), m_receiver(receiver), m_speed(speed)
@@ -20,14 +21,17 @@ Axon::~Axon(){
 }
 
 void Axon::update_runtime(){
+    boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
     m_runtime = m_emitter->position().distance(m_receiver->position()) / m_speed;
 }
 
 double Axon::speed(){
+    boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
     return m_speed;
 }
 
 void Axon::set_speed(double speed){
+    boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
     m_speed = speed;
     update_runtime();
 }
@@ -37,7 +41,7 @@ bool leq_zero(double d){
 }
 
 void Axon::update(double milli_seconds){
-
+    boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
     //add aps to list, if source is spiking
     if(m_emitter->is_spiking()){
         update_runtime();
@@ -63,6 +67,7 @@ void Axon::update(double milli_seconds){
 }
 
 std::list<double> Axon::action_potentials_normalized(){
+    boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
     std::list<double> result;
     BOOST_FOREACH(double time_to_go, m_action_potentials){
         result.push_back(1 - (time_to_go/m_runtime));
@@ -72,14 +77,17 @@ std::list<double> Axon::action_potentials_normalized(){
 
 
 void Axon::set_emitter(SpikingObject* emitter){
+    boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
     m_emitter = emitter;
 }
 
 SpikingObject* Axon::emitter(){
+    boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
     return m_emitter;
 }
 
 SpikingObject* Axon::receiver(){
+    boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
     return m_receiver;
 }
 

@@ -8,6 +8,7 @@
 #include <QtCore/QObject>
 #include <QtScript/QScriptEngine>
 #include "point.h"
+#include <boost/thread/recursive_mutex.hpp>
 
 class Neuron;
 class Network;
@@ -65,6 +66,8 @@ protected:
     virtual void moved(Point new_position, Point old_position);
 
     Network* m_network;
+
+    boost::recursive_mutex m_mutex;
 
 private:
     Neuron* m_neuron;
