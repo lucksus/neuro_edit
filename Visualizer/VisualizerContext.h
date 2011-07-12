@@ -30,8 +30,17 @@ public:
 	float getBackgroundGreen();
 	float getBackgroundBlue();
 
+        void setShowTime(bool);
+        bool showTime();
+        void setTimeColor(float red, float green, float blue, float alpha);
+        float* getTimeColor();
+
 	virtual void clearData();
 	virtual const vector<VisualizerData*>& getData();
+
+
+        void setTime(double);
+        double getTime();
 
 protected:
 	void addData( VisualizerData* );
@@ -43,6 +52,9 @@ private:
 	string m_x_name;
 	string m_x_unit;
 	float m_backgroundColor[3];
+        float m_timeColor[4];
 	vector<VisualizerData*> m_data;
 	vector<Axis> m_axes;
+        double m_time;
+        bool m_show_time;
 };

@@ -1,7 +1,7 @@
 #include "Visualizer.h"
 #include <QMutexLocker>
 #include <QResource>
-
+#include <boost/foreach.hpp>
 
 Visualizer::Visualizer()
 {
@@ -71,4 +71,14 @@ void Visualizer::deleteContext(VisualizerContext* context){
 	QMutexLocker locker(&m_mutex);
 	delete m_widgets[context];
 	m_widgets.erase(m_widgets.find(context));
+}
+
+void Visualizer::setTime(double time){
+    std::pair<VisualizerContext*,VisualizerWidget*> it;
+    BOOST_FOREACH(it, m_widgets){
+        if(it.second->isVisible()){
+            it.first->setTime(time);
+            it.second->update();
+        }
+    }
 }

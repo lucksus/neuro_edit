@@ -170,3 +170,8 @@ void VisualizerWidget::keyReleaseEvent(QKeyEvent *event){
 		close();
 	}
 }
+
+void VisualizerWidget::update(){
+    QMainWindow::update();
+    m_canvas->updateGL();
+}

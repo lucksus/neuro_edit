@@ -21,6 +21,7 @@ public slots:
 	void updateFromContext();
 	void updatePickerCoordinates(float x1, float y1, float x2, float y2);
 	void show();
+        void update();
 
 protected:
 	void keyReleaseEvent ( QKeyEvent * event );

@@ -7,6 +7,7 @@
 #include "VisualizerContext2D.h"
 #include "VisualizerContext3D.h"
 #include "VisualizerWidget.h"
+#include <QtCore/QObject>
 
 using namespace std;
 
@@ -23,7 +24,8 @@ public:
 	void hideWindowFor(VisualizerContext*);
 
 	void deleteWidgets();
-	
+
+        void setTime(double);
 
 protected:
 	void deleteContext(VisualizerContext*);

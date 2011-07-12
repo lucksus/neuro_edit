@@ -293,6 +293,9 @@ void VisualizerCanvas2D::paintGL(){
 	//jetzt die Achsenbeschriftungen:
 	drawNumbers();
 
+        if(m_context->showTime())
+            drawTime();
+
 
 
 	if(m_mode == PICKER){
@@ -948,4 +951,12 @@ double VisualizerCanvas2D::getYMinOfVisualRange(){
 
 double VisualizerCanvas2D::getYMaxOfVisualRange(){
 	return m_currentOrigin.second + m_currentRegion.second;
+}
+
+void VisualizerCanvas2D::drawTime(){
+    glColor4fv(m_context->getTimeColor());
+    glBegin(GL_LINES);
+    glVertex2d(m_context->getTime(), m_currentOrigin.second);
+    glVertex2d(m_context->getTime(), m_currentOrigin.second + m_currentRegion.second);
+    glEnd();
 }

@@ -83,3 +83,30 @@ void VisualizerContext::updateAxis(unsigned int axis, VisualizerContext::Axis co
 		m_axes[axis] = content;
 	} else assert(false);
 }
+
+void VisualizerContext::setShowTime(bool b){
+    m_show_time = b;
+}
+
+bool VisualizerContext::showTime(){
+    return m_show_time;
+}
+
+void VisualizerContext::setTimeColor(float red, float green, float blue, float alpha){
+    m_timeColor[0] = red;
+    m_timeColor[1] = green;
+    m_timeColor[2] = blue;
+    m_timeColor[3] = alpha;
+}
+
+float* VisualizerContext::getTimeColor(){
+    return m_timeColor;
+}
+
+void VisualizerContext::setTime(double time){
+    m_time = time;
+}
+
+double VisualizerContext::getTime(){
+    return m_time;
+}

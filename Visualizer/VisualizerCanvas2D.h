@@ -92,6 +92,7 @@ private:
 	void drawNumbersBackgroundFrame();
 	void calculateMaxMinValuesOverAllDatas();
 	void adaptMaxMinValues(VisualizerData2D* data, bool considerAsFirstData = false);
+        void drawTime();
 	
 	pair< pair<float,float>, pair<float,float> > zoomRegionWindowToValue(pair< pair<int,int>, pair<int,int> >);
 	pair<unsigned int, unsigned int> valueToWindow(pair<float,float>);
