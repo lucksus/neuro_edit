@@ -56,7 +56,7 @@ void DrawableAxon::draw_geometry_impl(){
     //glutSolidSphere(SYNAPSE_SIZE,20,20);
     //glPopMatrix();
 
-    GLfloat spike_yellow[] = {.9,.9,.0,0.5};
+    GLfloat spike_yellow[] = {1.,1.,.5,0.5};
 
     glColor4fv(spike_yellow);
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, spike_yellow);
