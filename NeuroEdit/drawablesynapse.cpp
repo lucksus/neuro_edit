@@ -23,17 +23,23 @@ double sigmoid(double t){
 }
 
 void DrawableSynapse::set_color_and_lightning(){
-    GLfloat green[] = {1.,.7,.7,0.7};
+    GLfloat color[] = {1.,.7,.7,0.7};
     Synapse* synapse = dynamic_cast<Synapse*>(m_object);
     assert(synapse);
     double sig = sigmoid(synapse->time_constant()/10 - 5);
-    green[3] = 1-sig;
-    green[1] = green[2] = sig;
+    color[3] = 1-sig;
+    if(synapse->weight() < 0){
+        color[0] = 1.;
+        color[1] = color[2] = sig;
+    }else{
+        color[2] = 1.;
+        color[1] = color[0] = sig;
+    }
 
     glDisable(GL_LIGHTING);
     glEnable(GL_DITHER);
-    glColor4fv(green);
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
+    glColor4fv(color);
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
 }
 
 void DrawableSynapse::draw_geometry_impl(){
@@ -46,7 +52,7 @@ void DrawableSynapse::draw_geometry_impl(){
     vec /= synapse->incoming_axons().size();
     vec /= vec.length();
 
-    double size_factor = log(synapse->weight()/5);
+    double size_factor = log(abs(synapse->weight())/5);
 
     //GLHelpFunctions::draw_frustum(vec*START_DISTANCE,vec*END_DISTANCE,START_SIZE,END_SIZE,32, true, true);
     glPushMatrix();
