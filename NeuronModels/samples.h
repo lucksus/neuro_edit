@@ -46,6 +46,7 @@ private:
 
     int find_current_index();
     int m_last_index;
+    double m_last_time;
 
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)

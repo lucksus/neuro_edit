@@ -14,9 +14,13 @@ Samples::Samples(Simulation* s)
 
 void Samples::update(double){
     try{
+        double time = simulation()->time_ms();
+        if(time < m_last_time)
+            m_last_index=0;
+        m_last_time = time;
+
         unsigned int i = find_current_index();
 
-        double time = simulation()->time_ms();
         const sample& left = m_samples[i-1];
         const sample& right = m_samples[i];
         double rel_time = time - left.time;
