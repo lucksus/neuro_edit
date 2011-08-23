@@ -69,7 +69,8 @@ void Controller::save_simulation(std::string filename){
 }
 
 void Controller::save_simulation(){
-    if(m_simulation_filename == "") throw std::logic_error("simulation filename not set!");
+    static std::string error_message = "simulation filename not set!";
+    if(m_simulation_filename == "") throw std::logic_error(error_message);
     save_simulation(m_simulation_filename);
 }
 
