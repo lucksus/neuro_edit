@@ -8,11 +8,7 @@ QT += core gui
 
 
 DEPENDPATH += . Resources
-INCLUDEPATH += . \
-			..\gpc_lib\source \
-			..\gpc_lib\core \
-			..\photoss\photoss_dll\source \
-			..\3rdparty\boost
+INCLUDEPATH += .
 
 
 
