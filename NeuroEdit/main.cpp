@@ -1,5 +1,10 @@
 #include <QtGui/QApplication>
 #include "application.h"
+#ifdef __linux__
+#include <GL/glut.h>
+#else
+#include <GLUT/glut.h>
+#endif
 /*
 #include <stdio.h>
 #include <execinfo.h>
@@ -25,6 +30,7 @@ int main(int argc, char *argv[])
 {
 
     //signal(SIGSEGV, handler);   // install our handler
+    glutInit(&argc,argv);
     QApplication qa(argc, argv);
     qa.processEvents();
     Application::instance().init();

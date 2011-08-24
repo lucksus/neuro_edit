@@ -2,11 +2,17 @@
 #include "axonnode.h"
 #ifdef WIN32
 #include <Windows.h>
-#include <GL/gl.h>
-#else
-#include <gl.h>
 #endif
+#ifdef __APPLE__
+#include <gl.h>
+#else
+#include <GL/gl.h>
+#endif
+#ifdef __linux__
+#include <GL/glut.h>
+#else
 #include <GLUT/glut.h>
+#endif
 
 bool DrawableAxonNode::is_applicable_to(SimulationObject* object){
     AxonNode* n = dynamic_cast<AxonNode*>(object);

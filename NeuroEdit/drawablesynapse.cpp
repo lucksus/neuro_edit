@@ -2,15 +2,21 @@
 #include "synapse.h"
 #ifdef WIN32
 #include <Windows.h>
-#include <GL/gl.h>
-#else
+#endif
+#ifdef __APPLE__
 #include <gl.h>
+#else
+#include <GL/gl.h>
 #endif
 #include <boost/foreach.hpp>
 #include <axon.h>
 #include <assert.h>
 #include "glhelpfunctions.h"
+#ifdef __linux__
+#include <GL/glut.h>
+#else
 #include <GLUT/glut.h>
+#endif
 #include "math_constants.h"
 
 bool DrawableSynapse::is_applicable_to(SimulationObject* object){

@@ -3,12 +3,17 @@
 #include <boost/foreach.hpp>
 #ifdef WIN32
 #include <Windows.h>
-#include <GL/gl.h>
-#else
-#include <gl.h>
-#include <glu.h>
 #endif
+#ifdef __APPLE__
+#include <gl.h>
+#else
+#include <GL/gl.h>
+#endif
+#ifdef __linux__
+#include <GL/glut.h>
+#else
 #include <GLUT/glut.h>
+#endif
 
 
 bool DrawableLSMColumn::is_applicable_to(SimulationObject* s){

@@ -9,7 +9,7 @@ CONFIG += debug
 TARGET = neuro_edit
 TEMPLATE = app
 INCLUDEPATH += ../NeuronModels ../Visualizer ../math
-PRE_TARGETDEPS += ../NeuronModels/libneuron_models.a ../Visualizer/libVisualizer.a ../math/libmath.a
+#PRE_TARGETDEPS += ../NeuronModels/libneuron_models.a ../Visualizer/libVisualizer.a ../math/libmath.a
 
 macx:LIBS += -framework GLUT
 
@@ -17,7 +17,7 @@ win32{
 	INCLUDEPATH += c:\boost\include
 	LIBS += -Lc:\boost\lib -llibboost_serialization-vc80-mt
 }else{
-	LIBS += -lboost_serialization
+        LIBS += -lboost_serialization -lglut
 }
 
 build_pass:CONFIG(debug, debug|release) {

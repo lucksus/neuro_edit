@@ -1,6 +1,7 @@
 #ifndef SERIALIZATIONHELPER_H
 #define SERIALIZATIONHELPER_H
 #include <set>
+#include <ostream>
 
 class Neuron;
 class Network;

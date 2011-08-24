@@ -2,9 +2,11 @@
 #include "neuron.h"
 #ifdef WIN32
 #include <Windows.h>
-#include <GL/gl.h>
-#else
+#endif
+#ifdef __APPLE__
 #include <gl.h>
+#else
+#include <GL/gl.h>
 #endif
 #include <assert.h>
 #include "dendriticnode.h"

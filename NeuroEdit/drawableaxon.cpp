@@ -3,16 +3,22 @@
 #include <boost/foreach.hpp>
 #ifdef WIN32
 #include <Windows.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#else
+#endif
+#ifdef __APPLE__
 #include <gl.h>
 #include <glu.h>
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
 #endif
 #include "drawableneuron.h"
 #include "drawableaxonnode.h"
 #include <assert.h>
+#ifdef __linux__
+#include <GL/glut.h>
+#else
 #include <GLUT/glut.h>
+#endif
 #include "glhelpfunctions.h"
 #include "spikingobject.h"
 

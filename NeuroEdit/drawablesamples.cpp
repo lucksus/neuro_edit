@@ -1,7 +1,11 @@
 #include "drawablesamples.h"
 #include "samples.h"
 #include "glhelpfunctions.h"
+#ifdef __linux__
+#include <GL/glut.h>
+#else
 #include <GLUT/glut.h>
+#endif
 #include <boost/foreach.hpp>
 #include <assert.h>
 #include "current_inducer.h"

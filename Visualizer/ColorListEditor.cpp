@@ -21,7 +21,7 @@
 
 #include <QtGui>
 
-#include "colorlisteditor.h"
+#include "ColorListEditor.h"
 #include "VisualizerData.h"
 
 ColorListEditor::ColorListEditor(VisualizerData* visualizerData, QTreeWidget *widget, QTreeWidgetItem* parentItem)
