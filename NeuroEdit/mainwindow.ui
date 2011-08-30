@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>832</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -54,6 +54,8 @@
     <addaction name="actionSave_as"/>
     <addaction name="menuOpen_Recent"/>
     <addaction name="actionClose"/>
+    <addaction name="actionExport_Simulation_to_XML"/>
+    <addaction name="actionImport_Simulation_from_XML"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -361,6 +363,16 @@
    </property>
    <property name="shortcut">
     <string>L</string>
+   </property>
+  </action>
+  <action name="actionExport_Simulation_to_XML">
+   <property name="text">
+    <string>Export Simulation to XML...</string>
+   </property>
+  </action>
+  <action name="actionImport_Simulation_from_XML">
+   <property name="text">
+    <string>Import Simulation from XML...</string>
    </property>
   </action>
  </widget>

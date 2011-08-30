@@ -58,14 +58,24 @@ void Controller::create_new_simulation(){
 
 void Controller::load_simulation(std::string filename){
     close_simulation();
-    m_simulation = Simulation::load_from_file(filename);
+    m_simulation = Simulation::load_from_file(filename, Simulation::BINARY);
     m_simulation_filename = filename;
     emit new_simulation(m_simulation);
 }
 
 void Controller::save_simulation(std::string filename){
-    m_simulation->write_to_file(filename);
+    m_simulation->write_to_file(filename, Simulation::BINARY);
     m_simulation_filename = filename;
+}
+
+void Controller::export_xml_simulation(std::string filename){
+    m_simulation->write_to_file(filename, Simulation::XML);
+}
+
+void Controller::import_xml_simulation(std::string filename){
+    close_simulation();
+    m_simulation = Simulation::load_from_file(filename, Simulation::XML);
+    emit new_simulation(m_simulation);
 }
 
 void Controller::save_simulation(){

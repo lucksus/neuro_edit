@@ -16,6 +16,9 @@ public:
     void set_serialize_all(bool);
     void clear_serialization_list();
 
+    void serialize_simulation_xml(std::ostream&, Simulation*);
+    Simulation* deserialize_simulation_xml(std::istream&);
+
     void serialize_simulation(std::ostream&, Simulation*);
     Simulation* deserialize_simulation(std::istream&);
 

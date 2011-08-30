@@ -26,19 +26,34 @@ void Simulation::wait_till_finished(){
     QMutexLocker locker(&m_mutex);
 }
 
-void Simulation::write_to_file(const std::string& filename){
+void Simulation::write_to_file(const std::string& filename, Simulation::FileFormat format){
     std::ofstream file(filename.c_str());
     SerializationHelper::instance().set_serialize_all(true);
-    SerializationHelper::instance().serialize_simulation(file, this);
+    switch(format){
+        case XML: SerializationHelper::instance().serialize_simulation_xml(file, this);
+            break;
+        case BINARY: SerializationHelper::instance().serialize_simulation(file, this);
+            break;
+        default: assert(false);
+    }
 }
 
 void Simulation::write_to_file(const QString& filename){
-    write_to_file(filename.toStdString());
+    FileFormat format = BINARY;
+    if(filename.endsWith("nex")) format = XML;
+    write_to_file(filename.toStdString(), format);
 }
 
-Simulation* Simulation::load_from_file(const std::string& filename){
+Simulation* Simulation::load_from_file(const std::string& filename, Simulation::FileFormat format){
     std::ifstream file(filename.c_str());
-    Simulation* n = SerializationHelper::instance().deserialize_simulation(file);
+    Simulation* n=0;
+    switch(format){
+        case XML: n=SerializationHelper::instance().deserialize_simulation_xml(file);
+            break;
+        case BINARY: n=SerializationHelper::instance().deserialize_simulation(file);
+            break;
+        default: assert(false);
+    }
     return n;
 }
 

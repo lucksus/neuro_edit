@@ -23,9 +23,11 @@ public:
     Q_INVOKABLE void request_stop();
     Q_INVOKABLE void wait_till_finished();
 
-    void write_to_file(const std::string& filename);
+    enum FileFormat{BINARY,XML};
+
+    void write_to_file(const std::string& filename, FileFormat format);
     Q_INVOKABLE void write_to_file(const QString& filename);
-    static Simulation* load_from_file(const std::string& filename);
+    static Simulation* load_from_file(const std::string& filename, FileFormat format);
 
     void set_network(Network*);
     Network* network();

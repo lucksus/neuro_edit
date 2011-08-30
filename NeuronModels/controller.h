@@ -17,6 +17,9 @@ public:
     void save_simulation(std::string filename);
     void save_simulation();
 
+    void export_xml_simulation(std::string);
+    void import_xml_simulation(std::string);
+
     Simulation* simulation();
 
 public slots:

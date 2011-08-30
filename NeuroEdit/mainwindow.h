@@ -44,6 +44,8 @@ private slots:
      void on_actionSave_as_triggered(bool);
      void on_actionLoad_triggered(bool);
      void on_actionClose_triggered(bool);
+     void on_actionExport_Simulation_to_XML_triggered(bool);
+     void on_actionImport_Simulation_from_XML_triggered(bool);
      void on_actionQuit_triggered(bool);
 
      void on_actionCut_triggered(bool);

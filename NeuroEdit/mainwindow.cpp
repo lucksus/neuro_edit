@@ -217,17 +217,39 @@ void MainWindow::on_actionSave_triggered(bool b){
 
 void MainWindow::on_actionSave_as_triggered(bool){
     QString fileName = QFileDialog::getSaveFileName(this,
-        tr("Save network"), "", tr("NeuroEdit files (*.ne)"));
+        tr("Save network"), "", tr("Binary NeuroEdit files (*.neb)"));
     if(fileName.isEmpty()) return;
+    if(!fileName.endsWith(".neb")) fileName.append(".neb");
     Controller::instance().save_simulation(fileName.toStdString());
+    addFileToRecentlyUsed(fileName);
+}
+
+void MainWindow::on_actionExport_Simulation_to_XML_triggered(bool){
+    QString fileName = QFileDialog::getSaveFileName(this,
+        tr("Save network"), "", tr("XML NeuroEdit files (*nex)"));
+    if(fileName.isEmpty()) return;
+    if(!fileName.endsWith(".nex")) fileName.append(".nex");
+    Controller::instance().export_xml_simulation(fileName.toStdString());
     addFileToRecentlyUsed(fileName);
 }
 
 void MainWindow::on_actionLoad_triggered(bool){
     QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Load network"), "", tr("NeuroEdit files (*.ne)"));
+        tr("Load network"), "", tr("Binary NeuroEdit files (*.neb)"));
     if(fileName.isEmpty()) return;
     Controller::instance().load_simulation(fileName.toStdString());
+    ui->actionSingle_Neuron->setEnabled(true);
+    ui->actionCurrent_Inducer->setEnabled(true);
+    ui->actionSamples->setEnabled(true);
+    ui->actionLSM_column->setEnabled(true);
+    addFileToRecentlyUsed(fileName);
+}
+
+void MainWindow::on_actionImport_Simulation_from_XML_triggered(bool){
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Load network"), "", tr("XML NeuroEdit files (*nex)"));
+    if(fileName.isEmpty()) return;
+    Controller::instance().import_xml_simulation(fileName.toStdString());
     ui->actionSingle_Neuron->setEnabled(true);
     ui->actionCurrent_Inducer->setEnabled(true);
     ui->actionSamples->setEnabled(true);
