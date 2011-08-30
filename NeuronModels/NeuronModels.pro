@@ -33,7 +33,9 @@ SOURCES += izhikevich.cpp \
     samples.cpp \
     photosssignalimporter.cpp \
     userinteractionadapter.cpp \
-    lsmcolumn.cpp
+    lsmcolumn.cpp \
+    lineardiscriminator.cpp \
+    ldconnection.cpp
 
 HEADERS += izhikevich.h \
            network.h \
@@ -54,4 +56,6 @@ HEADERS += izhikevich.h \
     samples.h \
     photosssignalimporter.h \
     userinteractionadapter.h \
-    lsmcolumn.h
+    lsmcolumn.h \
+    lineardiscriminator.h \
+    ldconnection.h
