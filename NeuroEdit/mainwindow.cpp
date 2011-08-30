@@ -20,6 +20,7 @@
 #include <QtCore/QSettings>
 #include "samples.h"
 #include "lsmcolumn.h"
+#include "lineardiscriminator.h"
 
 MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),
@@ -166,6 +167,12 @@ void MainWindow::on_actionLSM_column_triggered(bool){
     m_glscene->start_inserting(s);
 }
 
+void MainWindow::on_actionLinear_Discriminator_triggered(bool){
+    std::set<SimulationObject*> s;
+    s.insert(new LinearDiscriminator(Controller::instance().simulation()));
+    m_glscene->start_inserting(s);
+}
+
 void MainWindow::on_actionStart_Simulation_triggered(bool){
     Controller::instance().simulation()->start();
 }
@@ -205,6 +212,7 @@ void MainWindow::on_actionNew_triggered(bool){
     ui->actionCurrent_Inducer->setEnabled(true);
     ui->actionSamples->setEnabled(true);
     ui->actionLSM_column->setEnabled(true);
+    ui->actionLinear_Discriminator->setEnabled(true);
 }
 
 void MainWindow::on_actionSave_triggered(bool b){
@@ -242,6 +250,7 @@ void MainWindow::on_actionLoad_triggered(bool){
     ui->actionCurrent_Inducer->setEnabled(true);
     ui->actionSamples->setEnabled(true);
     ui->actionLSM_column->setEnabled(true);
+    ui->actionLinear_Discriminator->setEnabled(true);
     addFileToRecentlyUsed(fileName);
 }
 
@@ -254,6 +263,7 @@ void MainWindow::on_actionImport_Simulation_from_XML_triggered(bool){
     ui->actionCurrent_Inducer->setEnabled(true);
     ui->actionSamples->setEnabled(true);
     ui->actionLSM_column->setEnabled(true);
+    ui->actionLinear_Discriminator->setEnabled(true);
     addFileToRecentlyUsed(fileName);
 }
 
@@ -263,6 +273,7 @@ void MainWindow::on_actionClose_triggered(bool){
     ui->actionCurrent_Inducer->setEnabled(false);
     ui->actionSamples->setEnabled(false);
     ui->actionLSM_column->setEnabled(false);
+    ui->actionLinear_Discriminator->setEnabled(false);
 }
 
 void MainWindow::on_actionQuit_triggered(bool){

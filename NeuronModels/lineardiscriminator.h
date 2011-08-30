@@ -7,10 +7,11 @@
 #include <boost/serialization/nvp.hpp>
 
 class LDConnection;
+class Simulation;
 class LinearDiscriminator : public SimulationObject
 {
 public:
-    LinearDiscriminator();
+    LinearDiscriminator(Simulation*);
 
     double output();
 

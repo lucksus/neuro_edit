@@ -7,6 +7,7 @@
 #include "drawablecurrentinducer.h"
 #include "drawablesamples.h"
 #include "drawablelsmcolumn.h"
+#include "drawablelineardiscriminator.h"
 #include <assert.h>
 #include "simulationobject.h"
 #include "glscene.h"
@@ -121,4 +122,5 @@ Drawables::Drawables(){
     m_all_drawables.insert(new DrawableCurrentInducer);
     m_all_drawables.insert(new DrawableSamples);
     m_all_drawables.insert(new DrawableLSMColumn);
+    m_all_drawables.insert(new DrawableLinearDiscriminator);
 }

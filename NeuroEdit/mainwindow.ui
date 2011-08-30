@@ -89,6 +89,7 @@
     <addaction name="actionCurrent_Inducer"/>
     <addaction name="actionSamples"/>
     <addaction name="actionLSM_column"/>
+    <addaction name="actionLinear_Discriminator"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -292,9 +293,6 @@
    <property name="text">
     <string>Synapse</string>
    </property>
-   <property name="shortcut">
-    <string>S</string>
-   </property>
   </action>
   <action name="actionDendrite_Node">
    <property name="enabled">
@@ -353,6 +351,9 @@
    <property name="text">
     <string>Samples</string>
    </property>
+   <property name="shortcut">
+    <string>S</string>
+   </property>
   </action>
   <action name="actionLSM_column">
    <property name="enabled">
@@ -362,7 +363,7 @@
     <string>LSM column</string>
    </property>
    <property name="shortcut">
-    <string>L</string>
+    <string>C</string>
    </property>
   </action>
   <action name="actionExport_Simulation_to_XML">
@@ -373,6 +374,17 @@
   <action name="actionImport_Simulation_from_XML">
    <property name="text">
     <string>Import Simulation from XML...</string>
+   </property>
+  </action>
+  <action name="actionLinear_Discriminator">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Linear Discriminator</string>
+   </property>
+   <property name="shortcut">
+    <string>L</string>
    </property>
   </action>
  </widget>

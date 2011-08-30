@@ -1,9 +1,10 @@
 #include "lineardiscriminator.h"
 #include <boost/foreach.hpp>
 #include "ldconnection.h"
+#include "simulation.h"
 
-LinearDiscriminator::LinearDiscriminator()
-    : SimulationObject(static_cast<Neuron*>(0))
+LinearDiscriminator::LinearDiscriminator(Simulation* s)
+    : SimulationObject(s)
 {
 }
 
