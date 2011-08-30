@@ -25,7 +25,7 @@ private slots:
 
 private:
     Application();
-    QSplashScreen m_splash;
+    QSplashScreen *m_splash;
     MainWindow* m_main_window;
 
     QTimer m_timer;

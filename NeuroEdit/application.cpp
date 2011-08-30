@@ -4,11 +4,11 @@
 #include "Visualizer.h"
 
 Application::Application():
-        m_splash(QPixmap(":/images/splash")),
+        m_splash(new QSplashScreen(QPixmap(":/images/splash"))),
         m_main_window(0),
         m_timer(this)
 {
-    m_splash.setWindowFlags( Qt::WindowStaysOnTopHint | m_splash.windowFlags() );
+    m_splash->setWindowFlags( Qt::WindowStaysOnTopHint | m_splash->windowFlags() );
 }
 
 
@@ -18,7 +18,7 @@ Application& Application::instance(){
 }
 
 void Application::init(){
-    m_splash.show();
+    m_splash->show();
     QTimer::singleShot(1500, this, SLOT(hide_splash()));
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(refresh_timeout()));
@@ -34,6 +34,7 @@ void Application::init(){
 
 void Application::destroy(){
     delete m_main_window;
+    delete m_splash;
 }
 
 void Application::show_main_window(){
@@ -49,7 +50,7 @@ QWidget* Application::main_window(){
 }
 
 void Application::hide_splash(){
-    m_splash.finish(m_main_window);
+    m_splash->finish(m_main_window);
 }
 
 void Application::refresh_visualizer(){
