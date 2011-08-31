@@ -19,6 +19,7 @@
 #include "glhelpfunctions.h"
 #include "ldconnection.h"
 #include "lineardiscriminator.h"
+#include "drawablelineardiscriminator.h"
 
 bool DrawableLDConnection::is_applicable_to(SimulationObject* object){
     LDConnection* n = dynamic_cast<LDConnection*>(object);
@@ -26,7 +27,7 @@ bool DrawableLDConnection::is_applicable_to(SimulationObject* object){
 }
 
 void DrawableLDConnection::set_color_and_lightning(){
-    GLfloat green[] = {.6,.9,.6,0.5};
+    GLfloat green[] = {.6,.9,.6,1};
     glDisable(GL_LIGHTING);
     glEnable(GL_DITHER);
     glColor4fv(green);
@@ -46,4 +47,10 @@ void DrawableLDConnection::draw_geometry_impl(){
         glVertex3f(start.x,start.y,start.z);
         glVertex3f(end.x,end.y,end.z);
     glEnd();
+
+    Point synapse = end + vec * (DrawableLinearDiscriminator::SIZE*1.2);
+    glPushMatrix();
+    glTranslated(synapse.x, synapse.y, synapse.z);
+    glutSolidSphere(DrawableLinearDiscriminator::SIZE*0.3,10,5);
+    glPopMatrix();
 }
