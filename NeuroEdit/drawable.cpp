@@ -44,6 +44,7 @@ void Drawable::draw_moving(){
         glNewList(m_moving_display_list,GL_COMPILE_AND_EXECUTE);
         glEnable(GL_LIGHTING);
         glEnable(GL_DITHER);
+        glDisable(GL_CULL_FACE);
         GLfloat transparent[] = {.9,.9,.9,0.5};
         glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, transparent);
         draw_geometry_impl();
@@ -69,6 +70,7 @@ void Drawable::draw_picking(){
         s_picking_names[s_next_picking_name] = m_object;
         glDisable(GL_DITHER);
         glDisable(GL_LIGHTING);
+        glDisable(GL_CULL_FACE);
         draw_geometry_impl();
         if(!m_dont_use_display_lists)
             glEndList();

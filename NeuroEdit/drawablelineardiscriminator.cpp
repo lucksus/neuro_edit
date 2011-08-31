@@ -22,10 +22,12 @@ bool DrawableLinearDiscriminator::is_applicable_to(SimulationObject* object){
 }
 
 void DrawableLinearDiscriminator::set_color_and_lightning(){
-    glEnable(GL_LIGHTING);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_CULL_FACE);
     glEnable(GL_DITHER);
-    GLfloat green[] = {.6,.6,.6,1};
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
+    //GLfloat green[] = {.6,.6,.6,1};
+    //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
+    glColor4f(.6,.6,.6,1.);
 
 }
 
