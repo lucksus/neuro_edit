@@ -8,6 +8,7 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/type_traits/is_virtual_base_of.hpp>
 
+class LinearDiscriminator;
 class CurrentInducer;
 
 class DendriticNode : public SimulationObject
@@ -16,6 +17,7 @@ friend class boost::serialization::access;
 public:
     DendriticNode(){}
     DendriticNode(Neuron* neuron, DendriticNode* parent);
+    DendriticNode(LinearDiscriminator*);
 
     virtual void update(double milli_seconds);
 
@@ -43,6 +45,7 @@ protected:
 private:
     double m_added_current;
     DendriticNode* m_parent;
+    LinearDiscriminator* m_linear_discriminator;
     std::set<DendriticNode*> m_children;
     std::set<Synapse*> m_incoming_synapses;
     std::set<CurrentInducer*> m_current_inducers;

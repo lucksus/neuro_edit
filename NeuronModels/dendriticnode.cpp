@@ -3,12 +3,19 @@
 #include "synapse.h"
 #include "network.h"
 #include "current_inducer.h"
+#include "lineardiscriminator.h"
 
 DendriticNode::DendriticNode(Neuron* neuron, DendriticNode* parent)
     : SimulationObject(neuron), m_added_current(0), m_parent(parent)
 {
     if(parent)
         parent->add_child(this);
+}
+
+DendriticNode::DendriticNode(LinearDiscriminator* linear_discriminator)
+    : SimulationObject(linear_discriminator->simulation()), m_linear_discriminator(linear_discriminator)
+{
+
 }
 
 
@@ -19,6 +26,11 @@ void DendriticNode::update(double milli_seconds){
 
     if(m_parent){
         m_parent->add_current(m_added_current);
+        m_added_current = 0;
+    }
+
+    if(m_linear_discriminator){
+        m_linear_discriminator->set_constant_input(m_added_current);
         m_added_current = 0;
     }
     done();
@@ -84,6 +96,8 @@ std::set<SimulationObject*> DendriticNode::about_to_remove(SimulationObject *obj
     DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(object_to_be_deleted);
     Synapse* synapse = dynamic_cast<Synapse*>(object_to_be_deleted);
     CurrentInducer* ci = dynamic_cast<CurrentInducer*>(object_to_be_deleted);
+    LinearDiscriminator* linear_discriminator = dynamic_cast<LinearDiscriminator*>(object_to_be_deleted);
+
     if(dendritic_node)
         m_children.erase(dendritic_node);
     if(synapse)
@@ -97,6 +111,8 @@ std::set<SimulationObject*> DendriticNode::about_to_remove(SimulationObject *obj
             also_to_be_deleted.insert(n);
         }
     }
+
+    if(linear_discriminator == m_linear_discriminator) also_to_be_deleted.insert(this);
 
     return also_to_be_deleted;
 }
