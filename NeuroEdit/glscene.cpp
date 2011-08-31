@@ -12,6 +12,7 @@
 #include "drawableaxonnode.h"
 #include "drawabledendritenode.h"
 #include "drawablecurrentinducer.h"
+#include "drawablelineardiscriminator.h"
 #include "synapse.h"
 #include "drawablesynapse.h"
 #include "current_inducer.h"
@@ -19,6 +20,7 @@
 #include "drawablesamples.h"
 #include "menuobjectrightclick.h"
 #include "lineardiscriminator.h"
+#include "ldconnection.h"
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent),
@@ -688,18 +690,29 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
     Synapse* synapse = dynamic_cast<Synapse*>(object);
     CurrentInducer* current_inducer = dynamic_cast<CurrentInducer*>(object);
     Samples* samples = dynamic_cast<Samples*>(object);
+    LinearDiscriminator* linear_discriminator = dynamic_cast<LinearDiscriminator*>(object);
+    LDConnection* ld_connection = dynamic_cast<LDConnection*>(object);
     //SpatialObject* spo = dynamic_cast<SpatialObject*>(object);
     //assert(spo);
 
+    GLdouble start_x, start_y, start_z;
+    GLdouble end_x, end_y, end_z;
+
     if(axon){
-        GLdouble start_x, start_y, start_z;
         GLdouble x = axon->emitter()->position().x, y = axon->emitter()->position().y, z = axon->emitter()->position().z;
         gluProject(x, y, z, model_view, projection, viewport, &start_x, &start_y, &start_z);
-        GLdouble end_x, end_y, end_z;
         x = axon->receiver()->position().x; y = axon->receiver()->position().y; z = axon->receiver()->position().z;
         gluProject(x, y, z, model_view, projection, viewport, &end_x, &end_y, &end_z);
-        //start_y = height() - start_y;
-        //end_y = height() - end_y;
+    }
+
+    if(ld_connection){
+        GLdouble x = ld_connection->pre_neuron()->position().x, y = ld_connection->pre_neuron()->position().y, z = ld_connection->pre_neuron()->position().z;
+        gluProject(x, y, z, model_view, projection, viewport, &start_x, &start_y, &start_z);
+        x = ld_connection->post_neuron()->position().x; y = ld_connection->post_neuron()->position().y; z = ld_connection->post_neuron()->position().z;
+        gluProject(x, y, z, model_view, projection, viewport, &end_x, &end_y, &end_z);
+    }
+
+    if(axon || ld_connection){
         int left,right,top,bottom;
         if(start_x < end_x){
             left = start_x; right = end_x;
@@ -739,6 +752,9 @@ QRect GLScene::occupied_2d_region_of_object(SimulationObject* object){
     }
     if(samples){
         radius = DrawableSamples::SIZE + 3;
+    }
+    if(linear_discriminator){
+        radius = DrawableLinearDiscriminator::SIZE + 3;
     }
 
     Point position = object->position() + displacement;
