@@ -1,6 +1,7 @@
 #include "ldconnection.h"
 
-LDConnection::LDConnection()
+LDConnection::LDConnection(Simulation* sim)
+    : SimulationObject(sim)
 {
 }
 

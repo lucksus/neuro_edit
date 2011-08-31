@@ -11,7 +11,7 @@ class LDConnection : public SimulationObject
 Q_OBJECT
 Q_PROPERTY(double weight READ weight WRITE set_weight)
 public:
-    LDConnection();
+    LDConnection(Simulation*);
 
     virtual void update(double){};
 
@@ -43,7 +43,7 @@ template<>
 struct is_virtual_base_of<SimulationObject, LDConnection>: public mpl::true_ {};
 }
 
-Q_DECLARE_METATYPE(LDConnection)
-Q_DECLARE_METATYPE(LDConnection*)
+//Q_DECLARE_METATYPE(LDConnection)
+//Q_DECLARE_METATYPE(LDConnection*)
 
 #endif // LDCONNECTION_H

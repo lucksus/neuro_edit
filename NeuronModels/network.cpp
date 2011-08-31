@@ -155,7 +155,7 @@ std::pair<Axon*, Synapse*> Network::connect(SpikingObject* emitter, DendriticNod
 }
 
 LDConnection* Network::connect(LinearDiscriminator* source, LinearDiscriminator* target){
-    LDConnection* connection = new LDConnection;
+    LDConnection* connection = new LDConnection(m_simulation);
     connection->set_neurons(source,target);
     add_object(connection);
     return connection;
