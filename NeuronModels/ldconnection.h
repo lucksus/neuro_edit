@@ -10,6 +10,7 @@ class LDConnection : public SimulationObject
 {
 Q_OBJECT
 Q_PROPERTY(double weight READ weight WRITE set_weight)
+friend class boost::serialization::access;
 public:
     LDConnection(Simulation*);
 
@@ -22,6 +23,8 @@ public:
     LinearDiscriminator* pre_neuron();
     LinearDiscriminator* post_neuron();
 
+private:
+    LDConnection(){};
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)
     {
@@ -30,8 +33,6 @@ public:
         ar & boost::serialization::make_nvp("PostNeuron", m_post);
         ar & boost::serialization::make_nvp("Weight", m_weight);
     }
-
-private:
     LinearDiscriminator *m_pre, *m_post;
     double m_weight;
 };

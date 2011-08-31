@@ -10,6 +10,7 @@ class LDConnection;
 class Simulation;
 class LinearDiscriminator : public SimulationObject
 {
+friend class boost::serialization::access;
 public:
     LinearDiscriminator(Simulation*);
 
@@ -20,6 +21,8 @@ public:
     void add_input(LDConnection*);
     void remove_input(LDConnection*);
 
+private:
+    LinearDiscriminator(){}
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)
     {
@@ -27,7 +30,6 @@ public:
         ar & boost::serialization::make_nvp("Inputs", m_inputs);
     }
 
-private:
     std::set<LDConnection*> m_inputs;
 };
 
