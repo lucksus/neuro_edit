@@ -53,7 +53,8 @@ SOURCES += main.cpp\
     guiuserinteractionadapter.cpp \
     menuobjectrightclick.cpp \
     drawablelsmcolumn.cpp \
-    drawablelineardiscriminator.cpp
+    drawablelineardiscriminator.cpp \
+    drawableldconnection.cpp
 
 HEADERS  += mainwindow.h \
     glscene.h \
@@ -79,7 +80,8 @@ HEADERS  += mainwindow.h \
     guiuserinteractionadapter.h \
     menuobjectrightclick.h \
     drawablelsmcolumn.h \
-    drawablelineardiscriminator.h
+    drawablelineardiscriminator.h \
+    drawableldconnection.h
 
 FORMS    += mainwindow.ui \
     izhikevich_properties_widget.ui \

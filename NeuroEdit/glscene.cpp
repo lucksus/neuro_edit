@@ -18,6 +18,7 @@
 #include "samples.h"
 #include "drawablesamples.h"
 #include "menuobjectrightclick.h"
+#include "lineardiscriminator.h"
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent),
@@ -127,6 +128,9 @@ void GLScene::mouseMoveEvent(QMouseEvent *e){
             }
             if(dynamic_cast<Samples*>(m_connection_source)){
                 m_current_connection_target = find_nearest_2d<CurrentInducer*>(e->x(),e->y()).first;
+            }
+            if(dynamic_cast<LinearDiscriminator*>(m_connection_source)){
+                m_current_connection_target = find_nearest_2d<LinearDiscriminator*>(e->x(),e->y()).first;
             }
         }
 
@@ -937,6 +941,7 @@ void GLScene::finish_connecting(){
     SpikingObject* spike_receiver = dynamic_cast<SpikingObject*>(m_current_connection_target);
     DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(m_current_connection_target);
     CurrentInducer* current_inducer = dynamic_cast<CurrentInducer*>(m_current_connection_target);
+    LinearDiscriminator* ld_target = dynamic_cast<LinearDiscriminator*>(m_current_connection_target);
 
     AxonNode* axon_node = dynamic_cast<AxonNode*>(m_connection_source);
     if(axon_node){
@@ -946,6 +951,9 @@ void GLScene::finish_connecting(){
 
     Samples* samples = dynamic_cast<Samples*>(m_connection_source);
     if(samples && current_inducer) samples->add_current_inducer(current_inducer);
+
+    LinearDiscriminator* ld_source = dynamic_cast<LinearDiscriminator*>(m_connection_source);
+    if(ld_source) m_network->connect(ld_source, ld_target);
 
     m_connecting = false;
 }

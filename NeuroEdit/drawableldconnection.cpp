@@ -1,0 +1,49 @@
+#include "drawableldconnection.h"
+#include <boost/foreach.hpp>
+#ifdef WIN32
+#include <Windows.h>
+#endif
+#ifdef __APPLE__
+#include <gl.h>
+#include <glu.h>
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
+#endif
+#include <assert.h>
+#ifdef __linux__
+#include <GL/glut.h>
+#else
+#include <GLUT/glut.h>
+#endif
+#include "glhelpfunctions.h"
+#include "ldconnection.h"
+#include "lineardiscriminator.h"
+
+bool DrawableLDConnection::is_applicable_to(SimulationObject* object){
+    LDConnection* n = dynamic_cast<LDConnection*>(object);
+    return 0 != n;
+}
+
+void DrawableLDConnection::set_color_and_lightning(){
+    GLfloat green[] = {.6,.9,.6,0.5};
+    glDisable(GL_LIGHTING);
+    glEnable(GL_DITHER);
+    glColor4fv(green);
+}
+
+void DrawableLDConnection::draw_geometry_impl(){
+    LDConnection* link = dynamic_cast<LDConnection*>(m_object);
+    assert(link);
+    Point vec = link->pre_neuron()->position() - link->post_neuron()->position();
+    double distance = vec.length();
+    vec /= distance;
+    Point start = link->pre_neuron()->position();
+    Point end = link->post_neuron()->position();
+
+    glLineWidth(1);
+    glBegin(GL_LINES);
+        glVertex3f(start.x,start.y,start.z);
+        glVertex3f(end.x,end.y,end.z);
+    glEnd();
+}

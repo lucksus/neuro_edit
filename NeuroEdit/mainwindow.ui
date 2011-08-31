@@ -363,7 +363,7 @@
     <string>LSM column</string>
    </property>
    <property name="shortcut">
-    <string>C</string>
+    <string>M</string>
    </property>
   </action>
   <action name="actionExport_Simulation_to_XML">

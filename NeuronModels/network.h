@@ -19,6 +19,8 @@ class SpikingObject;
 class DendriticNode;
 class Neuron;
 class Simulation;
+class LinearDiscriminator;
+class LDConnection;
 class Network : public QObject
 {
 Q_OBJECT
@@ -48,6 +50,7 @@ public:
 
     Q_INVOKABLE Axon* connect(SpikingObject*, SpikingObject*);
     std::pair<Axon*, Synapse*> connect(SpikingObject*, DendriticNode*);
+    LDConnection* connect(LinearDiscriminator* source, LinearDiscriminator* target);
 
     static QScriptValue networkToScriptValue(QScriptEngine *engine, Network* const &in)
     { return engine->newQObject(in); }

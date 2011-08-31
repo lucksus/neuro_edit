@@ -21,6 +21,8 @@
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/foreach.hpp>
 #include "neuron.h"
+#include "lineardiscriminator.h"
+#include "ldconnection.h"
 
 template<class Archive>
 void register_classes(Archive& ar){
@@ -150,6 +152,13 @@ std::pair<Axon*, Synapse*> Network::connect(SpikingObject* emitter, DendriticNod
     synapse->add_incoming_axon(axon);
     node->add_incoming_synapse(synapse);
     return std::pair<Axon*,Synapse*>(axon,synapse);
+}
+
+LDConnection* Network::connect(LinearDiscriminator* source, LinearDiscriminator* target){
+    LDConnection* connection = new LDConnection;
+    connection->set_neurons(source,target);
+    add_object(connection);
+    return connection;
 }
 
 

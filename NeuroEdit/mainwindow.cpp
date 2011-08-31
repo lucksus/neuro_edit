@@ -318,7 +318,8 @@ void MainWindow::on_actionConnect_triggered(bool){
     assert(1 == selected.size());
     SpikingObject* spiking_object = dynamic_cast<SpikingObject*>(*(selected.begin()));
     Samples* samples = dynamic_cast<Samples*>(*(selected.begin()));
-    assert(spiking_object || samples);
+    LinearDiscriminator* ld = dynamic_cast<LinearDiscriminator*>(*(selected.begin()));
+    assert(spiking_object || samples || ld);
     m_glscene->start_connecting(*(selected.begin()));
 }
 
@@ -364,6 +365,7 @@ void MainWindow::objects_selected(std::set<SimulationObject*> objects){
     DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(object);
     SpikingObject* emitter = dynamic_cast<SpikingObject*>(object);
     Samples* samples = dynamic_cast<Samples*>(object);
+    LinearDiscriminator* linear_discriminator = dynamic_cast<LinearDiscriminator*>(object);
 
     if(axon_node){
         ui->actionAxon_Node->setEnabled(true);
@@ -374,7 +376,7 @@ void MainWindow::objects_selected(std::set<SimulationObject*> objects){
         ui->actionDendrite_Node->setEnabled(true);
     }
 
-    if(emitter || samples){
+    if(emitter || samples || linear_discriminator){
         ui->actionConnect->setEnabled(true);
     }
 }
