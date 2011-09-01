@@ -30,9 +30,6 @@ public:
     virtual std::set<SimulationObject*> about_to_remove(SimulationObject*);
     Q_INVOKABLE virtual std::set<SimulationObject*> objects_as_std_set() const;
 
-protected:
-    virtual void moved(Point new_position, Point old_position);
-
 private:
     LSMColumn(){}
     std::set<Neuron*> m_neurons;

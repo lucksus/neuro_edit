@@ -127,3 +127,9 @@ Point Group::moving_offset() const{
     return handle_position();
 }
 
+void Group::moved(Point new_position, Point old_position){
+    Point vec = new_position - old_position;
+    foreach(SimulationObject* o, objects()){
+        o->set_position(o->position() + vec);
+    }
+}

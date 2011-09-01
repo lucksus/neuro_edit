@@ -48,6 +48,7 @@ public:
 
 protected:
     Group(){}
+    virtual void moved(Point new_position, Point old_position);
 
 private:
     QString m_user_actions_script;
