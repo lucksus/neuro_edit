@@ -46,6 +46,8 @@ public:
     Point handle_position() const;
     virtual Point moving_offset() const;
 
+    Q_INVOKABLE void create_mlp(unsigned int number_of_layers, std::vector<int> number_of_neurons);
+
 protected:
     Group(){}
     virtual void moved(Point new_position, Point old_position);

@@ -1,6 +1,9 @@
 #include "group.h"
 #include "simulation.h"
 #include <boost/foreach.hpp>
+#include "userinteractionadapter.h"
+#include "lineardiscriminator.h"
+#include "network.h"
 
 Group::Group(Simulation* sim)
     : SimulationObject(sim), m_update_time_interval(0.), m_elapsed_sim_time(0.), m_drawn_horizontally(true)
@@ -16,12 +19,63 @@ void Group::update(double milli_seconds){
     m_elapsed_sim_time -= m_update_time_interval;
 }
 
-std::list<std::string> Group::user_actions(){
-    return std::list<std::string>();
+void Group::create_mlp(unsigned int number_of_layers, std::vector<int> number_of_neurons){
+    const double SPACING = 50.;
+    assert(number_of_neurons.size() == number_of_layers);
+    double x = position().x - SPACING;
+    double y = position().y;
+    std::set<LinearDiscriminator*> last_layer;
+    std::set<LinearDiscriminator*> current_layer;
+    for(unsigned int i=0;i < number_of_layers; i++){
+        double z = position().z;
+        unsigned int neurons = number_of_neurons[i];
+        z -= neurons/2. * SPACING;
+        for(unsigned int neuron_index = 0; neuron_index < neurons; neuron_index++){
+            LinearDiscriminator* ld = new LinearDiscriminator(simulation());
+            ld->set_position(Point(x,y,z));
+            add_object(ld);
+            current_layer.insert(ld);
+            z += SPACING;
+        }
+        x += SPACING*2;
+        if(i>0){
+            BOOST_FOREACH(LinearDiscriminator* last, last_layer){
+                BOOST_FOREACH(LinearDiscriminator* current, current_layer){
+                    simulation()->network()->connect(last,current);
+                }
+            }
+        }
+        last_layer = current_layer;
+        current_layer.clear();
+    }
 }
 
-void Group::do_user_action(std::string){
+std::list<std::string> Group::user_actions(){
+    std::list<std::string> actions;
+    actions.push_back("Create MLP...");
+    return actions;
+}
 
+void Group::do_user_action(std::string action){
+    if("Create MLP..." == action){
+        std::vector<std::string> names;
+        names.push_back("Number of layers");
+        std::vector<std::pair<int,int> > limits;
+        limits.push_back(std::pair<int,int>(0,std::numeric_limits<int>::max()));
+        std::vector<int> values = UserInteractionAdapter::instance()->get_integer_values(names, "Group "+objectName().toStdString(), "Parameters for MLP", limits);
+        if(values.size() != 1) return;
+
+        unsigned int number_of_layers = values[0];
+        names.clear();
+        limits.clear();
+        for(unsigned int i=0;i<number_of_layers;i++){
+            names.push_back(QString("Number of neurons in layer %1").arg(i).toStdString());
+            limits.push_back(std::pair<int,int>(1,std::numeric_limits<int>::max()));
+        }
+        values = UserInteractionAdapter::instance()->get_integer_values(names, "Group "+objectName().toStdString(), "Parameters for MLP", limits);
+        if(values.size() != number_of_layers) return;
+        create_mlp(number_of_layers,values);
+    }
 }
 
 std::set<SimulationObject*> Group::about_to_remove(SimulationObject* object){
@@ -76,6 +130,7 @@ void Group::remove_input(Samples* input){
 
 void Group::add_object(SimulationObject* object){
     m_objects.insert(object);
+    simulation()->network()->add_object(object);
 }
 
 void Group::remove_object(SimulationObject* object){
