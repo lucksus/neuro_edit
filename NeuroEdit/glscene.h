@@ -58,6 +58,7 @@ signals:
     void selection_changed(std::set<SimulationObject*>);
     void neuron_selected(Neuron*);
     void user_interaction();
+    void right_click_on_object_during_multiselection(QPoint);
 
 public slots:
     void set_network(Network*);

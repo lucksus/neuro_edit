@@ -196,13 +196,18 @@ void GLScene::mouseReleaseEvent(QMouseEvent* e){
         if(e->button() == Qt::RightButton){
             SimulationObject* o = object_under_cursor(e->x(),e->y());
             if(o){
-                std::list<std::string> actions = o->user_actions();
-                if(actions.size() > 0){
-                    MenuObjectRightClick menu(o);
-                    menu.popup(mapToGlobal(e->pos()));
-                    menu.exec();
+                if(m_selected_objects.size() > 1){
+                    emit right_click_on_object_during_multiselection(e->pos());
+                }else{
+                    std::list<std::string> actions = o->user_actions();
+                    if(actions.size() > 0){
+                        MenuObjectRightClick menu(o);
+                        menu.popup(mapToGlobal(e->pos()));
+                        menu.exec();
+                    }
                 }
             }
+
         }
 }
 

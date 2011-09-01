@@ -103,6 +103,7 @@ void MainWindow::init_glscene(){
     connect(m_glscene, SIGNAL(neuron_selected(Neuron*)), &m_izhikevich_system_plot_widget, SLOT(set_neuron(Neuron*)));
     connect(m_glscene, SIGNAL(selection_changed(std::set<SimulationObject*>)), this, SLOT(objects_selected(std::set<SimulationObject*>)));
     connect(m_glscene, SIGNAL(user_interaction()), &m_property_browser, SLOT(read_values_from_objects()));
+    connect(m_glscene, SIGNAL(right_click_on_object_during_multiselection(QPoint)), this, SLOT(right_click_on_object_during_multiselection(QPoint)));
 }
 
 MainWindow::~MainWindow()
@@ -370,6 +371,8 @@ void MainWindow::objects_selected(std::set<SimulationObject*> objects){
     ui->actionSynapse->setEnabled(false);
     ui->actionConnect->setEnabled(false);
 
+    ui->menuSelection->setEnabled(objects.size()>0);
+
     if(objects.size() != 1) return;
     SimulationObject* object = *(objects.begin());
     AxonNode* axon_node = dynamic_cast<AxonNode*>(object);
@@ -389,6 +392,13 @@ void MainWindow::objects_selected(std::set<SimulationObject*> objects){
 
     if(emitter || samples || linear_discriminator){
         ui->actionConnect->setEnabled(true);
+    }
+}
+
+void MainWindow::right_click_on_object_during_multiselection(QPoint pos){
+    std::set<SimulationObject*> selected = m_glscene->selected_objects();
+    if(selected.size() > 0){
+        ui->menuSelection->popup(m_glscene->mapToGlobal(pos));
     }
 }
 
@@ -475,4 +485,36 @@ void MainWindow::addFileToRecentlyUsed(QString filePath){
 void MainWindow::clearRecentlyUsedFiles(){
         setRecentlyUsedFiles(QList<QString>());
         populateRecentlyUsedMenu();
+}
+
+void MainWindow::populateAddToGroupMenu(){
+    ui->menuAdd_to_Group->clear();
+    if(!m_network) return;
+    QAction* action;
+    BOOST_FOREACH(SimulationObject* o, m_network->objects_as_std_set()){
+        Group* group = dynamic_cast<Group*>(o);
+        if(group){
+            action = ui->menuAdd_to_Group->addAction(group->objectName());
+            connect(action, SIGNAL(triggered()), this, SLOT(add_selected_to_group()));
+        }
+    }
+}
+
+void MainWindow::add_selected_to_group(){
+    QAction* group_action = qobject_cast<QAction*>(sender());
+    if(group_action){
+        BOOST_FOREACH(SimulationObject* o, m_network->objects_as_std_set()){
+            Group* group = dynamic_cast<Group*>(o);
+            if(group && group->objectName() == group_action->text()){
+                BOOST_FOREACH(SimulationObject* o, m_glscene->selected_objects()){
+                    group->add_object(o);
+                }
+                return;
+            }
+        }
+    }
+}
+
+void MainWindow::on_menuSelection_aboutToShow(){
+    populateAddToGroupMenu();
 }

@@ -98,9 +98,24 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuSelection">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>Selection</string>
+    </property>
+    <widget class="QMenu" name="menuAdd_to_Group">
+     <property name="title">
+      <string>Add to Group</string>
+     </property>
+    </widget>
+    <addaction name="menuAdd_to_Group"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuInsert"/>
+   <addaction name="menuSelection"/>
    <addaction name="menuWindows"/>
    <addaction name="menuHelp"/>
   </widget>

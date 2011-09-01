@@ -65,7 +65,7 @@ private slots:
      void simulation_time_passed(double);
 
      void objects_selected(std::set<SimulationObject*>);
-
+     void right_click_on_object_during_multiselection(QPoint);
      void simulation_changed(Simulation*);
 
      QStringList recentlyUsedFiles() const;
@@ -74,6 +74,9 @@ private slots:
      void populateRecentlyUsedMenu();
      void addFileToRecentlyUsed(QString filePath);
      void clearRecentlyUsedFiles();
+     void populateAddToGroupMenu();
+     void add_selected_to_group();
+     void on_menuSelection_aboutToShow();
 
 private:
     Ui::MainWindow *ui;
