@@ -1,11 +1,11 @@
 #ifndef LSMCOLUMN_H
 #define LSMCOLUMN_H
-#include "simulationobject.h"
+#include "group.h"
 #include "neuron.h"
 #include <set>
 
 class Simulation;
-class LSMColumn : public SimulationObject
+class LSMColumn : public Group
 {
 friend class boost::serialization::access;
 public:
@@ -27,13 +27,8 @@ public:
 
     virtual std::list<std::string> user_actions();
     virtual void do_user_action(std::string);
-
     virtual std::set<SimulationObject*> about_to_remove(SimulationObject*);
-
-    Point handle_position() const;
-    virtual Point moving_offset() const;
-
-    enum {MARGIN=30};
+    Q_INVOKABLE virtual std::set<SimulationObject*> objects_as_std_set() const;
 
 protected:
     virtual void moved(Point new_position, Point old_position);
@@ -45,14 +40,14 @@ private:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)
     {
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SimulationObject);
+        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(Group);
         ar & boost::serialization::make_nvp("neurons", m_neurons);
     }
 };
-
+/*
 namespace boost{
 template<>
 struct is_virtual_base_of<SimulationObject, LSMColumn>: public mpl::true_ {};
-}
+}*/
 
 #endif // LSMCOLUMN_H

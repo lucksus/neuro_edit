@@ -21,6 +21,7 @@
 #include "samples.h"
 #include "lsmcolumn.h"
 #include "lineardiscriminator.h"
+#include "group.h"
 
 MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),
@@ -173,6 +174,13 @@ void MainWindow::on_actionLinear_Discriminator_triggered(bool){
     m_glscene->start_inserting(s);
 }
 
+void MainWindow::on_actionGroup_triggered(bool){
+    std::set<SimulationObject*> s;
+    s.insert(new Group(Controller::instance().simulation()));
+    m_glscene->start_inserting(s);
+}
+
+
 void MainWindow::on_actionStart_Simulation_triggered(bool){
     Controller::instance().simulation()->start();
 }
@@ -181,7 +189,6 @@ void MainWindow::on_actionStart_Simulation_triggered(bool){
 void MainWindow::on_actionPause_Simulation_triggered(bool){
     m_sim->request_stop();
 }
-
 
 void MainWindow::simulation_started(){
     ui->actionStart_Simulation->setEnabled(false);
@@ -213,6 +220,7 @@ void MainWindow::on_actionNew_triggered(bool){
     ui->actionSamples->setEnabled(true);
     ui->actionLSM_column->setEnabled(true);
     ui->actionLinear_Discriminator->setEnabled(true);
+    ui->actionGroup->setEnabled(true);
 }
 
 void MainWindow::on_actionSave_triggered(bool b){
@@ -251,6 +259,7 @@ void MainWindow::on_actionLoad_triggered(bool){
     ui->actionSamples->setEnabled(true);
     ui->actionLSM_column->setEnabled(true);
     ui->actionLinear_Discriminator->setEnabled(true);
+    ui->actionGroup->setEnabled(true);
     addFileToRecentlyUsed(fileName);
 }
 
@@ -264,6 +273,7 @@ void MainWindow::on_actionImport_Simulation_from_XML_triggered(bool){
     ui->actionSamples->setEnabled(true);
     ui->actionLSM_column->setEnabled(true);
     ui->actionLinear_Discriminator->setEnabled(true);
+    ui->actionGroup->setEnabled(true);
     addFileToRecentlyUsed(fileName);
 }
 
@@ -274,6 +284,7 @@ void MainWindow::on_actionClose_triggered(bool){
     ui->actionSamples->setEnabled(false);
     ui->actionLSM_column->setEnabled(false);
     ui->actionLinear_Discriminator->setEnabled(false);
+    ui->actionGroup->setEnabled(false);
 }
 
 void MainWindow::on_actionQuit_triggered(bool){

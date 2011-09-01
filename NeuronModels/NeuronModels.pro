@@ -35,7 +35,8 @@ SOURCES += izhikevich.cpp \
     userinteractionadapter.cpp \
     lsmcolumn.cpp \
     lineardiscriminator.cpp \
-    ldconnection.cpp
+    ldconnection.cpp \
+    group.cpp
 
 HEADERS += izhikevich.h \
            network.h \
@@ -58,4 +59,6 @@ HEADERS += izhikevich.h \
     userinteractionadapter.h \
     lsmcolumn.h \
     lineardiscriminator.h \
-    ldconnection.h
+    ldconnection.h \
+    group.h \
+    qtstring_serialization.h

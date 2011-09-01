@@ -90,6 +90,7 @@
     <addaction name="actionSamples"/>
     <addaction name="actionLSM_column"/>
     <addaction name="actionLinear_Discriminator"/>
+    <addaction name="actionGroup"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -385,6 +386,17 @@
    </property>
    <property name="shortcut">
     <string>L</string>
+   </property>
+  </action>
+  <action name="actionGroup">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Group</string>
+   </property>
+   <property name="shortcut">
+    <string>G</string>
    </property>
   </action>
  </widget>

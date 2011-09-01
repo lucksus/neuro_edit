@@ -9,8 +9,9 @@
 #include "userinteractionadapter.h"
 
 LSMColumn::LSMColumn(Simulation* sim)
-    : SimulationObject(sim)
+    : Group(sim)
 {
+    set_drawn_horizontally(false);
 }
 
 
@@ -140,28 +141,10 @@ std::set<SimulationObject*> LSMColumn::about_to_remove(SimulationObject* o){
     return also_to_remove;
 }
 
-Point LSMColumn::handle_position() const{
-    double min_z,max_z,min_y,max_y;
-    min_z=max_z=min_y=max_y=0;
-    Point pos;
-    Point center = position();
-    BOOST_FOREACH(Neuron* n, neurons()){
-        Point n_pos = n->position();
-        pos = n_pos - center;
-        if(pos.z < min_z) min_z = pos.z;
-        if(pos.z > max_z) max_z = pos.z;
-        if(pos.y < min_y) min_y = pos.y;
-        if(pos.y > max_y) max_y = pos.y;
+std::set<SimulationObject*> LSMColumn::objects_as_std_set() const{
+    std::set<SimulationObject*> return_set;
+    BOOST_FOREACH(Neuron* n, m_neurons){
+        return_set.insert(n);
     }
-
-    min_z -= MARGIN;
-    min_y -= MARGIN;
-    max_z += MARGIN;
-    max_y += MARGIN;
-
-    return Point(0,min_y,max_z);
-}
-
-Point LSMColumn::moving_offset() const{
-    return handle_position();
+    return return_set;
 }

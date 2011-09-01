@@ -14,10 +14,10 @@
 #else
 #include <GLUT/glut.h>
 #endif
-
+#include "group.h"
 
 bool DrawableLSMColumn::is_applicable_to(SimulationObject* s){
-    return dynamic_cast<LSMColumn*>(s);
+    return dynamic_cast<Group*>(s);
 }
 
 void DrawableLSMColumn::set_color_and_lightning(){
@@ -28,40 +28,53 @@ void DrawableLSMColumn::set_color_and_lightning(){
 }
 
 void DrawableLSMColumn::draw_geometry_impl(){
-    double min_z,max_z,min_y,max_y;
-    min_z=max_z=min_y=max_y=0;
-    LSMColumn* lsm_column = dynamic_cast<LSMColumn*>(m_object);
-    assert(lsm_column);
+    double min_z,max_z,min_y,max_y,min_x,max_x;
+    min_z=max_z=min_y=max_y=min_x=max_x=0;
+    Group* group = dynamic_cast<Group*>(m_object);
     Point pos;
-    Point center = lsm_column->position();
-    BOOST_FOREACH(Neuron* n, lsm_column->neurons()){
-        Point n_pos = n->position();
+    Point center = group->position();
+    BOOST_FOREACH(SimulationObject* o, group->objects_as_std_set()){
+        Point n_pos = o->position();
         pos = n_pos - center;
         if(pos.z < min_z) min_z = pos.z;
         if(pos.z > max_z) max_z = pos.z;
         if(pos.y < min_y) min_y = pos.y;
         if(pos.y > max_y) max_y = pos.y;
+        if(pos.x < min_x) min_x = pos.x;
+        if(pos.x > max_x) max_x = pos.x;
     }
 
-    min_z -= LSMColumn::MARGIN;
-    min_y -= LSMColumn::MARGIN;
-    max_z += LSMColumn::MARGIN;
-    max_y += LSMColumn::MARGIN;
+    min_z -= Group::MARGIN;
+    min_y -= Group::MARGIN;
+    min_x -= Group::MARGIN;
+    max_z += Group::MARGIN;
+    max_y += Group::MARGIN;
+    max_x += Group::MARGIN;
 
     glPushMatrix();
-    glTranslated(0,min_y,max_z);
+    Point handle = group->handle_position();
+    glTranslated(handle.x,handle.y,handle.z);
     glutSolidCube(LSMColumn::MARGIN);
     glPopMatrix();
 
     glDisable(GL_LIGHTING);
     glColor3f(0.8,0.8,0.8);
+    if(dynamic_cast<LSMColumn*>(group)) glColor3f(0.8,0,0.8);
     glLineWidth(2);
     glBegin(GL_LINE_STRIP);
-    glVertex3d(0,min_y,min_z);
-    glVertex3d(0,max_y,min_z);
-    glVertex3d(0,max_y,max_z);
-    glVertex3d(0,min_y,max_z);
-    glVertex3d(0,min_y,min_z);
+    if(group->drawn_horizontally()){
+        glVertex3d(min_x,0,min_z);
+        glVertex3d(max_x,0,min_z);
+        glVertex3d(max_x,0,max_z);
+        glVertex3d(min_x,0,max_z);
+        glVertex3d(min_x,0,min_z);
+    }else{
+        glVertex3d(0,min_y,min_z);
+        glVertex3d(0,max_y,min_z);
+        glVertex3d(0,max_y,max_z);
+        glVertex3d(0,min_y,max_z);
+        glVertex3d(0,min_y,min_z);
+    }
     glEnd();
 
 
