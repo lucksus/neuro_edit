@@ -43,6 +43,7 @@ private:
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SimulationObject);
         ar & boost::serialization::make_nvp("Inputs", m_inputs);
         ar & boost::serialization::make_nvp("ConstantInput", m_constant_input);
+        ar & boost::serialization::make_nvp("DendriticNode", m_dendritic_node);
     }
 
     std::set<LDConnection*> m_inputs;
