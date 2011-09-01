@@ -77,7 +77,7 @@ void SimulationObject::set_user_movable(bool user_movable){
     m_is_user_movable = user_movable;
 }
 
-Point SimulationObject::moving_offset(){
+Point SimulationObject::moving_offset() const{
     return Point();
 }
 

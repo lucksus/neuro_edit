@@ -41,7 +41,7 @@ public:
 
     virtual bool is_user_movable();
     void set_user_movable(bool user_movable);
-    virtual Point moving_offset();
+    virtual Point moving_offset() const;
 
     //! Called when network wants to delete an object. Called before the object is deleted.
     /*!
