@@ -16,6 +16,7 @@
 #include "lsmcolumn.h"
 #include "lineardiscriminator.h"
 #include "ldconnection.h"
+#include "group.h"
 
 SerializationHelper& SerializationHelper::instance(){
     static SerializationHelper sh;
@@ -57,6 +58,7 @@ void SerializationHelper::serialize_simulation_xml(std::ostream& stream, Simulat
     archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
+    archive.register_type<Group>();
 
     try{
     archive << boost::serialization::make_nvp("simulation",*simulation);
@@ -80,6 +82,7 @@ Simulation* SerializationHelper::deserialize_simulation_xml(std::istream& stream
     archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
+    archive.register_type<Group>();
 
     Simulation* s = new Simulation;
     try{
@@ -107,6 +110,7 @@ void SerializationHelper::serialize_simulation(std::ostream& stream, Simulation*
     archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
+    archive.register_type<Group>();
 
     try{
     archive << boost::serialization::make_nvp("simulation",*simulation);
@@ -130,6 +134,7 @@ Simulation* SerializationHelper::deserialize_simulation(std::istream& stream){
     archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
+    archive.register_type<Group>();
 
     Simulation* s = new Simulation;
     try{
@@ -155,6 +160,7 @@ void SerializationHelper::serialize_network(std::ostream& stream, Network* netwo
     archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
+    archive.register_type<Group>();
 
     try{
     archive << boost::serialization::make_nvp("network",*network);
@@ -176,6 +182,7 @@ Network* SerializationHelper::deserialize_network(std::istream& stream){
     archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
+    archive.register_type<Group>();
 
     Network* n = new Network;
     try{
@@ -201,6 +208,7 @@ void SerializationHelper::serialize_objects(std::ostream& stream, std::set<Simul
     archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
+    archive.register_type<Group>();
 
     try{
     archive << boost::serialization::make_nvp("objects",objects);
@@ -222,6 +230,7 @@ std::set<SimulationObject*> SerializationHelper::deserialize_objects(std::istrea
     archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
+    archive.register_type<Group>();
 
     std::set<SimulationObject*> objects;
     try{
