@@ -78,3 +78,48 @@ vector<double> GuiUserInteractionAdapter::get_double_values(vector<string> value
     return return_value;
 
 }
+
+
+vector<int> GuiUserInteractionAdapter::get_integer_values(vector<string> value_descriptions, string source, string porpuse, vector<pair<int,int> > limits ){
+    QDialog dialog;
+
+    dialog.setWindowTitle(QString("%1 requires input").arg(source.c_str()));
+    dialog.setLayout(new QVBoxLayout);
+    dialog.layout()->addWidget(new QLabel(porpuse.c_str()));
+
+    vector<QSpinBox*> spin_boxes;
+
+    for(unsigned int i=0;i<value_descriptions.size();i++){
+        QFrame* frame = new QFrame(&dialog);
+        frame->setLayout(new QHBoxLayout);
+        QLabel* label = new QLabel(&dialog);
+        label->setText(QString("%1: ").arg(value_descriptions[i].c_str()));
+        frame->layout()->addWidget(label);
+
+        QSpinBox* spinBox = new QSpinBox(&dialog);
+        if(limits.size() == value_descriptions.size()){
+            spinBox->setMinimum(limits[i].first);
+            spinBox->setMaximum(limits[i].second);
+        }
+
+        frame->layout()->addWidget(spinBox);
+        spin_boxes.push_back(spinBox);
+        dialog.layout()->addWidget(frame);
+
+    }
+
+    QPushButton* button = new QPushButton;
+    button->setText("Ok");
+    QObject::connect(button,SIGNAL(pressed()),&dialog,SLOT(accept()));
+    dialog.layout()->addWidget(button);
+
+    vector<int> return_value;
+    if(dialog.exec()){
+        return_value.resize(value_descriptions.size());
+        for(unsigned int i=0;i<value_descriptions.size();i++){
+            return_value[i] = spin_boxes[i]->value();
+        }
+    }
+
+    return return_value;
+}
