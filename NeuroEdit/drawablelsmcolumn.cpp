@@ -43,15 +43,14 @@ void DrawableLSMColumn::draw_geometry_impl(){
         if(pos.y > max_y) max_y = pos.y;
     }
 
-    min_z -= SIZE;
-    min_y -= SIZE;
-    max_z += SIZE;
-    max_y += SIZE;
-    double z = lsm_column->position().x;
+    min_z -= LSMColumn::MARGIN;
+    min_y -= LSMColumn::MARGIN;
+    max_z += LSMColumn::MARGIN;
+    max_y += LSMColumn::MARGIN;
 
     glPushMatrix();
     glTranslated(0,min_y,max_z);
-    glutSolidCube(SIZE);
+    glutSolidCube(LSMColumn::MARGIN);
     glPopMatrix();
 
     glDisable(GL_LIGHTING);

@@ -286,7 +286,7 @@ void GLScene::start_moving(const SimulationObject& o){
         m_moving_objects.insert(object);
     }
     m_moving = true;
-    m_moving_switch_plane_point = m_moving_start_point = m_moving_point = o.position();
+    m_moving_switch_plane_point = m_moving_start_point = m_moving_point = o.position() + o.moving_offset();
 }
 
 void GLScene::start_inserting(std::set<SimulationObject*> objects){
@@ -308,7 +308,7 @@ void GLScene::start_inserting(std::set<SimulationObject*> objects){
     m_moving_switch_plane_point = m_moving_start_point = m_moving_point = m_camera_config.center_position;
 
     BOOST_FOREACH(SimulationObject* o, objects){
-        o->set_position(o->position()+m_camera_config.center_position);
+        o->set_position(o->position()+m_camera_config.center_position - o->moving_offset());
     }
 }
 
@@ -321,7 +321,7 @@ void GLScene::finish_moving(){
         }
 
         if(!o->is_user_movable()) continue;
-        o->set_position(o->position() + offset);
+        o->set_position(o->position() + offset);// - o->moving_offset());
     }
 
     m_moving = false;
@@ -556,13 +556,13 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
 
     glPushMatrix();
 
-    if(drawable->do_translate_bevor_drawing()){
-        Point pos = o->position();
-        if(moving){
-            Point offset = m_moving_point - m_moving_start_point;
-            pos += offset;
-        }
+    Point pos = o->position();
+    if(moving){
+        Point offset = m_moving_point - m_moving_start_point;
+        pos += offset;// - o->moving_offset();
+    }
 
+    if(drawable->do_translate_bevor_drawing() || moving){
         glTranslatef(pos.x, pos.y, pos.z);
     }
 
