@@ -7,6 +7,7 @@
 #include "neuron.h"
 #include "RandomGenerator.h"
 #include "math_constants.h"
+#include "ldconnection.h"
 
 Group::Group(Simulation* sim)
     : SimulationObject(sim), m_update_time_interval(0.), m_elapsed_sim_time(0.), m_drawn_horizontally(true)
@@ -86,12 +87,22 @@ void Group::create_connections(double dist1){
 
 void Group::set_synapse_weights(double mean, double var){
     std::set<Synapse*> all_synapses;
+    std::set<LDConnection*> all_ld_connections = extract_all<LDConnection>(m_objects);
     BOOST_FOREACH(Neuron* n, neurons()){
         BOOST_FOREACH(Synapse* synapse, n->incoming_synapses()){
             all_synapses.insert(synapse);
         }
     }
+    BOOST_FOREACH(LinearDiscriminator* ld, linear_discriminators()){
+        BOOST_FOREACH(LDConnection* conn, ld->inputs()){
+            all_ld_connections.insert(conn);
+        }
+    }
+
     BOOST_FOREACH(Synapse* synapse, all_synapses){
+        synapse->set_weight(NeuroMath::RandomGenerator::getInstance()->gauss(mean, var));
+    }
+    BOOST_FOREACH(LDConnection* synapse, all_ld_connections){
         synapse->set_weight(NeuroMath::RandomGenerator::getInstance()->gauss(mean, var));
     }
 }
@@ -133,6 +144,9 @@ std::set<std::string> Group::active_user_actions(){
     }else{
         if(neurons().size() > 0){
             s.insert("Create connections...");
+            s.insert("Set synapse weights...");
+        }
+        if(linear_discriminators().size() > 0){
             s.insert("Set synapse weights...");
         }
     }

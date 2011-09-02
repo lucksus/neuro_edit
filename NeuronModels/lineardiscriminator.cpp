@@ -26,6 +26,10 @@ void LinearDiscriminator::remove_input(LDConnection* connection){
     m_inputs.erase(connection);
 }
 
+std::set<LDConnection*> LinearDiscriminator::inputs(){
+    return m_inputs;
+}
+
 double LinearDiscriminator::membrane_potential(){
     return m_membrane_potential;
 }

@@ -2,7 +2,7 @@
 #include "lineardiscriminator.h"
 
 LDConnection::LDConnection(Simulation* sim)
-    : SimulationObject(sim)
+    : SimulationObject(sim), m_weight(0.)
 {
 }
 

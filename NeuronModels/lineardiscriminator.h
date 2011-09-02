@@ -22,6 +22,7 @@ public:
 
     void add_input(LDConnection*);
     void remove_input(LDConnection*);
+    std::set<LDConnection*> inputs();
 
     double membrane_potential();
     void set_constant_input(double);
