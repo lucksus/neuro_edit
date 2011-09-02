@@ -88,7 +88,6 @@
     <addaction name="actionDendrite_Node"/>
     <addaction name="actionCurrent_Inducer"/>
     <addaction name="actionSamples"/>
-    <addaction name="actionLSM_column"/>
     <addaction name="actionLinear_Discriminator"/>
     <addaction name="actionGroup"/>
    </widget>
@@ -369,17 +368,6 @@
    </property>
    <property name="shortcut">
     <string>S</string>
-   </property>
-  </action>
-  <action name="actionLSM_column">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>LSM column</string>
-   </property>
-   <property name="shortcut">
-    <string>M</string>
    </property>
   </action>
   <action name="actionExport_Simulation_to_XML">

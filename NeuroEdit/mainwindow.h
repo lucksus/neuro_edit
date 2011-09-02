@@ -34,7 +34,6 @@ private slots:
      void on_actionSynapse_triggered(bool);
      void on_actionCurrent_Inducer_triggered(bool);
      void on_actionSamples_triggered(bool);
-     void on_actionLSM_column_triggered(bool);
      void on_actionLinear_Discriminator_triggered(bool);
      void on_actionGroup_triggered(bool);
 

@@ -4,6 +4,9 @@
 #include "userinteractionadapter.h"
 #include "lineardiscriminator.h"
 #include "network.h"
+#include "neuron.h"
+#include "RandomGenerator.h"
+#include "math_constants.h"
 
 Group::Group(Simulation* sim)
     : SimulationObject(sim), m_update_time_interval(0.), m_elapsed_sim_time(0.), m_drawn_horizontally(true)
@@ -48,12 +51,92 @@ void Group::create_mlp(unsigned int number_of_layers, std::vector<int> number_of
         last_layer = current_layer;
         current_layer.clear();
     }
+    set_drawn_horizontally(true);
 }
+
+void Group::create_2d_grid(unsigned int width, unsigned int height, double distance){
+    Point center = position();
+    for(int x=0;x<width;x++){
+        for(int y=0;y<height;y++){
+            Point neuron_pos = center;
+            neuron_pos += Point(0,(y-static_cast<int>(height)/2)*distance,(x-static_cast<int>(width)/2)*distance);
+            Neuron* neuron = new Neuron(simulation(), neuron_pos);
+            m_objects.insert(neuron);
+            simulation()->network()->add_object(neuron);
+        }
+    }
+    set_drawn_horizontally(false);
+}
+
+void Group::create_connections(double dist1){
+    double alpha = 0.693147 / dist1; //ln(0.5)
+    std::set<Neuron*> local_neurons = neurons();
+    BOOST_FOREACH(Neuron* n1, local_neurons){
+        BOOST_FOREACH(Neuron* n2, local_neurons){
+            if(n1==n2) continue;
+            double distance = n1->position().distance(n2->position());
+            double rand = NeuroMath::RandomGenerator::getInstance()->uniform(0,1);
+            double e = pow(NeuroMath::e(), -distance * alpha);
+            if(rand < e){
+                simulation()->network()->connect(n1->axon_root(), n2->dendrites_root());
+            }
+        }
+    }
+}
+
+void Group::set_synapse_weights(double mean, double var){
+    std::set<Synapse*> all_synapses;
+    BOOST_FOREACH(Neuron* n, neurons()){
+        BOOST_FOREACH(Synapse* synapse, n->incoming_synapses()){
+            all_synapses.insert(synapse);
+        }
+    }
+    BOOST_FOREACH(Synapse* synapse, all_synapses){
+        synapse->set_weight(NeuroMath::RandomGenerator::getInstance()->gauss(mean, var));
+    }
+}
+
+void Group::connect_input_neuron_with_all(SpikingObject* input){
+    BOOST_FOREACH(Neuron* n, neurons()){
+        simulation()->network()->connect(input, n->dendrites_root());
+    }
+}
+
+void Group::connect_input_neuron_randomly(SpikingObject* input, unsigned int count){
+    std::set<unsigned int> indices;
+    std::set<Neuron*> local_neurons = neurons();
+    std::vector<Neuron*> neurons(local_neurons.begin(),local_neurons.end());
+    while(indices.size() < count){
+        unsigned int rand = static_cast<unsigned int>(NeuroMath::RandomGenerator::getInstance()->uniform(1,indices.size()+1));
+        indices.insert(rand);
+    }
+    BOOST_FOREACH(unsigned int index, indices){
+        simulation()->network()->connect(input, neurons[index]->dendrites_root());
+    }
+}
+
 
 std::list<std::string> Group::user_actions(){
     std::list<std::string> actions;
     actions.push_back("Create MLP...");
+    actions.push_back("Create LSM Column...");
+    actions.push_back("Create connections...");
+    actions.push_back("Set synapse weights...");
     return actions;
+}
+
+std::set<std::string> Group::active_user_actions(){
+    std::set<std::string> s;
+    if(m_objects.size() == 0){
+        s.insert("Create MLP...");
+        s.insert("Create LSM Column...");
+    }else{
+        if(neurons().size() > 0){
+            s.insert("Create connections...");
+            s.insert("Set synapse weights...");
+        }
+    }
+    return s;
 }
 
 void Group::do_user_action(std::string action){
@@ -75,6 +158,39 @@ void Group::do_user_action(std::string action){
         values = UserInteractionAdapter::instance()->get_integer_values(names, "Group "+objectName().toStdString(), "Parameters for MLP", limits);
         if(values.size() != number_of_layers) return;
         create_mlp(number_of_layers,values);
+    }
+    if("Create LSM Column..." == action){
+        std::vector<string> names;
+        names.push_back("Width");
+        names.push_back("Height");
+        names.push_back("Distance");
+        std::vector<std::pair<double,double> > limits;
+        limits.push_back(std::pair<double,double>(0,std::numeric_limits<double>::max()));
+        limits.push_back(std::pair<double,double>(0,std::numeric_limits<double>::max()));
+        limits.push_back(std::pair<double,double>(10,std::numeric_limits<double>::max()));
+        std::vector<double> values = UserInteractionAdapter::instance()->get_double_values(names, "LSMColumn "+objectName().toStdString(), "Parameters for 2D grid", limits);
+        if(values.size() != 3) return;
+        create_2d_grid(values[0],values[1],values[2]);
+    }
+
+    if("Create connections..." == action){
+        std::vector<string> names;
+        names.push_back("Distance with probability=0.5");
+        std::vector<std::pair<double,double> > limits;
+        limits.push_back(std::pair<double,double>(0,std::numeric_limits<double>::max()));
+        std::vector<double> values = UserInteractionAdapter::instance()->get_double_values(names, "LSMColumn "+objectName().toStdString(), "Parameter for connection creation", limits);
+        if(values.size() != 1) return;
+        create_connections(values[0]);
+    }
+
+    if("Set synapse weights..." == action){
+        std::vector<string> names;
+        names.push_back("Mean");
+        names.push_back("Variance");
+        std::vector<std::pair<double,double> > limits;
+        std::vector<double> values = UserInteractionAdapter::instance()->get_double_values(names, "LSMColumn "+objectName().toStdString(), "Setting synapse weights with normal distribution", limits);
+        if(values.size() != 2) return;
+        set_synapse_weights(values[0],values[1]);
     }
 }
 
@@ -187,4 +303,12 @@ void Group::moved(Point new_position, Point old_position){
     foreach(SimulationObject* o, objects()){
         o->set_position(o->position() + vec);
     }
+}
+
+std::set<Neuron*> Group::neurons(){
+    return extract_all<Neuron>(m_objects);
+}
+
+std::set<LinearDiscriminator*> Group::linear_discriminators(){
+    return extract_all<LinearDiscriminator>(m_objects);
 }

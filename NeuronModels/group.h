@@ -23,6 +23,7 @@ public:
     virtual void update(double milli_seconds);
 
     virtual std::list<std::string> user_actions();
+    virtual std::set<std::string> active_user_actions();
     virtual void do_user_action(std::string);
     virtual std::set<SimulationObject*> about_to_remove(SimulationObject*);
 
@@ -47,6 +48,12 @@ public:
     virtual Point moving_offset() const;
 
     Q_INVOKABLE void create_mlp(unsigned int number_of_layers, std::vector<int> number_of_neurons);
+    Q_INVOKABLE void create_2d_grid(unsigned int width, unsigned int height, double distance);
+    Q_INVOKABLE void create_connections(double distance_constant);
+    Q_INVOKABLE void set_synapse_weights(double mean, double var);
+
+    Q_INVOKABLE void connect_input_neuron_with_all(SpikingObject*);
+    Q_INVOKABLE void connect_input_neuron_randomly(SpikingObject*, unsigned int count);
 
 protected:
     Group(){}
@@ -60,6 +67,19 @@ private:
     double m_update_time_interval;
     double m_elapsed_sim_time;
     bool m_drawn_horizontally;
+
+    std::set<Neuron*> neurons();
+    std::set<LinearDiscriminator*> linear_discriminators();
+
+    template<class Type1, class Type2>
+    std::set<Type1*> extract_all(const std::set<Type2*>& s){
+        std::set<Type1*> return_value;
+        BOOST_FOREACH(Type2* o, s){
+            Type1* n = dynamic_cast<Type1*>(o);
+            if(n) return_value.insert(n);
+        }
+        return return_value;
+    }
 
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)

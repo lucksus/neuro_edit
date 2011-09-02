@@ -6,7 +6,7 @@
 #include "drawablesynapse.h"
 #include "drawablecurrentinducer.h"
 #include "drawablesamples.h"
-#include "drawablelsmcolumn.h"
+#include "drawablegroup.h"
 #include "drawablelineardiscriminator.h"
 #include "drawableldconnection.h"
 #include <assert.h>
@@ -124,7 +124,7 @@ Drawables::Drawables(){
     m_all_drawables.insert(new DrawableSynapse);
     m_all_drawables.insert(new DrawableCurrentInducer);
     m_all_drawables.insert(new DrawableSamples);
-    m_all_drawables.insert(new DrawableLSMColumn);
+    m_all_drawables.insert(new DrawableGroup);
     m_all_drawables.insert(new DrawableLinearDiscriminator);
     m_all_drawables.insert(new DrawableLDConnection);
 }

@@ -13,7 +13,6 @@
 #include "network.h"
 #include "simulation.h"
 #include "samples.h"
-#include "lsmcolumn.h"
 #include "lineardiscriminator.h"
 #include "ldconnection.h"
 #include "group.h"
@@ -55,7 +54,6 @@ void SerializationHelper::serialize_simulation_xml(std::ostream& stream, Simulat
     archive.register_type<Simulation>();
     archive.register_type<Samples>();
     archive.register_type<CurrentInducer>();
-    archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
     archive.register_type<Group>();
@@ -79,7 +77,6 @@ Simulation* SerializationHelper::deserialize_simulation_xml(std::istream& stream
     archive.register_type<Simulation>();
     archive.register_type<Samples>();
     archive.register_type<CurrentInducer>();
-    archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
     archive.register_type<Group>();
@@ -107,7 +104,6 @@ void SerializationHelper::serialize_simulation(std::ostream& stream, Simulation*
     archive.register_type<Simulation>();
     archive.register_type<Samples>();
     archive.register_type<CurrentInducer>();
-    archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
     archive.register_type<Group>();
@@ -131,7 +127,6 @@ Simulation* SerializationHelper::deserialize_simulation(std::istream& stream){
     archive.register_type<Simulation>();
     archive.register_type<Samples>();
     archive.register_type<CurrentInducer>();
-    archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
     archive.register_type<Group>();
@@ -157,7 +152,6 @@ void SerializationHelper::serialize_network(std::ostream& stream, Network* netwo
     archive.register_type<DendriticNode>();
     archive.register_type<Samples>();
     archive.register_type<CurrentInducer>();
-    archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
     archive.register_type<Group>();
@@ -179,7 +173,6 @@ Network* SerializationHelper::deserialize_network(std::istream& stream){
     archive.register_type<DendriticNode>();
     archive.register_type<Samples>();
     archive.register_type<CurrentInducer>();
-    archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
     archive.register_type<Group>();
@@ -205,7 +198,6 @@ void SerializationHelper::serialize_objects(std::ostream& stream, std::set<Simul
     archive.register_type<DendriticNode>();
     archive.register_type<Samples>();
     archive.register_type<CurrentInducer>();
-    archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
     archive.register_type<Group>();
@@ -227,7 +219,6 @@ std::set<SimulationObject*> SerializationHelper::deserialize_objects(std::istrea
     archive.register_type<DendriticNode>();
     archive.register_type<Samples>();
     archive.register_type<CurrentInducer>();
-    archive.register_type<LSMColumn>();
     archive.register_type<LinearDiscriminator>();
     archive.register_type<LDConnection>();
     archive.register_type<Group>();

@@ -1,5 +1,4 @@
-#include "drawablelsmcolumn.h"
-#include "lsmcolumn.h"
+#include "drawablegroup.h"
 #include <boost/foreach.hpp>
 #ifdef WIN32
 #include <Windows.h>
@@ -16,18 +15,18 @@
 #endif
 #include "group.h"
 
-bool DrawableLSMColumn::is_applicable_to(SimulationObject* s){
+bool DrawableGroup::is_applicable_to(SimulationObject* s){
     return dynamic_cast<Group*>(s);
 }
 
-void DrawableLSMColumn::set_color_and_lightning(){
+void DrawableGroup::set_color_and_lightning(){
     glEnable(GL_LIGHTING);
     glEnable(GL_DITHER);
     GLfloat color[] = {.8,0.8,0.8,1};
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
 }
 
-void DrawableLSMColumn::draw_geometry_impl(){
+void DrawableGroup::draw_geometry_impl(){
     double min_z,max_z,min_y,max_y,min_x,max_x;
     min_z=max_z=min_y=max_y=min_x=max_x=0;
     Group* group = dynamic_cast<Group*>(m_object);
@@ -54,12 +53,11 @@ void DrawableLSMColumn::draw_geometry_impl(){
     glPushMatrix();
     Point handle = group->handle_position();
     glTranslated(handle.x,handle.y,handle.z);
-    glutSolidCube(LSMColumn::MARGIN);
+    glutSolidCube(Group::MARGIN);
     glPopMatrix();
 
     glDisable(GL_LIGHTING);
     glColor3f(0.8,0.8,0.8);
-    if(dynamic_cast<LSMColumn*>(group)) glColor3f(0.8,0,0.8);
     glLineWidth(2);
     glBegin(GL_LINE_STRIP);
     if(group->drawn_horizontally()){
@@ -80,7 +78,7 @@ void DrawableLSMColumn::draw_geometry_impl(){
 
 }
 
-QRect DrawableLSMColumn::occupied_screen_region(){
+QRect DrawableGroup::occupied_screen_region(){
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT,viewport);
     GLdouble model_view[16];
@@ -89,9 +87,9 @@ QRect DrawableLSMColumn::occupied_screen_region(){
     glGetDoublev(GL_PROJECTION_MATRIX, projection);
 
     int min_x,max_x,min_y,max_y;
-    LSMColumn* lsm_column = static_cast<LSMColumn*>(m_object);
-    BOOST_FOREACH(Neuron* n, lsm_column->neurons()){
-        Point pos = n->position();
+    Group* group = static_cast<Group*>(m_object);
+    BOOST_FOREACH(SimulationObject* o, group->objects()){
+        Point pos = o->position();
         GLdouble x, y, z;
         gluProject(pos.x, pos.y, pos.z, model_view, projection, viewport, &x, &y, &z);
         if(x<min_x)min_x=x;

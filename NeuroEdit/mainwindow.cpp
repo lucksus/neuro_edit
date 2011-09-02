@@ -19,7 +19,6 @@
 #include <stdexcept>
 #include <QtCore/QSettings>
 #include "samples.h"
-#include "lsmcolumn.h"
 #include "lineardiscriminator.h"
 #include "group.h"
 
@@ -163,12 +162,6 @@ void MainWindow::on_actionSamples_triggered(bool){
     m_glscene->start_inserting(s);
 }
 
-void MainWindow::on_actionLSM_column_triggered(bool){
-    std::set<SimulationObject*> s;
-    s.insert(new LSMColumn(Controller::instance().simulation()));
-    m_glscene->start_inserting(s);
-}
-
 void MainWindow::on_actionLinear_Discriminator_triggered(bool){
     std::set<SimulationObject*> s;
     s.insert(new LinearDiscriminator(Controller::instance().simulation()));
@@ -219,7 +212,6 @@ void MainWindow::on_actionNew_triggered(bool){
     ui->actionSingle_Neuron->setEnabled(true);
     ui->actionCurrent_Inducer->setEnabled(true);
     ui->actionSamples->setEnabled(true);
-    ui->actionLSM_column->setEnabled(true);
     ui->actionLinear_Discriminator->setEnabled(true);
     ui->actionGroup->setEnabled(true);
 }
@@ -258,7 +250,6 @@ void MainWindow::on_actionLoad_triggered(bool){
     ui->actionSingle_Neuron->setEnabled(true);
     ui->actionCurrent_Inducer->setEnabled(true);
     ui->actionSamples->setEnabled(true);
-    ui->actionLSM_column->setEnabled(true);
     ui->actionLinear_Discriminator->setEnabled(true);
     ui->actionGroup->setEnabled(true);
     addFileToRecentlyUsed(fileName);
@@ -272,7 +263,6 @@ void MainWindow::on_actionImport_Simulation_from_XML_triggered(bool){
     ui->actionSingle_Neuron->setEnabled(true);
     ui->actionCurrent_Inducer->setEnabled(true);
     ui->actionSamples->setEnabled(true);
-    ui->actionLSM_column->setEnabled(true);
     ui->actionLinear_Discriminator->setEnabled(true);
     ui->actionGroup->setEnabled(true);
     addFileToRecentlyUsed(fileName);
@@ -283,7 +273,6 @@ void MainWindow::on_actionClose_triggered(bool){
     ui->actionSingle_Neuron->setEnabled(false);
     ui->actionCurrent_Inducer->setEnabled(false);
     ui->actionSamples->setEnabled(false);
-    ui->actionLSM_column->setEnabled(false);
     ui->actionLinear_Discriminator->setEnabled(false);
     ui->actionGroup->setEnabled(false);
 }
