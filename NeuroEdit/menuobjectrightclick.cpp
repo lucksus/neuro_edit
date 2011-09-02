@@ -8,6 +8,7 @@ MenuObjectRightClick::MenuObjectRightClick(SimulationObject* object)
     BOOST_FOREACH(std::string action_text, m_object->user_actions()){
         QAction* action = addAction(action_text.c_str());
         connect(action, SIGNAL(triggered()), &m_signal_mapper, SLOT(map()));
+        if(!m_object->active_user_actions().count(action_text)) action->setEnabled(false);
         m_signal_mapper.setMapping(action, QString(action_text.c_str()));
     }
     connect(&m_signal_mapper, SIGNAL(mapped(QString)), this, SLOT(action_activated(QString)));

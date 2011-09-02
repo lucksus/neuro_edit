@@ -97,3 +97,11 @@ std::set<SimulationObject*> SimulationObject::about_to_remove(SimulationObject* 
 
     return std::set<SimulationObject*>();
 }
+
+std::set<std::string> SimulationObject::active_user_actions() {
+    std::set<std::string> s;
+    BOOST_FOREACH(std::string action, user_actions()){
+        s.insert(action);
+    }
+    return s;
+}
