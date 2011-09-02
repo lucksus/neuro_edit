@@ -1,4 +1,5 @@
 #include "ldconnection.h"
+#include "lineardiscriminator.h"
 
 LDConnection::LDConnection(Simulation* sim)
     : SimulationObject(sim)
@@ -17,6 +18,7 @@ double LDConnection::weight(){
 void LDConnection::set_neurons(LinearDiscriminator* pre, LinearDiscriminator* post){
     m_pre = pre;
     m_post = post;
+    post->add_input(this);
 }
 
 LinearDiscriminator* LDConnection::pre_neuron(){
