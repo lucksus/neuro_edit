@@ -27,10 +27,19 @@ bool DrawableLDConnection::is_applicable_to(SimulationObject* object){
 }
 
 void DrawableLDConnection::set_color_and_lightning(){
-    GLfloat green[] = {.6,.9,.6,1};
+    LDConnection* conn = dynamic_cast<LDConnection*>(m_object);
+    double w = conn->weight();
+    double red = 0.6;
+    double green = 0.6;
+    if(w>0){
+        green += 0.1 + w/10;
+    }else{
+        red += 0.1 + w/10;
+    }
+    GLfloat color[] = {red,green,.6,1};
     glDisable(GL_LIGHTING);
     glEnable(GL_DITHER);
-    glColor4fv(green);
+    glColor4fv(color);
 }
 
 void DrawableLDConnection::draw_geometry_impl(){
