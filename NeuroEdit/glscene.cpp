@@ -21,6 +21,7 @@
 #include "menuobjectrightclick.h"
 #include "lineardiscriminator.h"
 #include "ldconnection.h"
+#include "group.h"
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent),
@@ -129,7 +130,10 @@ void GLScene::mouseMoveEvent(QMouseEvent *e){
                     if(axon_node.second < dendritic_node.second) m_current_connection_target = axon_node.first;
             }
             if(dynamic_cast<Samples*>(m_connection_source)){
-                m_current_connection_target = find_nearest_2d<CurrentInducer*>(e->x(),e->y()).first;
+                std::pair<SimulationObject*,double> ci = find_nearest_2d<CurrentInducer*>(e->x(),e->y());
+                std::pair<SimulationObject*,double> group = find_nearest_2d<Group*>(e->x(),e->y());
+                if(ci.second < group.second) m_current_connection_target = ci.first;
+                else m_current_connection_target = group.first;
             }
             if(dynamic_cast<LinearDiscriminator*>(m_connection_source)){
                 m_current_connection_target = find_nearest_2d<LinearDiscriminator*>(e->x(),e->y()).first;
@@ -963,6 +967,7 @@ void GLScene::finish_connecting(){
     DendriticNode* dendritic_node = dynamic_cast<DendriticNode*>(m_current_connection_target);
     CurrentInducer* current_inducer = dynamic_cast<CurrentInducer*>(m_current_connection_target);
     LinearDiscriminator* ld_target = dynamic_cast<LinearDiscriminator*>(m_current_connection_target);
+    Group* group = dynamic_cast<Group*>(m_current_connection_target);
 
     AxonNode* axon_node = dynamic_cast<AxonNode*>(m_connection_source);
     if(axon_node){
@@ -972,6 +977,7 @@ void GLScene::finish_connecting(){
 
     Samples* samples = dynamic_cast<Samples*>(m_connection_source);
     if(samples && current_inducer) samples->add_current_inducer(current_inducer);
+    if(samples && group) group->add_input(samples);
 
     LinearDiscriminator* ld_source = dynamic_cast<LinearDiscriminator*>(m_connection_source);
     if(ld_source) m_network->connect(ld_source, ld_target);

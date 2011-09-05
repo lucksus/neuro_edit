@@ -10,7 +10,8 @@
 #include "ldconnection.h"
 
 Group::Group(Simulation* sim)
-    : SimulationObject(sim), m_update_time_interval(0.), m_elapsed_sim_time(0.), m_drawn_horizontally(true)
+    : SimulationObject(sim), m_update_time_interval(0.), m_elapsed_sim_time(0.), m_drawn_horizontally(true),
+      m_backprop_target(0)
 {
 }
 
@@ -215,6 +216,12 @@ std::set<SimulationObject*> Group::about_to_remove(SimulationObject* object){
             also_to_remove.insert(o);
         }
     }
+    Samples* s = dynamic_cast<Samples*>(object);
+    if(s){
+        if(m_backprop_target == s) m_backprop_target = 0;
+        m_inputs.erase(s);
+    }
+
     return also_to_remove;
 }
 
@@ -250,12 +257,24 @@ bool Group::drawn_horizontally() const{
     return m_drawn_horizontally;
 }
 
+void Group::set_backprop_target(Samples* s){
+    m_backprop_target = s;
+}
+
+Samples* Group::backprop_target(){
+    return m_backprop_target;
+}
+
 void Group::add_input(Samples* input){
     m_inputs.insert(input);
 }
 
 void Group::remove_input(Samples* input){
     m_inputs.erase(input);
+}
+
+std::set<Samples*> Group::inputs(){
+    return m_inputs;
 }
 
 void Group::add_object(SimulationObject* object){

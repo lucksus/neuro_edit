@@ -12,6 +12,7 @@
 #include "synapse.h"
 #include "simulation.h"
 #include <stdexcept>
+#include "samples.h"
 
 Controller::Controller()
 {
@@ -38,6 +39,7 @@ void Controller::init(){
     qRegisterMetaType<Neuron*>("Neuron*");
     qRegisterMetaType<NeuronModel*>("NeuronModel*");
     qRegisterMetaType<Synapse>("Synapse");
+    qRegisterMetaType<Samples*>("Samples*");
 }
 
 void Controller::close_simulation(){

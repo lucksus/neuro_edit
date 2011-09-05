@@ -8,6 +8,7 @@
 #include "neuronmodel.h"
 #include "izhikevich.h"
 #include <assert.h>
+#include "group.h"
 
 PropertyBrowser::PropertyBrowser(QWidget* parent)
     : QtTreePropertyBrowser(parent), m_populating(false)
@@ -77,6 +78,24 @@ void PropertyBrowser::value_changed(QtProperty * p, const QVariant & value){
                 iz->setProperty(p->propertyName().toStdString().c_str(), value);
             }
         }
+
+        if(property->propertyType() == m_variantManager->enumTypeId()){
+            Group* group = dynamic_cast<Group*>(object);
+            assert(group);
+            Samples* backprop_target = 0;
+            QStringList inputs;
+            BOOST_FOREACH(Samples* s, group->inputs()){
+                inputs.append(s->objectName());
+            }
+            inputs.sort();
+            QString name = inputs.at(value.toInt());
+            BOOST_FOREACH(Samples* s, group->inputs()){
+                if(s->objectName() == name)
+                    backprop_target = s;
+            }
+            if(backprop_target) group->set_backprop_target(backprop_target);
+        }
+
         object->setProperty(property->propertyName().toStdString().c_str(), value);
     }
 }
@@ -124,6 +143,23 @@ void PropertyBrowser::populate_properties(std::set<std::string> properties_to_sh
                     m_property_groups[sub_prop] = group_item;
                 }
                 addProperty(group_item);
+            }else if(QMetaType::type("Samples*") == QMetaType::type(property_value.typeName())){
+                Group* group = dynamic_cast<Group*>(object);
+                assert(group);
+                QtVariantProperty* enum_prop = m_variantManager->addProperty(m_variantManager->enumTypeId(), property.c_str());
+                QStringList inputs;
+                BOOST_FOREACH(Samples* s, group->inputs()){
+                    inputs.append(s->objectName());
+                }
+                inputs.sort();
+                enum_prop->setAttribute("enumNames", inputs);
+
+
+                Samples* current = group->backprop_target();
+                if(current)
+                    enum_prop->setValue(inputs.indexOf(current->objectName()));
+
+                addProperty(enum_prop);
             }
         }else{
             QtVariantProperty* variant_property = m_variantManager->addProperty(type, property.c_str());

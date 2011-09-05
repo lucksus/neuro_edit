@@ -75,6 +75,16 @@ void DrawableGroup::draw_geometry_impl(){
     }
     glEnd();
 
+    glColor3f(0.8,0.0,0.0);
+    glLineWidth(1);
+    glBegin(GL_LINES);
+    BOOST_FOREACH(Samples* samples, group->inputs()){
+        glVertex3d(handle.x, handle.y, handle.z);
+        Point vec = samples->position() - group->position();
+        glVertex3d(vec.x, vec.y, vec.z);
+    }
+    glEnd();
+
 
 }
 

@@ -16,6 +16,7 @@ Q_PROPERTY(QString user_action_script READ user_action_script WRITE set_user_act
 Q_PROPERTY(QString update_script READ update_script WRITE set_update_script)
 Q_PROPERTY(double update_time_interval READ update_time_interval WRITE set_update_time_interval)
 Q_PROPERTY(bool drawn_horizontally READ drawn_horizontally WRITE set_drawn_horizontally)
+Q_PROPERTY(Samples* backprop_target READ backprop_target WRITE set_backprop_target)
 friend class boost::serialization::access;
 public:
     Group(Simulation*);
@@ -35,11 +36,14 @@ public:
     double update_time_interval();
     void set_drawn_horizontally(bool);
     bool drawn_horizontally() const;
+    void set_backprop_target(Samples*);
+    Samples* backprop_target();
 
-    Q_INVOKABLE virtual void add_input(Samples*);
-    Q_INVOKABLE virtual void remove_input(Samples*);
-    Q_INVOKABLE virtual void add_object(SimulationObject*);
-    Q_INVOKABLE virtual void remove_object(SimulationObject*);
+    Q_INVOKABLE void add_input(Samples*);
+    Q_INVOKABLE void remove_input(Samples*);
+    std::set<Samples*> inputs();
+    Q_INVOKABLE void add_object(SimulationObject*);
+    Q_INVOKABLE void remove_object(SimulationObject*);
     Q_INVOKABLE virtual std::set<SimulationObject*> objects_as_std_set() const;
     Q_INVOKABLE virtual QList<SimulationObject*> objects() const;
 
@@ -67,6 +71,7 @@ private:
     double m_update_time_interval;
     double m_elapsed_sim_time;
     bool m_drawn_horizontally;
+    Samples* m_backprop_target;
 
     std::set<Neuron*> neurons();
     std::set<LinearDiscriminator*> linear_discriminators();
@@ -92,6 +97,7 @@ private:
         ar & boost::serialization::make_nvp("UpdateTimeInterval", m_update_time_interval);
         ar & boost::serialization::make_nvp("ElapsedSimTime", m_elapsed_sim_time);
         ar & boost::serialization::make_nvp("DrawnHorizontally", m_drawn_horizontally);
+        ar & boost::serialization::make_nvp("BackpropTarget", m_backprop_target);
     }
 
 };

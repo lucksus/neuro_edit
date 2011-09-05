@@ -26,6 +26,7 @@ class Samples : public SimulationObject
 friend class boost::serialization::access;
 public:
     Samples(Simulation*);
+    Samples(){};
     virtual void update(double milli_seconds);
 
     void add_current_inducer(CurrentInducer*);
@@ -40,7 +41,7 @@ public:
     virtual void do_user_action(std::string);
 
 private:
-    Samples(){};
+
     std::vector<sample> m_samples;
     std::list<CurrentInducer*> m_current_inducers;
 
@@ -61,5 +62,8 @@ namespace boost{
 template<>
 struct is_virtual_base_of<SimulationObject, Samples>: public mpl::true_ {};
 }
+
+Q_DECLARE_METATYPE(Samples)
+Q_DECLARE_METATYPE(Samples*)
 
 #endif // SAMPLES_H
