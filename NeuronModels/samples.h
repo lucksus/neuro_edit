@@ -56,6 +56,8 @@ private:
         ar & boost::serialization::make_nvp("samples", m_samples);
         ar & boost::serialization::make_nvp("current_induces", m_current_inducers);
     }
+
+    static unsigned int s_serial;
 };
 
 namespace boost{

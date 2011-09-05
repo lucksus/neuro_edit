@@ -7,9 +7,12 @@
 #include "photosssignalimporter.h"
 #include <fstream>
 
+unsigned int Samples::s_serial = 0;
+
 Samples::Samples(Simulation* s)
     : SimulationObject(s), m_last_index(0)
 {
+    setObjectName(QString("Samples_%1").arg(s_serial++));
 }
 
 void Samples::update(double){
