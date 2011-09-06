@@ -6,6 +6,7 @@
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/list.hpp>
 #include "current_inducer.h"
+#include "lineardiscriminator.h"
 
 struct sample{
     double time;
@@ -32,6 +33,11 @@ public:
     void add_current_inducer(CurrentInducer*);
     void remove_current_inducer(CurrentInducer*);
     const std::list<CurrentInducer*>& current_inducers();
+
+    void add_linear_discriminator(LinearDiscriminator*);
+    void remove_linear_discriminator(LinearDiscriminator*);
+    const std::set<LinearDiscriminator*>& linear_discriminators();
+
     void set_samples(const std::vector<sample>& samples);
     std::vector<sample> samples();
 
@@ -44,6 +50,7 @@ private:
 
     std::vector<sample> m_samples;
     std::list<CurrentInducer*> m_current_inducers;
+    std::set<LinearDiscriminator*> m_linear_discriminators;
 
     int find_current_index();
     int m_last_index;

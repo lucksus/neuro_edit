@@ -41,6 +41,11 @@ void DrawableSamples::draw_geometry_impl(){
         Point vec = current_inducer->position() - samples->position() ;
         glVertex3d(vec.x, vec.y, vec.z);
     }
+    BOOST_FOREACH(LinearDiscriminator* ld, samples->linear_discriminators()){
+        glVertex3d(0.,0.,0.);
+        Point vec = ld->position() - samples->position() ;
+        glVertex3d(vec.x, vec.y, vec.z);
+    }
     glEnd();
 }
 

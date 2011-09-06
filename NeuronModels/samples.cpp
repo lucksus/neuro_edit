@@ -34,6 +34,10 @@ void Samples::update(double){
             ci->set_current(value);
         }
 
+        BOOST_FOREACH(LinearDiscriminator* ld, m_linear_discriminators){
+            ld->set_constant_input(value);
+        }
+
     }catch(std::out_of_range){
 
     }
@@ -61,6 +65,18 @@ void Samples::remove_current_inducer(CurrentInducer* ci){
 
 const std::list<CurrentInducer*>& Samples::current_inducers(){
     return m_current_inducers;
+}
+
+void Samples::add_linear_discriminator(LinearDiscriminator* ld){
+    m_linear_discriminators.insert(ld);
+}
+
+void Samples::remove_linear_discriminator(LinearDiscriminator* ld){
+    m_linear_discriminators.erase(ld);
+}
+
+const std::set<LinearDiscriminator*>& Samples::linear_discriminators(){
+    return m_linear_discriminators;
 }
 
 void Samples::set_samples(const std::vector<sample>& samples){

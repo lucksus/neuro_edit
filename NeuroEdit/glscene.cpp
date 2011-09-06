@@ -132,8 +132,12 @@ void GLScene::mouseMoveEvent(QMouseEvent *e){
             if(dynamic_cast<Samples*>(m_connection_source)){
                 std::pair<SimulationObject*,double> ci = find_nearest_2d<CurrentInducer*>(e->x(),e->y());
                 std::pair<SimulationObject*,double> group = find_nearest_2d<Group*>(e->x(),e->y());
-                if(ci.second < group.second) m_current_connection_target = ci.first;
-                else m_current_connection_target = group.first;
+                std::pair<SimulationObject*,double> linear_discriminator = find_nearest_2d<LinearDiscriminator*>(e->x(),e->y());
+                std::pair<SimulationObject*,double> nearest = ci;
+                if(group.second < nearest.second) nearest = group;
+                if(linear_discriminator.second < nearest.second) nearest = linear_discriminator;
+
+                m_current_connection_target = nearest.first;
             }
             if(dynamic_cast<LinearDiscriminator*>(m_connection_source)){
                 m_current_connection_target = find_nearest_2d<LinearDiscriminator*>(e->x(),e->y()).first;
@@ -978,6 +982,7 @@ void GLScene::finish_connecting(){
     Samples* samples = dynamic_cast<Samples*>(m_connection_source);
     if(samples && current_inducer) samples->add_current_inducer(current_inducer);
     if(samples && group) group->add_input(samples);
+    if(samples && ld_target) samples->add_linear_discriminator(ld_target);
 
     LinearDiscriminator* ld_source = dynamic_cast<LinearDiscriminator*>(m_connection_source);
     if(ld_source) m_network->connect(ld_source, ld_target);
