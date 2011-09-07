@@ -67,6 +67,7 @@ void Controller::load_simulation(std::string filename){
 
 void Controller::save_simulation(std::string filename){
     m_simulation->write_to_file(filename, Simulation::BINARY);
+    m_simulation->set_filename(filename);
     m_simulation_filename = filename;
 }
 

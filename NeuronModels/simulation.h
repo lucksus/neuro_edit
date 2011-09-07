@@ -33,6 +33,8 @@ public:
     Network* network();
     void set_simulation_step(double milliseconds);
     void set_real_step(double milliseconds);
+    void set_filename(const std::string&);
+    std::string filename();
 
     double simulation_step();
     double real_step();
@@ -63,7 +65,7 @@ private:
     double m_time_ms;
     std::map<std::string, std::string> m_scripts;
     QMutex m_mutex;
-
+    std::string m_filename;
     ScriptEngine m_script_engine;
 
 

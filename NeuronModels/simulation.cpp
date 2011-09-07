@@ -73,6 +73,14 @@ void Simulation::set_real_step(double milliseconds){
     m_real_step = milliseconds;
 }
 
+void Simulation::set_filename(const std::string& filename){
+    m_filename = filename;
+}
+
+std::string Simulation::filename(){
+    return m_filename;
+}
+
 double Simulation::simulation_step(){
     return m_simulation_step;
 }

@@ -21,6 +21,7 @@
 #include "samples.h"
 #include "lineardiscriminator.h"
 #include "group.h"
+#include <QtGui/QMessageBox>
 
 MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),
@@ -176,6 +177,14 @@ void MainWindow::on_actionGroup_triggered(bool){
 
 
 void MainWindow::on_actionStart_Simulation_triggered(bool){
+    if(Controller::instance().simulation()->filename() == ""){
+        if(QMessageBox::No == QMessageBox::question(this, "Saving Simulation", "The Simulation must be saved before running.\nDo you want to save and proceed?", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
+            return;
+        on_actionSave_as_triggered(false);
+        if(Controller::instance().simulation()->filename() == "")
+            return;
+    }
+
     Controller::instance().simulation()->start();
 }
 
