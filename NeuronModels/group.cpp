@@ -58,8 +58,8 @@ void Group::create_mlp(unsigned int number_of_layers, std::vector<int> number_of
 
 void Group::create_2d_grid(unsigned int width, unsigned int height, double distance){
     Point center = position();
-    for(int x=0;x<width;x++){
-        for(int y=0;y<height;y++){
+    for(unsigned int x=0;x<width;x++){
+        for(unsigned int y=0;y<height;y++){
             Point neuron_pos = center;
             neuron_pos += Point(0,(y-static_cast<int>(height)/2)*distance,(x-static_cast<int>(width)/2)*distance);
             Neuron* neuron = new Neuron(simulation(), neuron_pos);
