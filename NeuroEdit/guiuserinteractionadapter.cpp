@@ -4,6 +4,7 @@
 #include "VisualizerContext2D.h"
 #include <QtGui/QDoubleSpinBox>
 #include <QtGui/QPushButton>
+#include <QtGui/QMessageBox>
 
 std::string GuiUserInteractionAdapter::get_save_filepath(std::string file_type, std::string source, std::string){
     return QFileDialog::getSaveFileName(0, source.c_str(), QString(), file_type.c_str()).toStdString();
@@ -122,4 +123,8 @@ vector<int> GuiUserInteractionAdapter::get_integer_values(vector<string> value_d
     }
 
     return return_value;
+}
+
+void GuiUserInteractionAdapter::confirm_message(std::string message){
+    QMessageBox::information(0,"Neuro Edit Information", message.c_str());
 }

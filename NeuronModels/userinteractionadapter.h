@@ -20,6 +20,8 @@ public:
     virtual vector<double> get_double_values(vector<string> value_descriptions, string source, string porpuse, vector<pair<double,double> > limits ) = 0;
     virtual vector<int> get_integer_values(vector<string> value_descriptions, string source, string porpuse, vector<pair<int,int> > limits ) = 0;
 
+    virtual void confirm_message(std::string message) = 0;
+
 
 private:
     static UserInteractionAdapter* s_instance;
