@@ -68,6 +68,10 @@ protected:
     virtual void moved(Point new_position);
     virtual void moved(Point new_position, Point old_position);
 
+    void log(std::string);
+    void debug(std::string);
+    void error(std::string);
+
     Network* m_network;
 
     boost::recursive_mutex m_mutex;

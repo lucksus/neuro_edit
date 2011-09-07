@@ -1,6 +1,7 @@
 #include "simulationobject.h"
 #include <boost/foreach.hpp>
 #include "neuron.h"
+#include "log.h"
 
 SimulationObject::SimulationObject(Simulation* s)
     : m_network(0), m_neuron(0), m_done(false), m_is_user_movable(true), m_simulation(s)
@@ -105,3 +106,16 @@ std::set<std::string> SimulationObject::active_user_actions() {
     }
     return s;
 }
+
+void SimulationObject::log(std::string message){
+    Log::instance().log(message, this);
+}
+
+void SimulationObject::debug(std::string message){
+    Log::instance().log(message, this, Log::DEBUG);
+}
+
+void SimulationObject::error(std::string message){
+    Log::instance().log(message, this, Log::ERROR);
+}
+
