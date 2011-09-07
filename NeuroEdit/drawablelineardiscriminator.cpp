@@ -15,6 +15,7 @@
 #include <boost/foreach.hpp>
 #include "drawabledendritenode.h"
 #include "glhelpfunctions.h"
+#include "samples.h"
 
 bool DrawableLinearDiscriminator::is_applicable_to(SimulationObject* object){
     LinearDiscriminator* n = dynamic_cast<LinearDiscriminator*>(object);
@@ -34,9 +35,22 @@ void DrawableLinearDiscriminator::set_color_and_lightning(){
 }
 
 void DrawableLinearDiscriminator::draw_geometry_impl(){
+    glPushMatrix();
     glRotated(90.,1.,0.,0.);
     GLUquadricObj* obj = gluNewQuadric();
     gluDisk(obj, 0, SIZE, 15, 1);
     gluDeleteQuadric(obj);
+    glPopMatrix();
+
+    LinearDiscriminator* ld = dynamic_cast<LinearDiscriminator*>(m_object);
+    glColor3f(0.0,0.8,0.0);
+    glLineWidth(1);
+    glBegin(GL_LINES);
+    BOOST_FOREACH(Samples* samples, ld->outputs()){
+        glVertex3d(0, 0, 0);
+        Point vec = samples->position() - ld->position();
+        glVertex3d(vec.x, vec.y, vec.z);
+    }
+    glEnd();
 
 }

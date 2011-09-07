@@ -9,6 +9,7 @@
 class LDConnection;
 class Simulation;
 class DendriticNode;
+class Samples;
 class LinearDiscriminator : public SimulationObject
 {
 Q_OBJECT
@@ -23,6 +24,10 @@ public:
     void add_input(LDConnection*);
     void remove_input(LDConnection*);
     std::set<LDConnection*> inputs();
+
+    void add_output(Samples*);
+    void remove_output(Samples*);
+    std::set<Samples*> outputs();
 
     double membrane_potential();
     void set_constant_input(double);
@@ -43,12 +48,14 @@ private:
     {
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SimulationObject);
         ar & boost::serialization::make_nvp("Inputs", m_inputs);
+        ar & boost::serialization::make_nvp("Outputs", m_outputs);
         ar & boost::serialization::make_nvp("MembranePotential", m_membrane_potential);
         ar & boost::serialization::make_nvp("ConstantInput", m_constant_input);
         ar & boost::serialization::make_nvp("DendriticNode", m_dendritic_node);
     }
 
     std::set<LDConnection*> m_inputs;
+    std::set<Samples*> m_outputs;
 
     double m_membrane_potential;
     double m_constant_input;

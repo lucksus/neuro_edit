@@ -4,6 +4,7 @@
 #include "simulation.h"
 #include "network.h"
 #include "dendriticnode.h"
+#include "samples.h"
 
 LinearDiscriminator::LinearDiscriminator(Simulation* s)
     : SimulationObject(s), m_membrane_potential(0.), m_constant_input(0.), m_dendritic_node(0)
@@ -15,6 +16,9 @@ void LinearDiscriminator::update(double d){
    BOOST_FOREACH(LDConnection* connection, m_inputs){
         connection->pre_neuron()->update(d);
         m_membrane_potential += connection->pre_neuron()->membrane_potential() * connection->weight();
+   }
+   BOOST_FOREACH(Samples* s, m_outputs){
+       s->write_value(m_membrane_potential);
    }
 }
 
@@ -28,6 +32,18 @@ void LinearDiscriminator::remove_input(LDConnection* connection){
 
 std::set<LDConnection*> LinearDiscriminator::inputs(){
     return m_inputs;
+}
+
+void LinearDiscriminator::add_output(Samples* s){
+    m_outputs.insert(s);
+}
+
+void LinearDiscriminator::remove_output(Samples* s){
+    m_outputs.erase(s);
+}
+
+std::set<Samples*> LinearDiscriminator::outputs(){
+    return m_outputs;
 }
 
 double LinearDiscriminator::membrane_potential(){

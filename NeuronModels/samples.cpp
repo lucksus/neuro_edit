@@ -114,3 +114,10 @@ void Samples::do_user_action(std::string action){
         UserInteractionAdapter::instance()->display_samples(m_samples);
     }
 }
+
+void Samples::write_value(double value){
+    sample s;
+    s.value = value;
+    s.time = simulation()->time_ms();
+    m_samples.push_back(s);
+}

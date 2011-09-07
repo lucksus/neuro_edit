@@ -46,6 +46,8 @@ public:
     virtual std::list<std::string> user_actions();
     virtual void do_user_action(std::string);
 
+    void write_value(double value);
+
 private:
 
     std::vector<sample> m_samples;
@@ -62,6 +64,7 @@ private:
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(SimulationObject);
         ar & boost::serialization::make_nvp("samples", m_samples);
         ar & boost::serialization::make_nvp("current_induces", m_current_inducers);
+        ar & boost::serialization::make_nvp("linear_discriminators", m_linear_discriminators);
     }
 
     static unsigned int s_serial;
