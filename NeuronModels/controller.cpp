@@ -62,6 +62,7 @@ void Controller::load_simulation(std::string filename){
     close_simulation();
     m_simulation = Simulation::load_from_file(filename, Simulation::BINARY);
     m_simulation_filename = filename;
+    m_simulation->set_filename(filename);
     emit new_simulation(m_simulation);
 }
 
