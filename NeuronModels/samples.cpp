@@ -16,6 +16,8 @@ Samples::Samples(Simulation* s)
 }
 
 void Samples::update(double){
+    if(m_samples.size() == 0) return;
+
     try{
         double time = simulation()->time_ms();
         if(time < m_last_time)
