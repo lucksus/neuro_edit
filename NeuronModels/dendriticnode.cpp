@@ -6,7 +6,7 @@
 #include "lineardiscriminator.h"
 
 DendriticNode::DendriticNode(Neuron* neuron, DendriticNode* parent)
-    : SimulationObject(neuron), m_added_current(0), m_parent(parent)
+    : SimulationObject(neuron), m_added_current(0), m_parent(parent), m_linear_discriminator(0)
 {
     if(parent)
         parent->add_child(this);
