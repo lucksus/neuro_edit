@@ -30,7 +30,8 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     m_network(0),
     m_izhikevich_system_plot_widget(this),
     m_sim(sim),
-    m_property_browser(this)
+    m_property_browser(this),
+    m_log_window(this)
 {
     ui->setupUi(this);
 
@@ -84,6 +85,14 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     ui->menuWindows->addAction(dock->toggleViewAction());
     dock->hide();
     dock->setFloating(true);
+
+    dock = new QDockWidget(tr("Log Window"), this);
+    dock->setAllowedAreas(Qt::BottomDockWidgetArea);
+    dock->setWidget(&m_log_window);
+    addDockWidget(Qt::BottomDockWidgetArea,dock);
+    m_dock_widgets.insert(dock);
+    ui->menuWindows->addAction(dock->toggleViewAction());
+    dock->hide();
 
     connect(&Controller::instance(), SIGNAL(new_simulation(Simulation*)), this, SLOT(simulation_changed(Simulation*)));
 
@@ -425,6 +434,8 @@ void MainWindow::simulation_changed(Simulation* s){
     BOOST_FOREACH(QDockWidget* dock, m_dock_widgets){
         //addDockWidget(Qt::RightDockWidgetArea, dock);
         if(&m_property_browser == dock->widget())
+            dock->show();
+        if(&m_log_window == dock->widget())
             dock->show();
     }
 }

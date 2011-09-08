@@ -19,7 +19,7 @@ public:
     void log(std::string message, Simulation* source, LogLevel log_level = INFO);
 
 signals:
-    void new_log_message(std::string text, LogLevel level);
+    void new_log_message(QString text, Log::LogLevel level);
 
 private:
     Log();

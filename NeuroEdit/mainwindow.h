@@ -10,6 +10,7 @@
 #include "izhikevich_systemstate_plotwidget.h"
 #include "propertybrowser.h"
 #include "scriptswindow.h"
+#include "logwindow.h"
 
 namespace Ui {
     class MainWindow;
@@ -88,6 +89,7 @@ private:
     SimulationSettingsWidget m_sim_settings_widget;
     PropertyBrowser m_property_browser;
     ScriptsWindow m_scripts_window;
+    LogWindow m_log_window;
 
     std::set<QDockWidget*> m_dock_widgets;
 

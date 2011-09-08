@@ -10,6 +10,7 @@
 
 Log::Log()
 {
+    qRegisterMetaType<Log::LogLevel>("Log::LogLevel");
 }
 
 Log::~Log(){
@@ -21,13 +22,14 @@ Log::~Log(){
 }
 
 Log& Log::instance(){
-
+    static Log log;
+    return log;
 }
 
 void Log::log(std::string message, SimulationObject* source, LogLevel log_level){
     std::stringstream full_text;
     full_text << time_stamp() << " " << object_signature(source) << ": " << message;
-    emit new_log_message(full_text.str(), log_level);
+    emit new_log_message(full_text.str().c_str(), log_level);
     std::stringstream with_log_level;
     if(log_level == DEBUG)
         with_log_level << "DEBUG: ";
@@ -41,7 +43,7 @@ void Log::log(std::string message, SimulationObject* source, LogLevel log_level)
 void Log::log(std::string message, Simulation* source, LogLevel log_level){
     std::stringstream full_text;
     full_text << time_stamp() << ": " << message;
-    emit new_log_message(full_text.str(), log_level);
+    emit new_log_message(full_text.str().c_str(), log_level);
     std::stringstream with_log_level;
     if(log_level == DEBUG)
         with_log_level << "DEBUG: ";

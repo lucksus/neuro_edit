@@ -54,7 +54,8 @@ SOURCES += main.cpp\
     menuobjectrightclick.cpp \
     drawablelineardiscriminator.cpp \
     drawableldconnection.cpp \
-    drawablegroup.cpp
+    drawablegroup.cpp \
+    logwindow.cpp
 
 HEADERS  += mainwindow.h \
     glscene.h \
@@ -81,7 +82,8 @@ HEADERS  += mainwindow.h \
     menuobjectrightclick.h \
     drawablelineardiscriminator.h \
     drawableldconnection.h \
-    drawablegroup.h
+    drawablegroup.h \
+    logwindow.h
 
 FORMS    += mainwindow.ui \
     izhikevich_properties_widget.ui \
@@ -89,7 +91,8 @@ FORMS    += mainwindow.ui \
     neuron_membrane_plot_widget.ui \
     neuron_manipulator_widget.ui \
     about_dialog.ui \
-    scriptswindow.ui
+    scriptswindow.ui \
+    logwindow.ui
 
 RESOURCES += \
     icons.qrc
