@@ -7,6 +7,7 @@
 #include "serializationhelper.h"
 #include <boost/foreach.hpp>
 #include <stdexcept>
+#include "log.h"
 
 Simulation::Simulation():
     m_stop_request(false),
@@ -36,6 +37,7 @@ void Simulation::write_to_file(const std::string& filename, Simulation::FileForm
             break;
         default: assert(false);
     }
+    Log::instance().log(QString("written to file %1").arg(filename.c_str()).toStdString(), this);
 }
 
 void Simulation::write_to_file(const QString& filename){
@@ -95,6 +97,7 @@ void Simulation::run(){
     QMutexLocker locker(&m_mutex);
     m_time_ms = 0;
     emit simulation_started();
+    Log::instance().log("Simulation started!", this);
     m_is_running = true;
     while(!m_stop_request){
 		QTime time;
@@ -112,6 +115,7 @@ void Simulation::run(){
     m_is_running = false;
     m_stop_request = false;
     emit simulation_stopped();
+    Log::instance().log("Simulation stoped!", this);
 }
 
 double Simulation::time_ms(){
