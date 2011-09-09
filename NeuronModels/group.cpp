@@ -11,7 +11,7 @@
 
 Group::Group(Simulation* sim)
     : SimulationObject(sim), m_update_time_interval(0.), m_elapsed_sim_time(0.), m_drawn_horizontally(true),
-      m_backprop_target(0)
+      m_backprop_target(0), m_mlp_output(0)
 {
 }
 
@@ -344,4 +344,12 @@ std::set<Neuron*> Group::neurons(){
 
 std::set<LinearDiscriminator*> Group::linear_discriminators(){
     return extract_all<LinearDiscriminator>(m_objects);
+}
+
+void Group::set_mlp_output(LinearDiscriminator* ld){
+    m_mlp_output = ld;
+}
+
+LinearDiscriminator* Group::mlp_output(){
+    return m_mlp_output;
 }

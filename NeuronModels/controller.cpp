@@ -40,6 +40,7 @@ void Controller::init(){
     qRegisterMetaType<NeuronModel*>("NeuronModel*");
     qRegisterMetaType<Synapse>("Synapse");
     qRegisterMetaType<Samples*>("Samples*");
+    qRegisterMetaType<LinearDiscriminator*>("LinearDiscriminator");
 }
 
 void Controller::close_simulation(){

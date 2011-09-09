@@ -17,6 +17,7 @@ Q_PROPERTY(double membrane_potential READ membrane_potential)
 Q_PROPERTY(double constant_input READ constant_input WRITE set_constant_input)
 friend class boost::serialization::access;
 public:
+    LinearDiscriminator(){}
     LinearDiscriminator(Simulation*);
 
     virtual void update(double);
@@ -42,7 +43,7 @@ protected:
     virtual void moved(Point new_position);
 
 private:
-    LinearDiscriminator(){}
+
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)
     {
@@ -68,5 +69,8 @@ namespace boost{
 template<>
 struct is_virtual_base_of<SimulationObject, LinearDiscriminator>: public mpl::true_ {};
 }
+
+Q_DECLARE_METATYPE(LinearDiscriminator)
+Q_DECLARE_METATYPE(LinearDiscriminator*)
 
 #endif // LINEARDISCRIMINATOR_H

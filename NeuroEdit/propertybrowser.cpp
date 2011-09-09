@@ -82,18 +82,35 @@ void PropertyBrowser::value_changed(QtProperty * p, const QVariant & value){
         if(property->propertyType() == m_variantManager->enumTypeId()){
             Group* group = dynamic_cast<Group*>(object);
             assert(group);
-            Samples* backprop_target = 0;
-            QStringList inputs;
-            BOOST_FOREACH(Samples* s, group->inputs()){
-                inputs.append(s->objectName());
+            if(property->propertyName() == "backprop_target"){
+                Samples* backprop_target = 0;
+                QStringList inputs;
+                BOOST_FOREACH(Samples* s, group->inputs()){
+                    inputs.append(s->objectName());
+                }
+                inputs.sort();
+                QString name = inputs.at(value.toInt());
+                BOOST_FOREACH(Samples* s, group->inputs()){
+                    if(s->objectName() == name)
+                        backprop_target = s;
+                }
+                if(backprop_target) group->set_backprop_target(backprop_target);
             }
-            inputs.sort();
-            QString name = inputs.at(value.toInt());
-            BOOST_FOREACH(Samples* s, group->inputs()){
-                if(s->objectName() == name)
-                    backprop_target = s;
+
+            if(property->propertyName() == "mlp_output"){
+                LinearDiscriminator* mlp_output = 0;
+                QStringList lds;
+                BOOST_FOREACH(LinearDiscriminator* s, group->linear_discriminators()){
+                    lds.append(s->objectName());
+                }
+                lds.sort();
+                QString name = lds.at(value.toInt());
+                BOOST_FOREACH(LinearDiscriminator* s, group->linear_discriminators()){
+                    if(s->objectName() == name)
+                        mlp_output = s;
+                }
+                if(mlp_output) group->set_mlp_output(mlp_output);
             }
-            if(backprop_target) group->set_backprop_target(backprop_target);
         }
 
         object->setProperty(property->propertyName().toStdString().c_str(), value);
@@ -158,6 +175,23 @@ void PropertyBrowser::populate_properties(std::set<std::string> properties_to_sh
                 Samples* current = group->backprop_target();
                 if(current)
                     enum_prop->setValue(inputs.indexOf(current->objectName()));
+
+                addProperty(enum_prop);
+            }else if(QMetaType::type("LinearDiscriminator*") == QMetaType::type(property_value.typeName())){
+                Group* group = dynamic_cast<Group*>(object);
+                assert(group);
+                QtVariantProperty* enum_prop = m_variantManager->addProperty(m_variantManager->enumTypeId(), property.c_str());
+                QStringList linear_discriminators_in_group;
+                BOOST_FOREACH(LinearDiscriminator* ld, group->linear_discriminators()){
+                    linear_discriminators_in_group.append(ld->objectName());
+                }
+
+                linear_discriminators_in_group.sort();
+                enum_prop->setAttribute("enumNames", linear_discriminators_in_group);
+
+                LinearDiscriminator* current = group->mlp_output();
+                if(current)
+                    enum_prop->setValue(linear_discriminators_in_group.indexOf(current->objectName()));
 
                 addProperty(enum_prop);
             }

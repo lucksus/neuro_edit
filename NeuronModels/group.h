@@ -17,6 +17,7 @@ Q_PROPERTY(QString update_script READ update_script WRITE set_update_script)
 Q_PROPERTY(double update_time_interval READ update_time_interval WRITE set_update_time_interval)
 Q_PROPERTY(bool drawn_horizontally READ drawn_horizontally WRITE set_drawn_horizontally)
 Q_PROPERTY(Samples* backprop_target READ backprop_target WRITE set_backprop_target)
+Q_PROPERTY(LinearDiscriminator* mlp_output READ mlp_output WRITE set_mlp_output)
 friend class boost::serialization::access;
 public:
     Group(Simulation*);
@@ -38,6 +39,8 @@ public:
     bool drawn_horizontally() const;
     void set_backprop_target(Samples*);
     Samples* backprop_target();
+    void set_mlp_output(LinearDiscriminator*);
+    LinearDiscriminator* mlp_output();
 
     Q_INVOKABLE void add_input(Samples*);
     Q_INVOKABLE void remove_input(Samples*);
@@ -59,6 +62,9 @@ public:
     Q_INVOKABLE void connect_input_neuron_with_all(SpikingObject*);
     Q_INVOKABLE void connect_input_neuron_randomly(SpikingObject*, unsigned int count);
 
+    std::set<Neuron*> neurons();
+    std::set<LinearDiscriminator*> linear_discriminators();
+
 protected:
     Group(){}
     virtual void moved(Point new_position, Point old_position);
@@ -72,9 +78,7 @@ private:
     double m_elapsed_sim_time;
     bool m_drawn_horizontally;
     Samples* m_backprop_target;
-
-    std::set<Neuron*> neurons();
-    std::set<LinearDiscriminator*> linear_discriminators();
+    LinearDiscriminator* m_mlp_output;
 
     template<class Type1, class Type2>
     std::set<Type1*> extract_all(const std::set<Type2*>& s){
@@ -98,6 +102,7 @@ private:
         ar & boost::serialization::make_nvp("ElapsedSimTime", m_elapsed_sim_time);
         ar & boost::serialization::make_nvp("DrawnHorizontally", m_drawn_horizontally);
         ar & boost::serialization::make_nvp("BackpropTarget", m_backprop_target);
+        ar & boost::serialization::make_nvp("MLPOutput", m_mlp_output);
     }
 
 };
