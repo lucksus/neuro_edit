@@ -13,7 +13,7 @@ class Samples;
 class LinearDiscriminator : public SimulationObject
 {
 Q_OBJECT
-Q_PROPERTY(double membrane_potential READ membrane_potential)
+Q_PROPERTY(double output READ output)
 Q_PROPERTY(double constant_input READ constant_input WRITE set_constant_input)
 friend class boost::serialization::access;
 public:
@@ -30,9 +30,14 @@ public:
     void remove_output(Samples*);
     std::set<Samples*> outputs();
 
-    double membrane_potential();
+    double output();
     void set_constant_input(double);
     double constant_input();
+
+    double activation_function(double);
+    double activation_function_derivative(double);
+
+    double membrane_potential();
 
     virtual std::list<std::string> user_actions();
     virtual void do_user_action(std::string);

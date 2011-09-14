@@ -5,6 +5,7 @@
 #include "network.h"
 #include "dendriticnode.h"
 #include "samples.h"
+#include "math_constants.h"
 
 LinearDiscriminator::LinearDiscriminator(Simulation* s)
     : SimulationObject(s), m_membrane_potential(0.), m_constant_input(0.), m_dendritic_node(0)
@@ -46,8 +47,8 @@ std::set<Samples*> LinearDiscriminator::outputs(){
     return m_outputs;
 }
 
-double LinearDiscriminator::membrane_potential(){
-    return m_membrane_potential;
+double LinearDiscriminator::output(){
+    return activation_function(m_membrane_potential);
 }
 
 void LinearDiscriminator::set_constant_input(double i){
@@ -88,4 +89,17 @@ std::set<SimulationObject*> LinearDiscriminator::about_to_remove(SimulationObjec
     if(object_to_be_deleted == m_dendritic_node)
         m_dendritic_node = 0;
     return SimulationObject::about_to_remove(object_to_be_deleted);
+}
+
+double LinearDiscriminator::activation_function(double x){
+    return 1/(1+pow(NeuroMath::e(),-x));
+}
+
+double LinearDiscriminator::activation_function_derivative(double x){
+    double x1 = activation_function(x);
+    return x1*(1-x1);
+}
+
+double LinearDiscriminator::membrane_potential(){
+    return m_membrane_potential;
 }

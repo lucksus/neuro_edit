@@ -29,8 +29,8 @@ void DrawableLinearDiscriminator::set_color_and_lightning(){
     //GLfloat green[] = {.6,.6,.6,1};
     //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
     LinearDiscriminator* n = dynamic_cast<LinearDiscriminator*>(m_object);
-    double p = n->membrane_potential();
-    glColor4f(p/10+0.6,p/100+0.6,.6,1.);
+    double p = n->output();
+    glColor4f(p,0.6,1-p,1.);
 
 }
 
