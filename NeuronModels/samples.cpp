@@ -46,7 +46,7 @@ void Samples::update(double){
     }
 
     BOOST_FOREACH(LinearDiscriminator* ld, m_linear_discriminators){
-        ld->set_constant_input(value);
+        ld->set_constant_output(value);
     }
 
     m_current_value = value;

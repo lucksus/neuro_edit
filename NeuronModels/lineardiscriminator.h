@@ -14,7 +14,8 @@ class LinearDiscriminator : public SimulationObject
 {
 Q_OBJECT
 Q_PROPERTY(double output READ output)
-Q_PROPERTY(double constant_input READ constant_input WRITE set_constant_input)
+Q_PROPERTY(double constant_output READ constant_output WRITE set_constant_output)
+Q_PROPERTY(bool use_constant_output READ use_constant_output WRITE set_use_constant_output)
 friend class boost::serialization::access;
 public:
     LinearDiscriminator(){}
@@ -31,8 +32,10 @@ public:
     std::set<Samples*> outputs();
 
     double output();
-    void set_constant_input(double);
-    double constant_input();
+    void set_constant_output(double);
+    double constant_output();
+    bool use_constant_output();
+    void set_use_constant_output(bool);
 
     double activation_function(double);
     double activation_function_derivative(double);
@@ -56,7 +59,7 @@ private:
         ar & boost::serialization::make_nvp("Inputs", m_inputs);
         ar & boost::serialization::make_nvp("Outputs", m_outputs);
         ar & boost::serialization::make_nvp("MembranePotential", m_membrane_potential);
-        ar & boost::serialization::make_nvp("ConstantInput", m_constant_input);
+        ar & boost::serialization::make_nvp("ConstantInput", m_constant_output);
         ar & boost::serialization::make_nvp("DendriticNode", m_dendritic_node);
     }
 
@@ -64,7 +67,8 @@ private:
     std::set<Samples*> m_outputs;
 
     double m_membrane_potential;
-    double m_constant_input;
+    double m_constant_output;
+    bool m_use_constant_output;
     DendriticNode* m_dendritic_node;
 };
 

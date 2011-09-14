@@ -8,12 +8,12 @@
 #include "math_constants.h"
 
 LinearDiscriminator::LinearDiscriminator(Simulation* s)
-    : SimulationObject(s), m_membrane_potential(0.), m_constant_input(0.), m_dendritic_node(0)
+    : SimulationObject(s), m_membrane_potential(0.), m_constant_output(0.), m_dendritic_node(0)
 {
 }
 
 void LinearDiscriminator::update(double d){
-   m_membrane_potential = m_constant_input;
+   m_membrane_potential = 0;
    BOOST_FOREACH(LDConnection* connection, m_inputs){
         connection->pre_neuron()->update(d);
         m_membrane_potential += connection->pre_neuron()->membrane_potential() * connection->weight();
@@ -48,15 +48,24 @@ std::set<Samples*> LinearDiscriminator::outputs(){
 }
 
 double LinearDiscriminator::output(){
-    return activation_function(m_membrane_potential);
+    if(m_use_constant_output) return m_constant_output;
+    else return activation_function(m_membrane_potential);
 }
 
-void LinearDiscriminator::set_constant_input(double i){
-    m_constant_input = i;
+void LinearDiscriminator::set_constant_output(double i){
+    m_constant_output = i;
 }
 
-double LinearDiscriminator::constant_input(){
-    return m_constant_input;
+double LinearDiscriminator::constant_output(){
+    return m_constant_output;
+}
+
+bool LinearDiscriminator::use_constant_output(){
+    return m_use_constant_output;
+}
+
+void LinearDiscriminator::set_use_constant_output(bool b){
+    m_use_constant_output = b;
 }
 
 std::list<std::string> LinearDiscriminator::user_actions(){

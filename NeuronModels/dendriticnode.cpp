@@ -30,7 +30,7 @@ void DendriticNode::update(double milli_seconds){
     }
 
     if(m_linear_discriminator){
-        m_linear_discriminator->set_constant_input(m_added_current);
+        m_linear_discriminator->set_constant_output(m_added_current);
         m_added_current = 0;
     }
     done();
