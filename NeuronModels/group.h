@@ -18,6 +18,7 @@ Q_PROPERTY(double update_time_interval READ update_time_interval WRITE set_updat
 Q_PROPERTY(bool drawn_horizontally READ drawn_horizontally WRITE set_drawn_horizontally)
 Q_PROPERTY(Samples* backprop_target READ backprop_target WRITE set_backprop_target)
 Q_PROPERTY(LinearDiscriminator* mlp_output READ mlp_output WRITE set_mlp_output)
+Q_PROPERTY(double eta READ backprop_eta WRITE set_backprop_eta)
 friend class boost::serialization::access;
 public:
     Group(Simulation*);
@@ -41,6 +42,8 @@ public:
     Samples* backprop_target();
     void set_mlp_output(LinearDiscriminator*);
     LinearDiscriminator* mlp_output();
+    double backprop_eta();
+    void set_backprop_eta(double);
 
     Q_INVOKABLE void add_input(Samples*);
     Q_INVOKABLE void remove_input(Samples*);
@@ -62,6 +65,8 @@ public:
     Q_INVOKABLE void connect_input_neuron_with_all(SpikingObject*);
     Q_INVOKABLE void connect_input_neuron_randomly(SpikingObject*, unsigned int count);
 
+    void do_backprop();
+
     std::set<Neuron*> neurons();
     std::set<LinearDiscriminator*> linear_discriminators();
 
@@ -79,6 +84,7 @@ private:
     bool m_drawn_horizontally;
     Samples* m_backprop_target;
     LinearDiscriminator* m_mlp_output;
+    double m_backprop_eta;
 
     template<class Type1, class Type2>
     std::set<Type1*> extract_all(const std::set<Type2*>& s){
@@ -103,6 +109,7 @@ private:
         ar & boost::serialization::make_nvp("DrawnHorizontally", m_drawn_horizontally);
         ar & boost::serialization::make_nvp("BackpropTarget", m_backprop_target);
         ar & boost::serialization::make_nvp("MLPOutput", m_mlp_output);
+        ar & boost::serialization::make_nvp("BackpropEta", m_backprop_eta);
     }
 
 };

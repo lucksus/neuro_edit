@@ -10,39 +10,48 @@
 unsigned int Samples::s_serial = 0;
 
 Samples::Samples(Simulation* s)
-    : SimulationObject(s), m_last_index(0)
+    : SimulationObject(s), m_last_index(0), m_current_value(0)
 {
     setObjectName(QString("Samples_%1").arg(s_serial++));
 }
 
 void Samples::update(double){
-    if(m_samples.size() == 0) return;
+    if(!m_constant_value_active && m_samples.size() == 0) return;
 
-    try{
-        double time = simulation()->time_ms();
-        if(time < m_last_time)
-            m_last_index=0;
-        m_last_time = time;
 
-        unsigned int i = find_current_index();
+    double value;
+    if(m_constant_value_active)
+        value = m_constant_value;
+    else{
+        try{
+            double time = simulation()->time_ms();
+            if(time < m_last_time)
+                m_last_index=0;
+            m_last_time = time;
 
-        const sample& left = m_samples[i-1];
-        const sample& right = m_samples[i];
-        double rel_time = time - left.time;
-        double fac = rel_time / (right.time - left.time);
-        double value = left.value + fac*(right.value-left.value);
+            unsigned int i = find_current_index();
 
-        BOOST_FOREACH(CurrentInducer* ci, m_current_inducers){
-            ci->set_current(value);
+            const sample& left = m_samples[i-1];
+            const sample& right = m_samples[i];
+            double rel_time = time - left.time;
+            double fac = rel_time / (right.time - left.time);
+            value = left.value + fac*(right.value-left.value);
+        }catch(std::out_of_range){
+            debug("out of range!");
         }
-
-        BOOST_FOREACH(LinearDiscriminator* ld, m_linear_discriminators){
-            ld->set_constant_input(value);
-        }
-
-    }catch(std::out_of_range){
-
     }
+
+    BOOST_FOREACH(CurrentInducer* ci, m_current_inducers){
+        ci->set_current(value);
+    }
+
+    BOOST_FOREACH(LinearDiscriminator* ld, m_linear_discriminators){
+        ld->set_constant_input(value);
+    }
+
+    m_current_value = value;
+
+
 }
 
 int Samples::find_current_index(){
@@ -122,4 +131,24 @@ void Samples::write_value(double value){
     s.value = value;
     s.time = simulation()->time_ms();
     m_samples.push_back(s);
+}
+
+double Samples::value(){
+    return m_current_value;
+}
+
+void Samples::set_constant_value_active(bool b){
+    m_constant_value_active = b;
+}
+
+bool Samples::constant_value_active(){
+    return m_constant_value_active;
+}
+
+void Samples::set_constant_value(double d){
+    m_constant_value = d;
+}
+
+double Samples::constant_value(){
+    return m_constant_value;
 }

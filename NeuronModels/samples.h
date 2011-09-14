@@ -24,6 +24,9 @@ class CurrentInducer;
 
 class Samples : public SimulationObject
 {
+Q_OBJECT
+Q_PROPERTY(bool constant_value_active READ constant_value_active WRITE set_constant_value_active)
+Q_PROPERTY(double constant_value READ constant_value WRITE set_constant_value)
 friend class boost::serialization::access;
 public:
     Samples(Simulation*);
@@ -48,6 +51,14 @@ public:
 
     void write_value(double value);
 
+    double value();
+
+    void set_constant_value_active(bool);
+    bool constant_value_active();
+    void set_constant_value(double);
+    double constant_value();
+
+
 private:
 
     std::vector<sample> m_samples;
@@ -57,6 +68,9 @@ private:
     int find_current_index();
     int m_last_index;
     double m_last_time;
+    double m_current_value;
+    bool m_constant_value_active;
+    double m_constant_value;
 
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)
@@ -65,6 +79,8 @@ private:
         ar & boost::serialization::make_nvp("samples", m_samples);
         ar & boost::serialization::make_nvp("current_induces", m_current_inducers);
         ar & boost::serialization::make_nvp("linear_discriminators", m_linear_discriminators);
+        ar & boost::serialization::make_nvp("constant_value_active", m_constant_value_active);
+        ar & boost::serialization::make_nvp("constant_value", m_constant_value);
     }
 
     static unsigned int s_serial;

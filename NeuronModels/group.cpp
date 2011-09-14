@@ -134,6 +134,7 @@ std::list<std::string> Group::user_actions(){
     actions.push_back("Create LSM Column...");
     actions.push_back("Create connections...");
     actions.push_back("Set synapse weights...");
+    actions.push_back("Do Backpropagation");
     return actions;
 }
 
@@ -149,6 +150,8 @@ std::set<std::string> Group::active_user_actions(){
         }
         if(linear_discriminators().size() > 0){
             s.insert("Set synapse weights...");
+            if(mlp_output() && backprop_target())
+                s.insert("Do Backpropagation");
         }
     }
     return s;
@@ -206,6 +209,10 @@ void Group::do_user_action(std::string action){
         std::vector<double> values = UserInteractionAdapter::instance()->get_double_values(names, "LSMColumn "+objectName().toStdString(), "Setting synapse weights with normal distribution", limits);
         if(values.size() != 2) return;
         set_synapse_weights(values[0],values[1]);
+    }
+
+    if("Do Backpropagation" == action){
+        do_backprop();
     }
 }
 
@@ -352,4 +359,58 @@ void Group::set_mlp_output(LinearDiscriminator* ld){
 
 LinearDiscriminator* Group::mlp_output(){
     return m_mlp_output;
+}
+
+void Group::do_backprop(){
+    LinearDiscriminator* output = m_mlp_output;
+    Samples* target = m_backprop_target;
+    assert(output);
+    assert(target);
+
+
+    std::set<LinearDiscriminator*> current_layer, next_layer;
+    current_layer.insert(output);
+    std::map<LinearDiscriminator*, double> errors;
+    errors[output] = output->activation_function_derivative(output->membrane_potential()) * (target->value() - output->output());
+
+    while(!current_layer.empty()){
+        BOOST_FOREACH(LinearDiscriminator* ld, current_layer){
+            BOOST_FOREACH(LDConnection* conn, ld->inputs()){
+                next_layer.insert(conn->pre_neuron());
+                errors[conn->pre_neuron()] += conn->weight() * errors[conn->post_neuron()];
+            }
+        }
+
+        BOOST_FOREACH(LinearDiscriminator* ld, current_layer){
+            BOOST_FOREACH(LDConnection* conn, ld->inputs()){
+                errors[conn->pre_neuron()] *= conn->pre_neuron()->activation_function_derivative(conn->pre_neuron()->membrane_potential());
+            }
+        }
+        current_layer = next_layer;
+        next_layer.clear();
+    }
+
+    current_layer.insert(output);
+    while(!current_layer.empty()){
+        next_layer.clear();
+        BOOST_FOREACH(LinearDiscriminator* ld, current_layer){
+            BOOST_FOREACH(LDConnection* conn, ld->inputs()){
+                double delta_w = m_backprop_eta * errors[conn->post_neuron()] * conn->pre_neuron()->output();
+                conn->set_weight(conn->weight() + delta_w);
+                next_layer.insert(conn->pre_neuron());
+            }
+        }
+        current_layer = next_layer;
+    }
+}
+
+
+
+
+double Group::backprop_eta(){
+    return m_backprop_eta;
+}
+
+void Group::set_backprop_eta(double d){
+    m_backprop_eta = d;
 }
