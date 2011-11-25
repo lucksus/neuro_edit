@@ -143,7 +143,7 @@ void GLScene::mouseMoveEvent(QMouseEvent *e){
                 std::pair<SimulationObject*,double> samples = find_nearest_2d<Samples*>(e->x(),e->y());
                 std::pair<SimulationObject*,double> linear_discriminator = find_nearest_2d<LinearDiscriminator*>(e->x(),e->y());
                 std::pair<SimulationObject*,double> nearest = samples;
-                if(linear_discriminator.second < nearest.second) nearest = linear_discriminator;
+                if(linear_discriminator.second < nearest.second || nearest.first == 0) nearest = linear_discriminator;
 
                 m_current_connection_target = nearest.first;
             }
