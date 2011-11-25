@@ -13,6 +13,8 @@ INCLUDEPATH += ../math
 
 win32{
 	INCLUDEPATH += c:\boost\include
+}else{
+        INCLUDEPATH += /opt/local/include
 }
 
 SOURCES += izhikevich.cpp \

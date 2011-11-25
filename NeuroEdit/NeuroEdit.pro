@@ -17,7 +17,8 @@ win32{
 	INCLUDEPATH += c:\boost\include
 	LIBS += -Lc:\boost\lib -llibboost_serialization-vc80-mt
 }else{
-        LIBS += -lboost_serialization -lglut
+        LIBS += -L/opt/local/lib  -lboost_serialization -lglut
+        INCLUDEPATH += /opt/local/include
 }
 
 build_pass:CONFIG(debug, debug|release) {

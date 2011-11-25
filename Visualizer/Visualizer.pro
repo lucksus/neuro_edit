@@ -9,8 +9,9 @@ QT += core gui
 
 DEPENDPATH += . Resources
 INCLUDEPATH += .
-
-
+if(!win32){
+    INCLUDEPATH += /opt/local/include
+}
 
 # Input
 HEADERS += BoolEditor.h \
