@@ -59,7 +59,8 @@ private:
         ar & boost::serialization::make_nvp("Inputs", m_inputs);
         ar & boost::serialization::make_nvp("Outputs", m_outputs);
         ar & boost::serialization::make_nvp("MembranePotential", m_membrane_potential);
-        ar & boost::serialization::make_nvp("ConstantInput", m_constant_output);
+        ar & boost::serialization::make_nvp("ConstantOutput", m_constant_output);
+        ar & boost::serialization::make_nvp("UseConstantOutput", m_use_constant_output);
         ar & boost::serialization::make_nvp("DendriticNode", m_dendritic_node);
     }
 

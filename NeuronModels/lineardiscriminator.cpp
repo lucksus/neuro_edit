@@ -8,7 +8,7 @@
 #include "math_constants.h"
 
 LinearDiscriminator::LinearDiscriminator(Simulation* s)
-    : SimulationObject(s), m_membrane_potential(0.), m_constant_output(0.), m_dendritic_node(0)
+    : SimulationObject(s), m_membrane_potential(0.), m_constant_output(0.), m_dendritic_node(0), m_use_constant_output(false)
 {
 }
 
