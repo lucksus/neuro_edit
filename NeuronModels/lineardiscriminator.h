@@ -21,7 +21,7 @@ public:
     LinearDiscriminator(){}
     LinearDiscriminator(Simulation*);
 
-    virtual void update(double);
+    Q_INVOKABLE virtual void update(double);
 
     void add_input(LDConnection*);
     void remove_input(LDConnection*);
