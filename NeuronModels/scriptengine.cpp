@@ -6,6 +6,7 @@
 #include "point.h"
 #include "neuron.h"
 #include <QtCore/QMetaType>
+#include "RandomGenerator.h"
 
 ScriptEngine::ScriptEngine(Simulation* sim){
     if(!sim) return;
@@ -14,6 +15,7 @@ ScriptEngine::ScriptEngine(Simulation* sim){
     add_constructors();
     add_global_functions();
     add_conversion_functions();
+    add_random_generator();
 }
 
 ScriptEngine::ScriptEngine(Network* net){
@@ -23,6 +25,7 @@ ScriptEngine::ScriptEngine(Network* net){
     add_constructors();
     add_global_functions();
     add_conversion_functions();
+    add_random_generator();
 }
 
 
@@ -77,4 +80,8 @@ void ScriptEngine::add_global_functions(){
 void ScriptEngine::add_conversion_functions(){
     qScriptRegisterMetaType(&m_engine, &Network::networkToScriptValue, &Network::networkFromScriptValue);
     qScriptRegisterMetaType(&m_engine, &SimulationObject::toScriptValue, &SimulationObject::fromScriptValue);
+}
+
+void ScriptEngine::add_random_generator(){
+    m_engine.globalObject().setProperty("RandomGenerator", m_engine.newQObject(NeuroMath::RandomGenerator::getInstance()));
 }
