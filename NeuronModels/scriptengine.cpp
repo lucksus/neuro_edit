@@ -57,9 +57,11 @@ QScriptValue Neuron_ctor(QScriptContext *ctx, QScriptEngine *eng)
 
 QScriptValue print(QScriptContext *ctx, QScriptEngine*)
 {
+    QString output;
     for(int i=0;i<ctx->argumentCount();i++){
-        Controller::instance().output_from_script(ctx->argument(i).toString());
+        output += ctx->argument(i).toString();
     }
+    Controller::instance().output_from_script(output);
     return QScriptValue();
 }
 
