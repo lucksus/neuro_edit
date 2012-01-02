@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>731</width>
-    <height>466</height>
+    <width>774</width>
+    <height>608</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -164,7 +164,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -278,6 +278,13 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="clearButton">
+            <property name="text">
+             <string>Clear Output</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>

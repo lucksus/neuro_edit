@@ -40,6 +40,7 @@ protected slots:
     void on_saveButton_clicked();
     void on_playButton_clicked();
     void on_pauseButton_clicked();
+    void on_clearButton_clicked();
 
     void simulation_changed(Simulation*);
 

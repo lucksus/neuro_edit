@@ -206,3 +206,7 @@ void ScriptsWindow::showEvent(QShowEvent *event){
 void ScriptsWindow::script_output(QString output){
     ui->outputListWidget->addItem(output);
 }
+
+void ScriptsWindow::on_clearButton_clicked(){
+    ui->outputListWidget->clear();
+}
