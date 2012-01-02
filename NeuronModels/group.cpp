@@ -8,6 +8,7 @@
 #include "RandomGenerator.h"
 #include "math_constants.h"
 #include "ldconnection.h"
+#include "log.h"
 
 Group::Group(Simulation* sim)
     : SimulationObject(sim), m_update_time_interval(0.), m_elapsed_sim_time(0.), m_drawn_horizontally(true),
@@ -212,7 +213,7 @@ void Group::do_user_action(std::string action){
     }
 
     if("Do Backpropagation" == action){
-        do_backprop();
+        backprop();
     }
 }
 
@@ -371,17 +372,27 @@ LinearDiscriminator* Group::mlp_output(){
     return m_mlp_output;
 }
 
-void Group::do_backprop(){
-    LinearDiscriminator* output = m_mlp_output;
-    Samples* target = m_backprop_target;
-    assert(output);
-    assert(target);
-
-
+void Group::do_backprop(double target_value, LinearDiscriminator* output_neuron){
     std::set<LinearDiscriminator*> current_layer, next_layer;
-    current_layer.insert(output);
+    current_layer.insert(output_neuron);
     std::map<LinearDiscriminator*, double> errors;
-    errors[output] = output->activation_function_derivative(output->membrane_potential()) * (target->value() - output->output());
+    errors[output_neuron] = output_neuron->activation_function_derivative(output_neuron->output()) * (target_value - output_neuron->output());
+    Log::instance().log( QString("Backprop: error(%1)=%2").arg(output_neuron->objectName()).arg(errors[output_neuron]).toStdString(), this );
+
+    while(!current_layer.empty()){
+        BOOST_FOREACH(LinearDiscriminator* ld, current_layer){
+            BOOST_FOREACH(LDConnection* conn, ld->inputs()){
+                next_layer.insert(conn->pre_neuron());
+                errors[conn->pre_neuron()] = 0;
+            }
+        }
+        current_layer = next_layer;
+        next_layer.clear();
+    }
+
+    current_layer.clear();
+    current_layer.insert(output_neuron);
+    next_layer.clear();
 
     while(!current_layer.empty()){
         BOOST_FOREACH(LinearDiscriminator* ld, current_layer){
@@ -393,25 +404,39 @@ void Group::do_backprop(){
 
         BOOST_FOREACH(LinearDiscriminator* ld, current_layer){
             BOOST_FOREACH(LDConnection* conn, ld->inputs()){
-                errors[conn->pre_neuron()] *= conn->pre_neuron()->activation_function_derivative(conn->pre_neuron()->membrane_potential());
+                errors[conn->pre_neuron()] *= conn->pre_neuron()->activation_function_derivative(conn->pre_neuron()->output());
+                //Log::instance().log( QString("Backprop: error(%1)=%2").arg(conn->pre_neuron()->objectName()).arg(errors[conn->pre_neuron()]).toStdString(), this );
             }
         }
         current_layer = next_layer;
         next_layer.clear();
     }
 
-    current_layer.insert(output);
+    current_layer.insert(output_neuron);
     while(!current_layer.empty()){
         next_layer.clear();
         BOOST_FOREACH(LinearDiscriminator* ld, current_layer){
             BOOST_FOREACH(LDConnection* conn, ld->inputs()){
+                //Log::instance().log( QString("Backprop: d_j(%1)=%2").arg(conn->post_neuron()->objectName()).arg(errors[conn->post_neuron()]).toStdString(), this );
+                Log::instance().log( QString("Backprop: x(%1)=%2").arg(conn->pre_neuron()->objectName()).arg(conn->pre_neuron()->output()).toStdString(), this );
                 double delta_w = m_backprop_eta * errors[conn->post_neuron()] * conn->pre_neuron()->output();
+                Log::instance().log( QString("Backprop: delta_w(%1,%2): %3 + %4 = %5").arg(conn->pre_neuron()->objectName()).arg(conn->post_neuron()->objectName()).arg(conn->weight()).arg(delta_w).arg(conn->weight() + delta_w).toStdString(), this );
                 conn->set_weight(conn->weight() + delta_w);
+
                 next_layer.insert(conn->pre_neuron());
             }
         }
         current_layer = next_layer;
     }
+}
+
+void Group::backprop(){
+    LinearDiscriminator* output = m_mlp_output;
+    Samples* target = m_backprop_target;
+    assert(output);
+    assert(target);
+
+    do_backprop(target->value(), output);
 }
 
 

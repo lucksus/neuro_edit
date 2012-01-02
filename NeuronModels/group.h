@@ -8,6 +8,7 @@
 #include "samples.h"
 
 class Simulation;
+class LinearDiscriminator;
 
 class Group : public SimulationObject
 {
@@ -66,7 +67,9 @@ public:
     Q_INVOKABLE void connect_input_neuron_with_all(SpikingObject*);
     Q_INVOKABLE void connect_input_neuron_randomly(SpikingObject*, unsigned int count);
 
-    void do_backprop();
+    Q_INVOKABLE void do_backprop(double target_value, LinearDiscriminator* output_neuron);
+
+    void backprop();
 
     std::set<Neuron*> neurons();
     std::set<LinearDiscriminator*> linear_discriminators();
