@@ -101,12 +101,14 @@ std::set<SimulationObject*> LinearDiscriminator::about_to_remove(SimulationObjec
 }
 
 double LinearDiscriminator::activation_function(double x){
-    return 1/(1+pow(NeuroMath::e(),-x));
+    //return 1/(1+pow(NeuroMath::e(),-x))-0.5;
+    return x;
 }
 
 double LinearDiscriminator::activation_function_derivative(double x){
-    double x1 = activation_function(x);
-    return x1*(1-x1);
+    double x1 = activation_function(x+0.5);
+    //return x1*(1-x1);
+    return 1;
 }
 
 double LinearDiscriminator::membrane_potential(){
