@@ -297,12 +297,20 @@ std::set<SimulationObject*> Group::objects_as_std_set() const{
     return m_objects;
 }
 
-QList<SimulationObject*> Group::objects() const{
-    QList<SimulationObject*> return_list;
+QObjectList Group::objects() const{
+    QObjectList return_list;
     BOOST_FOREACH(SimulationObject* o, objects_as_std_set()){
         return_list.append(o);
     }
     return return_list;
+}
+
+SimulationObject* Group::object_by_name(QString name) const{
+    foreach(QObject* object, objects()){
+        if(object->objectName() == name)
+            return dynamic_cast<SimulationObject*>(object);
+    }
+    return 0;
 }
 
 Point Group::handle_position() const{
@@ -340,7 +348,9 @@ Point Group::moving_offset() const{
 
 void Group::moved(Point new_position, Point old_position){
     Point vec = new_position - old_position;
-    foreach(SimulationObject* o, objects()){
+    foreach(QObject* object, objects()){
+        SimulationObject* o = dynamic_cast<SimulationObject*>(object);
+        assert(o);
         o->set_position(o->position() + vec);
     }
 }

@@ -40,6 +40,7 @@ public:
     std::set<SimulationObject*> objects_as_std_set();
     std::set<SimulationObject*> objects_with_children_as_std_set();
     Q_INVOKABLE QObjectList objects();
+    Q_INVOKABLE SimulationObject* object_by_name(QString name);
 
     Q_INVOKABLE QStringList scripts() const;
     Q_INVOKABLE QString script(const QString&) const;

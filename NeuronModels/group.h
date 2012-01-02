@@ -51,7 +51,8 @@ public:
     Q_INVOKABLE void add_object(SimulationObject*);
     Q_INVOKABLE void remove_object(SimulationObject*);
     Q_INVOKABLE virtual std::set<SimulationObject*> objects_as_std_set() const;
-    Q_INVOKABLE virtual QList<SimulationObject*> objects() const;
+    Q_INVOKABLE virtual QObjectList objects() const;
+    Q_INVOKABLE SimulationObject* object_by_name(QString name) const;
 
     enum {MARGIN=30};
     Point handle_position() const;

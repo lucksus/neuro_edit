@@ -196,3 +196,10 @@ void Network::remove_script(const QString& name){
     m_scripts.erase(name.toStdString());
 }
 
+SimulationObject* Network::object_by_name(QString name){
+    foreach(QObject* object, objects()){
+        if(object->objectName() == name)
+            return dynamic_cast<SimulationObject*>(object);
+    }
+    return 0;
+}
