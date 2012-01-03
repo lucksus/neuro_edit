@@ -19,7 +19,7 @@ public:
 public slots:
     void new_log_message(QString text, Log::LogLevel level);
 
-    void on_actionClearButton_clicked(bool);
+    void on_clearButton_clicked(bool);
     void on_logLevelComboBox_currentIndexChanged(int index);
 
 private:

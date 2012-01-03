@@ -22,7 +22,7 @@ void LogWindow::new_log_message(QString text, Log::LogLevel level){
     add_message_to_widget(text.toStdString(), level);
 }
 
-void LogWindow::on_actionClearButton_clicked(bool){
+void LogWindow::on_clearButton_clicked(bool){
     ui->listWidget->clear();
     m_messages.clear();
 }
@@ -40,9 +40,10 @@ void LogWindow::on_logLevelComboBox_currentIndexChanged(int index){
 
 
 void LogWindow::rebuild(Log::LogLevel level){
+    ui->listWidget->clear();
     std::pair< std::string,Log::LogLevel > it;
     BOOST_FOREACH(it, m_messages){
-        if(it.second > level) add_message_to_widget(it.first, it.second);
+        if(it.second >= level) add_message_to_widget(it.first, it.second);
     }
 }
 
@@ -50,7 +51,7 @@ void LogWindow::rebuild(Log::LogLevel level){
 void LogWindow::add_message_to_widget(std::string message, Log::LogLevel level){
     QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
     item->setText(message.c_str());
-    if(level == Log::ERROR) item->setForeground(QBrush(QColor::fromRgb(1,0,0)));
-    if(level == Log::DEBUG) item->setForeground(QBrush(QColor::fromRgb(0,0,1)));
+    if(level == Log::ERROR) item->setForeground(QBrush(QColor::fromRgb(255,0,0)));
+    if(level == Log::DEBUG) item->setForeground(QBrush(QColor::fromRgb(0,0,255)));
     ui->listWidget->addItem(item);
 }
