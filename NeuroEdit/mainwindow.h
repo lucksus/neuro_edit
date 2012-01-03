@@ -97,6 +97,7 @@ private:
     std::set<SimulationObject*> selected_objects_cloned_and_self_centered();
 
     void init_glscene();
+    void set_insert_actions_enabled(bool enabled);
 };
 
 #endif // MAINWINDOW_H

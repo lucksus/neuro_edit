@@ -225,13 +225,16 @@ void MainWindow::closeEvent(QCloseEvent *event){
     event->accept();
 }
 
+void MainWindow::set_insert_actions_enabled(bool enabled){
+    ui->actionSingle_Neuron->setEnabled(enabled);
+    ui->actionCurrent_Inducer->setEnabled(enabled);
+    ui->actionSamples->setEnabled(enabled);
+    ui->actionLinear_Discriminator->setEnabled(enabled);
+    ui->actionGroup->setEnabled(enabled);
+}
+
 void MainWindow::on_actionNew_triggered(bool){
     Controller::instance().create_new_simulation();
-    ui->actionSingle_Neuron->setEnabled(true);
-    ui->actionCurrent_Inducer->setEnabled(true);
-    ui->actionSamples->setEnabled(true);
-    ui->actionLinear_Discriminator->setEnabled(true);
-    ui->actionGroup->setEnabled(true);
 }
 
 void MainWindow::on_actionSave_triggered(bool b){
@@ -265,11 +268,6 @@ void MainWindow::on_actionLoad_triggered(bool){
         tr("Load network"), "", tr("Binary NeuroEdit files (*.neb)"));
     if(fileName.isEmpty()) return;
     Controller::instance().load_simulation(fileName.toStdString());
-    ui->actionSingle_Neuron->setEnabled(true);
-    ui->actionCurrent_Inducer->setEnabled(true);
-    ui->actionSamples->setEnabled(true);
-    ui->actionLinear_Discriminator->setEnabled(true);
-    ui->actionGroup->setEnabled(true);
     addFileToRecentlyUsed(fileName);
 }
 
@@ -278,21 +276,12 @@ void MainWindow::on_actionImport_Simulation_from_XML_triggered(bool){
         tr("Load network"), "", tr("XML NeuroEdit files (*nex)"));
     if(fileName.isEmpty()) return;
     Controller::instance().import_xml_simulation(fileName.toStdString());
-    ui->actionSingle_Neuron->setEnabled(true);
-    ui->actionCurrent_Inducer->setEnabled(true);
-    ui->actionSamples->setEnabled(true);
-    ui->actionLinear_Discriminator->setEnabled(true);
-    ui->actionGroup->setEnabled(true);
     addFileToRecentlyUsed(fileName);
 }
 
 void MainWindow::on_actionClose_triggered(bool){
     Controller::instance().close_simulation();
-    ui->actionSingle_Neuron->setEnabled(false);
-    ui->actionCurrent_Inducer->setEnabled(false);
-    ui->actionSamples->setEnabled(false);
-    ui->actionLinear_Discriminator->setEnabled(false);
-    ui->actionGroup->setEnabled(false);
+    //set_insert_actions_enabled(false);
 }
 
 void MainWindow::on_actionQuit_triggered(bool){
@@ -415,6 +404,7 @@ void MainWindow::simulation_changed(Simulation* s){
     //disconnect(m_sim, SIGNAL(simulation_started()), &m_sim_settings_widget, SLOT(simulation_started()));
     //disconnect(m_sim, SIGNAL(simulation_stopped()), &m_sim_settings_widget, SLOT(simulation_stopped()));
     m_sim = s;
+    set_insert_actions_enabled(s);
     connect(m_sim, SIGNAL(simulation_started()), this, SLOT(simulation_started()));
     connect(m_sim, SIGNAL(simulation_stopped()), this, SLOT(simulation_stopped()));
     connect(m_sim, SIGNAL(simulation_started()), &m_sim_settings_widget, SLOT(simulation_started()));
