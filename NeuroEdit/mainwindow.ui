@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>832</width>
-    <height>599</height>
+    <width>1046</width>
+    <height>715</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,8 +35,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>832</width>
-     <height>25</height>
+     <width>1046</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -50,12 +50,14 @@
     </widget>
     <addaction name="actionNew"/>
     <addaction name="actionLoad"/>
+    <addaction name="menuOpen_Recent"/>
+    <addaction name="separator"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
-    <addaction name="menuOpen_Recent"/>
-    <addaction name="actionClose"/>
     <addaction name="actionExport_Simulation_to_XML"/>
     <addaction name="actionImport_Simulation_from_XML"/>
+    <addaction name="separator"/>
+    <addaction name="actionClose"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
