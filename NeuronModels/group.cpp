@@ -377,7 +377,8 @@ void Group::do_backprop(double target_value, LinearDiscriminator* output_neuron)
     current_layer.insert(output_neuron);
     std::map<LinearDiscriminator*, double> errors;
     errors[output_neuron] = output_neuron->activation_function_derivative(output_neuron->output()) * (target_value - output_neuron->output());
-    Log::instance().log( QString("Backprop: error(%1)=%2").arg(output_neuron->objectName()).arg(errors[output_neuron]).toStdString(), this );
+    Log::instance().log( "==Doing backpropagation run==", this, Log::DEBUG );
+    Log::instance().log( QString("Backprop: target=%3, error(%1)=%2").arg(output_neuron->objectName()).arg(errors[output_neuron]).arg(target_value).toStdString(), this, Log::DEBUG );
 
     while(!current_layer.empty()){
         BOOST_FOREACH(LinearDiscriminator* ld, current_layer){
@@ -418,9 +419,9 @@ void Group::do_backprop(double target_value, LinearDiscriminator* output_neuron)
         BOOST_FOREACH(LinearDiscriminator* ld, current_layer){
             BOOST_FOREACH(LDConnection* conn, ld->inputs()){
                 //Log::instance().log( QString("Backprop: d_j(%1)=%2").arg(conn->post_neuron()->objectName()).arg(errors[conn->post_neuron()]).toStdString(), this );
-                Log::instance().log( QString("Backprop: x(%1)=%2").arg(conn->pre_neuron()->objectName()).arg(conn->pre_neuron()->output()).toStdString(), this );
+                //Log::instance().log( QString("Backprop: x(%1)=%2").arg(conn->pre_neuron()->objectName()).arg(conn->pre_neuron()->output()).toStdString(), this, Log::DEBUG );
                 double delta_w = m_backprop_eta * errors[conn->post_neuron()] * conn->pre_neuron()->output();
-                Log::instance().log( QString("Backprop: delta_w(%1,%2): %3 + %4 = %5").arg(conn->pre_neuron()->objectName()).arg(conn->post_neuron()->objectName()).arg(conn->weight()).arg(delta_w).arg(conn->weight() + delta_w).toStdString(), this );
+                Log::instance().log( QString("Backprop: delta_w(%1,%2): %3 + %4 = %5").arg(conn->pre_neuron()->objectName()).arg(conn->post_neuron()->objectName()).arg(conn->weight()).arg(delta_w).arg(conn->weight() + delta_w).toStdString(), this, Log::DEBUG );
                 conn->set_weight(conn->weight() + delta_w);
 
                 next_layer.insert(conn->pre_neuron());
