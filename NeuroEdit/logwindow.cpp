@@ -54,4 +54,5 @@ void LogWindow::add_message_to_widget(std::string message, Log::LogLevel level){
     if(level == Log::ERROR) item->setForeground(QBrush(QColor::fromRgb(255,0,0)));
     if(level == Log::DEBUG) item->setForeground(QBrush(QColor::fromRgb(0,0,255)));
     ui->listWidget->addItem(item);
+    ui->listWidget->scrollToItem(item);
 }

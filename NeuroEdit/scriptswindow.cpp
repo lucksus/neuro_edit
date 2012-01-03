@@ -204,7 +204,10 @@ void ScriptsWindow::showEvent(QShowEvent *event){
 }
 
 void ScriptsWindow::script_output(QString output){
-    ui->outputListWidget->addItem(output);
+    QListWidgetItem* item = new QListWidgetItem(ui->outputListWidget);
+    item->setText(output);
+    ui->outputListWidget->addItem(item);
+    ui->outputListWidget->scrollToItem(item);
 }
 
 void ScriptsWindow::on_clearButton_clicked(){
