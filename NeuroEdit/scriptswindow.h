@@ -34,8 +34,6 @@ public:
 protected slots:
     void on_simulationPlusButton_clicked();
     void on_simulationMinusButton_clicked();
-    void on_networkPlusButton_clicked();
-    void on_networkMinusButton_clicked();
     void on_loadButton_clicked();
     void on_saveButton_clicked();
     void on_playButton_clicked();
@@ -45,11 +43,9 @@ protected slots:
     void simulation_changed(Simulation*);
 
     void simulationScriptSelected(const QItemSelection & selected, const QItemSelection & deselected);
-    void networkScriptSelected(const QItemSelection & selected, const QItemSelection & deselected);
 
     void textChanged();
     void simulationScriptsNameChanged(QModelIndex,QModelIndex);
-    void networkScriptsNameChanged(QModelIndex,QModelIndex);
     void script_output(QString);
 
 protected:
