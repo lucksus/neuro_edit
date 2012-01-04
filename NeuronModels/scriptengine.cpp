@@ -7,6 +7,7 @@
 #include "neuron.h"
 #include <QtCore/QMetaType>
 #include "RandomGenerator.h"
+#include "group.h"
 
 ScriptEngine::ScriptEngine(Simulation* sim){
     if(!sim) return;
@@ -55,8 +56,16 @@ QScriptValue Neuron_ctor(QScriptContext *ctx, QScriptEngine *eng)
         p.y = point.property("y").toNumber();
         p.z = point.property("z").toNumber();
     }else assert(false);
-    return eng->newQObject(new Neuron(Controller::instance().simulation(), p));
+    Neuron* n = new Neuron(Controller::instance().simulation(), p);
+    Controller::instance().simulation()->network()->add_object(n);
+    return eng->newQObject(n);
  }
+
+QScriptValue Group_ctor(QScriptContext *ctx, QScriptEngine *eng){
+    Group* group_object = new Group(Controller::instance().simulation());
+    Controller::instance().simulation()->network()->add_object(group_object);
+    return eng->newQObject(group_object);
+}
 
 QScriptValue print(QScriptContext *ctx, QScriptEngine*)
 {
@@ -71,6 +80,7 @@ QScriptValue print(QScriptContext *ctx, QScriptEngine*)
 
 void ScriptEngine::add_constructors(){
     m_engine.globalObject().setProperty("Neuron", m_engine.newFunction(Neuron_ctor));
+    m_engine.globalObject().setProperty("Group", m_engine.newFunction(Group_ctor));
 }
 
 void ScriptEngine::add_global_functions(){
