@@ -38,6 +38,7 @@ void Application::destroy(){
 }
 
 void Application::show_main_window(){
+    m_main_window->readSettings();
     m_main_window->show();
 }
 
