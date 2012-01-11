@@ -46,6 +46,7 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     //addDockWidget(Qt::RightDockWidgetArea,dock);
 
     dock = new QDockWidget(tr("Property Browser"), this);
+    dock->setObjectName("Property Browser");
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     dock->setWidget(&m_property_browser);
     addDockWidget(Qt::RightDockWidgetArea,dock);
@@ -54,6 +55,7 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     dock->hide();
 
     dock = new QDockWidget(tr("Neuron membrane potential"), this);
+    dock->setObjectName("Neuron membrane potential");
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     dock->setWidget(&m_neuron_membrane_potential_widget);
     addDockWidget(Qt::RightDockWidgetArea,dock);
@@ -62,6 +64,7 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     dock->hide();
 
     dock = new QDockWidget(tr("Izhikevich system state"), this);
+    dock->setObjectName("Izhikevich system state");
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     dock->setWidget(&m_izhikevich_system_plot_widget);
     addDockWidget(Qt::RightDockWidgetArea,dock);
@@ -70,6 +73,7 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     dock->hide();
 
     dock = new QDockWidget(tr("Simulation settings"), this);
+    dock->setObjectName("Simulation settings");
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     dock->setWidget(&m_sim_settings_widget);
     addDockWidget(Qt::RightDockWidgetArea,dock);
@@ -78,6 +82,7 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     dock->hide();
 
     dock = new QDockWidget(tr("Scripts Window"), this);
+    dock->setObjectName("Scripts Window");
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     dock->setWidget(&m_scripts_window);
     addDockWidget(Qt::RightDockWidgetArea,dock);
@@ -87,6 +92,7 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     dock->setFloating(true);
 
     dock = new QDockWidget(tr("Log Window"), this);
+    dock->setObjectName("Log Window");
     dock->setAllowedAreas(Qt::BottomDockWidgetArea);
     dock->setWidget(&m_log_window);
     addDockWidget(Qt::BottomDockWidgetArea,dock);
@@ -222,7 +228,20 @@ void MainWindow::closeEvent(QCloseEvent *event){
         m_sim->request_stop();
 		m_sim->wait_till_finished();
     }
-    event->accept();
+
+    QSettings settings;
+    settings.beginGroup("application");
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("windowState", saveState());
+    QMainWindow::closeEvent(event);
+}
+
+void MainWindow::readSettings()
+{
+    QSettings settings;
+    settings.beginGroup("application");
+    restoreGeometry(settings.value("geometry").toByteArray());
+    restoreState(settings.value("windowState").toByteArray());
 }
 
 void MainWindow::set_insert_actions_enabled(bool enabled){
@@ -280,6 +299,9 @@ void MainWindow::on_actionImport_Simulation_from_XML_triggered(bool){
 }
 
 void MainWindow::on_actionClose_triggered(bool){
+    QSettings settings;
+    settings.beginGroup("application");
+    settings.setValue("windowState", saveState());
     Controller::instance().close_simulation();
     //set_insert_actions_enabled(false);
 }
@@ -421,13 +443,22 @@ void MainWindow::simulation_changed(Simulation* s){
     init_glscene();
     if(!m_glscene) return;
 
-    BOOST_FOREACH(QDockWidget* dock, m_dock_widgets){
-        //addDockWidget(Qt::RightDockWidgetArea, dock);
-        if(&m_property_browser == dock->widget())
-            dock->show();
-        if(&m_log_window == dock->widget())
-            dock->show();
-    }
+    QSettings settings;
+    settings.beginGroup("application");
+    QByteArray arr = settings.value("windowState").toByteArray();
+    if(arr.size() == 0)
+        BOOST_FOREACH(QDockWidget* dock, m_dock_widgets){
+            //addDockWidget(Qt::RightDockWidgetArea, dock);
+            if(&m_property_browser == dock->widget())
+                dock->show();
+            if(&m_log_window == dock->widget()){
+                dock->show();
+                dock->resize(dock->width(),50);
+                dock->adjustSize();
+            }
+        }
+    else
+        restoreState(arr);
 }
 
 QStringList MainWindow::recentlyUsedFiles() const{

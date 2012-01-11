@@ -25,6 +25,8 @@ public:
     explicit MainWindow(Simulation* sim, QWidget *parent = 0);
     ~MainWindow();
 
+    void readSettings();
+
 protected:
     void closeEvent(QCloseEvent *event);
 
