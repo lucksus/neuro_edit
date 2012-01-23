@@ -43,7 +43,10 @@ public:
     Q_INVOKABLE QStringList scripts() const;
     Q_INVOKABLE QString script(const QString&) const;
     Q_INVOKABLE void set_script(const QString& name, const QString& script);
+    //! Looks in m_scripts for script with given name and evaluates it
     Q_INVOKABLE QString run_script(const QString& name);
+    //! Evaluates the given script code
+    Q_INVOKABLE QString evaluate_code(const QString& code);
     Q_INVOKABLE void remove_script(const QString& name);
     Q_INVOKABLE bool is_running();
 

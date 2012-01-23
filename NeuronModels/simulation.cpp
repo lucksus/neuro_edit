@@ -153,3 +153,7 @@ void Simulation::remove_script(const QString& name){
 bool Simulation::is_running(){
     return m_is_running;
 }
+
+QString Simulation::evaluate_code(const QString& code){
+    return m_script_engine.evaluate(code);
+}
