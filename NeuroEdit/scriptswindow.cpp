@@ -167,6 +167,7 @@ void ScriptsWindow::on_lineEdit_returnPressed(){
 }
 
 void ShellLineEdit::keyPressEvent ( QKeyEvent * event ){
+    QLineEdit::keyPressEvent(event);
     if(event->key() == Qt::Key_Up){
         emit history_up();
     }
@@ -174,8 +175,6 @@ void ShellLineEdit::keyPressEvent ( QKeyEvent * event ){
     if(event->key() == Qt::Key_Down){
         emit history_down();
     }
-
-    QLineEdit::keyPressEvent(event);
 }
 
 void ScriptsWindow::history_up(){
@@ -185,6 +184,7 @@ void ScriptsWindow::history_up(){
         return;
     }
     ui->lineEdit->setText(m_shell_history.at(m_current_history_position));
+    ui->lineEdit->setCursorPosition(ui->lineEdit->text().size());
 }
 
 void ScriptsWindow::history_down(){
@@ -195,4 +195,5 @@ void ScriptsWindow::history_down(){
         return;
     }
     ui->lineEdit->setText(m_shell_history.at(m_current_history_position));
+    ui->lineEdit->setCursorPosition(ui->lineEdit->text().size());
 }
