@@ -98,7 +98,7 @@ std::vector<sample> Samples::samples(){
     return m_samples;
 }
 
-void Samples::read_from_photoss_signal_file(std::string filename){
+void Samples::read_from_photoss_signal_file(std::string /*filename*/){
 
 }
 
