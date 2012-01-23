@@ -9,12 +9,21 @@
 
 ScriptsWindow::ScriptsWindow(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::ScriptsWindow)
+    ui(new Ui::ScriptsWindow),
+    m_current_history_position(-1)
 {
     ui->setupUi(this);
     delete ui->simulationScriptsList;
     ui->simulationScriptsList = new MyListView(this);
     dynamic_cast<QBoxLayout*>(ui->groupBox->layout())->insertWidget(1,ui->simulationScriptsList);
+
+    delete ui->lineEdit;
+    ShellLineEdit* shell_line_edit = new ShellLineEdit(this);
+    ui->lineEdit = shell_line_edit;
+    dynamic_cast<QVBoxLayout*>(ui->verticalLayout_3)->insertWidget(1,ui->lineEdit);
+    connect(shell_line_edit, SIGNAL(history_up()), this, SLOT(history_up()));
+    connect(shell_line_edit, SIGNAL(history_down()), this, SLOT(history_down()));
+    connect(shell_line_edit, SIGNAL(returnPressed()), this, SLOT(on_lineEdit_returnPressed()));
 
     ui->simulationScriptsList->setModel(&m_simulation_scripts);
     ui->simulationScriptsList->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -47,6 +56,7 @@ ScriptsWindow::~ScriptsWindow()
 }
 
 void ScriptsWindow::read_name_lists(){
+    if(Controller::instance().simulation() == 0) return;
     m_simulation_scripts.setStringList(Controller::instance().simulation()->scripts());
     m_network_scripts.setStringList(Controller::instance().simulation()->network()->scripts());
 }
@@ -134,13 +144,55 @@ void ScriptsWindow::showEvent(QShowEvent *event){
     read_name_lists();
 }
 
-void ScriptsWindow::script_output(QString output){
+void ScriptsWindow::script_output(QString output, QColor color){
     QListWidgetItem* item = new QListWidgetItem(ui->outputListWidget);
     item->setText(output);
+    item->setForeground(color);
     ui->outputListWidget->addItem(item);
     ui->outputListWidget->scrollToItem(item);
 }
 
 void ScriptsWindow::on_clearButton_clicked(){
     ui->outputListWidget->clear();
+}
+
+void ScriptsWindow::on_lineEdit_returnPressed(){
+    QString line = ui->lineEdit->text();
+    ui->lineEdit->setText("");
+    script_output(QString("# %1").arg(line), QColor(0,0,255));
+    QString return_value = Controller::instance().simulation()->evaluate_code(line);
+    script_output(QString("--> %1").arg(return_value));
+    m_shell_history.prepend(line);
+    m_current_history_position = -1;
+}
+
+void ShellLineEdit::keyPressEvent ( QKeyEvent * event ){
+    if(event->key() == Qt::Key_Up){
+        emit history_up();
+    }
+
+    if(event->key() == Qt::Key_Down){
+        emit history_down();
+    }
+
+    QLineEdit::keyPressEvent(event);
+}
+
+void ScriptsWindow::history_up(){
+    m_current_history_position++;
+    if(m_current_history_position >= m_shell_history.size()){
+        m_current_history_position--;
+        return;
+    }
+    ui->lineEdit->setText(m_shell_history.at(m_current_history_position));
+}
+
+void ScriptsWindow::history_down(){
+    m_current_history_position--;
+    if(m_current_history_position < 0){
+        ui->lineEdit->setText("");
+        m_current_history_position = -1;
+        return;
+    }
+    ui->lineEdit->setText(m_shell_history.at(m_current_history_position));
 }
