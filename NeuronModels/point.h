@@ -4,6 +4,8 @@
 #include <boost/serialization/nvp.hpp>
 #include <QtCore/QObject>
 #include <QtCore/QMetaType>
+#include <QtScript/QScriptValue>
+#include <QtScript/QScriptEngine>
 
 struct Point : public QObject{
 Q_OBJECT
@@ -32,14 +34,20 @@ public:
         ar & BOOST_SERIALIZATION_NVP(z);
     }
 
+    static QScriptValue toScriptValue(QScriptEngine *engine, Point* const &in)
+    { return engine->newQObject(in); }
+
+    static void fromScriptValue(const QScriptValue &object, Point* &out)
+    { out = qobject_cast<Point*>(object.toQObject()); }
+
     double x,y,z;
 
     inline double get_x(){return x;};
     inline double get_y(){return y;};
     inline double get_z(){return z;};
     inline void set_x(double new_x){x=new_x;};
-    inline void set_y(double new_y){x=new_y;};
-    inline void set_z(double new_z){x=new_z;};
+    inline void set_y(double new_y){y=new_y;};
+    inline void set_z(double new_z){z=new_z;};
 
     inline double distance(Point p){
         Point diff = p - *this;
@@ -92,8 +100,12 @@ public:
     inline double length(){
         return distance(Point(0,0,0));
     }
+
+public slots:
+    QString toString() const {return QString("Point(x=%1,y=%2,z=%3)").arg(x).arg(y).arg(z);}
 };
 
 Q_DECLARE_METATYPE(Point)
+Q_DECLARE_METATYPE(Point*)
 
 #endif // POINT_H

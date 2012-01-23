@@ -11,8 +11,7 @@
 
 ScriptEngine::ScriptEngine(Simulation* sim){
     if(!sim) return;
-    //m_engine.setGlobalObject(m_engine.newQObject(sim));
-    m_engine.globalObject().setProperty("simulation", m_engine.newQObject(sim));
+    m_engine.setGlobalObject(m_engine.newQObject(sim));
     add_constructors();
     add_global_functions();
     add_conversion_functions();
@@ -21,8 +20,7 @@ ScriptEngine::ScriptEngine(Simulation* sim){
 
 ScriptEngine::ScriptEngine(Network* net){
     if(!net) return;
-    //m_engine.setGlobalObject(m_engine.newQObject(net));
-    m_engine.globalObject().setProperty("network", m_engine.newQObject(net));
+    m_engine.setGlobalObject(m_engine.newQObject(net));
     add_constructors();
     add_global_functions();
     add_conversion_functions();
@@ -61,10 +59,20 @@ QScriptValue Neuron_ctor(QScriptContext *ctx, QScriptEngine *eng)
     return eng->newQObject(n);
  }
 
-QScriptValue Group_ctor(QScriptContext *ctx, QScriptEngine *eng){
+QScriptValue Group_ctor(QScriptContext* /*ctx*/, QScriptEngine *eng){
     Group* group_object = new Group(Controller::instance().simulation());
     Controller::instance().simulation()->network()->add_object(group_object);
     return eng->newQObject(group_object);
+}
+
+QScriptValue Point_ctor(QScriptContext *ctx, QScriptEngine *eng){
+    Point *p = new Point();
+    if(ctx->argumentCount() == 3){
+         p->x = ctx->argument(0).toNumber();
+         p->y = ctx->argument(1).toNumber();
+         p->z = ctx->argument(2).toNumber();
+    }else ctx->throwError("Point constructor needs three numbers!");
+    return eng->newQObject(p, QScriptEngine::ScriptOwnership);
 }
 
 QScriptValue print(QScriptContext *ctx, QScriptEngine*)
@@ -81,6 +89,7 @@ QScriptValue print(QScriptContext *ctx, QScriptEngine*)
 void ScriptEngine::add_constructors(){
     m_engine.globalObject().setProperty("Neuron", m_engine.newFunction(Neuron_ctor));
     m_engine.globalObject().setProperty("Group", m_engine.newFunction(Group_ctor));
+    m_engine.globalObject().setProperty("Point", m_engine.newFunction(Point_ctor));
 }
 
 void ScriptEngine::add_global_functions(){
@@ -90,6 +99,7 @@ void ScriptEngine::add_global_functions(){
 void ScriptEngine::add_conversion_functions(){
     qScriptRegisterMetaType(&m_engine, &Network::networkToScriptValue, &Network::networkFromScriptValue);
     qScriptRegisterMetaType(&m_engine, &SimulationObject::toScriptValue, &SimulationObject::fromScriptValue);
+    qScriptRegisterMetaType(&m_engine, &Point::toScriptValue, &Point::fromScriptValue);
 }
 
 void ScriptEngine::add_random_generator(){

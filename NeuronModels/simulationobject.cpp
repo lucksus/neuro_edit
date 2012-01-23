@@ -64,6 +64,15 @@ void SimulationObject::set_position(const Point& p){
     m_position = p;
 }
 
+Point* SimulationObject::pos(){
+    return &m_position;
+}
+
+void SimulationObject::set_pos(Point* p){
+    m_position = *p;
+}
+
+
 void SimulationObject::moved(Point){
 }
 

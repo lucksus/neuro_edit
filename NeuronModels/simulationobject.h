@@ -17,6 +17,7 @@ class SimulationObject : public QObject
 {
 Q_OBJECT
 Q_PROPERTY(Point position READ position WRITE set_position)
+Q_PROPERTY(Point* pos READ pos WRITE set_pos)
 friend class boost::serialization::access;
 public:
     SimulationObject(Simulation*);
@@ -33,11 +34,14 @@ public:
     bool is_done();
     void reset_done();
 
-    void set_network(Network*);
-    void set_neuron(Neuron*);
+    Q_INVOKABLE void set_network(Network*);
+    Q_INVOKABLE void set_neuron(Neuron*);
 
     Point position() const;
     void set_position(const Point& p);
+    Point* pos();
+    void set_pos(Point* p);
+
 
     virtual bool is_user_movable();
     void set_user_movable(bool user_movable);
