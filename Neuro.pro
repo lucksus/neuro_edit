@@ -5,7 +5,8 @@ CONFIG += ordered
 SUBDIRS = Visualizer \
             math \
             NeuronModels \
-            NeuroEdit
+            NeuroEdit \
+            MLP
 
 
 
