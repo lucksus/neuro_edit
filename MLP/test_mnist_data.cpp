@@ -11,8 +11,8 @@ int main(int argc, char** argv){
     QString images_file_name = QFileDialog::getOpenFileName(0, "Open Images File");
     QString labels_file_name = QFileDialog::getOpenFileName(0, "Open Labes File");
     MNISTData data;
-    data.load_images(images_file_name.toStdString());
-    data.load_labels(labels_file_name.toStdString());
+    data.load_images(images_file_name);
+    data.load_labels(labels_file_name);
 
 
 

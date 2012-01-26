@@ -9,7 +9,7 @@ CONFIG += debug
 TARGET = neuron_models
 TEMPLATE = lib
 CONFIG += staticlib
-INCLUDEPATH += ../math
+INCLUDEPATH += ../math ../MLP
 
 win32{
 	INCLUDEPATH += c:\boost\include

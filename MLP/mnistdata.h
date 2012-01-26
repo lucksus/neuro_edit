@@ -3,29 +3,34 @@
 #include <string>
 #include <vector>
 #include <QtGui/QImage>
+#include <QtCore/QVector>
 
 using namespace std;
 
-class MNISTData
+class MNISTData : public QObject
 {
+Q_OBJECT
 public:
     MNISTData();
 
-    void load_images(string path);
-    void load_labels(string path);
+    Q_INVOKABLE void load_images(QString path);
+    Q_INVOKABLE void load_labels(QString path);
 
-    unsigned int number_of_images();
-    unsigned int number_of_rows();
-    unsigned int number_of_columns();
+    Q_INVOKABLE unsigned int number_of_images();
+    Q_INVOKABLE unsigned int number_of_rows();
+    Q_INVOKABLE unsigned int number_of_columns();
 
-    vector<char> image(unsigned int index);
-    QImage* image_as_qimage(unsigned int index);
-    int label(unsigned int index);
+    vector<unsigned char> image_raw_stl(unsigned int index);
+    Q_INVOKABLE QVector<unsigned char> image_raw(unsigned int index);
+    Q_INVOKABLE QImage* image_as_qimage(unsigned int index);
+    Q_INVOKABLE unsigned char label(unsigned int index);
+
+    Q_INVOKABLE void show_image(unsigned int index);
 
 
 private:
-    vector<char> m_labels;
-    vector<  vector<char>  > m_images;
+    vector<unsigned char> m_labels;
+    vector<  vector<unsigned char>  > m_images;
     unsigned int m_rows, m_columns;
 };
 

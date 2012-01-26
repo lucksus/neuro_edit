@@ -9,7 +9,7 @@ CONFIG += debug
 TARGET = neuro_edit
 TEMPLATE = app
 INCLUDEPATH += ../NeuronModels ../Visualizer ../math
-POST_TARGETDEPS += ../NeuronModels/libneuron_models.a ../Visualizer/libVisualizer.a ../math/libmath.a
+POST_TARGETDEPS += ../NeuronModels/libneuron_models.a ../Visualizer/libVisualizer.a ../math/libmath.a ../MLP/libMLP.a
 
 macx:LIBS += -framework GLUT
 
@@ -27,7 +27,7 @@ build_pass:CONFIG(debug, debug|release) {
     LIBS += -L../NeuronModels/release -L../Visualizer/debug
 }
 
-LIBS += -L../NeuronModels -lneuron_models -L../Visualizer -lVisualizer -L../math -lmath
+LIBS += -L../NeuronModels -lneuron_models -L../Visualizer -lVisualizer -L../math -lmath -L../MLP -lMLP
 
 SOURCES += main.cpp\
         mainwindow.cpp \

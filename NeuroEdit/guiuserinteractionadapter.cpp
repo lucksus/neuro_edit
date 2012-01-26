@@ -128,3 +128,9 @@ vector<int> GuiUserInteractionAdapter::get_integer_values(vector<string> value_d
 void GuiUserInteractionAdapter::confirm_message(std::string message){
     QMessageBox::information(0,"Neuro Edit Information", message.c_str());
 }
+
+void GuiUserInteractionAdapter::display_image(QImage *image){
+    QLabel *label = new QLabel;
+    label->setPixmap(QPixmap::fromImage(*image));
+    label->show();
+}

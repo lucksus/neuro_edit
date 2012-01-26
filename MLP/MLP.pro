@@ -1,8 +1,8 @@
-TEMPLATE = app #lib
+TEMPLATE = lib
 TARGET = 
 DEPENDPATH += .
-INCLUDEPATH += .
-#CONFIG += staticlib
+INCLUDEPATH += . ../NeuronModels
+CONFIG += staticlib
 
 # Input
 HEADERS += \ 

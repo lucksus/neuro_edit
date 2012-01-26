@@ -8,6 +8,9 @@
 #include <QtCore/QMetaType>
 #include "RandomGenerator.h"
 #include "group.h"
+#include "mnistdata.h"
+#include "userinteractionadapter.h"
+
 
 ScriptEngine::ScriptEngine(Simulation* sim){
     if(!sim) return;
@@ -75,6 +78,10 @@ QScriptValue Point_ctor(QScriptContext *ctx, QScriptEngine *eng){
     return eng->newQObject(p, QScriptEngine::ScriptOwnership);
 }
 
+QScriptValue MNISTData_ctor(QScriptContext *ctx, QScriptEngine *eng){
+    return eng->newQObject(new MNISTData(), QScriptEngine::ScriptOwnership);
+}
+
 QScriptValue print(QScriptContext *ctx, QScriptEngine*)
 {
     QString output;
@@ -85,11 +92,11 @@ QScriptValue print(QScriptContext *ctx, QScriptEngine*)
     return QScriptValue();
 }
 
-
 void ScriptEngine::add_constructors(){
     m_engine.globalObject().setProperty("Neuron", m_engine.newFunction(Neuron_ctor));
     m_engine.globalObject().setProperty("Group", m_engine.newFunction(Group_ctor));
     m_engine.globalObject().setProperty("Point", m_engine.newFunction(Point_ctor));
+    m_engine.globalObject().setProperty("MNISTData", m_engine.newFunction(MNISTData_ctor));
 }
 
 void ScriptEngine::add_global_functions(){

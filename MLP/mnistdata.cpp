@@ -1,5 +1,6 @@
 #include "mnistdata.h"
 #include <fstream>
+#include "userinteractionadapter.h"
 
 inline bool is_little_endian(){
     int x = 1;
@@ -24,9 +25,9 @@ MNISTData::MNISTData()
 {
 }
 
-void MNISTData::load_images(string path){
+void MNISTData::load_images(QString path){
     ifstream file;
-    file.open(path.c_str(), ios::binary);
+    file.open(path.toStdString().c_str(), ios::binary);
     file.seekg(4, ios::beg); //skip magic number
     unsigned int number_of_images;
     file.read((char*)&number_of_images, 4);
@@ -50,9 +51,9 @@ void MNISTData::load_images(string path){
     }
 }
 
-void MNISTData::load_labels(string path){
+void MNISTData::load_labels(QString path){
     ifstream file;
-    file.open(path.c_str());
+    file.open(path.toStdString().c_str());
     file.seekg(4, ios::beg); //skip magic number
     unsigned int size;
     file.read((char*)&size, 4);
@@ -79,21 +80,29 @@ unsigned int MNISTData::number_of_columns(){
     return m_columns;
 }
 
-vector<char> MNISTData::image(unsigned int index){
+vector<unsigned char> MNISTData::image_raw_stl(unsigned int index){
     return m_images[index];
 }
 
-int MNISTData::label(unsigned int index){
+QVector<unsigned char> MNISTData::image_raw(unsigned int index){
+    return QVector<unsigned char>::fromStdVector(m_images[index]);
+}
+
+unsigned char MNISTData::label(unsigned int index){
     return static_cast<int>(m_labels[index]);
 }
 
 QImage* MNISTData::image_as_qimage(unsigned int index){
     QImage *qimage = new QImage(number_of_rows(), number_of_columns(), QImage::Format_RGB32);
-    vector<char> image_vector = image(index);
+    vector<unsigned char> image_vector = image_raw_stl(index);
     for(unsigned int r=0;r<number_of_rows();r++)
         for(unsigned int c=0;c<number_of_columns();c++){
             char gray_value = 255 - image_vector[c+r*number_of_columns()];
-            qimage->setPixel(r,c,qRgb(gray_value, gray_value, gray_value));
+            qimage->setPixel(c,r,qRgb(gray_value, gray_value, gray_value));
         }
     return qimage;
+}
+
+void MNISTData::show_image(unsigned int index){
+    UserInteractionAdapter::instance()->display_image(image_as_qimage(index));
 }

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "samples.h"
+#include <QtGui/QImage>
 
 using namespace std;
 
@@ -16,6 +17,7 @@ public:
     virtual std::string get_save_filepath(std::string file_type, std::string source, std::string porpuse) = 0;
     virtual std::string get_load_filepath(std::string file_type, std::string source, std::string porpuse) = 0;
     virtual void display_samples(const std::vector<sample>& samples) = 0;
+    virtual void display_image(QImage* image) = 0;
 
     virtual vector<double> get_double_values(vector<string> value_descriptions, string source, string porpuse, vector<pair<double,double> > limits ) = 0;
     virtual vector<int> get_integer_values(vector<string> value_descriptions, string source, string porpuse, vector<pair<int,int> > limits ) = 0;
