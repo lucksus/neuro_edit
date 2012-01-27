@@ -3,20 +3,24 @@
 
 #include <vector>
 #include <ext/hash_map>
+#include <QtCore/QObject>
+#include <QtCore/QVector>
 
 using namespace std;
 using namespace __gnu_cxx;
 
-class MultiLayerPerceptron
+class MultiLayerPerceptron : public QObject
 {
+Q_OBJECT
 public:
     MultiLayerPerceptron(vector<unsigned int> number_of_units_per_layer);
-    vector<double> forward_run(const vector<double> &input);
-    void backward_run(const vector<double> &target_values);
-    void update_weights(double eta);
 
-    unsigned int layers() const;
-    unsigned int units_in_layer(unsigned int) const;
+    Q_INVOKABLE vector<double> forward_run(const vector<double> &input);
+    Q_INVOKABLE void backward_run(const QVector<double> &target_values);
+    Q_INVOKABLE void update_weights(double eta);
+
+    Q_INVOKABLE unsigned int layers() const;
+    Q_INVOKABLE unsigned int units_in_layer(unsigned int) const;
 
     double activation_function(double x);
     double activation_function_derivative(double x);
@@ -29,6 +33,7 @@ private:
     //hash_map<pair<int,int>, double> m_weights;
 
     void clear_errors_and_membranes();
+    void init_weights_with_random();
 
 
 };
