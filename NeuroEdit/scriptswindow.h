@@ -7,6 +7,7 @@
 #include <QtGui/QListView>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLineEdit>
+#include <QtCore/QThread>
 
 namespace Ui {
     class ScriptsWindow;
@@ -35,11 +36,22 @@ protected:
     virtual void	keyPressEvent ( QKeyEvent * event );
 };
 
+class ScriptsWindow;
+
+class ScriptRunnerThread : public QThread{
+public:
+    ScriptRunnerThread(ScriptsWindow*);
+
+    void run();
+private:
+    ScriptsWindow *m_scripts_window;
+};
+
 class Simulation;
 class ScriptsWindow : public QWidget
 {
     Q_OBJECT
-
+friend class ScriptRunnerThread;
 public:
     explicit ScriptsWindow(QWidget *parent = 0);
     ~ScriptsWindow();
@@ -70,6 +82,7 @@ protected:
 
 private:
     Ui::ScriptsWindow *ui;
+    ScriptRunnerThread m_thread;
     QStringListModel m_simulation_scripts;
     QStringListModel m_network_scripts;
     ScriptSyntaxHighlighter* m_syntax_highlighter;

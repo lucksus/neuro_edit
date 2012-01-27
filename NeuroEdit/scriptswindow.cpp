@@ -7,9 +7,13 @@
 #include <QtCore/QFile>
 #include <QtGui/QFileDialog>
 
+ScriptRunnerThread::ScriptRunnerThread(ScriptsWindow* window)
+:m_scripts_window(window){}
+
 ScriptsWindow::ScriptsWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ScriptsWindow),
+    m_thread(this),
     m_current_history_position(-1)
 {
     ui->setupUi(this);
@@ -33,7 +37,7 @@ ScriptsWindow::ScriptsWindow(QWidget *parent) :
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(textChanged()));
     connect(&m_simulation_scripts, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(simulationScriptsNameChanged(QModelIndex,QModelIndex)));
     //connect(ui->simulationScriptsList, SIGNAL(activated(QModelIndex)), this, SLOT(simulationScriptSelected(QModelIndex)));
-    connect(&Controller::instance(), SIGNAL(script_output(QString)), this, SLOT(script_output(QString)));
+    connect(&Controller::instance(), SIGNAL(script_output(QString)), this, SLOT(script_output(QString)),Qt::QueuedConnection);
 }
 
 void ScriptsWindow::simulationScriptSelected(const QItemSelection & selected, const QItemSelection &){
@@ -103,16 +107,19 @@ void ScriptsWindow::on_saveButton_clicked(){
     file.write(ui->textEdit->toPlainText().toUtf8());
 }
 
-void ScriptsWindow::on_playButton_clicked(){
-    QString return_value;
+void ScriptRunnerThread::run(){
     QString script_name;
     QModelIndex index;
+    index = m_scripts_window->ui->simulationScriptsList->selectionModel()->selectedRows().first();
+    script_name = m_scripts_window->m_simulation_scripts.data(index, Qt::DisplayRole).toString();
+    QString return_value = Controller::instance().simulation()->run_script(script_name);
+    m_scripts_window->ui->outputListWidget->addItem(return_value);
+}
+
+void ScriptsWindow::on_playButton_clicked(){
     if(!ui->simulationScriptsList->selectionModel()) return;
     if(ui->simulationScriptsList->selectionModel()->selectedRows().empty()) return;
-    index = ui->simulationScriptsList->selectionModel()->selectedRows().first();
-    script_name = m_simulation_scripts.data(index, Qt::DisplayRole).toString();
-    return_value = Controller::instance().simulation()->run_script(script_name);
-    ui->outputListWidget->addItem(return_value);
+    m_thread.start();
 }
 
 void ScriptsWindow::on_pauseButton_clicked(){
