@@ -2,6 +2,10 @@
 #include <assert.h>
 #include <boost/foreach.hpp>
 #include "RandomGenerator.h"
+#include "math_constants.h"
+#include <math.h>
+
+
 using namespace NeuroMath;
 
 MultiLayerPerceptron::MultiLayerPerceptron(vector<unsigned int> number_of_units_per_layer)
@@ -35,7 +39,7 @@ vector<double> MultiLayerPerceptron::forward_run(const vector<double> &input){
 
     m_membrane_potentials[0] = input;
     unsigned int layer = 0;
-    while(layer < m_number_of_units_per_layer.size()){
+    while(layer < m_number_of_units_per_layer.size()-1){
         layer++;
         for(unsigned int i=0;i<m_number_of_units_per_layer[layer];i++){
             for(unsigned int j=0;j<m_number_of_units_per_layer[layer-1];j++){
@@ -44,7 +48,10 @@ vector<double> MultiLayerPerceptron::forward_run(const vector<double> &input){
         }
     }
 
-    return m_membrane_potentials[m_number_of_units_per_layer.size()-1];
+    vector<double> result = m_membrane_potentials[m_number_of_units_per_layer.size()-1];
+    BOOST_FOREACH(double &d, result)
+        d = activation_function(d);
+    return result;
 }
 
 void MultiLayerPerceptron::backward_run(const vector<double> &target_values){
@@ -73,11 +80,11 @@ void MultiLayerPerceptron::update_weights(double eta){
 
 
 double MultiLayerPerceptron::activation_function(double x){
-    return x;
+    return 1/(1+pow(NeuroMath::e(),-x));
 }
 
-double MultiLayerPerceptron::activation_function_derivative(double /*x*/){
-    return 0;
+double MultiLayerPerceptron::activation_function_derivative(double x){
+    return activation_function(x) * (1-x);
 }
 
 void MultiLayerPerceptron::clear_errors_and_membranes(){
