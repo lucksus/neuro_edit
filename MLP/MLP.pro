@@ -1,7 +1,7 @@
 TEMPLATE = lib
 TARGET = 
 DEPENDPATH += .
-INCLUDEPATH += . ../NeuronModels
+INCLUDEPATH += . ../NeuronModels ../math
 CONFIG += staticlib
 
 # Input
