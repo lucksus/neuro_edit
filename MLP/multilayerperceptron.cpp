@@ -47,8 +47,7 @@ vector<double> MultiLayerPerceptron::forward_run(const vector<double> &input){
     return m_membrane_potentials[m_number_of_units_per_layer.size()-1];
 }
 
-void MultiLayerPerceptron::backward_run(const QVector<double> &target_values_qt){
-    vector<double> target_values = target_values_qt.toStdVector();
+void MultiLayerPerceptron::backward_run(const vector<double> &target_values){
     assert(target_values.size() == m_number_of_units_per_layer.back());
 
     int layer = m_number_of_units_per_layer.size()-1;

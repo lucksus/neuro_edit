@@ -16,7 +16,7 @@ public:
     MultiLayerPerceptron(vector<unsigned int> number_of_units_per_layer);
 
     Q_INVOKABLE vector<double> forward_run(const vector<double> &input);
-    Q_INVOKABLE void backward_run(const QVector<double> &target_values);
+    Q_INVOKABLE void backward_run(const vector<double> &target_values);
     Q_INVOKABLE void update_weights(double eta);
 
     Q_INVOKABLE unsigned int layers() const;
