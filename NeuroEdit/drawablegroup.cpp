@@ -98,7 +98,9 @@ QRect DrawableGroup::occupied_screen_region(){
 
     int min_x,max_x,min_y,max_y;
     Group* group = static_cast<Group*>(m_object);
-    BOOST_FOREACH(SimulationObject* o, group->objects()){
+    BOOST_FOREACH(QObject* qobj, group->objects()){
+        SimulationObject* o = dynamic_cast<SimulationObject*>(qobj);
+        assert(o);
         Point pos = o->position();
         GLdouble x, y, z;
         gluProject(pos.x, pos.y, pos.z, model_view, projection, viewport, &x, &y, &z);
