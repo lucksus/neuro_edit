@@ -80,12 +80,8 @@ unsigned int MNISTData::number_of_columns(){
     return m_columns;
 }
 
-vector<unsigned char> MNISTData::image_raw_stl(unsigned int index){
+vector<unsigned char> MNISTData::image_raw(unsigned int index){
     return m_images[index];
-}
-
-QVector<unsigned char> MNISTData::image_raw(unsigned int index){
-    return QVector<unsigned char>::fromStdVector(m_images[index]);
 }
 
 unsigned char MNISTData::label(unsigned int index){
@@ -94,7 +90,7 @@ unsigned char MNISTData::label(unsigned int index){
 
 QImage* MNISTData::image_as_qimage(unsigned int index){
     QImage *qimage = new QImage(number_of_rows(), number_of_columns(), QImage::Format_RGB32);
-    vector<unsigned char> image_vector = image_raw_stl(index);
+    vector<unsigned char> image_vector = image_raw(index);
     for(unsigned int r=0;r<number_of_rows();r++)
         for(unsigned int c=0;c<number_of_columns();c++){
             char gray_value = 255 - image_vector[c+r*number_of_columns()];
