@@ -4,9 +4,12 @@
 #include <vector>
 #include <QtGui/QImage>
 #include <QtCore/QVector>
+#include "simulationobject.h"
+
 using namespace std;
 
-class MNISTData : public QObject
+class MultiLayerPerceptron;
+class MNISTData : public SimulationObject
 {
 Q_OBJECT
 public:
@@ -25,6 +28,9 @@ public:
 
     Q_INVOKABLE void show_image(unsigned int index);
 
+    Q_INVOKABLE void train(MultiLayerPerceptron* mlp, unsigned int image_count = 0);
+
+    virtual void update(double /*milli_seconds*/){}
 
 private:
     vector<unsigned char> m_labels;

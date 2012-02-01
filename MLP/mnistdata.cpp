@@ -1,6 +1,8 @@
 #include "mnistdata.h"
 #include <fstream>
 #include "userinteractionadapter.h"
+#include "multilayerperceptron.h"
+#include "log.h"
 
 inline bool is_little_endian(){
     int x = 1;
@@ -101,4 +103,27 @@ QImage* MNISTData::image_as_qimage(unsigned int index){
 
 void MNISTData::show_image(unsigned int index){
     UserInteractionAdapter::instance()->display_image(image_as_qimage(index));
+}
+
+inline vector<double> to_vector_double(const vector<unsigned char> &in){
+    vector<double> r;
+    r.resize(in.size());
+    for(unsigned int i=0;i<in.size();i++) r[i] = static_cast<double>(in[i]);
+    return r;
+}
+
+void MNISTData::train(MultiLayerPerceptron* mlp, unsigned int image_count){
+    if(image_count == 0) image_count = number_of_images();
+    assert(mlp->units_in_layer(0) == m_rows*m_columns);
+    assert(mlp->units_in_layer(mlp->layers()-1) == 10);
+    vector<double> target;
+    target.resize(10,0);
+    for(unsigned int i = 0; i < image_count; i++){
+        Log::instance().log(QString("Learning image %1 ...").arg(i).toStdString(), this);
+        mlp->forward_run(to_vector_double(m_images[i]));
+        target.resize(10,0);
+        target[label(i)] = 1;
+        mlp->backward_run(target);
+        mlp->update_weights(0.2);
+    }
 }
