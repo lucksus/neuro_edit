@@ -79,6 +79,7 @@ std::string Log::object_signature(SimulationObject* object){
 }
 
 void Log::_log(std::string text, Simulation* s){
+    if(!s) return;
     std::ofstream* file = file_for(s);
     (*file) << text << std::endl;
 }
