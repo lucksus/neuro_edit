@@ -13,6 +13,7 @@
 #include "simulation.h"
 #include <stdexcept>
 #include "samples.h"
+#include "multilayerperceptron.h"
 
 Controller::Controller()
 {
@@ -41,6 +42,7 @@ void Controller::init(){
     qRegisterMetaType<Synapse>("Synapse");
     qRegisterMetaType<Samples*>("Samples*");
     qRegisterMetaType<LinearDiscriminator*>("LinearDiscriminator");
+    qRegisterMetaType<MultiLayerPerceptron*>("MultiLayerPerceptron*");
 }
 
 void Controller::close_simulation(){

@@ -7,6 +7,7 @@
 #include <QtGui/QMessageBox>
 #include "multilayerperceptron.h"
 #include "mlpvisualization.h"
+#include <QtCore/QThread>
 
 std::string GuiUserInteractionAdapter::get_save_filepath(std::string file_type, std::string source, std::string){
     return QFileDialog::getSaveFileName(0, source.c_str(), QString(), file_type.c_str()).toStdString();
@@ -138,6 +139,10 @@ void GuiUserInteractionAdapter::display_image(QImage *image){
 }
 
 void GuiUserInteractionAdapter::display_mlp(MultiLayerPerceptron *mlp){
+    if(QThread::currentThread() != thread()){
+        QMetaObject::invokeMethod(this, "display_mlp", Qt::QueuedConnection, Q_ARG(MultiLayerPerceptron*, mlp));
+        return;
+    }
     MLPVisualization* mlpviz = new MLPVisualization(mlp);
     mlpviz->show();
 }

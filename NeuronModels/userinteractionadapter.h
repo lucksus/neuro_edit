@@ -10,7 +10,7 @@ using namespace std;
 
 class MultiLayerPerceptron;
 
-class UserInteractionAdapter
+class UserInteractionAdapter : public QObject
 {
 public:
     static void install_instance(UserInteractionAdapter* instance);
