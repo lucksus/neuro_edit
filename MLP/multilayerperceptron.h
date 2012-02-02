@@ -2,16 +2,16 @@
 #define MULTILAYERPERCEPTRON_H
 
 #include <vector>
-#include <ext/hash_map>
 #include <QtCore/QObject>
 #include <QtCore/QVector>
+#include "simulationobject.h"
 
 using namespace std;
-using namespace __gnu_cxx;
 
-class MultiLayerPerceptron : public QObject
+class MultiLayerPerceptron : public SimulationObject
 {
 Q_OBJECT
+friend class MLPVisualization;
 public:
     MultiLayerPerceptron(vector<unsigned int> number_of_units_per_layer);
 
@@ -25,6 +25,11 @@ public:
     double activation_function(double x);
     double activation_function_derivative(double x);
 
+    virtual void update(double /*milli_seconds*/){};
+
+signals:
+    void changed();
+
 private:
     vector<unsigned int> m_number_of_units_per_layer;
     vector<   vector< vector<double> >   > m_weights;
@@ -37,5 +42,6 @@ private:
 
 
 };
+
 
 #endif // MULTILAYERPERCEPTRON_H
