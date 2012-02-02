@@ -134,6 +134,14 @@ QScriptValue print(QScriptContext *ctx, QScriptEngine*)
     return QScriptValue();
 }
 
+QScriptValue show(QScriptContext *ctx, QScriptEngine*)
+{
+    MultiLayerPerceptron* mlp = qobject_cast<MultiLayerPerceptron*>(ctx->argument(0).toQObject());
+    if(mlp) UserInteractionAdapter::instance()->display_mlp(mlp);
+    return QScriptValue();
+}
+
+
 void ScriptEngine::add_constructors(){
     m_engine.globalObject().setProperty("Neuron", m_engine.newFunction(Neuron_ctor));
     m_engine.globalObject().setProperty("Group", m_engine.newFunction(Group_ctor));
@@ -144,6 +152,7 @@ void ScriptEngine::add_constructors(){
 
 void ScriptEngine::add_global_functions(){
     m_engine.globalObject().setProperty("print", m_engine.newFunction(print));
+    m_engine.globalObject().setProperty("show", m_engine.newFunction(show));
 }
 
 void ScriptEngine::add_conversion_functions(){

@@ -51,6 +51,7 @@ vector<double> MultiLayerPerceptron::forward_run(const vector<double> &input){
     vector<double> result = m_membrane_potentials[m_number_of_units_per_layer.size()-1];
     BOOST_FOREACH(double &d, result)
         d = activation_function(d);
+    emit changed();
     return result;
 }
 
@@ -69,6 +70,7 @@ void MultiLayerPerceptron::backward_run(const vector<double> &target_values){
             for(unsigned int j=0;j<m_number_of_units_per_layer[layer+1];j++)
                 m_errors[layer][i] += m_errors[layer+1][j] * activation_function_derivative(m_membrane_potentials[layer+1][j]) * m_weights[layer][i][j];
     }
+    emit changed();
 }
 
 void MultiLayerPerceptron::update_weights(double eta){
@@ -76,6 +78,7 @@ void MultiLayerPerceptron::update_weights(double eta){
         for(unsigned int i = 0; i < m_number_of_units_per_layer[layer]; i++)
             for(unsigned int j = 0; j< m_number_of_units_per_layer[layer+1]; j++)
                 m_weights[layer][i][j] += m_errors[layer+1][j] * activation_function(m_membrane_potentials[layer][i]) * eta;
+    emit changed();
 }
 
 
