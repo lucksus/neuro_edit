@@ -40,6 +40,16 @@ void doubleVectorFromScriptValue(const QScriptValue& value, vector<double>& vec)
 Q_DECLARE_METATYPE(vector<double>);
 Q_DECLARE_METATYPE(vector<unsigned char>);
 
+ScriptEngine::ScriptEngine(){
+    add_constructors();
+    add_global_functions();
+    add_conversion_functions();
+    add_random_generator();
+    qScriptRegisterMetaType< vector<unsigned char> >(&m_engine, charVectorToScriptValue, charVectorFromScriptValue);
+    qScriptRegisterMetaType< vector<double> >(&m_engine, doubleVectorToScriptValue, doubleVectorFromScriptValue);
+}
+
+
 ScriptEngine::ScriptEngine(Simulation* sim){
     if(!sim) return;
     m_engine.setGlobalObject(m_engine.newQObject(sim));

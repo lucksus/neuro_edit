@@ -14,9 +14,11 @@
 #include <stdexcept>
 #include "samples.h"
 #include "multilayerperceptron.h"
+#include "scriptengine.h"
 
 Controller::Controller()
 {
+    m_script_engine = new ScriptEngine();
 }
 
 Controller& Controller::instance(){
@@ -93,6 +95,10 @@ void Controller::save_simulation(){
 
 Simulation* Controller::simulation(){
     return m_simulation;
+}
+
+ScriptEngine* Controller::script_engine(){
+    return m_script_engine;
 }
 
 void Controller::output_from_script(QString output){

@@ -8,6 +8,7 @@ class Network;
 class ScriptEngine
 {
 public:
+    ScriptEngine();
     ScriptEngine(Simulation*);
     ScriptEngine(Network*);
     QString evaluate(const QString&);

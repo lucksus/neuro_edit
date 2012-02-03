@@ -3,6 +3,7 @@
 #include <QtCore/QObject>
 
 class Simulation;
+class ScriptEngine;
 class Controller : public QObject
 {
 Q_OBJECT
@@ -21,6 +22,7 @@ public:
     void import_xml_simulation(std::string);
 
     Simulation* simulation();
+    ScriptEngine* script_engine();
 
 public slots:
     void output_from_script(QString);
@@ -33,6 +35,7 @@ private:
     Controller();
     Simulation* m_simulation;
     std::string m_simulation_filename;
+    ScriptEngine* m_script_engine;
 };
 
 #endif // CONTROLLER_H
