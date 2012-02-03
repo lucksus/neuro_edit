@@ -4,7 +4,9 @@
 #include "RandomGenerator.h"
 #include "math_constants.h"
 #include <math.h>
-
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <fstream>
 
 using namespace NeuroMath;
 
@@ -106,3 +108,35 @@ unsigned int MultiLayerPerceptron::units_in_layer(unsigned int i) const{
     return m_number_of_units_per_layer[i];
 }
 
+void MultiLayerPerceptron::save(QString path){
+    std::ofstream file;
+    file.open(path.toStdString().c_str());
+    boost::archive::binary_oarchive archive(file);
+    archive.register_type<MultiLayerPerceptron>();
+    archive << *this;
+}
+
+MultiLayerPerceptron* MultiLayerPerceptron::load(QString path){
+    std::ifstream file;
+    file.open(path.toStdString().c_str());
+    boost::archive::binary_iarchive archive(file);
+    archive.register_type<MultiLayerPerceptron>();
+    MultiLayerPerceptron* mlp = new MultiLayerPerceptron();
+    archive >> *mlp;
+    return mlp;
+}
+
+QString MultiLayerPerceptron::print(){
+    QString s;
+    for(unsigned int layer=0; layer < m_number_of_units_per_layer.size()-1; layer++){
+        s.append("Layer %1:\n").arg(layer+1);
+        for(unsigned int pre=0; pre < m_number_of_units_per_layer[layer]; pre++){
+            for(unsigned int post=0; post < m_number_of_units_per_layer[layer+1]; post++){
+                s.append(QString::number(m_weights[layer][pre][post], 'f', 2));
+                if(post < m_number_of_units_per_layer[layer+1]-1) s.append("\t");
+                else s.append("\n");
+            }
+        }
+    }
+    return s;
+}

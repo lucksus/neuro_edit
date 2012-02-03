@@ -5,6 +5,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QVector>
 #include "simulationobject.h"
+#include <boost/serialization/nvp.hpp>
+#include <boost/serialization/vector.hpp>
 
 using namespace std;
 
@@ -12,6 +14,7 @@ class MultiLayerPerceptron : public SimulationObject
 {
 Q_OBJECT
 friend class MLPVisualization;
+friend class boost::serialization::access;
 public:
     MultiLayerPerceptron(vector<unsigned int> number_of_units_per_layer);
 
@@ -27,10 +30,15 @@ public:
 
     virtual void update(double /*milli_seconds*/){};
 
+    Q_INVOKABLE void save(QString path);
+    static MultiLayerPerceptron* load(QString path);
+    Q_INVOKABLE virtual QString print();
+
 signals:
     void changed();
 
 private:
+    explicit MultiLayerPerceptron() {}
     vector<unsigned int> m_number_of_units_per_layer;
     vector<   vector< vector<double> >   > m_weights;
     vector<   vector<     double     >   > m_errors;
@@ -39,6 +47,16 @@ private:
 
     void clear_errors_and_membranes();
     void init_weights_with_random();
+
+
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int)
+    {
+        ar & BOOST_SERIALIZATION_NVP(m_number_of_units_per_layer);
+        ar & BOOST_SERIALIZATION_NVP(m_weights);
+        ar & BOOST_SERIALIZATION_NVP(m_errors);
+        ar & BOOST_SERIALIZATION_NVP(m_membrane_potentials);
+    }
 
 
 };
