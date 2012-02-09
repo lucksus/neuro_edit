@@ -71,15 +71,16 @@ void Group::create_2d_grid(unsigned int width, unsigned int height, double dista
     set_drawn_horizontally(false);
 }
 
-void Group::create_connections(double dist1){
-    double alpha = 0.693147 / dist1; //ln(0.5)
+void Group::create_connections(double connection_scaling, double lambda){
+    //double alpha = 0.693147 / dist1; //ln(0.5)
     std::set<Neuron*> local_neurons = neurons();
     BOOST_FOREACH(Neuron* n1, local_neurons){
         BOOST_FOREACH(Neuron* n2, local_neurons){
             if(n1==n2) continue;
             double distance = n1->position().distance(n2->position());
             double rand = NeuroMath::RandomGenerator::getInstance()->uniform(0,1);
-            double e = pow(NeuroMath::e(), -distance * alpha);
+            //double e = pow(NeuroMath::e(), -distance * alpha);
+            double e = connection_scaling*pow(NeuroMath::e(), -pow(distance / lambda, 2));
             if(rand < e){
                 simulation()->network()->connect(n1->axon_root(), n2->dendrites_root());
             }
@@ -194,12 +195,14 @@ void Group::do_user_action(std::string action){
 
     if("Create connections..." == action){
         std::vector<string> names;
-        names.push_back("Distance with probability=0.5");
+        names.push_back("Connection scaling");
+        names.push_back("lambda");
         std::vector<std::pair<double,double> > limits;
         limits.push_back(std::pair<double,double>(0,std::numeric_limits<double>::max()));
         std::vector<double> values = UserInteractionAdapter::instance()->get_double_values(names, "LSMColumn "+objectName().toStdString(), "Parameter for connection creation", limits);
-        if(values.size() != 1) return;
-        create_connections(values[0]);
+        assert(values.size() == 2);
+        if(values.size() != 2) return;
+        create_connections(values[0], values[1]);
     }
 
     if("Set synapse weights..." == action){

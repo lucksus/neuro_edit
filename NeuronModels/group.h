@@ -61,7 +61,7 @@ public:
 
     Q_INVOKABLE void create_mlp(unsigned int number_of_layers, std::vector<int> number_of_neurons);
     Q_INVOKABLE void create_2d_grid(unsigned int width, unsigned int height, double distance);
-    Q_INVOKABLE void create_connections(double distance_constant);
+    Q_INVOKABLE void create_connections(double connection_scaling, double lambda);
     Q_INVOKABLE void set_synapse_weights(double mean, double var);
 
     Q_INVOKABLE void connect_input_neuron_with_all(SpikingObject*);
