@@ -16,6 +16,7 @@
 #include "drawabledendritenode.h"
 #include "glhelpfunctions.h"
 #include "samples.h"
+#include "lsmreadoutneuron.h"
 
 bool DrawableLinearDiscriminator::is_applicable_to(SimulationObject* object){
     LinearDiscriminator* n = dynamic_cast<LinearDiscriminator*>(object);
@@ -52,5 +53,18 @@ void DrawableLinearDiscriminator::draw_geometry_impl(){
         glVertex3d(vec.x, vec.y, vec.z);
     }
     glEnd();
+
+    LSMReadOutNeuron* read_out = dynamic_cast<LSMReadOutNeuron*>(m_object);
+    if(read_out){
+        glColor4f(0.0,0.8,0.0,0.5);
+        glLineWidth(1);
+        glBegin(GL_LINES);
+        BOOST_FOREACH(SpikingObject* o, read_out->liquid_units()){
+            glVertex3d(0, 0, 0);
+            Point vec = o->position() - ld->position();
+            glVertex3d(vec.x, vec.y, vec.z);
+        }
+        glEnd();
+    }
 
 }

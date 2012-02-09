@@ -11,7 +11,7 @@
 #include "mnistdata.h"
 #include "userinteractionadapter.h"
 #include "multilayerperceptron.h"
-
+#include "lsmreadoutneuron.h"
 
 
 QScriptValue charVectorToScriptValue(QScriptEngine* engine, const vector<unsigned char>& vec){
@@ -109,6 +109,12 @@ QScriptValue Group_ctor(QScriptContext* /*ctx*/, QScriptEngine *eng){
     return eng->newQObject(group_object);
 }
 
+QScriptValue ReadOut_ctor(QScriptContext* /*ctx*/, QScriptEngine *eng){
+    LSMReadOutNeuron* read_out = new LSMReadOutNeuron(Controller::instance().simulation());
+    Controller::instance().simulation()->network()->add_object(read_out);
+    return eng->newQObject(read_out);
+}
+
 QScriptValue Point_ctor(QScriptContext *ctx, QScriptEngine *eng){
     Point *p = new Point();
     if(ctx->argumentCount() == 3){
@@ -163,6 +169,7 @@ void ScriptEngine::add_constructors(){
     m_engine.globalObject().setProperty("MNISTData", m_engine.newFunction(MNISTData_ctor));
     m_engine.globalObject().setProperty("MLP", m_engine.newFunction(MultiLayerPerceptron_ctor));
     m_engine.globalObject().setProperty("MLP_load", m_engine.newFunction(MultiLayerPerceptron_load));
+    m_engine.globalObject().setProperty("ReadOut", m_engine.newFunction(ReadOut_ctor));
 }
 
 void ScriptEngine::add_global_functions(){

@@ -38,7 +38,8 @@ SOURCES += izhikevich.cpp \
     lineardiscriminator.cpp \
     ldconnection.cpp \
     group.cpp \
-    log.cpp
+    log.cpp \
+    lsmreadoutneuron.cpp
 
 HEADERS += izhikevich.h \
            network.h \
@@ -63,4 +64,5 @@ HEADERS += izhikevich.h \
     ldconnection.h \
     group.h \
     qtstring_serialization.h \
-    log.h
+    log.h \
+    lsmreadoutneuron.h

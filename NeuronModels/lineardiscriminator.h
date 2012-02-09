@@ -50,8 +50,6 @@ public:
 protected:
     virtual void moved(Point new_position);
 
-private:
-
     template<class Archive>
     void serialize(Archive & ar, const unsigned int)
     {
