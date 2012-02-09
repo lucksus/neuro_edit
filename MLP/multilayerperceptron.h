@@ -22,6 +22,11 @@ public:
     Q_INVOKABLE void backward_run(const vector<double> &target_values);
     Q_INVOKABLE void update_weights(double eta);
 
+    Q_INVOKABLE void add_errors_to_average_update_vector(double eta);
+    Q_INVOKABLE void apply_average_update_vector();
+    Q_INVOKABLE void reset_average_update_vector();
+    Q_INVOKABLE QString print_average_update_vector();
+
     Q_INVOKABLE unsigned int layers() const;
     Q_INVOKABLE unsigned int units_in_layer(unsigned int) const;
 
@@ -45,8 +50,12 @@ private:
     vector<   vector<     double     >   > m_membrane_potentials;
     //hash_map<pair<int,int>, double> m_weights;
 
+    vector<   vector< vector<double> >   > m_average_update_vector;
+    unsigned int m_vectors_in_average_so_far;
+
     void clear_errors_and_membranes();
     void init_weights_with_random();
+    void size_up_average_update_vector();
 
 
     template<class Archive>
@@ -56,6 +65,7 @@ private:
         ar & BOOST_SERIALIZATION_NVP(m_weights);
         ar & BOOST_SERIALIZATION_NVP(m_errors);
         ar & BOOST_SERIALIZATION_NVP(m_membrane_potentials);
+        size_up_average_update_vector();
     }
 
 
