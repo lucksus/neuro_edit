@@ -134,6 +134,10 @@ QScriptValue MultiLayerPerceptron_ctor(QScriptContext *ctx, QScriptEngine *eng){
     return eng->newQObject(new MultiLayerPerceptron(number_of_units_in_layer), QScriptEngine::ScriptOwnership);
 }
 
+QScriptValue MultiLayerPerceptron_load(QScriptContext *ctx, QScriptEngine *eng){
+    return eng->newQObject(MultiLayerPerceptron::load(ctx->argument(0).toString()), QScriptEngine::ScriptOwnership);
+}
+
 QScriptValue print(QScriptContext *ctx, QScriptEngine*)
 {
     QString output;
@@ -158,6 +162,7 @@ void ScriptEngine::add_constructors(){
     m_engine.globalObject().setProperty("Point", m_engine.newFunction(Point_ctor));
     m_engine.globalObject().setProperty("MNISTData", m_engine.newFunction(MNISTData_ctor));
     m_engine.globalObject().setProperty("MLP", m_engine.newFunction(MultiLayerPerceptron_ctor));
+    m_engine.globalObject().setProperty("MLP_load", m_engine.newFunction(MultiLayerPerceptron_load));
 }
 
 void ScriptEngine::add_global_functions(){
