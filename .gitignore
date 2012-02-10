@@ -1,6 +1,6 @@
 neuro_edit.app
 *Makefile*
-*.pro.user
+*.pro.user*
 build/*
 *.o
 moc_*.cpp
