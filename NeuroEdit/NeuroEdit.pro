@@ -56,7 +56,9 @@ SOURCES += main.cpp\
     drawablelineardiscriminator.cpp \
     drawableldconnection.cpp \
     drawablegroup.cpp \
-    logwindow.cpp
+    logwindow.cpp \
+    settingsdialog.cpp \
+    guisettings.cpp
 
 HEADERS  += mainwindow.h \
     glscene.h \
@@ -84,7 +86,9 @@ HEADERS  += mainwindow.h \
     drawablelineardiscriminator.h \
     drawableldconnection.h \
     drawablegroup.h \
-    logwindow.h
+    logwindow.h \
+    settingsdialog.h \
+    guisettings.h
 
 FORMS    += mainwindow.ui \
     izhikevich_properties_widget.ui \
@@ -93,7 +97,8 @@ FORMS    += mainwindow.ui \
     neuron_manipulator_widget.ui \
     about_dialog.ui \
     scriptswindow.ui \
-    logwindow.ui
+    logwindow.ui \
+    settingsdialog.ui
 
 RESOURCES += \
     icons.qrc

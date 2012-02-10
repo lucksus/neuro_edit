@@ -18,6 +18,7 @@
 #include <GLUT/glut.h>
 #endif
 #include "math_constants.h"
+#include "guisettings.h"
 
 bool DrawableSynapse::is_applicable_to(SimulationObject* object){
     Synapse* s = dynamic_cast<Synapse*>(object);
@@ -57,18 +58,20 @@ void DrawableSynapse::draw_geometry_impl(){
     }
     vec /= synapse->incoming_axons().size();
     vec /= vec.length();
-
-    double size_factor = log(abs(synapse->weight())/5);
-
-    //GLHelpFunctions::draw_frustum(vec*START_DISTANCE,vec*END_DISTANCE,START_SIZE,END_SIZE,32, true, true);
-    glPushMatrix();
     vec = vec*START_DISTANCE;
-    glTranslated(vec.x,vec.y,vec.z);
-    glutSolidSphere(SIZE_AT_WEIGHT_30*size_factor, 5,5);
-    glPopMatrix();
-    //glBegin(GL_POINTS);
-    //glVertex3f(vec.x, vec.y, vec.z);
-    //glEnd();
+
+    if(GuiSettings::instance().graphics.synapse_detail < 1){
+        glBegin(GL_POINTS);
+        glVertex3f(vec.x, vec.y, vec.z);
+        glEnd();
+    }else{
+        double size_factor = log(abs(synapse->weight())/5);
+        //GLHelpFunctions::draw_frustum(vec*START_DISTANCE,vec*END_DISTANCE,START_SIZE,END_SIZE,32, true, true);
+        glPushMatrix();
+        glTranslated(vec.x,vec.y,vec.z);
+        glutSolidSphere(SIZE_AT_WEIGHT_30*size_factor, 5,5);
+        glPopMatrix();
+    }
 }
 
 
@@ -83,3 +86,4 @@ Point DrawableSynapse::displacement(Synapse* synapse){
     return vec * (START_DISTANCE+END_DISTANCE)/2;
 
 }
+

@@ -43,6 +43,7 @@ protected:
 
 private:
     bool m_dont_use_display_lists;
+    int m_last_seen_settings_hash;
 };
 
 

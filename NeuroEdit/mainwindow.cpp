@@ -31,7 +31,8 @@ MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     m_izhikevich_system_plot_widget(this),
     m_sim(sim),
     m_property_browser(this),
-    m_log_window(this)
+    m_log_window(this),
+    m_settings_dialog(this)
 {
     ui->setupUi(this);
 
@@ -304,6 +305,10 @@ void MainWindow::on_actionClose_triggered(bool){
     settings.setValue("windowState", saveState());
     Controller::instance().close_simulation();
     //set_insert_actions_enabled(false);
+}
+
+void MainWindow::on_actionSettings_triggered(bool){
+    m_settings_dialog.show();
 }
 
 void MainWindow::on_actionQuit_triggered(bool){

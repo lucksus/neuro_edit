@@ -8,11 +8,17 @@
 #else
 #include <GL/gl.h>
 #endif
+#ifdef __linux__
+#include <GL/glut.h>
+#else
+#include <GLUT/glut.h>
+#endif
 #include <assert.h>
 #include "dendriticnode.h"
 #include <boost/foreach.hpp>
 #include "drawabledendritenode.h"
 #include "glhelpfunctions.h"
+#include "guisettings.h"
 
 bool DrawableNeuron::is_applicable_to(SimulationObject* object){
     Neuron* n = dynamic_cast<Neuron*>(object);
@@ -36,5 +42,8 @@ void DrawableNeuron::set_color_and_lightning(){
 }
 
 void DrawableNeuron::draw_geometry_impl(){
-    GLHelpFunctions::draw_frustum(Point(-SIZE/2,0,0),Point(SIZE/2,0,0),SIZE,SIZE*2/4,4, true, true);
+    if(GuiSettings::instance().graphics.neuron_detail < 1)
+        glutSolidCube(SIZE);
+    else
+        GLHelpFunctions::draw_frustum(Point(-SIZE/2,0,0),Point(SIZE/2,0,0),SIZE,SIZE*2/4,4, true, true);
 }

@@ -11,6 +11,7 @@
 #include "propertybrowser.h"
 #include "scriptswindow.h"
 #include "logwindow.h"
+#include "settingsdialog.h"
 
 namespace Ui {
     class MainWindow;
@@ -50,6 +51,7 @@ private slots:
      void on_actionClose_triggered(bool);
      void on_actionExport_Simulation_to_XML_triggered(bool);
      void on_actionImport_Simulation_from_XML_triggered(bool);
+     void on_actionSettings_triggered(bool);
      void on_actionQuit_triggered(bool);
 
      void on_actionCut_triggered(bool);
@@ -92,6 +94,7 @@ private:
     PropertyBrowser m_property_browser;
     ScriptsWindow m_scripts_window;
     LogWindow m_log_window;
+    SettingsDialog m_settings_dialog;
 
     std::set<QDockWidget*> m_dock_widgets;
 

@@ -22,6 +22,7 @@
 #include "lineardiscriminator.h"
 #include "ldconnection.h"
 #include "group.h"
+#include "guisettings.h"
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent),
@@ -559,7 +560,8 @@ void GLScene::paint_object(SimulationObject* o, bool picking, bool moving){
 
     if(!moving)     //child objects are not moved when parent is moved!
     BOOST_FOREACH(SimulationObject* child, o->children()){
-        paint_object(child, picking, moving);
+        if(GuiSettings::instance().graphics.neuron_detail > 0)
+            paint_object(child, picking, moving);
     }
 
     if(o->bad_hacks[GLScene::DRAWABLE_POINTER] == 0){

@@ -13,6 +13,7 @@
 #include "simulationobject.h"
 #include "glscene.h"
 #include <boost/tuple/tuple_comparison.hpp>
+#include "guisettings.h"
 
 boost::tuple<GLuint,GLuint,GLuint> Drawable::s_next_picking_name;
 std::map<boost::tuple<GLuint,GLuint,GLuint>, SimulationObject*> Drawable::s_picking_names;
@@ -24,7 +25,7 @@ void Drawable::draw(){
         return;
     }
 
-    if(m_display_list != 0 && !m_dont_use_display_lists){
+    if(m_display_list != 0 && !m_dont_use_display_lists && m_last_seen_settings_hash == GuiSettings::instance().hash()){
         glCallList(m_display_list);
     }else{
         m_display_list=glGenLists(1);
@@ -33,6 +34,7 @@ void Drawable::draw(){
         set_color_and_lightning();
         draw_geometry_impl();
         glEndList();
+        m_last_seen_settings_hash = GuiSettings::instance().hash();
     }
 }
 
