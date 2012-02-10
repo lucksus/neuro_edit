@@ -124,7 +124,7 @@ void ScriptsWindow::on_playButton_clicked(){
 }
 
 void ScriptsWindow::on_pauseButton_clicked(){
-    Controller::instance().script_engine()->trigger_debugger();
+    //Controller::instance().script_engine()->trigger_debugger();
 }
 
 void ScriptsWindow::textChanged(){
