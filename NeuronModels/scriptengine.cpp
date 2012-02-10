@@ -161,6 +161,10 @@ QScriptValue show(QScriptContext *ctx, QScriptEngine*)
     return QScriptValue();
 }
 
+QScriptValue get_simulation(QScriptContext *ctx, QScriptEngine* eng)
+{
+    return eng->newQObject(Controller::instance().simulation());
+}
 
 void ScriptEngine::add_constructors(){
     m_engine.globalObject().setProperty("Neuron", m_engine.newFunction(Neuron_ctor));
@@ -175,6 +179,7 @@ void ScriptEngine::add_constructors(){
 void ScriptEngine::add_global_functions(){
     m_engine.globalObject().setProperty("print", m_engine.newFunction(print));
     m_engine.globalObject().setProperty("show", m_engine.newFunction(show));
+    m_engine.globalObject().setProperty("simulation", m_engine.newFunction(get_simulation));
 }
 
 void ScriptEngine::add_conversion_functions(){
