@@ -5,8 +5,12 @@
 #include "group.h"
 #include "neuron.h"
 
+LSMReadOutNeuron::LSMReadOutNeuron()
+ : m_time_constant(50), m_bias(1), m_bias_weight(1)
+{}
+
 LSMReadOutNeuron::LSMReadOutNeuron(Simulation* sim)
-    : LinearDiscriminator(sim), m_time_constant(50), m_bias(1)
+    : LinearDiscriminator(sim), m_time_constant(50), m_bias(1), m_bias_weight(1)
 {
 }
 

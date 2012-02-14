@@ -9,7 +9,7 @@ CurrentInducer::CurrentInducer(Simulation* s)
 }
 
 CurrentInducer::CurrentInducer(DendriticNode* n) :
-        SimulationObject(n->neuron()), m_target(n), m_active(false)
+        SimulationObject(n->neuron()), m_target(n), m_current(0), m_active(false)
 {
     set_user_movable(false);
     set_position(n->position());

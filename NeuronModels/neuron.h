@@ -29,8 +29,8 @@ public:
 
     std::set<SimulationObject*> about_to_remove(SimulationObject* object_to_be_deleted);
 
-    AxonNode* axon_root();
-    DendriticNode* dendrites_root();
+    Q_INVOKABLE AxonNode* axon_root();
+    Q_INVOKABLE DendriticNode* dendrites_root();
     std::set<Synapse*> incoming_synapses();
 
 protected:

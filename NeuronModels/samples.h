@@ -33,8 +33,8 @@ public:
     Samples(){};
     virtual void update(double milli_seconds);
 
-    void add_current_inducer(CurrentInducer*);
-    void remove_current_inducer(CurrentInducer*);
+    Q_INVOKABLE void add_current_inducer(CurrentInducer*);
+    Q_INVOKABLE void remove_current_inducer(CurrentInducer*);
     const std::list<CurrentInducer*>& current_inducers();
 
     void add_linear_discriminator(LinearDiscriminator*);
@@ -44,6 +44,7 @@ public:
     void set_samples(const std::vector<sample>& samples);
     std::vector<sample> samples();
 
+    Q_INVOKABLE void read_from_photoss_signal_file(QString filename) {read_from_photoss_signal_file(filename.toStdString());}
     void read_from_photoss_signal_file(std::string filename);
 
     virtual std::list<std::string> user_actions();

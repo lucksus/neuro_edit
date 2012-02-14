@@ -13,6 +13,7 @@ class CurrentInducer;
 
 class DendriticNode : public SimulationObject
 {
+Q_OBJECT
 friend class boost::serialization::access;
 public:
     DendriticNode(){}
@@ -96,4 +97,5 @@ struct is_virtual_base_of<SimulationObject, DendriticNode>: public mpl::true_ {}
 }
 
 Q_DECLARE_METATYPE(DendriticNode)
+Q_DECLARE_METATYPE(DendriticNode*)
 #endif // DENDRITICNODE_H

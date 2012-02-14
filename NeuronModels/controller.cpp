@@ -35,6 +35,7 @@ void Controller::init(){
     qRegisterMetaType<Axon>("Axon");
     qRegisterMetaType<AxonNode>("AxonNode");
     qRegisterMetaType<DendriticNode>("DendriticNode");
+    qRegisterMetaType<DendriticNode*>("DendriticNode*");
     qRegisterMetaType<Izhikevich>("Izhikevich");
     qRegisterMetaType<Network>("Network");
     qRegisterMetaType<Network*>("Network*");

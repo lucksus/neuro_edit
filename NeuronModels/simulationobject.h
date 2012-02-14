@@ -16,8 +16,8 @@ class Simulation;
 class SimulationObject : public QObject
 {
 Q_OBJECT
-Q_PROPERTY(Point position READ position WRITE set_position)
-Q_PROPERTY(Point* pos READ pos WRITE set_pos)
+//Q_PROPERTY(Point position READ position WRITE set_position)
+Q_PROPERTY(Point* position READ pos WRITE set_pos)
 friend class boost::serialization::access;
 public:
     SimulationObject(Simulation*);

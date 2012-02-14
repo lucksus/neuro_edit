@@ -16,6 +16,23 @@
 #include "lineardiscriminator.h"
 #include "ldconnection.h"
 #include "group.h"
+#include "lsmreadoutneuron.h"
+
+#define REGISTER_ALL_TYPES(archive) \
+    archive.register_type<Neuron>(); \
+    archive.register_type<Izhikevich>(); \
+    archive.register_type<Axon>(); \
+    archive.register_type<AxonNode>(); \
+    archive.register_type<Synapse>(); \
+    archive.register_type<DendriticNode>(); \
+    archive.register_type<Network>(); \
+    archive.register_type<Simulation>(); \
+    archive.register_type<Samples>(); \
+    archive.register_type<CurrentInducer>(); \
+    archive.register_type<LinearDiscriminator>(); \
+    archive.register_type<LDConnection>(); \
+    archive.register_type<Group>(); \
+    archive.register_type<LSMReadOutNeuron>(); \
 
 SerializationHelper& SerializationHelper::instance(){
     static SerializationHelper sh;
@@ -44,19 +61,7 @@ SerializationHelper::SerializationHelper()
 
 void SerializationHelper::serialize_simulation_xml(std::ostream& stream, Simulation* simulation){
     boost::archive::xml_oarchive archive(stream);
-    archive.register_type<Neuron>();
-    archive.register_type<Izhikevich>();
-    archive.register_type<Axon>();
-    archive.register_type<AxonNode>();
-    archive.register_type<Synapse>();
-    archive.register_type<DendriticNode>();
-    archive.register_type<Network>();
-    archive.register_type<Simulation>();
-    archive.register_type<Samples>();
-    archive.register_type<CurrentInducer>();
-    archive.register_type<LinearDiscriminator>();
-    archive.register_type<LDConnection>();
-    archive.register_type<Group>();
+    REGISTER_ALL_TYPES(archive);
 
     try{
     archive << boost::serialization::make_nvp("simulation",*simulation);
@@ -67,19 +72,7 @@ void SerializationHelper::serialize_simulation_xml(std::ostream& stream, Simulat
 
 Simulation* SerializationHelper::deserialize_simulation_xml(std::istream& stream){
     boost::archive::xml_iarchive archive(stream);
-    archive.register_type<Neuron>();
-    archive.register_type<Izhikevich>();
-    archive.register_type<Axon>();
-    archive.register_type<AxonNode>();
-    archive.register_type<Synapse>();
-    archive.register_type<DendriticNode>();
-    archive.register_type<Network>();
-    archive.register_type<Simulation>();
-    archive.register_type<Samples>();
-    archive.register_type<CurrentInducer>();
-    archive.register_type<LinearDiscriminator>();
-    archive.register_type<LDConnection>();
-    archive.register_type<Group>();
+    REGISTER_ALL_TYPES(archive);
 
     Simulation* s = new Simulation;
     try{
@@ -94,19 +87,7 @@ Simulation* SerializationHelper::deserialize_simulation_xml(std::istream& stream
 
 void SerializationHelper::serialize_simulation(std::ostream& stream, Simulation* simulation){
     boost::archive::binary_oarchive archive(stream);
-    archive.register_type<Neuron>();
-    archive.register_type<Izhikevich>();
-    archive.register_type<Axon>();
-    archive.register_type<AxonNode>();
-    archive.register_type<Synapse>();
-    archive.register_type<DendriticNode>();
-    archive.register_type<Network>();
-    archive.register_type<Simulation>();
-    archive.register_type<Samples>();
-    archive.register_type<CurrentInducer>();
-    archive.register_type<LinearDiscriminator>();
-    archive.register_type<LDConnection>();
-    archive.register_type<Group>();
+    REGISTER_ALL_TYPES(archive);
 
     try{
     archive << boost::serialization::make_nvp("simulation",*simulation);
@@ -117,19 +98,7 @@ void SerializationHelper::serialize_simulation(std::ostream& stream, Simulation*
 
 Simulation* SerializationHelper::deserialize_simulation(std::istream& stream){
     boost::archive::binary_iarchive archive(stream);
-    archive.register_type<Neuron>();
-    archive.register_type<Izhikevich>();
-    archive.register_type<Axon>();
-    archive.register_type<AxonNode>();
-    archive.register_type<Synapse>();
-    archive.register_type<DendriticNode>();
-    archive.register_type<Network>();
-    archive.register_type<Simulation>();
-    archive.register_type<Samples>();
-    archive.register_type<CurrentInducer>();
-    archive.register_type<LinearDiscriminator>();
-    archive.register_type<LDConnection>();
-    archive.register_type<Group>();
+    REGISTER_ALL_TYPES(archive);
 
     Simulation* s = new Simulation;
     try{
@@ -144,17 +113,7 @@ Simulation* SerializationHelper::deserialize_simulation(std::istream& stream){
 
 void SerializationHelper::serialize_network(std::ostream& stream, Network* network){
     boost::archive::binary_oarchive archive(stream);
-    archive.register_type<Neuron>();
-    archive.register_type<Izhikevich>();
-    archive.register_type<Axon>();
-    archive.register_type<AxonNode>();
-    archive.register_type<Synapse>();
-    archive.register_type<DendriticNode>();
-    archive.register_type<Samples>();
-    archive.register_type<CurrentInducer>();
-    archive.register_type<LinearDiscriminator>();
-    archive.register_type<LDConnection>();
-    archive.register_type<Group>();
+    REGISTER_ALL_TYPES(archive);
 
     try{
     archive << boost::serialization::make_nvp("network",*network);
@@ -165,17 +124,7 @@ void SerializationHelper::serialize_network(std::ostream& stream, Network* netwo
 
 Network* SerializationHelper::deserialize_network(std::istream& stream){
     boost::archive::binary_iarchive archive(stream);
-    archive.register_type<Neuron>();
-    archive.register_type<Izhikevich>();
-    archive.register_type<Axon>();
-    archive.register_type<AxonNode>();
-    archive.register_type<Synapse>();
-    archive.register_type<DendriticNode>();
-    archive.register_type<Samples>();
-    archive.register_type<CurrentInducer>();
-    archive.register_type<LinearDiscriminator>();
-    archive.register_type<LDConnection>();
-    archive.register_type<Group>();
+    REGISTER_ALL_TYPES(archive);
 
     Network* n = new Network;
     try{
@@ -190,17 +139,7 @@ Network* SerializationHelper::deserialize_network(std::istream& stream){
 
 void SerializationHelper::serialize_objects(std::ostream& stream, std::set<SimulationObject*> objects){
     boost::archive::binary_oarchive archive(stream);
-    archive.register_type<Neuron>();
-    archive.register_type<Izhikevich>();
-    archive.register_type<Axon>();
-    archive.register_type<AxonNode>();
-    archive.register_type<Synapse>();
-    archive.register_type<DendriticNode>();
-    archive.register_type<Samples>();
-    archive.register_type<CurrentInducer>();
-    archive.register_type<LinearDiscriminator>();
-    archive.register_type<LDConnection>();
-    archive.register_type<Group>();
+    REGISTER_ALL_TYPES(archive);
 
     try{
     archive << boost::serialization::make_nvp("objects",objects);
@@ -211,17 +150,7 @@ void SerializationHelper::serialize_objects(std::ostream& stream, std::set<Simul
 
 std::set<SimulationObject*> SerializationHelper::deserialize_objects(std::istream& stream){
     boost::archive::binary_iarchive archive(stream);
-    archive.register_type<Neuron>();
-    archive.register_type<Izhikevich>();
-    archive.register_type<Axon>();
-    archive.register_type<AxonNode>();
-    archive.register_type<Synapse>();
-    archive.register_type<DendriticNode>();
-    archive.register_type<Samples>();
-    archive.register_type<CurrentInducer>();
-    archive.register_type<LinearDiscriminator>();
-    archive.register_type<LDConnection>();
-    archive.register_type<Group>();
+    REGISTER_ALL_TYPES(archive);
 
     std::set<SimulationObject*> objects;
     try{

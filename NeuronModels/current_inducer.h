@@ -13,6 +13,7 @@ Q_PROPERTY(double current READ current WRITE set_current)
 Q_PROPERTY(bool active READ active WRITE set_active)
 friend class boost::serialization::access;
 public:
+    CurrentInducer():m_target(0),m_current(0),m_active(false){};
     CurrentInducer(Simulation*);
     CurrentInducer(DendriticNode*);
 
@@ -25,7 +26,6 @@ public:
     virtual void update(double milliseconds);
 
 private:
-    CurrentInducer():m_target(0),m_current(0),m_active(false){};
     DendriticNode* m_target;
     double m_current;
     bool m_active;
@@ -44,5 +44,8 @@ namespace boost{
 template<>
 struct is_virtual_base_of<SimulationObject, CurrentInducer>: public mpl::true_ {};
 }
+
+Q_DECLARE_METATYPE(CurrentInducer)
+Q_DECLARE_METATYPE(CurrentInducer*)
 
 #endif // CURRENT_INDUCER_H

@@ -98,8 +98,11 @@ std::vector<sample> Samples::samples(){
     return m_samples;
 }
 
-void Samples::read_from_photoss_signal_file(std::string /*filename*/){
-
+void Samples::read_from_photoss_signal_file(std::string filename){
+    std::ifstream file;
+    file.open(filename.c_str());
+    PhotossSignalImporter importer(&file);
+    m_samples = importer.read_samples(PhotossSignalImporter::ABSOLUTE_VALUES,1);
 }
 
 
@@ -114,10 +117,7 @@ void Samples::do_user_action(std::string action){
     if("Load samples from PHOTOSS signal file..." == action){
         std::string filename = UserInteractionAdapter::instance()->get_load_filepath("PHOTOSS signal file (*.txt)",objectName().toStdString(),"");
         if(filename.size() == 0) return;
-        std::ifstream file;
-        file.open(filename.c_str());
-        PhotossSignalImporter importer(&file);
-        m_samples = importer.read_samples(PhotossSignalImporter::ABSOLUTE_VALUES,1);
+        read_from_photoss_signal_file(filename);
     }
 
 

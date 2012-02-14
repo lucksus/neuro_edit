@@ -27,9 +27,9 @@ public:
     void remove_input(LDConnection*);
     std::set<LDConnection*> inputs();
 
-    void add_output(Samples*);
-    void remove_output(Samples*);
-    std::set<Samples*> outputs();
+    Q_INVOKABLE void add_output(Samples*);
+    Q_INVOKABLE void remove_output(Samples*);
+    Q_INVOKABLE std::set<Samples*> outputs();
 
     double output();
     void set_constant_output(double);

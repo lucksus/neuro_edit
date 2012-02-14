@@ -12,7 +12,7 @@
 #include "userinteractionadapter.h"
 #include "multilayerperceptron.h"
 #include "lsmreadoutneuron.h"
-
+#include "current_inducer.h"
 
 QScriptValue charVectorToScriptValue(QScriptEngine* engine, const vector<unsigned char>& vec){
     return qScriptValueFromSequence(engine, QVector<unsigned char>::fromStdVector(vec));
@@ -115,6 +115,30 @@ QScriptValue ReadOut_ctor(QScriptContext* /*ctx*/, QScriptEngine *eng){
     return eng->newQObject(read_out);
 }
 
+QScriptValue CurrentInducer_ctor(QScriptContext* ctx, QScriptEngine *eng){
+    if(ctx->argumentCount() == 1){
+        DendriticNode* dn = dynamic_cast<DendriticNode*>(ctx->argument(0).toQObject());
+        if(!dn){
+            QVariant var = ctx->argument(0).toVariant();
+            // From QVariant to QObject *
+            QObject * obj = qvariant_cast<QObject *>(var);
+            // from QObject* to myClass*
+            dn = qobject_cast<DendriticNode*>(obj);
+        }
+        if(!dn){
+            dn = ctx->argument(0).toVariant().value<DendriticNode*>();
+        }
+        if(dn){
+            CurrentInducer* ci = new CurrentInducer(dn);
+            Controller::instance().simulation()->network()->add_object(ci);
+            return eng->newQObject(ci);
+        }
+    }
+
+    ctx->throwError("CurrentInducer constructor needs DendriticNode object as first argument!");
+    return QScriptValue();
+}
+
 QScriptValue Point_ctor(QScriptContext *ctx, QScriptEngine *eng){
     Point *p = new Point();
     if(ctx->argumentCount() == 3){
@@ -138,6 +162,12 @@ QScriptValue MultiLayerPerceptron_ctor(QScriptContext *ctx, QScriptEngine *eng){
     for(int i=0;i<ctx->argumentCount();i++)
         number_of_units_in_layer.push_back(ctx->argument(i).toInteger());
     return eng->newQObject(new MultiLayerPerceptron(number_of_units_in_layer), QScriptEngine::ScriptOwnership);
+}
+
+QScriptValue Samples_ctor(QScriptContext *ctx, QScriptEngine *eng){
+    Samples* s = new Samples(Controller::instance().simulation());
+    Controller::instance().simulation()->network()->add_object(s);
+    return eng->newQObject(s, QScriptEngine::ScriptOwnership);
 }
 
 QScriptValue MultiLayerPerceptron_load(QScriptContext *ctx, QScriptEngine *eng){
@@ -174,6 +204,8 @@ void ScriptEngine::add_constructors(){
     m_engine.globalObject().setProperty("MLP", m_engine.newFunction(MultiLayerPerceptron_ctor));
     m_engine.globalObject().setProperty("MLP_load", m_engine.newFunction(MultiLayerPerceptron_load));
     m_engine.globalObject().setProperty("ReadOut", m_engine.newFunction(ReadOut_ctor));
+    m_engine.globalObject().setProperty("Samples", m_engine.newFunction(Samples_ctor));
+    m_engine.globalObject().setProperty("CurrentInducer", m_engine.newFunction(CurrentInducer_ctor));
 }
 
 void ScriptEngine::add_global_functions(){
