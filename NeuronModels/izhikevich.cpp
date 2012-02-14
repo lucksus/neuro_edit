@@ -2,7 +2,7 @@
 #include <math.h>
 
 Izhikevich::Izhikevich(Neuron* neuron, double a, double b, double c, double d)
-    : SimulationObject(neuron), NeuronModel(neuron), m_u(0), m_v(0)
+    : SimulationObject(neuron), NeuronModel(neuron), m_u(0), m_v(c)
 {
     this->a = a;
     this->b = b;
