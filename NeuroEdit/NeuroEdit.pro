@@ -27,7 +27,7 @@ build_pass:CONFIG(debug, debug|release) {
     LIBS += -L../NeuronModels/release -L../Visualizer/debug
 }
 
-LIBS += -L../NeuronModels -lneuron_models -L../Visualizer -lVisualizer -L../math -lmath -L../MLP -lMLP
+LIBS += -L../NeuronModels -lneuron_models -L../Visualizer -lVisualizer -L../math -lmath -L../MLP -lMLP -lqscintilla2
 
 SOURCES += main.cpp\
         mainwindow.cpp \

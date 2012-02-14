@@ -6,6 +6,7 @@
 #include "controller.h"
 #include <QtCore/QFile>
 #include <QtGui/QFileDialog>
+#include <Qsci/qscilexerjavascript.h>
 
 ScriptRunnerThread::ScriptRunnerThread(ScriptsWindow* window)
 :m_scripts_window(window){}
@@ -31,7 +32,8 @@ ScriptsWindow::ScriptsWindow(QWidget *parent) :
 
     ui->simulationScriptsList->setModel(&m_simulation_scripts);
     ui->simulationScriptsList->setSelectionMode(QAbstractItemView::SingleSelection);
-    m_syntax_highlighter = new ScriptSyntaxHighlighter(ui->textEdit);
+    //m_syntax_highlighter = new ScriptSyntaxHighlighter(ui->textEdit);
+    ui->textEdit->setLexer(new QsciLexerJavaScript(ui->textEdit));
 
     connect(ui->simulationScriptsList, SIGNAL(selection_changed(const QItemSelection&, const QItemSelection &)), this, SLOT(simulationScriptSelected(QItemSelection,QItemSelection)));
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(textChanged()));
@@ -104,7 +106,7 @@ void ScriptsWindow::on_saveButton_clicked(){
     if(fileName.isEmpty()) return;
     QFile file(fileName);
     file.open(QIODevice::WriteOnly);
-    file.write(ui->textEdit->toPlainText().toUtf8());
+    file.write(ui->textEdit->text().toUtf8());
 }
 
 void ScriptRunnerThread::run(){
@@ -134,7 +136,7 @@ void ScriptsWindow::textChanged(){
     if(ui->simulationScriptsList->selectionModel()->selectedRows().empty()) return;
     index = ui->simulationScriptsList->selectionModel()->selectedRows().first();
     script_name = m_simulation_scripts.data(index, Qt::DisplayRole).toString();
-    Controller::instance().simulation()->set_script(script_name, ui->textEdit->toPlainText());
+    Controller::instance().simulation()->set_script(script_name, ui->textEdit->text());
 }
 
 
