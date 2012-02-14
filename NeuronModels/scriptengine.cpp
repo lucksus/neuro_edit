@@ -13,6 +13,9 @@
 #include "multilayerperceptron.h"
 #include "lsmreadoutneuron.h"
 #include "current_inducer.h"
+#include "photosssignalimporter.h"
+#include <fstream>
+#include <QtCore/QFileInfo>
 
 QScriptValue charVectorToScriptValue(QScriptEngine* engine, const vector<unsigned char>& vec){
     return qScriptValueFromSequence(engine, QVector<unsigned char>::fromStdVector(vec));
@@ -174,6 +177,25 @@ QScriptValue MultiLayerPerceptron_load(QScriptContext *ctx, QScriptEngine *eng){
     return eng->newQObject(MultiLayerPerceptron::load(ctx->argument(0).toString()), QScriptEngine::ScriptOwnership);
 }
 
+QScriptValue PhotossSignalImporter_ctor(QScriptContext *ctx, QScriptEngine *eng){
+    if(ctx->argumentCount() != 1){
+        ctx->throwError("PhotossSignalImporter constructor needs filename arguement!");
+        return QScriptValue();
+    }
+
+    QString filename = ctx->argument(0).toString();
+
+    if(filename.isEmpty() || !QFileInfo(filename).exists()){
+        ctx->throwError("PhotossSignalImporter constructor needs filename arguement!");
+        return QScriptValue();
+    }
+
+    std::ifstream* file = new std::ifstream;
+    file->open(filename.toStdString().c_str());
+    PhotossSignalImporter* importer = new PhotossSignalImporter(file);
+    return eng->newQObject(importer);
+}
+
 QScriptValue print(QScriptContext *ctx, QScriptEngine*)
 {
     QString output;
@@ -206,6 +228,7 @@ void ScriptEngine::add_constructors(){
     m_engine.globalObject().setProperty("ReadOut", m_engine.newFunction(ReadOut_ctor));
     m_engine.globalObject().setProperty("Samples", m_engine.newFunction(Samples_ctor));
     m_engine.globalObject().setProperty("CurrentInducer", m_engine.newFunction(CurrentInducer_ctor));
+    m_engine.globalObject().setProperty("PhotossSignalImporter", m_engine.newFunction(PhotossSignalImporter_ctor));
 }
 
 void ScriptEngine::add_global_functions(){

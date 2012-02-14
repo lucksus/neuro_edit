@@ -5,6 +5,12 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 
+PhotossSignalImporter::PhotossSignalImporter(std::string filename)
+{
+
+}
+
+
 PhotossSignalImporter::PhotossSignalImporter(std::istream* file)
     : m_file(file), m_time_stretch(1000*1000), m_value_stretch(1000)
 {
@@ -116,10 +122,10 @@ unsigned int PhotossSignalImporter::samples_per_bit(){
     return boost::lexical_cast<unsigned int>(it->second);
 }
 
-double PhotossSignalImporter::sampling_time_ps(){
+double PhotossSignalImporter::sampling_time(){
     std::map<std::string,std::string>::iterator it = m_simulation_parameters.find("samplingTime");
     assert(it != m_simulation_parameters.end());
-    return boost::lexical_cast<double>(it->second);
+    return boost::lexical_cast<double>(it->second) * (m_time_stretch / (1000*1000));
 }
 
 
@@ -129,4 +135,10 @@ void PhotossSignalImporter::set_time_stretch(double s){
 
 void PhotossSignalImporter::set_value_stretch(double s){
     m_value_stretch = s;
+}
+
+bool PhotossSignalImporter::bit_at_time(double time){
+    time *= (1000*1000) / m_time_stretch ; //ps->ms
+    unsigned int index = static_cast<unsigned int>(time / sampling_time() / samples_per_bit());
+    return m_bitpattern[index];
 }

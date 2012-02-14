@@ -6,21 +6,25 @@
 #include <string>
 #include <vector>
 
-class PhotossSignalImporter
+class PhotossSignalImporter : public QObject
 {
+Q_OBJECT
 public:
+    PhotossSignalImporter(std::string filename);
     PhotossSignalImporter(std::istream* file);
 
     enum SampleType{ABSOLUTE_VALUES, PHASE_VALUES};
 
 
     std::vector<sample> read_samples(SampleType sample_type, unsigned int pol_plane);
-    unsigned int number_of_bits();
-    unsigned int samples_per_bit();
-    double sampling_time_ps();
+    Q_INVOKABLE unsigned int number_of_bits();
+    Q_INVOKABLE unsigned int samples_per_bit();
+    Q_INVOKABLE double sampling_time();
 
-    void set_time_stretch(double);
-    void set_value_stretch(double);
+    Q_INVOKABLE void set_time_stretch(double);
+    Q_INVOKABLE void set_value_stretch(double);
+
+    Q_INVOKABLE bool bit_at_time(double time_ps);
 
 private:
     std::istream* m_file;
