@@ -13,7 +13,7 @@ DendriticNode::DendriticNode(Neuron* neuron, DendriticNode* parent)
 }
 
 DendriticNode::DendriticNode(LinearDiscriminator* linear_discriminator)
-    : SimulationObject(linear_discriminator->simulation()), m_linear_discriminator(linear_discriminator), m_parent(0)
+    : SimulationObject(linear_discriminator->simulation()), m_parent(0), m_linear_discriminator(linear_discriminator)
 {
 
 }
