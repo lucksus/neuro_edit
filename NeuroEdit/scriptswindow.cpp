@@ -110,18 +110,17 @@ void ScriptsWindow::on_saveButton_clicked(){
 }
 
 void ScriptRunnerThread::run(){
-    QString script_name;
+    /*QString script_name;
     QModelIndex index;
     index = m_scripts_window->ui->simulationScriptsList->selectionModel()->selectedRows().first();
     script_name = m_scripts_window->m_simulation_scripts.data(index, Qt::DisplayRole).toString();
-    QString script = Controller::instance().simulation()->script(script_name);
-    QString return_value = Controller::instance().script_engine()->evaluate(script);
+    QString script = Controller::instance().simulation()->script(script_name);*/
+    QString return_value = Controller::instance().script_engine()->evaluate(m_code);
     m_scripts_window->ui->outputListWidget->addItem(return_value);
 }
 
 void ScriptsWindow::on_playButton_clicked(){
-    if(!ui->simulationScriptsList->selectionModel()) return;
-    if(ui->simulationScriptsList->selectionModel()->selectedRows().empty()) return;
+    m_thread.set_code(ui->textEdit->text());
     m_thread.start();
 }
 
@@ -170,8 +169,10 @@ void ScriptsWindow::on_lineEdit_returnPressed(){
     QString line = ui->lineEdit->text();
     ui->lineEdit->setText("");
     script_output(QString("# %1").arg(line), QColor(0,0,255));
-    QString return_value = Controller::instance().script_engine()->evaluate(line);
-    script_output(QString("--> %1").arg(return_value));
+    m_thread.set_code(line);
+    m_thread.start();
+    //QString return_value = Controller::instance().script_engine()->evaluate(line);
+    //script_output(QString("--> %1").arg(return_value));
     m_shell_history.prepend(line);
     m_current_history_position = -1;
 }

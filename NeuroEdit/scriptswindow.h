@@ -41,10 +41,11 @@ class ScriptsWindow;
 class ScriptRunnerThread : public QThread{
 public:
     ScriptRunnerThread(ScriptsWindow*);
-
+    void set_code(QString code){m_code=code;}
     void run();
 private:
     ScriptsWindow *m_scripts_window;
+    QString m_code;
 };
 
 class Simulation;
