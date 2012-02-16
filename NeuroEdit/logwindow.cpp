@@ -21,7 +21,7 @@ LogWindow::~LogWindow()
 
 
 void LogWindow::on_clearButton_clicked(bool){
-    ui->listWidget->clear();
+    ui->textEdit->clear();
 }
 
 void LogWindow::on_logLevelComboBox_currentIndexChanged(int index){
@@ -30,7 +30,7 @@ void LogWindow::on_logLevelComboBox_currentIndexChanged(int index){
 
 
 void LogWindow::rebuild(Log::LogLevel level){
-    ui->listWidget->clear();
+    ui->textEdit->clear();
     std::pair< std::string,Log::LogLevel > it;
     BOOST_FOREACH(it, Log::instance().messages()){
         if(it.second >= level) add_message_to_widget(it.first, it.second);
@@ -40,12 +40,10 @@ void LogWindow::rebuild(Log::LogLevel level){
 
 
 void LogWindow::add_message_to_widget(std::string message, Log::LogLevel level){
-    QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
-    item->setText(message.c_str());
-    if(level == Log::ERROR) item->setForeground(QBrush(QColor::fromRgb(255,0,0)));
-    if(level == Log::DEBUG) item->setForeground(QBrush(QColor::fromRgb(0,0,255)));
-    ui->listWidget->addItem(item);
-    ui->listWidget->scrollToItem(item);
+    QString color;
+    if(level == Log::ERROR) color = "#FF0000";
+    if(level == Log::DEBUG) color = "#0000FF";
+    ui->textEdit->insertHtml(QString("<font color=%1>%2</font><br>").arg(color).arg(message.c_str()));
 }
 
 void LogWindow::check_for_new_messages(){
