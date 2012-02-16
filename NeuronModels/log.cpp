@@ -29,7 +29,7 @@ Log& Log::instance(){
 void Log::log(std::string message, SimulationObject* source, LogLevel log_level){
     std::stringstream full_text;
     full_text << time_stamp() << " " << object_signature(source) << ": " << message;
-    emit new_log_message(full_text.str().c_str(), log_level);
+    //emit new_log_message(full_text.str().c_str(), log_level);
     std::stringstream with_log_level;
     if(log_level == DEBUG)
         with_log_level << "DEBUG: ";
@@ -37,13 +37,13 @@ void Log::log(std::string message, SimulationObject* source, LogLevel log_level)
         with_log_level << "ERROR: ";
     with_log_level << full_text.str();
 
-    _log(with_log_level.str(), source->simulation());
+    _log(with_log_level.str(), source->simulation(), log_level);
 }
 
 void Log::log(std::string message, Simulation* source, LogLevel log_level){
     std::stringstream full_text;
     full_text << time_stamp() << ": " << message;
-    emit new_log_message(full_text.str().c_str(), log_level);
+    //emit new_log_message(full_text.str().c_str(), log_level);
     std::stringstream with_log_level;
     if(log_level == DEBUG)
         with_log_level << "DEBUG: ";
@@ -51,12 +51,13 @@ void Log::log(std::string message, Simulation* source, LogLevel log_level){
         with_log_level << "ERROR: ";
     with_log_level << full_text.str();
 
-    _log(with_log_level.str(), source);
+    _log(with_log_level.str(), source, log_level);
 }
 
 std::ofstream* Log::file_for(Simulation* sim){
     if(m_files.count(sim) <= 0){
         QFileInfo file_info(sim->filename().c_str());
+        if(!file_info.isFile() || !file_info.isWritable()) return 0;
         QString log_filename = file_info.absolutePath() + QDir::separator() + file_info.baseName() + "_log.txt";
         m_files[sim] = new std::ofstream(log_filename.toStdString().c_str());
     }
@@ -78,8 +79,14 @@ std::string Log::object_signature(SimulationObject* object){
     return ss.str();
 }
 
-void Log::_log(std::string text, Simulation* s){
+void Log::_log(std::string text, Simulation* s, LogLevel level){
+    m_messages.push_back(std::make_pair(text, level));
     if(!s) return;
     std::ofstream* file = file_for(s);
+    if(!file) return;
     (*file) << text << std::endl;
+}
+
+const vector< pair<string, Log::LogLevel> > Log::messages(){
+    return m_messages;
 }

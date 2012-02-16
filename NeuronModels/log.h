@@ -3,33 +3,34 @@
 #include <string>
 #include <fstream>
 #include <map>
-#include <QtCore/QObject>
+#include <vector>
+
+using namespace std;
 
 class SimulationObject;
 class Simulation;
 
-class Log : public QObject
+class Log
 {
-Q_OBJECT
 public:
-    enum LogLevel{DEBUG, INFO, ERROR};
+    enum LogLevel{DEBUG=0, INFO=1, ERROR=2};
 
     static Log& instance();
-    void log(std::string message, SimulationObject* source, LogLevel log_level = INFO);
-    void log(std::string message, Simulation* source, LogLevel log_level = INFO);
+    void log(string message, SimulationObject* source, LogLevel log_level = INFO);
+    void log(string message, Simulation* source, LogLevel log_level = INFO);
 
-signals:
-    void new_log_message(QString text, Log::LogLevel level);
+    const vector< pair<string, Log::LogLevel> > messages();
 
 private:
     Log();
     ~Log();
-    std::map<Simulation*, std::ofstream*> m_files;
-    std::ofstream* file_for(Simulation*);
+    map<Simulation*, ofstream*> m_files;
+    vector< pair<string, LogLevel> > m_messages;
+    ofstream* file_for(Simulation*);
 
-    std::string time_stamp();
-    std::string object_signature(SimulationObject*);
-    void _log(std::string, Simulation*);
+    string time_stamp();
+    string object_signature(SimulationObject*);
+    void _log(string, Simulation*, LogLevel level);
 };
 
 #endif // LOG_H

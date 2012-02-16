@@ -3,6 +3,7 @@
 #include "log.h"
 
 #include <QWidget>
+#include <QtCore/QTimer>
 
 namespace Ui {
     class LogWindow;
@@ -17,18 +18,19 @@ public:
     ~LogWindow();
 
 public slots:
-    void new_log_message(QString text, Log::LogLevel level);
+    void check_for_new_messages();
 
     void on_clearButton_clicked(bool);
     void on_logLevelComboBox_currentIndexChanged(int index);
 
 private:
     Ui::LogWindow *ui;
-    std::list< std::pair<std::string,Log::LogLevel> > m_messages;
+    long m_last_message_index;
+    QTimer m_timer;
 
     void rebuild(Log::LogLevel level);
-
     void add_message_to_widget(std::string message, Log::LogLevel level);
+    Log::LogLevel combobox_index_to_log_level(int index);
 };
 
 #endif // LOGWINDOW_H
