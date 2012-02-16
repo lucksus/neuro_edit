@@ -104,8 +104,7 @@ void Simulation::run(double time_ms, double step_ms){
     Log::instance().log(QString("Calculating %1ms simulation time...").arg(time_ms).toStdString(), this);
     m_is_running = true;
     while(!m_stop_request && m_time_ms < end_time){
-        m_network->simulate(m_simulation_step);
-        m_time_ms += m_simulation_step;
+        run_one_step(m_simulation_step);
     }
     m_is_running = false;
     m_stop_request = false;
@@ -123,8 +122,7 @@ void Simulation::run(){
     while(!m_stop_request){
 		QTime time;
 		time.start();
-        m_network->simulate(m_simulation_step);
-        m_time_ms += m_simulation_step;
+        run_one_step(m_simulation_step);
 		int real_time_ms = time.elapsed();
 
         long diff = m_real_step - real_time_ms;
@@ -137,6 +135,11 @@ void Simulation::run(){
     m_stop_request = false;
     emit simulation_stopped();
     Log::instance().log("Simulation stoped!", this);
+}
+
+void Simulation::run_one_step(double time_ms){
+    m_network->simulate(time_ms);
+    m_time_ms += m_simulation_step;
 }
 
 double Simulation::time_ms(){
