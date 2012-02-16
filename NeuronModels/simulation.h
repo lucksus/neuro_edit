@@ -40,6 +40,8 @@ public:
     double real_step();
     double time_ms();
 
+    Q_INVOKABLE void run(double time_ms, double step_ms = 0);
+
     Q_INVOKABLE QStringList scripts() const;
     Q_INVOKABLE QString script(const QString&) const;
     Q_INVOKABLE void set_script(const QString& name, const QString& script);

@@ -92,6 +92,26 @@ double Simulation::real_step(){
     return m_real_step;
 }
 
+void Simulation::run(double time_ms, double step_ms){
+    if(!m_network) return;
+    QMutexLocker locker(&m_mutex);
+    if(step_ms != 0) m_simulation_step = step_ms;
+
+    double start_time = m_time_ms;
+    double end_time = start_time + time_ms;
+    emit simulation_started();
+    Log::instance().log("Simulation started!", this);
+    Log::instance().log(QString("Calculating %1ms simulation time...").arg(time_ms).toStdString(), this);
+    m_is_running = true;
+    while(!m_stop_request && m_time_ms < end_time){
+        m_network->simulate(m_simulation_step);
+        m_time_ms += m_simulation_step;
+    }
+    m_is_running = false;
+    m_stop_request = false;
+    emit simulation_stopped();
+    Log::instance().log("Simulation Done!", this);
+}
 
 void Simulation::run(){
     if(!m_network) return;
