@@ -32,6 +32,10 @@ void LSMReadOutNeuron::update(double milli_seconds){
     }
 
     m_membrane_potential += m_bias * m_bias_weight;
+
+    BOOST_FOREACH(Samples* s, m_outputs){
+        s->write_value(m_membrane_potential);
+    }
 }
 
 
