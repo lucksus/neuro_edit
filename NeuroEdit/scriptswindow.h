@@ -13,18 +13,6 @@ namespace Ui {
     class ScriptsWindow;
 }
 
-class MyListView : public QListView{
-Q_OBJECT
-public:
-    MyListView(QWidget* parent):QListView(parent){}
-signals:
-    void selection_changed(const QItemSelection &selected, const QItemSelection &deselected);
-protected:
-    virtual void selectionChanged(const QItemSelection & selected, const QItemSelection & deselected){
-        emit selection_changed(selected, deselected);
-    }
-};
-
 class ShellLineEdit : public QLineEdit{
 Q_OBJECT
 public:
@@ -58,23 +46,15 @@ public:
     ~ScriptsWindow();
 
 protected slots:
-    void on_simulationPlusButton_clicked();
-    void on_simulationMinusButton_clicked();
     void on_loadButton_clicked();
     void on_saveButton_clicked();
     void on_playButton_clicked();
     void on_pauseButton_clicked();
     void on_clearButton_clicked();
     void on_lineEdit_returnPressed();
-
     void simulation_changed(Simulation*);
-
-    void simulationScriptSelected(const QItemSelection & selected, const QItemSelection & deselected);
-
     void textChanged();
-    void simulationScriptsNameChanged(QModelIndex,QModelIndex);
     void script_output(QString, QColor color = QColor(0,0,0));
-
     void history_up();
     void history_down();
 

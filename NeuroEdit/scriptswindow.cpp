@@ -18,9 +18,6 @@ ScriptsWindow::ScriptsWindow(QWidget *parent) :
     m_current_history_position(-1)
 {
     ui->setupUi(this);
-    delete ui->simulationScriptsList;
-    ui->simulationScriptsList = new MyListView(this);
-    dynamic_cast<QBoxLayout*>(ui->groupBox->layout())->insertWidget(1,ui->simulationScriptsList);
 
     delete ui->lineEdit;
     ShellLineEdit* shell_line_edit = new ShellLineEdit(this);
@@ -30,30 +27,10 @@ ScriptsWindow::ScriptsWindow(QWidget *parent) :
     connect(shell_line_edit, SIGNAL(history_down()), this, SLOT(history_down()));
     connect(shell_line_edit, SIGNAL(returnPressed()), this, SLOT(on_lineEdit_returnPressed()));
 
-    ui->simulationScriptsList->setModel(&m_simulation_scripts);
-    ui->simulationScriptsList->setSelectionMode(QAbstractItemView::SingleSelection);
-    //m_syntax_highlighter = new ScriptSyntaxHighlighter(ui->textEdit);
     ui->textEdit->setLexer(new QsciLexerJavaScript(ui->textEdit));
 
-    connect(ui->simulationScriptsList, SIGNAL(selection_changed(const QItemSelection&, const QItemSelection &)), this, SLOT(simulationScriptSelected(QItemSelection,QItemSelection)));
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(textChanged()));
-    connect(&m_simulation_scripts, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(simulationScriptsNameChanged(QModelIndex,QModelIndex)));
-    //connect(ui->simulationScriptsList, SIGNAL(activated(QModelIndex)), this, SLOT(simulationScriptSelected(QModelIndex)));
     connect(&Controller::instance(), SIGNAL(script_output(QString)), this, SLOT(script_output(QString)),Qt::QueuedConnection);
-}
-
-void ScriptsWindow::simulationScriptSelected(const QItemSelection & selected, const QItemSelection &){
-    QModelIndex index = selected.indexes().first();
-    if(QModelIndex() == index){
-        ui->splitter->setEnabled(false);
-        ui->textEdit->setText("");
-        return;
-    }
-    ui->splitter->setEnabled(true);
-    ui->textEdit->setEnabled(true);
-    QString script_name = m_simulation_scripts.data(index, Qt::DisplayRole).toString();
-    ui->textEdit->setText(Controller::instance().simulation()->script(script_name));
-    m_current_script = script_name;
 }
 
 ScriptsWindow::~ScriptsWindow()
@@ -69,26 +46,6 @@ void ScriptsWindow::read_name_lists(){
 
 void ScriptsWindow::simulation_changed(Simulation*){
     read_name_lists();
-}
-
-void ScriptsWindow::on_simulationPlusButton_clicked(){
-    QString name = "new script";
-    QString postfix = "";
-    QStringList names = Controller::instance().simulation()->scripts();
-    int i=0;
-    while(names.contains(name+postfix)){
-        i++;
-        postfix = QString(" %1").arg(i);
-    }
-    Controller::instance().simulation()->set_script(name+postfix, "");
-    read_name_lists();
-}
-
-void ScriptsWindow::on_simulationMinusButton_clicked(){
-    Controller::instance().simulation()->remove_script(m_current_script);
-    read_name_lists();
-    ui->splitter->setEnabled(false);
-    ui->textEdit->setText("");
 }
 
 void ScriptsWindow::on_loadButton_clicked(){
@@ -129,24 +86,9 @@ void ScriptsWindow::on_pauseButton_clicked(){
 }
 
 void ScriptsWindow::textChanged(){
-    QString script_name;
-    QModelIndex index;
-    if(!ui->simulationScriptsList->selectionModel()) return;
-    if(ui->simulationScriptsList->selectionModel()->selectedRows().empty()) return;
-    index = ui->simulationScriptsList->selectionModel()->selectedRows().first();
-    script_name = m_simulation_scripts.data(index, Qt::DisplayRole).toString();
-    Controller::instance().simulation()->set_script(script_name, ui->textEdit->text());
+
 }
 
-
-void ScriptsWindow::simulationScriptsNameChanged(QModelIndex index,QModelIndex){
-    QString s = m_simulation_scripts.data(index, Qt::DisplayRole).toString();
-    Controller::instance().simulation()->set_script(s, Controller::instance().simulation()->script(m_current_script));
-    Controller::instance().simulation()->remove_script(m_current_script);
-    m_current_script = s;
-    textChanged();
-    read_name_lists();
-}
 
 void ScriptsWindow::showEvent(QShowEvent *event){
     QWidget::showEvent(event);
