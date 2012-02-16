@@ -18,10 +18,10 @@ public:
     CurrentInducer(DendriticNode*);
 
     virtual SimulationObject* clone();
-    void set_current(double current);
-    double current();
-    void set_active(bool);
-    bool active();
+    Q_INVOKABLE void set_current(double current);
+    Q_INVOKABLE double current();
+    Q_INVOKABLE void set_active(bool);
+    Q_INVOKABLE bool active();
 
     virtual void update(double milliseconds);
 
