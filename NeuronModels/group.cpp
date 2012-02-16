@@ -453,3 +453,9 @@ double Group::backprop_eta(){
 void Group::set_backprop_eta(double d){
     m_backprop_eta = d;
 }
+
+void Group::reset(){
+    BOOST_FOREACH(SimulationObject* s, m_objects){
+        s->reset();
+    }
+}

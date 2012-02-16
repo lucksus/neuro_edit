@@ -20,6 +20,7 @@ public:
     Neuron(Simulation* sim, Point position);
     //Neuron(const Neuron& n);
     void update(double milli_seconds);
+    Q_INVOKABLE virtual void reset();
 
     void set_model(NeuronModel*);
     NeuronModel* model();

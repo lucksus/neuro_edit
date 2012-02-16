@@ -42,6 +42,7 @@ public:
     Q_INVOKABLE QObjectList objects();
     Q_INVOKABLE SimulationObject* object_by_name(QString name);
 
+    Q_INVOKABLE void reset();
     Q_INVOKABLE QStringList scripts() const;
     Q_INVOKABLE QString script(const QString&) const;
     Q_INVOKABLE void set_script(const QString& name, const QString& script);

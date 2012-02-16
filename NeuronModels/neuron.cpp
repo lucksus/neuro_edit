@@ -122,3 +122,6 @@ std::set<Synapse*> Neuron::incoming_synapses(){
     return synapses;
 }
 
+void Neuron::reset(){
+    m_model->reset();
+}

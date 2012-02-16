@@ -181,3 +181,8 @@ bool Simulation::is_running(){
 QString Simulation::evaluate_code(const QString& code){
     return m_script_engine.evaluate(code);
 }
+
+void Simulation::reset(){
+    m_network->reset();
+    m_time_ms = 0;
+}

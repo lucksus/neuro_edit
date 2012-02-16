@@ -55,4 +55,7 @@ double Izhikevich::u(){
     return m_u;
 }
 
-
+void Izhikevich::reset(){
+    m_v = c;
+    m_u = d;
+}

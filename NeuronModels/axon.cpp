@@ -101,3 +101,7 @@ std::set<SimulationObject*> Axon::about_to_remove(SimulationObject *object_to_be
         m_receiver = 0;
     return also_to_be_deleted;
 }
+
+void Axon::reset(){
+    m_action_potentials.clear();
+}

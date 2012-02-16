@@ -203,3 +203,9 @@ SimulationObject* Network::object_by_name(QString name){
     }
     return 0;
 }
+
+void Network::reset(){
+    BOOST_FOREACH(SimulationObject* s, m_objects){
+        s->reset();
+    }
+}

@@ -34,6 +34,8 @@ public:
     bool is_done();
     void reset_done();
 
+    Q_INVOKABLE virtual void reset() {};
+
     Q_INVOKABLE void set_network(Network*);
     Q_INVOKABLE void set_neuron(Neuron*);
 

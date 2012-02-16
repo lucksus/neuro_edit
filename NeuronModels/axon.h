@@ -19,6 +19,7 @@ public:
     virtual ~Axon();
 
     virtual void update(double milli_seconds);
+    Q_INVOKABLE virtual void reset();
 
     double speed();
     void set_speed(double speed);

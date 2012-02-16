@@ -35,6 +35,8 @@ public:
     double v();
     double u();
 
+    Q_INVOKABLE virtual void reset();
+
 private:
     double m_u,m_v;
     double a,b,c,d;

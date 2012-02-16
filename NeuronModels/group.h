@@ -25,6 +25,7 @@ public:
     Group(Simulation*);
 
     virtual void update(double milli_seconds);
+    Q_INVOKABLE virtual void reset();
 
     virtual std::list<std::string> user_actions();
     virtual std::set<std::string> active_user_actions();
