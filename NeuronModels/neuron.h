@@ -24,7 +24,7 @@ public:
 
     void set_model(NeuronModel*);
     NeuronModel* model();
-    double membrane_potential();
+    Q_INVOKABLE double membrane_potential();
 
     virtual std::set<SimulationObject*> children();
 
