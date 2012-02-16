@@ -23,22 +23,22 @@ void Samples::update(double){
     if(m_constant_value_active)
         value = m_constant_value;
     else{
-        try{
-            double time = simulation()->time_ms();
-            if(time < m_last_time)
-                m_last_index=0;
-            m_last_time = time;
+        double time = simulation()->time_ms();
+        if(time < m_last_time)
+            m_last_index=0;
+        m_last_time = time;
 
-            unsigned int i = find_current_index();
-
-            const sample& left = m_samples[i-1];
-            const sample& right = m_samples[i];
-            double rel_time = time - left.time;
-            double fac = rel_time / (right.time - left.time);
-            value = left.value + fac*(right.value-left.value);
-        }catch(std::out_of_range){
+        int i = find_current_index();
+        if(i<0){
             debug("out of range!");
+            return;
         }
+
+        const sample& left = m_samples[i-1];
+        const sample& right = m_samples[i];
+        double rel_time = time - left.time;
+        double fac = rel_time / (right.time - left.time);
+        value = left.value + fac*(right.value-left.value);
     }
 
     BOOST_FOREACH(CurrentInducer* ci, m_current_inducers){
@@ -57,9 +57,9 @@ void Samples::update(double){
 int Samples::find_current_index(){
     unsigned int i = m_last_index;
     double time = simulation()->time_ms();
-    if(m_samples[i].time > time) throw std::out_of_range("no samples for current time value");
+    if(m_samples[i].time > time) return -1;
     while(m_samples[i].time < time && i < m_samples.size()) i++;
-    if(i > m_samples.size() || i==0) throw std::out_of_range("no samples for current time value");
+    if(i > m_samples.size() || i==0) return -1;
 
     m_last_index = i;
     return i;
