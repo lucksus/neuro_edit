@@ -32,6 +32,7 @@ void Samples::update(double time){
         if(i<0 && last_debug > 100){
             debug("out of range!");
             last_debug = 0;
+            value = 0;
             return;
         }
 
@@ -60,7 +61,7 @@ int Samples::find_current_index(){
     unsigned int i = m_last_index;
     double time = simulation()->time_ms();
     if(i==0 && m_samples[i].time > time) return -1;
-    while(m_samples[i].time < time && i < m_samples.size()) i++;
+    while(i < m_samples.size() && m_samples[i].time < time) i++;
     if(i > m_samples.size() || i==0) return -1;
 
     m_last_index = i;
