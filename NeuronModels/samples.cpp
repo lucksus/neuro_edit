@@ -15,10 +15,10 @@ Samples::Samples(Simulation* s)
     setObjectName(QString("Samples_%1").arg(s_serial++));
 }
 
-void Samples::update(double){
+void Samples::update(double time){
     if(!m_constant_value_active && m_samples.size() == 0) return;
 
-
+    static double last_debug=0;
     double value;
     if(m_constant_value_active)
         value = m_constant_value;
@@ -29,8 +29,9 @@ void Samples::update(double){
         m_last_time = time;
 
         int i = find_current_index();
-        if(i<0){
+        if(i<0 && last_debug > 100){
             debug("out of range!");
+            last_debug = 0;
             return;
         }
 
@@ -51,13 +52,14 @@ void Samples::update(double){
 
     m_current_value = value;
 
+    last_debug += time;
 
 }
 
 int Samples::find_current_index(){
     unsigned int i = m_last_index;
     double time = simulation()->time_ms();
-    if(m_samples[i].time > time) return -1;
+    if(i==0 && m_samples[i].time > time) return -1;
     while(m_samples[i].time < time && i < m_samples.size()) i++;
     if(i > m_samples.size() || i==0) return -1;
 
