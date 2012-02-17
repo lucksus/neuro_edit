@@ -186,6 +186,9 @@
    <property name="text">
     <string>Open Simulation</string>
    </property>
+   <property name="toolTip">
+    <string>Open</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
    </property>

@@ -285,9 +285,12 @@ void MainWindow::on_actionExport_Simulation_to_XML_triggered(bool){
 
 void MainWindow::on_actionLoad_triggered(bool){
     QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Load network"), "", tr("Binary NeuroEdit files (*.neb)"));
+        tr("Load network"), "", tr("Binary NeuroEdit files (*.neb);;JavaScript files (*.js)"));
     if(fileName.isEmpty()) return;
-    Controller::instance().load_simulation(fileName.toStdString());
+    if(fileName.endsWith(".neb"))
+        Controller::instance().load_simulation(fileName.toStdString());
+    if(fileName.endsWith(".js"))
+        m_scripts_window.load_script(fileName);
     addFileToRecentlyUsed(fileName);
 }
 
@@ -488,7 +491,11 @@ void MainWindow::setRecentlyUsedFiles(QStringList files){
 
 void MainWindow::openRecentlyUsedFile(){
         QAction* recentFile = qobject_cast<QAction*>(sender());
-        if(recentFile) Controller::instance().load_simulation(recentFile->text().toStdString());
+        QString filename = recentFile->text();
+        if(filename.endsWith(".neb"))
+            if(recentFile) Controller::instance().load_simulation(filename.toStdString());
+        if(filename.endsWith(".js"))
+            m_scripts_window.load_script(filename);
 }
 
 void MainWindow::populateRecentlyUsedMenu(){

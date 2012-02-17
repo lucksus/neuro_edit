@@ -45,6 +45,8 @@ public:
     explicit ScriptsWindow(QWidget *parent = 0);
     ~ScriptsWindow();
 
+    void load_script(QString filename);
+
 protected slots:
     void on_loadButton_clicked();
     void on_saveButton_clicked();

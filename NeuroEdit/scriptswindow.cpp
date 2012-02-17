@@ -52,9 +52,7 @@ void ScriptsWindow::on_loadButton_clicked(){
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Open script"), "", tr("Javascript files (*.js)"));
     if(fileName.isEmpty()) return;
-    QFile file(fileName);
-    file.open(QIODevice::ReadOnly);
-    ui->textEdit->setText(file.readAll());
+    load_script(fileName);
 }
 
 void ScriptsWindow::on_saveButton_clicked(){
@@ -149,4 +147,10 @@ void ScriptsWindow::history_down(){
     }
     ui->lineEdit->setText(m_shell_history.at(m_current_history_position));
     ui->lineEdit->setCursorPosition(ui->lineEdit->text().size());
+}
+
+void ScriptsWindow::load_script(QString filename){
+    QFile file(filename);
+    file.open(QIODevice::ReadOnly);
+    ui->textEdit->setText(file.readAll());
 }
