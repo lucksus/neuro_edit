@@ -29,9 +29,11 @@ void Samples::update(double time){
         m_last_time = time;
 
         int i = find_current_index();
-        if(i<0 && last_debug > 100){
-            debug("out of range!");
-            last_debug = 0;
+        if(i<0 || i>=m_samples.size()){
+            if(last_debug > 100){
+                debug("out of range!");
+                last_debug = 0;
+            }
             value = 0;
             return;
         }
