@@ -2,6 +2,9 @@ sim = simulation();
 
 signal_file = "/Users/nico/Neuro/signal_unverzerrt.txt";
 time_offset = 10;
+grid_x = 5;
+grid_y = 5;
+input_synapses = 1;
 
 function random_indices(count, max){
 	arr = new Array();
@@ -22,8 +25,8 @@ function setup(){
 	read_out.position.x = 100
 	input.position.x = -100;
 	output.position.x = 150;
-	group.create_2d_grid(20,10,40);
-	group.create_connections(0.3,65);
+	group.create_2d_grid(grid_x,grid_y,40);
+	group.create_connections(0.5,65);
 	read_out.connect_with_group(group);
 	read_out.init_weights_random_uniform(-1,1);
 	read_out.add_output(output);
@@ -31,7 +34,7 @@ function setup(){
 
 
 
-	indices = random_indices(10, 20*10);
+	indices = random_indices(input_synapses, grid_x*grid_y);
 	for(var i=0;i<indices.length;i++){
 		index = indices[i];
 		ci = new CurrentInducer(group.objects()[index].dendrites_root());
