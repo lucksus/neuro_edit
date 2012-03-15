@@ -8,6 +8,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLineEdit>
 #include <QtCore/QThread>
+#include <QtCore/QTimer>
 
 namespace Ui {
     class ScriptsWindow;
@@ -57,6 +58,7 @@ protected slots:
     void simulation_changed(Simulation*);
     void textChanged();
     void script_output(QString, QColor color = QColor(0,0,0));
+    void check_for_script_output();
     void history_up();
     void history_down();
 
@@ -72,6 +74,7 @@ private:
     QString m_current_script;
     QStringList m_shell_history;
     int m_current_history_position;
+    QTimer m_timer;
 
     void read_name_lists();
 };

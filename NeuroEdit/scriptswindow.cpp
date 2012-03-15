@@ -30,7 +30,8 @@ ScriptsWindow::ScriptsWindow(QWidget *parent) :
     ui->textEdit->setLexer(new QsciLexerJavaScript(ui->textEdit));
 
     connect(ui->textEdit, SIGNAL(textChanged()), this, SLOT(textChanged()));
-    connect(&Controller::instance(), SIGNAL(script_output(QString)), this, SLOT(script_output(QString)),Qt::QueuedConnection);
+    connect(&m_timer,SIGNAL(timeout()), this, SLOT(check_for_script_output()));
+    m_timer.start(100);
 }
 
 ScriptsWindow::~ScriptsWindow()
@@ -71,7 +72,7 @@ void ScriptRunnerThread::run(){
     script_name = m_scripts_window->m_simulation_scripts.data(index, Qt::DisplayRole).toString();
     QString script = Controller::instance().simulation()->script(script_name);*/
     QString return_value = Controller::instance().script_engine()->evaluate(m_code);
-    m_scripts_window->ui->outputListWidget->addItem(return_value);
+    m_scripts_window->script_output(return_value);
 }
 
 void ScriptsWindow::on_playButton_clicked(){
@@ -93,16 +94,24 @@ void ScriptsWindow::showEvent(QShowEvent *event){
     read_name_lists();
 }
 
+void ScriptsWindow::check_for_script_output(){
+    Controller &c=Controller::instance();
+    if(!c.m_mutex_for_buffer.tryLock()) return;
+    //QMutexLocker l(&c.m_mutex_for_buffer);
+    while(!c.m_script_output_buffer.empty()){
+        script_output(c.m_script_output_buffer.front());
+        c.m_script_output_buffer.pop_front();
+    }
+    c.m_mutex_for_buffer.unlock();
+}
+
 void ScriptsWindow::script_output(QString output, QColor color){
-    QListWidgetItem* item = new QListWidgetItem(ui->outputListWidget);
-    item->setText(output);
-    item->setForeground(color);
-    ui->outputListWidget->addItem(item);
-    ui->outputListWidget->scrollToItem(item);
+    ui->output->insertHtml(QString("<font color=%2>%1</font><br>").arg(output).arg(color.name()));
+    ui->output->ensureCursorVisible();
 }
 
 void ScriptsWindow::on_clearButton_clicked(){
-    ui->outputListWidget->clear();
+    ui->output->setText("");
 }
 
 void ScriptsWindow::on_lineEdit_returnPressed(){

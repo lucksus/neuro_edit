@@ -18,6 +18,7 @@
 #include "lsmreadoutneuron.h"
 
 Controller::Controller()
+    : m_mutex_for_buffer(QMutex::Recursive)
 {
     m_script_engine = new ScriptEngine();
 }
@@ -105,5 +106,7 @@ ScriptEngine* Controller::script_engine(){
 }
 
 void Controller::output_from_script(QString output){
-    emit script_output(output);
+    QMutexLocker l(&m_mutex_for_buffer);
+    m_script_output_buffer.push_back(output);
+    //emit script_output(output);
 }

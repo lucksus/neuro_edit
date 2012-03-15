@@ -1,6 +1,8 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 #include <QtCore/QObject>
+#include <list>
+#include <QtCore/QMutex>
 
 class Simulation;
 class ScriptEngine;
@@ -24,6 +26,9 @@ public:
     Simulation* simulation();
     ScriptEngine* script_engine();
 
+    std::list<QString> m_script_output_buffer;
+    QMutex m_mutex_for_buffer;
+
 public slots:
     void output_from_script(QString);
 
@@ -36,6 +41,7 @@ private:
     Simulation* m_simulation;
     std::string m_simulation_filename;
     ScriptEngine* m_script_engine;
+
 };
 
 #endif // CONTROLLER_H
