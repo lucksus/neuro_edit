@@ -37,10 +37,12 @@ public:
     Q_INVOKABLE void connect_with_group(Group*);
     Q_INVOKABLE void set_bias(double);
     Q_INVOKABLE double bias();
+    Q_INVOKABLE double bias_weight();
     Q_INVOKABLE void set_time_constant(double);
     Q_INVOKABLE double time_constant();
 
     vector<SpikingObject*> liquid_units();
+    const vector<ReadOutConnection>& read_out_connections();
 
 
 private:

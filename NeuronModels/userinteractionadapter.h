@@ -9,6 +9,7 @@
 using namespace std;
 
 class MultiLayerPerceptron;
+class LSMReadOutNeuron;
 
 class UserInteractionAdapter : public QObject
 {
@@ -21,6 +22,7 @@ public:
     virtual void display_samples(const std::vector<sample>& samples) = 0;
     virtual void display_image(QImage* image) = 0;
     virtual void display_mlp(MultiLayerPerceptron*) = 0;
+    virtual void display_read_out_weights(LSMReadOutNeuron*) = 0;
 
     virtual vector<double> get_double_values(vector<string> value_descriptions, string source, string porpuse, vector<pair<double,double> > limits ) = 0;
     virtual vector<int> get_integer_values(vector<string> value_descriptions, string source, string porpuse, vector<pair<int,int> > limits ) = 0;

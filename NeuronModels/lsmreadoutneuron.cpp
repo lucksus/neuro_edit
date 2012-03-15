@@ -92,3 +92,11 @@ vector<SpikingObject*> LSMReadOutNeuron::liquid_units(){
     }
     return ret_value;
 }
+
+const vector<ReadOutConnection>& LSMReadOutNeuron::read_out_connections(){
+    return m_read_out_connections;
+}
+
+double LSMReadOutNeuron::bias_weight(){
+    return m_bias_weight;
+}

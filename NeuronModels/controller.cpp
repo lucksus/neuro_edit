@@ -15,6 +15,7 @@
 #include "samples.h"
 #include "multilayerperceptron.h"
 #include "scriptengine.h"
+#include "lsmreadoutneuron.h"
 
 Controller::Controller()
 {
@@ -46,6 +47,7 @@ void Controller::init(){
     qRegisterMetaType<Samples*>("Samples*");
     qRegisterMetaType<LinearDiscriminator*>("LinearDiscriminator");
     qRegisterMetaType<MultiLayerPerceptron*>("MultiLayerPerceptron*");
+    qRegisterMetaType<LSMReadOutNeuron*>("LSMReadOutNeuron*");
 }
 
 void Controller::close_simulation(){

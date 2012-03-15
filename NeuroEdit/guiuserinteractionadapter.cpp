@@ -8,6 +8,8 @@
 #include "multilayerperceptron.h"
 #include "mlpvisualization.h"
 #include <QtCore/QThread>
+#include "lsmreadoutneuron.h"
+#include "readoutvisualization.h"
 
 std::string GuiUserInteractionAdapter::get_save_filepath(std::string file_type, std::string source, std::string){
     return QFileDialog::getSaveFileName(0, source.c_str(), QString(), file_type.c_str()).toStdString();
@@ -145,4 +147,21 @@ void GuiUserInteractionAdapter::display_mlp(MultiLayerPerceptron *mlp){
     }
     MLPVisualization* mlpviz = new MLPVisualization(mlp);
     mlpviz->show();
+}
+
+void GuiUserInteractionAdapter::display_read_out_weights(LSMReadOutNeuron* read_out_neuron){
+    if(QThread::currentThread() != thread()){
+        QMetaObject::invokeMethod(this, "display_read_out_weights", Qt::QueuedConnection, Q_ARG(LSMReadOutNeuron*, read_out_neuron));
+        return;
+    }
+
+    static map<LSMReadOutNeuron*,ReadOutVisualization*> list_widgets;
+    if(list_widgets.count(read_out_neuron)){
+        list_widgets[read_out_neuron]->show();
+        return;
+    }
+
+    ReadOutVisualization* viz = new ReadOutVisualization(read_out_neuron);
+    viz->show();
+    list_widgets[read_out_neuron] = viz;
 }

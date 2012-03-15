@@ -58,7 +58,8 @@ SOURCES += main.cpp\
     drawablegroup.cpp \
     logwindow.cpp \
     settingsdialog.cpp \
-    guisettings.cpp
+    guisettings.cpp \
+    readoutvisualization.cpp
 
 HEADERS  += mainwindow.h \
     glscene.h \
@@ -88,7 +89,8 @@ HEADERS  += mainwindow.h \
     drawablegroup.h \
     logwindow.h \
     settingsdialog.h \
-    guisettings.h
+    guisettings.h \
+    readoutvisualization.h
 
 FORMS    += mainwindow.ui \
     izhikevich_properties_widget.ui \
@@ -98,7 +100,8 @@ FORMS    += mainwindow.ui \
     about_dialog.ui \
     scriptswindow.ui \
     logwindow.ui \
-    settingsdialog.ui
+    settingsdialog.ui \
+    readoutvisualization.ui
 
 RESOURCES += \
     icons.qrc

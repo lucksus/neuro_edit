@@ -210,6 +210,8 @@ QScriptValue show(QScriptContext *ctx, QScriptEngine*)
 {
     MultiLayerPerceptron* mlp = qobject_cast<MultiLayerPerceptron*>(ctx->argument(0).toQObject());
     if(mlp) UserInteractionAdapter::instance()->display_mlp(mlp);
+    LSMReadOutNeuron* read_out = qobject_cast<LSMReadOutNeuron*>(ctx->argument(0).toQObject());
+    if(read_out) UserInteractionAdapter::instance()->display_read_out_weights(read_out);
     return QScriptValue();
 }
 
