@@ -10,7 +10,7 @@
 unsigned int Samples::s_serial = 0;
 
 Samples::Samples(Simulation* s)
-    : SimulationObject(s), m_last_index(0), m_current_value(0)
+    : SimulationObject(s), m_last_index(0), m_last_time(0), m_current_value(0), m_constant_value_active(false), m_constant_value(0)
 {
     setObjectName(QString("Samples_%1").arg(s_serial++));
 }
