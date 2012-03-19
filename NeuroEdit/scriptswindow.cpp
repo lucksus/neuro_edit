@@ -72,7 +72,7 @@ void ScriptRunnerThread::run(){
     script_name = m_scripts_window->m_simulation_scripts.data(index, Qt::DisplayRole).toString();
     QString script = Controller::instance().simulation()->script(script_name);*/
     QString return_value = Controller::instance().script_engine()->evaluate(m_code);
-    m_scripts_window->script_output(return_value);
+    Controller::instance().output_from_script(return_value);
 }
 
 void ScriptsWindow::on_playButton_clicked(){
