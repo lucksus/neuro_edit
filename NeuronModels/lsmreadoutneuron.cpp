@@ -44,6 +44,7 @@ void LSMReadOutNeuron::learn(double target, double rate){
     BOOST_FOREACH(ReadOutConnection& c, m_read_out_connections){
         c.weight += rate * d * c.active_potential;
     }
+    m_bias_weight += rate * d * m_bias;
 }
 
 void LSMReadOutNeuron::connect_with_group(Group* group){
