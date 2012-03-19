@@ -1,11 +1,11 @@
-sim = simulation();
-
 signal_file = "/Users/nico/Neuro/signal_unverzerrt.txt";
 time_offset = 10;
 grid_x = 5;
 grid_y = 5;
 input_synapses = 1;
 debug_interval = 100;
+synapse_time_constant = 30;
+learning_rate = 0.1;
 
 function random_indices(count, max){
 	arr = new Array();
@@ -18,6 +18,7 @@ function random_indices(count, max){
 }
 
 function setup(){
+	sim = simulation();
 	group = new Group();
 	read_out = new ReadOut();
 	input = new Samples();
@@ -46,6 +47,7 @@ function setup(){
 
 function training(){
 	sim.reset();
+	read_out.synapse_time_constant = synapse_time_constant;
 	var i = 0;
 	while(sim.time < 1600){
 		sim.run_one_step(0.1);
@@ -53,8 +55,8 @@ function training(){
 		bit_time = sim.time - time_offset;
 		if(bit_time > 0){
 			bit = signal.bit_at_time(bit_time);
-			if(bit) read_out.learn(0.8,0.05);
-			else read_out.learn(-0.8,0.05);
+			if(bit) read_out.learn(0.8,learning_rate);
+			else read_out.learn(-0.8,learning_rate);
 			if(i==debug_interval) print(bit);
 		}
 		if(i==debug_interval) i=0;
@@ -67,8 +69,8 @@ function test(){
 	var i = 0;
 	while(sim.time < 1600){
 		sim.run_one_step(0.1);
-		if(i==20) print(sim.time);
-		if(i==20) i=0;
+		if(i==debug_interval) print(sim.time);
+		if(i==debug_interval) i=0;
 		i++;
 	}
 }
