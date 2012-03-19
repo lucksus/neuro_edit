@@ -58,6 +58,7 @@ public:
     Q_INVOKABLE bool constant_value_active();
     Q_INVOKABLE void set_constant_value(double);
     Q_INVOKABLE double constant_value();
+    Q_INVOKABLE void clear();
 
 
 private:

@@ -115,6 +115,7 @@ std::list<std::string> Samples::user_actions(){
     std::list<std::string> actions;
     actions.push_back("Load samples from PHOTOSS signal file...");
     actions.push_back("Plot samples");
+    actions.push_back("Clear");
     return actions;
 }
 
@@ -128,6 +129,10 @@ void Samples::do_user_action(std::string action){
 
     if("Plot samples" == action){
         UserInteractionAdapter::instance()->display_samples(m_samples);
+    }
+
+    if("Clear" == action){
+        clear();
     }
 }
 
@@ -156,4 +161,10 @@ void Samples::set_constant_value(double d){
 
 double Samples::constant_value(){
     return m_constant_value;
+}
+
+void Samples::clear(){
+    m_samples.clear();
+    m_last_index = 0;
+    m_last_time = 0;
 }
