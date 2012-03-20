@@ -108,5 +108,14 @@ ScriptEngine* Controller::script_engine(){
 void Controller::output_from_script(QString output){
     QMutexLocker l(&m_mutex_for_buffer);
     m_script_output_buffer.push_back(output);
+    if(m_std_output_activated) std::cout << output.toStdString() << std::endl;
     //emit script_output(output);
+}
+
+bool Controller::std_output_activated(){
+    return m_std_output_activated;
+}
+
+void Controller::set_std_output(bool b){
+    m_std_output_activated = b;
 }

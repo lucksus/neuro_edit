@@ -7,6 +7,7 @@
 #include "samples.h"
 #include <QtCore/QDir>
 #include <boost/foreach.hpp>
+#include "controller.h"
 
 Log::Log()
 {
@@ -81,6 +82,7 @@ std::string Log::object_signature(SimulationObject* object){
 
 void Log::_log(std::string text, Simulation* s, LogLevel level){
     m_messages.push_back(std::make_pair(text, level));
+    if(Controller::instance().std_output_activated()) std::cout << text << std::endl;
     if(!s) return;
     std::ofstream* file = file_for(s);
     if(!file) return;

@@ -15,7 +15,7 @@ Application& Application::instance(){
 
 void Application::init(){
     Controller::instance().init();
-
+    Controller::instance().set_std_output(true);
 }
 
 void Application::destroy(){
