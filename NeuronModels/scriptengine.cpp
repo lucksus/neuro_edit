@@ -152,7 +152,7 @@ QScriptValue Point_ctor(QScriptContext *ctx, QScriptEngine *eng){
     return eng->newQObject(p, QScriptEngine::ScriptOwnership);
 }
 
-QScriptValue MNISTData_ctor(QScriptContext *ctx, QScriptEngine *eng){
+QScriptValue MNISTData_ctor(QScriptContext *, QScriptEngine *eng){
     return eng->newQObject(new MNISTData(), QScriptEngine::ScriptOwnership);
 }
 
@@ -167,7 +167,7 @@ QScriptValue MultiLayerPerceptron_ctor(QScriptContext *ctx, QScriptEngine *eng){
     return eng->newQObject(new MultiLayerPerceptron(number_of_units_in_layer), QScriptEngine::ScriptOwnership);
 }
 
-QScriptValue Samples_ctor(QScriptContext *ctx, QScriptEngine *eng){
+QScriptValue Samples_ctor(QScriptContext *, QScriptEngine *eng){
     Samples* s = new Samples(Controller::instance().simulation());
     Controller::instance().simulation()->network()->add_object(s);
     return eng->newQObject(s, QScriptEngine::ScriptOwnership);
@@ -215,7 +215,7 @@ QScriptValue show(QScriptContext *ctx, QScriptEngine*)
     return QScriptValue();
 }
 
-QScriptValue get_simulation(QScriptContext *ctx, QScriptEngine* eng)
+QScriptValue get_simulation(QScriptContext *, QScriptEngine* eng)
 {
     return eng->newQObject(Controller::instance().simulation());
 }
