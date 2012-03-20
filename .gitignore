@@ -52,3 +52,4 @@ NeuronModels/NeuronModels.pro.user.2.1pre1
 *.xcodeproj*
 *build*
 Info.plist
+NeuroRunner/NeuroRunner
