@@ -29,6 +29,10 @@ public:
     std::list<QString> m_script_output_buffer;
     QMutex m_mutex_for_buffer;
 
+    std::string version_string(){return "0.1";}
+    bool std_output_activated();
+    void set_std_output(bool);
+
 public slots:
     void output_from_script(QString);
 
@@ -41,7 +45,7 @@ private:
     Simulation* m_simulation;
     std::string m_simulation_filename;
     ScriptEngine* m_script_engine;
-
+    bool m_std_output_activated;
 };
 
 #endif // CONTROLLER_H

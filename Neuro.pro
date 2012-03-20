@@ -6,7 +6,8 @@ SUBDIRS = Visualizer \
             math \
             NeuronModels \
             NeuroEdit \
-            MLP
+            MLP \
+    NeuroRunner
 
 
 
