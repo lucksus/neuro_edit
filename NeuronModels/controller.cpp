@@ -16,11 +16,11 @@
 #include "multilayerperceptron.h"
 #include "scriptengine.h"
 #include "lsmreadoutneuron.h"
+#include <iostream>
 
 Controller::Controller()
-    : m_mutex_for_buffer(QMutex::Recursive)
+    : m_mutex_for_buffer(QMutex::Recursive), m_script_engine(0), m_std_output_activated(false)
 {
-    m_script_engine = new ScriptEngine();
 }
 
 Controller& Controller::instance(){
@@ -49,6 +49,8 @@ void Controller::init(){
     qRegisterMetaType<LinearDiscriminator*>("LinearDiscriminator");
     qRegisterMetaType<MultiLayerPerceptron*>("MultiLayerPerceptron*");
     qRegisterMetaType<LSMReadOutNeuron*>("LSMReadOutNeuron*");
+
+    m_script_engine = new ScriptEngine();
 }
 
 void Controller::close_simulation(){
@@ -79,6 +81,14 @@ void Controller::save_simulation(std::string filename){
     m_simulation->write_to_file(filename, Simulation::BINARY);
     m_simulation->set_filename(filename);
     m_simulation_filename = filename;
+}
+
+void Controller::load_simulation(QString filename){
+    load_simulation(filename.toStdString());
+}
+
+void Controller::save_simulation(QString filename){
+    save_simulation(filename.toStdString());
 }
 
 void Controller::export_xml_simulation(std::string filename){

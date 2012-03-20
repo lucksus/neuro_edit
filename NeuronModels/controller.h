@@ -14,16 +14,18 @@ public:
 
     void init();
 
-    void close_simulation();
-    void create_new_simulation();
+    Q_INVOKABLE void close_simulation();
+    Q_INVOKABLE void create_new_simulation();
     void load_simulation(std::string filename);
     void save_simulation(std::string filename);
-    void save_simulation();
+    Q_INVOKABLE void save_simulation();
+    Q_INVOKABLE void load_simulation(QString filename);
+    Q_INVOKABLE void save_simulation(QString filename);
 
     void export_xml_simulation(std::string);
     void import_xml_simulation(std::string);
 
-    Simulation* simulation();
+    Q_INVOKABLE Simulation* simulation();
     ScriptEngine* script_engine();
 
     std::list<QString> m_script_output_buffer;

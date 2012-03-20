@@ -21,7 +21,7 @@ private:
     void add_constructors();
     void add_global_functions();
     void add_conversion_functions();
-    void add_random_generator();
+    void add_application_objects();
 
 };
 

@@ -47,7 +47,7 @@ ScriptEngine::ScriptEngine(){
     add_constructors();
     add_global_functions();
     add_conversion_functions();
-    add_random_generator();
+    add_application_objects();
     qScriptRegisterMetaType< vector<unsigned char> >(&m_engine, charVectorToScriptValue, charVectorFromScriptValue);
     qScriptRegisterMetaType< vector<double> >(&m_engine, doubleVectorToScriptValue, doubleVectorFromScriptValue);
 }
@@ -59,7 +59,7 @@ ScriptEngine::ScriptEngine(Simulation* sim){
     add_constructors();
     add_global_functions();
     add_conversion_functions();
-    add_random_generator();
+    add_application_objects();
     qScriptRegisterMetaType< vector<unsigned char> >(&m_engine, charVectorToScriptValue, charVectorFromScriptValue);
     qScriptRegisterMetaType< vector<double> >(&m_engine, doubleVectorToScriptValue, doubleVectorFromScriptValue);
 
@@ -71,7 +71,7 @@ ScriptEngine::ScriptEngine(Network* net){
     add_constructors();
     add_global_functions();
     add_conversion_functions();
-    add_random_generator();
+    add_application_objects();
 }
 
 
@@ -266,6 +266,7 @@ void ScriptEngine::add_conversion_functions(){
     qScriptRegisterMetaType(&m_engine, &Point::toScriptValue, &Point::fromScriptValue);
 }
 
-void ScriptEngine::add_random_generator(){
+void ScriptEngine::add_application_objects(){
+    m_engine.globalObject().setProperty("Controller", m_engine.newQObject(&Controller::instance()));
     m_engine.globalObject().setProperty("RandomGenerator", m_engine.newQObject(NeuroMath::RandomGenerator::getInstance()));
 }
