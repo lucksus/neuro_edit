@@ -206,6 +206,26 @@ QScriptValue print(QScriptContext *ctx, QScriptEngine*)
     return QScriptValue();
 }
 
+QScriptValue load_script(QScriptContext *ctx, QScriptEngine* e){
+    if(ctx->argumentCount() < 1){
+        ctx->throwError("No script file to load specified!");
+        return QScriptValue();
+    }
+
+    for(int i=0;i<ctx->argumentCount();i++){
+        QFile file(ctx->argument(i).toString());
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+            Controller::instance().output_from_script(QString("Could not read %1!").arg(ctx->argument(i).toString()));
+            continue;
+        }
+        QString code = file.readAll();
+        e->evaluate(code);
+        Controller::instance().output_from_script(code);
+        Controller::instance().output_from_script(QString("--- Read and interpreted script %1 ---").arg(ctx->argument(i).toString()));
+    }
+    return QScriptValue();
+}
+
 QScriptValue show(QScriptContext *ctx, QScriptEngine*)
 {
     MultiLayerPerceptron* mlp = qobject_cast<MultiLayerPerceptron*>(ctx->argument(0).toQObject());
@@ -237,6 +257,7 @@ void ScriptEngine::add_global_functions(){
     m_engine.globalObject().setProperty("print", m_engine.newFunction(print));
     m_engine.globalObject().setProperty("show", m_engine.newFunction(show));
     m_engine.globalObject().setProperty("simulation", m_engine.newFunction(get_simulation));
+    m_engine.globalObject().setProperty("load", m_engine.newFunction(load_script));
 }
 
 void ScriptEngine::add_conversion_functions(){
