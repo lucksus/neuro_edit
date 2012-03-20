@@ -223,7 +223,7 @@ public slots:
 	}
 
 
-        //                  1             /     (x - mean)²   \
+    //                  1             /     (x - mean)²   \-
 	//	pfd(x) = ---------------- Exp(  - ---------------  )
 	//           Wurzel(2 PI var)     \       2 var       /
 	/**
