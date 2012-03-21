@@ -18,9 +18,9 @@ void LinearDiscriminator::update(double d){
         connection->pre_neuron()->update(d);
         m_membrane_potential += connection->pre_neuron()->output() * connection->weight();
    }
-   BOOST_FOREACH(Samples* s, m_outputs){
-       s->write_value(m_membrane_potential);
-   }
+   //BOOST_FOREACH(Samples* s, m_outputs){
+   //    s->write_value(m_membrane_potential);
+   //}
 }
 
 void LinearDiscriminator::add_input(LDConnection* connection){

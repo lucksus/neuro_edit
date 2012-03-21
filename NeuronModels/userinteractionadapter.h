@@ -19,7 +19,7 @@ public:
 
     virtual std::string get_save_filepath(std::string file_type, std::string source, std::string porpuse) = 0;
     virtual std::string get_load_filepath(std::string file_type, std::string source, std::string porpuse) = 0;
-    virtual void display_samples(const std::vector<sample>& samples) = 0;
+    virtual void display_samples(const std::vector<sample>& samples, string name) = 0;
     virtual void display_image(QImage* image) = 0;
     virtual void display_mlp(MultiLayerPerceptron*) = 0;
     virtual void display_read_out_weights(LSMReadOutNeuron*) = 0;

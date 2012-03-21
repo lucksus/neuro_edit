@@ -128,7 +128,7 @@ void Samples::do_user_action(std::string action){
 
 
     if("Plot samples" == action){
-        UserInteractionAdapter::instance()->display_samples(m_samples);
+        UserInteractionAdapter::instance()->display_samples(m_samples, objectName().toStdString());
     }
 
     if("Clear" == action){
