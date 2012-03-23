@@ -11,12 +11,6 @@ TEMPLATE = lib
 CONFIG += staticlib
 INCLUDEPATH += ../math ../MLP
 
-win32{
-	INCLUDEPATH += c:\boost\include
-}else{
-        INCLUDEPATH += /opt/local/include
-}
-
 SOURCES += izhikevich.cpp \
            network.cpp \
     axon.cpp \
