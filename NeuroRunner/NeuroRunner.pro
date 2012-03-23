@@ -17,12 +17,13 @@ TEMPLATE = app
 INCLUDEPATH += ../NeuronModels ../math ../MLP
 POST_TARGETDEPS += ../NeuronModels/libneuron_models.a ../math/libmath.a ../MLP/libMLP.a
 
+LIBS += -L../NeuronModels -lneuron_models -L../math -lmath -L../MLP -lMLP
+
 win32{
         INCLUDEPATH += c:\boost\include
         LIBS += -Lc:\boost\lib -llibboost_serialization-vc80-mt
 }else{
-        LIBS += -L/opt/local/lib  -lboost_serialization
-        INCLUDEPATH += /opt/local/include
+        LIBS += -lboost_serialization
 }
 
 build_pass:CONFIG(debug, debug|release) {
@@ -30,9 +31,6 @@ build_pass:CONFIG(debug, debug|release) {
 } else {
     LIBS += -L../NeuronModels/release
 }
-
-LIBS += -L../NeuronModels -lneuron_models -L../math -lmath -L../MLP -lMLP
-
 
 SOURCES += main.cpp \
     application.cpp \

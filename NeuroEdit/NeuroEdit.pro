@@ -13,14 +13,6 @@ POST_TARGETDEPS += ../NeuronModels/libneuron_models.a ../Visualizer/libVisualize
 
 macx:LIBS += -framework GLUT
 
-win32{
-	INCLUDEPATH += c:\boost\include
-	LIBS += -Lc:\boost\lib -llibboost_serialization-vc80-mt
-}else{
-        LIBS += -L/opt/local/lib  -lboost_serialization -lglut
-        INCLUDEPATH += /opt/local/include
-}
-
 build_pass:CONFIG(debug, debug|release) {
         LIBS += -L../NeuronModels/debug -L../Visualizer/debug
 } else {
@@ -28,6 +20,15 @@ build_pass:CONFIG(debug, debug|release) {
 }
 
 LIBS += -L../NeuronModels -lneuron_models -L../Visualizer -lVisualizer -L../math -lmath -L../MLP -lMLP -lqscintilla2
+
+
+win32{
+        INCLUDEPATH += c:\boost\include
+        LIBS += -Lc:\boost\lib -llibboost_serialization-vc80-mt
+}else{
+        LIBS += -lboost_serialization -lglut
+}
+
 
 SOURCES += main.cpp\
         mainwindow.cpp \
