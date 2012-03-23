@@ -1,0 +1,3 @@
+[submodule "PCloud"]
+	path = PCloud
+	url = git@git.photoss.hft.e-technik.uni-dortmund.de:pcloud.git
