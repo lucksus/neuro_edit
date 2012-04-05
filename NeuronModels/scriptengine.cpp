@@ -87,9 +87,15 @@ void ScriptEngine::debug(const QString& code){
     m_engine.evaluate(code);
 }
 
+bool check_open_network(QScriptContext *ctx){
+    if(Controller::instance().simulation()) return true;
+    ctx->throwError("Can't create object! No simulation opened!");
+    return false;
+}
 
 QScriptValue Neuron_ctor(QScriptContext *ctx, QScriptEngine *eng)
  {
+    if(!check_open_network(ctx)) return QScriptValue();
     Point p;
     if(ctx->argumentCount() == 3){
          p.x = ctx->argument(0).toNumber();
@@ -106,19 +112,22 @@ QScriptValue Neuron_ctor(QScriptContext *ctx, QScriptEngine *eng)
     return eng->newQObject(n);
  }
 
-QScriptValue Group_ctor(QScriptContext* /*ctx*/, QScriptEngine *eng){
+QScriptValue Group_ctor(QScriptContext* ctx, QScriptEngine *eng){
+    if(!check_open_network(ctx)) return QScriptValue();
     Group* group_object = new Group(Controller::instance().simulation());
     Controller::instance().simulation()->network()->add_object(group_object);
     return eng->newQObject(group_object);
 }
 
-QScriptValue ReadOut_ctor(QScriptContext* /*ctx*/, QScriptEngine *eng){
+QScriptValue ReadOut_ctor(QScriptContext* ctx, QScriptEngine *eng){
+    if(!check_open_network(ctx)) return QScriptValue();
     LSMReadOutNeuron* read_out = new LSMReadOutNeuron(Controller::instance().simulation());
     Controller::instance().simulation()->network()->add_object(read_out);
     return eng->newQObject(read_out);
 }
 
 QScriptValue CurrentInducer_ctor(QScriptContext* ctx, QScriptEngine *eng){
+    if(!check_open_network(ctx)) return QScriptValue();
     if(ctx->argumentCount() == 1){
         DendriticNode* dn = dynamic_cast<DendriticNode*>(ctx->argument(0).toQObject());
         if(!dn){
@@ -167,7 +176,8 @@ QScriptValue MultiLayerPerceptron_ctor(QScriptContext *ctx, QScriptEngine *eng){
     return eng->newQObject(new MultiLayerPerceptron(number_of_units_in_layer), QScriptEngine::ScriptOwnership);
 }
 
-QScriptValue Samples_ctor(QScriptContext *, QScriptEngine *eng){
+QScriptValue Samples_ctor(QScriptContext *ctx, QScriptEngine *eng){
+    if(!check_open_network(ctx)) return QScriptValue();
     Samples* s = new Samples(Controller::instance().simulation());
     Controller::instance().simulation()->network()->add_object(s);
     return eng->newQObject(s, QScriptEngine::ScriptOwnership);
@@ -221,6 +231,12 @@ QScriptValue load_script(QScriptContext *ctx, QScriptEngine* e){
         QString code = file.readAll();
         e->evaluate(code);
         Controller::instance().output_from_script(code);
+        if(e->hasUncaughtException()){
+            Controller::instance().output_from_script(QString("Uncaught exception \"%2\" in line %1!").arg(e->uncaughtExceptionLineNumber()).arg(e->uncaughtException().toString()));
+            Controller::instance().output_from_script(QString("Backtrace:"));
+            foreach(QString call, e->uncaughtExceptionBacktrace())
+                Controller::instance().output_from_script(call);
+        }
         Controller::instance().output_from_script(QString("--- Read and interpreted script %1 ---").arg(ctx->argument(i).toString()));
     }
     return QScriptValue();
