@@ -229,8 +229,10 @@ QScriptValue load_script(QScriptContext *ctx, QScriptEngine* e){
             continue;
         }
         QString code = file.readAll();
-        e->evaluate(code);
+        Controller::instance().output_from_script(QString("--- Read script %1: ---").arg(ctx->argument(i).toString()));
         Controller::instance().output_from_script(code);
+        Controller::instance().output_from_script("--- Starting interpreter... ---");
+        e->evaluate(code);
         if(e->hasUncaughtException()){
             Controller::instance().output_from_script(QString("Uncaught exception \"%2\" in line %1!").arg(e->uncaughtExceptionLineNumber()).arg(e->uncaughtException().toString()));
             Controller::instance().output_from_script(QString("Backtrace:"));
