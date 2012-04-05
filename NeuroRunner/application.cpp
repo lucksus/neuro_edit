@@ -2,6 +2,8 @@
 #include "controller.h"
 #include <iostream>
 #include "scriptengine.h"
+#include "log.h"
+
 using namespace std;
 
 Application::Application()
@@ -16,6 +18,7 @@ Application& Application::instance(){
 void Application::init(){
     Controller::instance().init();
     Controller::instance().set_std_output(true);
+    Log::instance().set_file("log.txt");
 }
 
 void Application::destroy(){

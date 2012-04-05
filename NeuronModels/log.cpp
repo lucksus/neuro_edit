@@ -27,6 +27,19 @@ Log& Log::instance(){
     return log;
 }
 
+void Log::log(string message, LogLevel log_level){
+    std::stringstream full_text;
+    full_text << time_stamp() << ": " << message;
+    std::stringstream with_log_level;
+    if(log_level == DEBUG)
+        with_log_level << "DEBUG: ";
+    if(log_level == ERROR)
+        with_log_level << "ERROR: ";
+    with_log_level << full_text.str();
+
+    _log(with_log_level.str(), 0, log_level);
+}
+
 void Log::log(std::string message, SimulationObject* source, LogLevel log_level){
     std::stringstream full_text;
     full_text << time_stamp() << " " << object_signature(source) << ": " << message;
@@ -83,6 +96,7 @@ std::string Log::object_signature(SimulationObject* object){
 void Log::_log(std::string text, Simulation* s, LogLevel level){
     m_messages.push_back(std::make_pair(text, level));
     if(Controller::instance().std_output_activated()) std::cout << text << std::endl;
+    if(m_default_file.is_open()) m_default_file << text << std::endl;
     if(!s) return;
     std::ofstream* file = file_for(s);
     if(!file) return;
@@ -91,4 +105,9 @@ void Log::_log(std::string text, Simulation* s, LogLevel level){
 
 const vector< pair<string, Log::LogLevel> > Log::messages(){
     return m_messages;
+}
+
+void Log::set_file(string filename){
+    if(m_default_file.is_open()) m_default_file.close();
+    m_default_file.open(filename.c_str(), ios_base::app);
 }

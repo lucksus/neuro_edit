@@ -17,6 +17,7 @@
 #include "scriptengine.h"
 #include "lsmreadoutneuron.h"
 #include <iostream>
+#include "log.h"
 
 Controller::Controller()
     : m_mutex_for_buffer(QMutex::Recursive), m_script_engine(0), m_std_output_activated(false)
@@ -118,7 +119,8 @@ ScriptEngine* Controller::script_engine(){
 void Controller::output_from_script(QString output){
     QMutexLocker l(&m_mutex_for_buffer);
     m_script_output_buffer.push_back(output);
-    if(m_std_output_activated) std::cout << output.toStdString() << std::endl;
+    Log::instance().log(output.toStdString());
+    //if(m_std_output_activated) std::cout << output.toStdString() << std::endl;
     //emit script_output(output);
 }
 

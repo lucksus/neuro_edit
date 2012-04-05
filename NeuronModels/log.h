@@ -16,14 +16,18 @@ public:
     enum LogLevel{DEBUG=0, INFO=1, ERROR=2};
 
     static Log& instance();
+    void log(string message, LogLevel log_level = INFO);
     void log(string message, SimulationObject* source, LogLevel log_level = INFO);
     void log(string message, Simulation* source, LogLevel log_level = INFO);
 
     const vector< pair<string, Log::LogLevel> > messages();
 
+    void set_file(string filename);
+
 private:
     Log();
     ~Log();
+    ofstream m_default_file;
     map<Simulation*, ofstream*> m_files;
     vector< pair<string, LogLevel> > m_messages;
     ofstream* file_for(Simulation*);
