@@ -2,7 +2,7 @@
 #include "dendriticnode.h"
 
 Synapse::Synapse(Neuron* neuron, DendriticNode* target)
-    : SimulationObject(neuron), SpikingObject(neuron), m_postsynaptic_neuron(target), m_weight(30), m_time_constant(50)
+    : SpikingObject(neuron), m_postsynaptic_neuron(target), m_weight(30), m_time_constant(50)
 {
     set_position(target->position());
     set_user_movable(false);

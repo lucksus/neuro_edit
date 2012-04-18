@@ -3,6 +3,7 @@
 #include <boost/foreach.hpp>
 #include "lsmreadoutneuron.h"
 #include <cstdio>
+#include <assert.h>
 
 using namespace std;
 
@@ -51,11 +52,13 @@ void CmdUserInteractionAdapter::display_read_out_weights(LSMReadOutNeuron* read_
 }
 
 vector<double> CmdUserInteractionAdapter::get_double_values(vector<string> value_descriptions, string source, string porpuse, vector<pair<double,double> > limits ){
-
+    assert(false);
+    return vector<double>();
 }
 
 vector<int> CmdUserInteractionAdapter::get_integer_values(vector<string> value_descriptions, string source, string porpuse, vector<pair<int,int> > limits ){
-
+    assert(false);
+    return vector<int>();
 }
 
 void CmdUserInteractionAdapter::confirm_message(std::string message){

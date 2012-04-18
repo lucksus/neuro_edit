@@ -11,6 +11,9 @@
 #include <limits>
 #include <boost/foreach.hpp>
 #include "VisualizerContext2D.h"
+#ifdef Q_OS_WIN
+#include <gl/glu.h>
+#endif
 
 #define _isnan(x) (x!=x)
 

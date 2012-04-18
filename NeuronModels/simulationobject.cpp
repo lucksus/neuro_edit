@@ -121,10 +121,10 @@ void SimulationObject::log(std::string message){
 }
 
 void SimulationObject::debug(std::string message){
-    Log::instance().log(message, this, Log::DEBUG);
+    Log::instance().log(message, this, Log::DEBUG_MSG);
 }
 
 void SimulationObject::error(std::string message){
-    Log::instance().log(message, this, Log::ERROR);
+    Log::instance().log(message, this, Log::ERROR_MSG);
 }
 

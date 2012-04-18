@@ -10,6 +10,7 @@ TARGET = neuro_edit
 TEMPLATE = app
 INCLUDEPATH += ../NeuronModels ../Visualizer ../math ../MLP
 DESTDIR=../bin
+LIBS += -L../lib
 include(../src.pri)
 
 build_pass:CONFIG(debug, debug|release) {
@@ -27,7 +28,7 @@ build_pass:CONFIG(debug, debug|release) {
 macx:LIBS += -framework GLUT
 
 LIBS += -lqscintilla2
-LIBS += -lboost_serialization -lglut
+#LIBS += -lboost_serialization -lglut
 
 SOURCES += main.cpp\
         mainwindow.cpp \

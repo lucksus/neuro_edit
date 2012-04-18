@@ -13,12 +13,12 @@ class Simulation;
 class Log
 {
 public:
-    enum LogLevel{DEBUG=0, INFO=1, ERROR=2};
+    enum LogLevel{DEBUG_MSG=0, INFO_MSG=1, ERROR_MSG=2};
 
     static Log& instance();
-    void log(string message, LogLevel log_level = INFO);
-    void log(string message, SimulationObject* source, LogLevel log_level = INFO);
-    void log(string message, Simulation* source, LogLevel log_level = INFO);
+    void log(string message, LogLevel log_level = INFO_MSG);
+    void log(string message, SimulationObject* source, LogLevel log_level = INFO_MSG);
+    void log(string message, Simulation* source, LogLevel log_level = INFO_MSG);
 
     const vector< pair<string, Log::LogLevel> > messages();
 

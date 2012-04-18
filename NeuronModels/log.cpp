@@ -31,9 +31,9 @@ void Log::log(string message, LogLevel log_level){
     std::stringstream full_text;
     full_text << time_stamp() << ": " << message;
     std::stringstream with_log_level;
-    if(log_level == DEBUG)
+    if(log_level == DEBUG_MSG)
         with_log_level << "DEBUG: ";
-    if(log_level == ERROR)
+    if(log_level == ERROR_MSG)
         with_log_level << "ERROR: ";
     with_log_level << full_text.str();
 
@@ -45,9 +45,9 @@ void Log::log(std::string message, SimulationObject* source, LogLevel log_level)
     full_text << time_stamp() << " " << object_signature(source) << ": " << message;
     //emit new_log_message(full_text.str().c_str(), log_level);
     std::stringstream with_log_level;
-    if(log_level == DEBUG)
+    if(log_level == DEBUG_MSG)
         with_log_level << "DEBUG: ";
-    if(log_level == ERROR)
+    if(log_level == ERROR_MSG)
         with_log_level << "ERROR: ";
     with_log_level << full_text.str();
 
@@ -59,9 +59,9 @@ void Log::log(std::string message, Simulation* source, LogLevel log_level){
     full_text << time_stamp() << ": " << message;
     //emit new_log_message(full_text.str().c_str(), log_level);
     std::stringstream with_log_level;
-    if(log_level == DEBUG)
+    if(log_level == DEBUG_MSG)
         with_log_level << "DEBUG: ";
-    if(log_level == ERROR)
+    if(log_level == ERROR_MSG)
         with_log_level << "ERROR: ";
     with_log_level << full_text.str();
 

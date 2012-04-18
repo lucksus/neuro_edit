@@ -12,7 +12,8 @@ CONFIG -= app_bundle
 CONFIG += debug_and_release
 TEMPLATE = app
 INCLUDEPATH += ../NeuronModels ../math ../MLP
-DESTDIR=../lib
+DESTDIR=../bin
+LIBS += -L../lib
 include(../src.pri)
 
 build_pass:CONFIG(debug, debug|release) {
@@ -26,8 +27,6 @@ build_pass:CONFIG(debug, debug|release) {
     !win32: POST_TARGETDEPS += ../lib/libneuron_models.a ../lib/libmath.a ../lib/libMLP.a
     win32: POST_TARGETDEPS += ../lib/neuron_models.lib ../lib/math.lib ../lib/MLP.lib
 }
-
-LIBS += -lboost_serialization
 
 build_pass:CONFIG(debug, debug|release) {
         LIBS += -L../NeuronModels/debug

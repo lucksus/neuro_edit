@@ -41,8 +41,8 @@ void LogWindow::rebuild(Log::LogLevel level){
 
 void LogWindow::add_message_to_widget(std::string message, Log::LogLevel level){
     QString color;
-    if(level == Log::ERROR) color = "#FF0000";
-    if(level == Log::DEBUG) color = "#0000FF";
+    if(level == Log::ERROR_MSG) color = "#FF0000";
+    if(level == Log::DEBUG_MSG) color = "#0000FF";
     ui->textEdit->insertHtml(QString("<font color=%1>%2</font><br>").arg(color).arg(message.c_str()));
 }
 
@@ -60,9 +60,9 @@ void LogWindow::check_for_new_messages(){
 Log::LogLevel LogWindow::combobox_index_to_log_level(int index){
     Log::LogLevel level;
     switch(index){
-    case 0: level = Log::DEBUG; break;
-    case 1: level = Log::INFO; break;
-    case 2: level = Log::ERROR; break;
+    case 0: level = Log::DEBUG_MSG; break;
+    case 1: level = Log::INFO_MSG; break;
+    case 2: level = Log::ERROR_MSG; break;
     default: assert(false);
     }
     return level;

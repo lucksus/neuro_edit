@@ -356,7 +356,7 @@ void VisualizerCanvasPoincare::mousePressEvent(QMouseEvent *event) {
 	m_last_mouse_pos.second = event->y();
 }
 
-void VisualizerCanvasPoincare::mouseReleaseEvent(QMouseEvent *event) {
+void VisualizerCanvasPoincare::mouseReleaseEvent(QMouseEvent *) {
 
 }
 

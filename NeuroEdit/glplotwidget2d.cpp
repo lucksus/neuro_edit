@@ -1,5 +1,8 @@
 #include "glplotwidget2d.h"
 #include <boost/foreach.hpp>
+#ifdef Q_OS_WIN
+#include <gl/glu.h>
+#endif
 
 GLPlotWidget2d::GLPlotWidget2d(QWidget *parent) :
     QGLWidget(parent),

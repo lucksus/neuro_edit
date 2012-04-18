@@ -7,7 +7,7 @@
 #include <boost/serialization/nvp.hpp>
 
 class Axon;
-class SpikingObject : public virtual SimulationObject
+class SpikingObject : public SimulationObject
 {
 friend class boost::serialization::access;
 public:

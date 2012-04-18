@@ -23,6 +23,9 @@
 #include "ldconnection.h"
 #include "group.h"
 #include "guisettings.h"
+#ifdef Q_OS_WIN
+#include <gl/glu.h>
+#endif
 
 GLScene::GLScene(QWidget *parent) :
     QGLWidget(parent),
@@ -877,7 +880,7 @@ void GLScene::paint_moving_plane(){
     glColor3f(.0,.0,.8);
 	double my_max;
 #ifdef WIN32
-	my_max = _cpp_max(2*dist,150.);
+    my_max = 2*dist > 150. ? 2*dist : 150.;
 #else
 	my_max = std::max(2*dist,150.);
 #endif
