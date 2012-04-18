@@ -53,3 +53,6 @@ NeuronModels/NeuronModels.pro.user.2.1pre1
 *build*
 Info.plist
 NeuroRunner/NeuroRunner
+*.dll
+*.Debug
+*.Release
