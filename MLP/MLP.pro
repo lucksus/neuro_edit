@@ -1,8 +1,10 @@
 TEMPLATE = lib
-TARGET = 
 DEPENDPATH += .
 INCLUDEPATH += . ../NeuronModels ../math
 CONFIG += staticlib
+CONFIG += debug_and_release
+DESTDIR=../lib
+include(../src.pri)
 
 # Input
 HEADERS += \ 

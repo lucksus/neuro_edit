@@ -4,27 +4,30 @@
 #
 #-------------------------------------------------
 
-QT       += core opengl script scripttools
-
-QT       += gui
-
-TARGET = NeuroRunner
-CONFIG   += console
-CONFIG   -= app_bundle
-
+QT     += core opengl script scripttools
+QT     += gui
+TARGET  = NeuroRunner
+CONFIG += console
+CONFIG -= app_bundle
+CONFIG += debug_and_release
 TEMPLATE = app
-
 INCLUDEPATH += ../NeuronModels ../math ../MLP
-POST_TARGETDEPS += ../NeuronModels/libneuron_models.a ../math/libmath.a ../MLP/libMLP.a
+DESTDIR=../lib
+include(../src.pri)
 
-LIBS += -L../NeuronModels -lneuron_models -L../math -lmath -L../MLP -lMLP
-
-win32{
-        INCLUDEPATH += c:\boost\include
-        LIBS += -Lc:\boost\lib -llibboost_serialization-vc80-mt
-}else{
-        LIBS += -lboost_serialization
+build_pass:CONFIG(debug, debug|release) {
+    mac: LIBS +=  -lneuron_models_debug -lmath_debug -lMLP_debug
+    !mac: LIBS +=  -lneuron_modelsd -lmathd -lMLPd
+    mac: POST_TARGETDEPS += ../lib/libneuron_models_debug.a ../lib/libmath_debug.a ../lib/libMLP_debug.a
+    unix: POST_TARGETDEPS += ../lib/libneuron_modelsd.a ../lib/libmathd.a ../lib/libMLPd.a
+    win32: POST_TARGETDEPS += ../lib/neuron_modelsd.lib ../lib/mathd.lib ../lib/MLPd.lib
+} else {
+    LIBS +=  -lneuron_models -lmath -lMLP
+    !win32: POST_TARGETDEPS += ../lib/libneuron_models.a ../lib/libmath.a ../lib/libMLP.a
+    win32: POST_TARGETDEPS += ../lib/neuron_models.lib ../lib/math.lib ../lib/MLP.lib
 }
+
+LIBS += -lboost_serialization
 
 build_pass:CONFIG(debug, debug|release) {
         LIBS += -L../NeuronModels/debug

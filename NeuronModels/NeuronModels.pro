@@ -5,11 +5,13 @@
 #-------------------------------------------------
 
 QT       -= core gui
-CONFIG += debug
+CONFIG += debug_and_release
 TARGET = neuron_models
 TEMPLATE = lib
 CONFIG += staticlib
 INCLUDEPATH += ../math ../MLP
+DESTDIR=../lib
+include(../src.pri)
 
 SOURCES += izhikevich.cpp \
            network.cpp \

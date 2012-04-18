@@ -3,10 +3,12 @@
 ######################################################################
 
 TEMPLATE = lib
-TARGET = 
 DEPENDPATH += .
 INCLUDEPATH += .
 CONFIG += staticlib
+CONFIG += debug_and_release
+DESTDIR=../lib
+include(../src.pri)
 
 # Input
 HEADERS += RandomGenerator.h \

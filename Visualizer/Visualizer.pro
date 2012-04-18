@@ -1,14 +1,13 @@
 TARGET = Visualizer
 TEMPLATE = lib
-
 CONFIG += staticlib qt
 CONFIG -= flat
-
+CONFIG += debug_and_release
 QT += core gui
-
-
 DEPENDPATH += . Resources
 INCLUDEPATH += .
+DESTDIR=../lib
+include(../src.pri)
 
 # Input
 HEADERS += BoolEditor.h \

@@ -12,4 +12,5 @@ SUBDIRS = Visualizer \
 
 
 # Use .depends to specify that a project depends on another.
-NeuroEdit.depends = NeuronModels Visualizer math
+NeuroEdit.depends = NeuronModels Visualizer math MLP
+NeuroRunner.depends = NeuronModels math MLP

@@ -5,30 +5,29 @@
 #-------------------------------------------------
 
 QT       += core gui opengl script scripttools
-CONFIG += debug
+CONFIG += debug_and_release
 TARGET = neuro_edit
 TEMPLATE = app
 INCLUDEPATH += ../NeuronModels ../Visualizer ../math ../MLP
-POST_TARGETDEPS += ../NeuronModels/libneuron_models.a ../Visualizer/libVisualizer.a ../math/libmath.a ../MLP/libMLP.a
+DESTDIR=../bin
+include(../src.pri)
+
+build_pass:CONFIG(debug, debug|release) {
+    mac: LIBS +=  -lneuron_models_debug -lVisualizer_debug -lmath_debug -lMLP_debug
+    !mac: LIBS +=  -lneuron_modelsd -lVisualizerd -lmathd -lMLPd
+    mac: POST_TARGETDEPS += ../lib/libneuron_models_debug.a ../lib/libVisualizer_debug.a ../lib/libmath_debug.a ../lib/libMLP_debug.a
+    unix: POST_TARGETDEPS += ../lib/libneuron_modelsd.a ../lib/libVisualizerd.a ../lib/libmathd.a ../lib/libMLPd.a
+    win32: POST_TARGETDEPS += ../lib/neuron_modelsd.lib ../lib/Visualizerd.lib ../lib/mathd.lib ../lib/MLPd.lib
+} else {
+    LIBS +=  -lneuron_models -lVisualizer -lmath -lMLP
+    !win32: POST_TARGETDEPS += ../lib/libneuron_models.a ../lib/libVisualizer.a ../lib/libmath.a ../lib/libMLP.a
+    win32: POST_TARGETDEPS += ../lib/neuron_models.lib ../lib/Visualizer.lib ../lib/math.lib ../lib/MLP.lib
+}
 
 macx:LIBS += -framework GLUT
 
-build_pass:CONFIG(debug, debug|release) {
-        LIBS += -L../NeuronModels/debug -L../Visualizer/debug
-} else {
-    LIBS += -L../NeuronModels/release -L../Visualizer/debug
-}
-
-LIBS += -L../NeuronModels -lneuron_models -L../Visualizer -lVisualizer -L../math -lmath -L../MLP -lMLP -lqscintilla2
-
-
-win32{
-        INCLUDEPATH += c:\boost\include
-        LIBS += -Lc:\boost\lib -llibboost_serialization-vc80-mt
-}else{
-        LIBS += -lboost_serialization -lglut
-}
-
+LIBS += -lqscintilla2
+LIBS += -lboost_serialization -lglut
 
 SOURCES += main.cpp\
         mainwindow.cpp \
