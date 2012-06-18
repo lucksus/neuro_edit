@@ -56,7 +56,7 @@ public:
 
     void write_value(double value);
 
-    double value();
+    Q_INVOKABLE double value();
 
     Q_INVOKABLE void set_constant_value_active(bool);
     Q_INVOKABLE bool constant_value_active();

@@ -156,6 +156,7 @@ void Samples::write_value(double value){
     s.value = value;
     s.time = simulation()->time_ms();
     m_samples.push_back(s);
+    m_current_value = value;
 }
 
 double Samples::value(){
