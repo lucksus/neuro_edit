@@ -2,11 +2,13 @@
 #define SERIALIZATIONHELPER_H
 #include <set>
 #include <ostream>
+#include <vector>
 
 class Neuron;
 class Network;
 class Simulation;
 class SimulationObject;
+struct sample;
 class SerializationHelper
 {
 public:
@@ -27,6 +29,9 @@ public:
 
     void serialize_objects(std::ostream&, std::set<SimulationObject*>);
     std::set<SimulationObject*> deserialize_objects(std::istream&);
+
+    void serialize_samples(std::ostream&, const std::vector<sample>&);
+    std::vector<sample> deserialize_samples(std::istream&);
 
 private:
     SerializationHelper();

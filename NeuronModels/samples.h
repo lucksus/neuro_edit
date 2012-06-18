@@ -47,6 +47,10 @@ public:
     Q_INVOKABLE void read_from_photoss_signal_file(QString filename) {read_from_photoss_signal_file(filename.toStdString());}
     void read_from_photoss_signal_file(std::string filename);
 
+    Q_INVOKABLE void save_samples_to_file(QString filename) {save_samples_to_file(filename.toStdString());}
+    void save_samples_to_file(std::string filename);
+    void load_samples_from_file(std::string filename);
+
     virtual std::list<std::string> user_actions();
     virtual void do_user_action(std::string);
 

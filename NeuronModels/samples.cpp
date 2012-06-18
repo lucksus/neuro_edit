@@ -6,6 +6,7 @@
 #include "userinteractionadapter.h"
 #include "photosssignalimporter.h"
 #include <fstream>
+#include "serializationhelper.h"
 
 unsigned int Samples::s_serial = 0;
 
@@ -113,6 +114,8 @@ void Samples::read_from_photoss_signal_file(std::string filename){
 
 std::list<std::string> Samples::user_actions(){
     std::list<std::string> actions;
+    actions.push_back("Save samples...");
+    actions.push_back("Load samples...");
     actions.push_back("Load samples from PHOTOSS signal file...");
     actions.push_back("Plot samples");
     actions.push_back("Clear");
@@ -120,6 +123,18 @@ std::list<std::string> Samples::user_actions(){
 }
 
 void Samples::do_user_action(std::string action){
+    if("Save samples..." == action){
+        std::string filename = UserInteractionAdapter::instance()->get_save_filepath("Samples file (*.nsamples)",objectName().toStdString(),"");
+        if(filename.size() == 0) return;
+        save_samples_to_file(filename);
+    }
+
+    if("Load samples..." == action){
+        std::string filename = UserInteractionAdapter::instance()->get_load_filepath("Samples file (*.nsamples)",objectName().toStdString(),"");
+        if(filename.size() == 0) return;
+        load_samples_from_file(filename);
+    }
+
     if("Load samples from PHOTOSS signal file..." == action){
         std::string filename = UserInteractionAdapter::instance()->get_load_filepath("PHOTOSS signal file (*.txt)",objectName().toStdString(),"");
         if(filename.size() == 0) return;
@@ -167,4 +182,14 @@ void Samples::clear(){
     m_samples.clear();
     m_last_index = 0;
     m_last_time = 0;
+}
+
+void Samples::save_samples_to_file(std::string filename){
+    std::ofstream file(filename.c_str());
+    SerializationHelper::instance().serialize_samples(file, m_samples);
+}
+
+void Samples::load_samples_from_file(std::string filename){
+    std::ifstream file(filename.c_str());
+    m_samples = SerializationHelper::instance().deserialize_samples(file);
 }

@@ -162,3 +162,30 @@ std::set<SimulationObject*> SerializationHelper::deserialize_objects(std::istrea
 
     return objects;
 }
+
+
+void SerializationHelper::serialize_samples(std::ostream& stream, const std::vector<sample>& samples){
+    boost::archive::binary_oarchive archive(stream);
+    archive.register_type<sample>();
+
+    try{
+    archive << boost::serialization::make_nvp("samples", samples);
+    }
+    catch(std::exception const& e) { std::cout << e.what() << std::endl;}
+       catch(...) { std::cout << "whoops!" << std::endl; }
+}
+
+std::vector<sample> SerializationHelper::deserialize_samples(std::istream& stream){
+    boost::archive::binary_iarchive archive(stream);
+    archive.register_type<sample>();
+
+    std::vector<sample> samples;
+    try{
+        archive >> boost::serialization::make_nvp("samples",samples);
+    }catch(std::exception const& e) {
+        std::cout << e.what() << std::endl;
+    }
+    catch(...) { std::cout << "whoops!" << std::endl; }
+
+    return samples;
+}
