@@ -258,6 +258,26 @@ QScriptValue get_simulation(QScriptContext *, QScriptEngine* eng)
     return eng->newQObject(Controller::instance().simulation());
 }
 
+QScriptValue write_to_file(QScriptContext *ctx, QScriptEngine*)
+{
+    if(ctx->argumentCount() < 2){
+        ctx->throwError("write_to_file() needs filename and value (e.g. write_to_file(\"out.txt\", 3.5)).");
+        return QScriptValue();
+    }
+    QString filename = ctx->argument(0).toString();
+    std::ofstream file(filename.toStdString().c_str());
+    if(!file.is_open()){
+        ctx->throwError(QString("Could not open %1 for writing!").arg(filename));
+        return QScriptValue();
+    }
+    file.precision(16);
+    for(int i=1;i<ctx->argumentCount();i++){
+        QString value = ctx->argument(i).toString();
+        file << value.toStdString() << std::endl;
+    }
+    return QScriptValue();
+}
+
 void ScriptEngine::add_constructors(){
     m_engine.globalObject().setProperty("Neuron", m_engine.newFunction(Neuron_ctor));
     m_engine.globalObject().setProperty("Group", m_engine.newFunction(Group_ctor));
@@ -276,6 +296,7 @@ void ScriptEngine::add_global_functions(){
     m_engine.globalObject().setProperty("show", m_engine.newFunction(show));
     m_engine.globalObject().setProperty("simulation", m_engine.newFunction(get_simulation));
     m_engine.globalObject().setProperty("load", m_engine.newFunction(load_script));
+    m_engine.globalObject().setProperty("write_to_file", m_engine.newFunction(write_to_file));
 }
 
 void ScriptEngine::add_conversion_functions(){
