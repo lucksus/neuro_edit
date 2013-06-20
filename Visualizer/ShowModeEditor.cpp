@@ -16,6 +16,6 @@ ShowModeEditor::ShowModeEditor(VisualizerData2D* data, QTreeWidget *widget, QTre
 }
 
 void ShowModeEditor::on_currentIndexChanged(int){
-	m_visualizerDataObject->setShowMode(VisualizerData2D::MODE(qVariantValue<int>(itemData(currentIndex(), Qt::DecorationRole))));
+    m_visualizerDataObject->setShowMode(VisualizerData2D::MODE(itemData(currentIndex(), Qt::DecorationRole).value<int>()));
 	emit changed(m_visualizerDataObject);
 }

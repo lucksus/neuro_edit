@@ -1,8 +1,8 @@
 #ifndef VISUALIZERWIDGET_H
 #define VISUALIZERWIDGET_H
 
-#include <QMainWindow>
-#include "ui_VisualizerWidget.h"
+#include <QtGui/QMainWindow>
+#include "ui_visualizerwidget.h"
 class VisualizerContext;
 class VisualizerContext2D;
 class VisualizerContext3D;

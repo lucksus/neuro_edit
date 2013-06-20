@@ -3,6 +3,9 @@
 #ifdef Q_OS_WIN
 #include <gl/glu.h>
 #endif
+#ifdef Q_OS_MACX
+#include <glu.h>
+#endif
 
 GLPlotWidget2d::GLPlotWidget2d(QWidget *parent) :
     QGLWidget(parent),

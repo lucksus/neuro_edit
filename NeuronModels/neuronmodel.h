@@ -5,6 +5,7 @@
 
 class NeuronModel : public SpikingObject
 {
+Q_OBJECT
 friend class boost::serialization::access;
 public:
     NeuronModel(Neuron*);

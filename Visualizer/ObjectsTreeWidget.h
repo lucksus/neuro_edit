@@ -1,5 +1,5 @@
 #pragma once
-#include <QTreeWidget>
+#include <QtGui/QTreeWidget>
 class VisualizerContext;
 class VisualizerData;
 class VisualizerData2D;

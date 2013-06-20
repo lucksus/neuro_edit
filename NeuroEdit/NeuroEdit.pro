@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui opengl script scripttools
+CONFIG += debug_and_release
 TARGET = neuro_edit
 TEMPLATE = app
 INCLUDEPATH += ../NeuronModels ../Visualizer ../math ../MLP

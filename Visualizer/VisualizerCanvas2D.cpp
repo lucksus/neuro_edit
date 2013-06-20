@@ -14,6 +14,9 @@
 #ifdef Q_OS_WIN
 #include <gl/glu.h>
 #endif
+#ifdef Q_OS_MACX
+#include <glu.h>
+#endif
 
 #define _isnan(x) (x!=x)
 

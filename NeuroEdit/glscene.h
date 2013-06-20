@@ -6,6 +6,7 @@
 #include "neuron.h"
 #include <QTimer>
 #include <QTime>
+#include <glu.h>
 
 class CurrentInducer;
 class Drawable;

@@ -10,7 +10,7 @@ BoolEditor::BoolEditor(QWidget *widget) : QComboBox(widget)
 
 bool BoolEditor::value() const
 {
-	return qVariantValue<bool>(itemData(currentIndex(), Qt::DecorationRole));
+    return itemData(currentIndex(), Qt::DecorationRole).value<bool>();
 }
 
 void BoolEditor::setValue(bool b)

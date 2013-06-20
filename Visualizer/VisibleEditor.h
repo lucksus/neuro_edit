@@ -1,7 +1,7 @@
 #pragma once
-#include <QCheckBox>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
+#include <QtGui/QCheckBox>
+#include <QtGui/QTreeWidget>
+#include <QtGui/QTreeWidgetItem>
 class VisualizerData;
 
 class VisibleEditor : public QCheckBox{
