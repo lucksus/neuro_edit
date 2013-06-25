@@ -33,13 +33,17 @@ To build neuro_edit, you need the following requirements:
 Build
 -----
 In order to build the whole project, change into the cloned directory and say
-  qmake
-  make
+
+    qmake
+    make
+    
 or open the .pro file with [Qt-Creator](http://qt-project.org/wiki/Category:Tools::QtCreator).
 If you don't have installed boost and QScintilla to the system's
 include and lib directories you'll need to give something like 
-  INCLUDEPATH += /path/to/boost/inc /path/to/qscintilla/inc
-  LIBS += /path/to/boost/lib /path/to/qscintilla/lib
+
+    INCLUDEPATH += /path/to/boost/inc /path/to/qscintilla/inc
+    LIBS += /path/to/boost/lib /path/to/qscintilla/lib
+    
 to qmake.
 
 
