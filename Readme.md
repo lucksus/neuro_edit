@@ -1,4 +1,4 @@
-![logo](https://github.com/lucksus/neuro_edit/blob/master/NeuroEdit/Resources/splash.png)
+![logo](https://raw.github.com/lucksus/neuro_edit/master/NeuroEdit/Resources/splash.png)
 neuro_edit
 ==========
 
@@ -14,7 +14,7 @@ and its propagation along the axon with finite velocity is simulated.
 The [Izhikevich](http://www.izhikevich.org/human_brain_simulation/Blue_Brain.htm#models of spiking neurons")
 neuron model is used to represent neurons.
 
-![screenshot](https://github.com/lucksus/neuro_edit/blob/master/NeuroEdit/Resources/screenshot.png)
+![screenshot](https://raw.github.com/lucksus/neuro_edit/master/NeuroEdit/Resources/screenshot.png)
 
 neuro_edit incorporates also a 2nd gen linear discriminator
 neuron model. Combining a pool of Izhikevich neurons with a
