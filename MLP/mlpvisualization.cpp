@@ -90,9 +90,9 @@ QGraphicsTextItem* MLPVisualization::create_weight_text(QGraphicsLineItem* line,
     QString w = QString::number(weight,'f',3);
     QGraphicsTextItem *item= m_scene.addText(w);
 
-    qreal angle = line->line().angle();
-    if(angle > 90) item->rotate(180-angle);
-    else item->rotate(-angle);
+    //qreal angle = line->line().angle();
+    //if(angle > 90) item->rotate(180-angle);
+    //else item->rotate(-angle);
 
     item->setPos(line->line().pointAt(0.5));
     item->setDefaultTextColor(QColor(30,0,0));
