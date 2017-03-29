@@ -1,12 +1,12 @@
 #include "guiuserinteractionadapter.h"
-#include <QtGui/QFileDialog>
+#include <QFileDialog>
 #include "Visualizer.h"
-#include <QtGui/QDoubleSpinBox>
-#include <QtGui/QPushButton>
-#include <QtGui/QMessageBox>
+#include <QDoubleSpinBox>
+#include <QPushButton>
+#include <QMessageBox>
 #include "multilayerperceptron.h"
 #include "mlpvisualization.h"
-#include <QtCore/QThread>
+#include <QThread>
 #include "lsmreadoutneuron.h"
 #include "readoutvisualization.h"
 

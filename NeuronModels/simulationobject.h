@@ -5,8 +5,8 @@
 #include <boost/serialization/assume_abstract.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/archive/detail/basic_oarchive.hpp>
-#include <QtCore/QObject>
-#include <QtScript/QScriptEngine>
+#include <QObject>
+#include <QScriptEngine>
 #include "point.h"
 #include <boost/thread/recursive_mutex.hpp>
 

@@ -42,8 +42,8 @@
 #define QTPROPERTYMANAGER_H
 
 #include "qtpropertybrowser.h"
-#include <QtCore/QLocale>
-#include <QtCore/QMetaEnum>
+#include <QLocale>
+#include <QMetaEnum>
 
 #if QT_VERSION >= 0x040400
 QT_BEGIN_NAMESPACE

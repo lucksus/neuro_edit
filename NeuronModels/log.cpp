@@ -1,11 +1,11 @@
 #include "log.h"
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 #include "simulation.h"
-#include <QtCore/QTime>
+#include <QTime>
 #include "neuron.h"
 #include "group.h"
 #include "samples.h"
-#include <QtCore/QDir>
+#include <QDir>
 #include <boost/foreach.hpp>
 #include "controller.h"
 

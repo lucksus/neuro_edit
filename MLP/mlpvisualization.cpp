@@ -1,8 +1,8 @@
 #include "mlpvisualization.h"
 #include "ui_mlpvisualization.h"
 #include "multilayerperceptron.h"
-#include <QtGui/QGraphicsTextItem>
-#include <QtGui/QVector2D>
+#include <QGraphicsTextItem>
+#include <QVector2D>
 
 MLPVisualization::MLPVisualization(MultiLayerPerceptron *mlp) :
     QWidget(0),

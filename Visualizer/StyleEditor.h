@@ -1,7 +1,7 @@
 #pragma once
-#include <QtGui/QComboBox>
-#include <QtGui/QTreeWidget>
-#include <QtGui/QTreeWidgetItem>
+#include <QComboBox>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 #include "VisualizerData.h"
 
 class StyleEditor : public QComboBox{

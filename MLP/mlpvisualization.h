@@ -2,9 +2,9 @@
 #define MLPVISUALIZATION_H
 
 #include <QWidget>
-#include <QtGui/QGraphicsScene>
-//#include <QtGui/QGraphicsEllipseItem>
-//#include <QtGui/QGraphicsTextItem>
+#include <QGraphicsScene>
+//#include <QGraphicsEllipseItem>
+//#include <QGraphicsTextItem>
 
 #define NEURON_SIZE 30
 #define NEURON_MARGIN 50

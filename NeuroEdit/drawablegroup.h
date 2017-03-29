@@ -1,7 +1,7 @@
 #ifndef DRAWABLELSMCOLUMN_H
 #define DRAWABLELSMCOLUMN_H
 #include "drawable.h"
-#include <QtCore/QRect>
+#include <QRect>
 
 class DrawableGroup : public Drawable
 {

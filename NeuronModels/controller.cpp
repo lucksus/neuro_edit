@@ -1,6 +1,6 @@
 #include "controller.h"
-#include <QtCore/QCoreApplication>
-#include <QtCore/QMetaType>
+#include <QCoreApplication>
+#include <QMetaType>
 #include "point.h"
 #include "axon.h"
 #include "axonnode.h"

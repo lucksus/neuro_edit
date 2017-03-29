@@ -2,13 +2,13 @@
 #define SCRIPTSWINDOW_H
 
 #include <QWidget>
-#include <QtGui/QStringListModel>
+#include <QStringListModel>
 #include "scriptsyntaxhighlighter.h"
-#include <QtGui/QListView>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QLineEdit>
-#include <QtCore/QThread>
-#include <QtCore/QTimer>
+#include <QListView>
+#include <QKeyEvent>
+#include <QLineEdit>
+#include <QThread>
+#include <QTimer>
 
 namespace Ui {
     class ScriptsWindow;

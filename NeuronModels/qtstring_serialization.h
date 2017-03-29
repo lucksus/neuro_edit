@@ -8,7 +8,7 @@
 #ifndef QSTRING_SERIALIZATION_H
 #define QSTRING_SERIALIZATION_H
 
-#include <QtCore/QString>
+#include <QString>
 #include <string>
 //#include <boost/archive/xml_iarchive.hpp>
 //#include <boost/archive/xml_oarchive.hpp>

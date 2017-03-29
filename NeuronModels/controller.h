@@ -1,8 +1,8 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
-#include <QtCore/QObject>
+#include <QObject>
 #include <list>
-#include <QtCore/QMutex>
+#include <QMutex>
 
 class Simulation;
 class ScriptEngine;

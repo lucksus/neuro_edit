@@ -2,8 +2,8 @@
 #define MNISTDATA_H
 #include <string>
 #include <vector>
-#include <QtGui/QImage>
-#include <QtCore/QVector>
+#include <QImage>
+#include <QVector>
 #include "simulationobject.h"
 
 using namespace std;

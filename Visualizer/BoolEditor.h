@@ -1,5 +1,5 @@
 #pragma once
-#include <QtGui/QComboBox>
+#include <QComboBox>
 
 class BoolEditor : public QComboBox
 {

@@ -4,6 +4,7 @@
 #include <QSyntaxHighlighter>
 
 class QTextDocument;
+class QTextEdit;
 class ScriptSyntaxHighlighter : public QSyntaxHighlighter
 {
 	Q_OBJECT

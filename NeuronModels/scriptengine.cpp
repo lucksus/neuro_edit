@@ -1,11 +1,11 @@
 #include "scriptengine.h"
-#include <QtGui/QAction>
+#include <QAction>
 #include "controller.h"
 #include "simulation.h"
 #include "network.h"
 #include "point.h"
 #include "neuron.h"
-#include <QtCore/QMetaType>
+#include <QMetaType>
 #include "RandomGenerator.h"
 #include "group.h"
 #include "mnistdata.h"
@@ -15,7 +15,7 @@
 #include "current_inducer.h"
 #include "photosssignalimporter.h"
 #include <fstream>
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 
 QScriptValue charVectorToScriptValue(QScriptEngine* engine, const vector<unsigned char>& vec){
     return qScriptValueFromSequence(engine, QVector<unsigned char>::fromStdVector(vec));

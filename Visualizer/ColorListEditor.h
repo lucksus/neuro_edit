@@ -22,9 +22,9 @@
 #ifndef COLORLISTEDITOR_H
 #define COLORLISTEDITOR_H
 
-#include <QtGui/QComboBox>
-#include <QtGui/QTreeWidget>
-#include <QtGui/QTreeWidgetItem>
+#include <QComboBox>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 class QColor;
 class QWidget;
 class VisualizerData;

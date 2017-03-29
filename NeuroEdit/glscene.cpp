@@ -1015,7 +1015,7 @@ void GLScene::finish_inserting_current_inducer(SimulationObject* o){
     }
     m_moving_objects.clear();
     m_inserting_current_inducer = false;
-    m_phony_current_inducer = false;
+    m_phony_current_inducer = 0;
 
     DendriticNode* dn = dynamic_cast<DendriticNode*>(o);
     if(!dn) return;

@@ -1,7 +1,7 @@
-#include <QtCore/QCoreApplication>
+#include <QCoreApplication>
 #include "application.h"
 #include "controller.h"
-#include <QtCore/QFile>
+#include <QFile>
 #include <iostream>
 #include "scriptengine.h"
 

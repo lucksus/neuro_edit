@@ -29,8 +29,8 @@ bool DrawableLDConnection::is_applicable_to(SimulationObject* object){
 void DrawableLDConnection::set_color_and_lightning(){
     LDConnection* conn = dynamic_cast<LDConnection*>(m_object);
     double w = conn->weight();
-    double red = 0.6;
-    double green = 0.6;
+    GLfloat red = 0.6;
+    GLfloat green = 0.6;
     if(w>0){
         green += 0.1 + w/10;
     }else{

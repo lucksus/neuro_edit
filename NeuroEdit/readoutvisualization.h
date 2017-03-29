@@ -2,8 +2,8 @@
 #define READOUTVISUALIZATION_H
 
 #include <QWidget>
-#include <QtGui/QListWidget>
-#include <QtCore/QTimer>
+#include <QListWidget>
+#include <QTimer>
 
 class LSMReadOutNeuron;
 

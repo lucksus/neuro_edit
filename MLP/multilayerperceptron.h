@@ -2,8 +2,8 @@
 #define MULTILAYERPERCEPTRON_H
 
 #include <vector>
-#include <QtCore/QObject>
-#include <QtCore/QVector>
+#include <QObject>
+#include <QVector>
 #include "simulationobject.h"
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/vector.hpp>

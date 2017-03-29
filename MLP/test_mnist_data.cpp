@@ -1,10 +1,10 @@
 #include "mnistdata.h"
-#include <QtGui/QFileDialog>
-#include <QtGui/QImage>
-#include <QtGui/QLabel>
-#include <QtGui/QApplication>
-#include <QtGui/QGridLayout>
-#include <QtGui/QScrollArea>
+#include <QFileDialog>
+#include <QImage>
+#include <QLabel>
+#include <QApplication>
+#include <QGridLayout>
+#include <QScrollArea>
 
 int main(int argc, char** argv){
     QApplication app(argc,argv);

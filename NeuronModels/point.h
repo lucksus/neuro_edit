@@ -2,8 +2,8 @@
 #define POINT_H
 #include <math.h>
 #include <boost/serialization/nvp.hpp>
-#include <QtCore/QObject>
-#include <QtCore/QMetaType>
+#include <QObject>
+#include <QMetaType>
 #include <QtScript/QScriptValue>
 #include <QtScript/QScriptEngine>
 

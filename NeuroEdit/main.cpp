@@ -1,4 +1,4 @@
-#include <QtGui/QApplication>
+#include <QApplication>
 #include "application.h"
 #ifdef __linux__
 #include <GL/glut.h>

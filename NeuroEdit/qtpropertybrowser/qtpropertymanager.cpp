@@ -40,17 +40,17 @@
 
 #include "qtpropertymanager.h"
 #include "qtpropertybrowserutils_p.h"
-#include <QtCore/QDateTime>
-#include <QtCore/QMap>
-#include <QtCore/QTimer>
-#include <QtGui/QIcon>
-#include <QtGui/QFontDatabase>
-#include <QtGui/QStyleOption>
-#include <QtGui/QStyle>
-#include <QtGui/QApplication>
-#include <QtGui/QPainter>
-#include <QtGui/QLabel>
-#include <QtGui/QCheckBox>
+#include <QDateTime>
+#include <QMap>
+#include <QTimer>
+#include <QIcon>
+#include <QFontDatabase>
+#include <QStyleOption>
+#include <QStyle>
+#include <QApplication>
+#include <QPainter>
+#include <QLabel>
+#include <QCheckBox>
 
 #include <limits.h>
 #include <float.h>

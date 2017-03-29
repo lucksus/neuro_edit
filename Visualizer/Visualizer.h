@@ -7,7 +7,7 @@
 #include "VisualizerContext2D.h"
 #include "VisualizerContext3D.h"
 #include "VisualizerWidget.h"
-#include <QtCore/QObject>
+#include <QObject>
 
 using namespace std;
 

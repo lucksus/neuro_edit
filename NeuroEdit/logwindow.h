@@ -3,7 +3,7 @@
 #include "log.h"
 
 #include <QWidget>
-#include <QtCore/QTimer>
+#include <QTimer>
 
 namespace Ui {
     class LogWindow;

@@ -1,13 +1,13 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
-#include <QtCore/QThread>
-#include <QtCore/QMutex>
+#include <QThread>
+#include <QMutex>
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/assume_abstract.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/map.hpp>
 #include "scriptengine.h"
-#include <QtCore/QStringList>
+#include <QStringList>
 
 class Network;
 class Simulation : public QThread

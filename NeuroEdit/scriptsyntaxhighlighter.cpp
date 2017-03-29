@@ -1,4 +1,5 @@
 #include "scriptsyntaxhighlighter.h"
+#include <QTextEdit>
 
 ScriptSyntaxHighlighter::ScriptSyntaxHighlighter(QTextEdit *parent)
 : QSyntaxHighlighter(parent)

@@ -4,6 +4,7 @@ INCLUDEPATH += . ../NeuronModels ../math
 CONFIG += staticlib
 CONFIG += debug_and_release
 DESTDIR=../lib
+QT += script widgets
 include(../src.pri)
 
 # Input

@@ -17,11 +17,11 @@
 #include "application.h"
 #include "controller.h"
 #include <stdexcept>
-#include <QtCore/QSettings>
+#include <QSettings>
 #include "samples.h"
 #include "lineardiscriminator.h"
 #include "group.h"
-#include <QtGui/QMessageBox>
+#include <QMessageBox>
 
 MainWindow::MainWindow(Simulation* sim, QWidget *parent) :
     QMainWindow(parent),

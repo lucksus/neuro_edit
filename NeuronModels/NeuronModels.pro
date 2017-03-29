@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       -= core gui
+QT       += script widgets
 CONFIG += debug_and_release
 TARGET = neuron_models
 TEMPLATE = lib

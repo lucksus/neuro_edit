@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include "samples.h"
-#include <QtGui/QImage>
+#include <QImage>
 
 using namespace std;
 

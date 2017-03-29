@@ -12,7 +12,7 @@
 #define RANDOMGENERATOR_H
 
 #include <complex>
-#include <QtCore/QObject>
+#include <QObject>
 
 namespace NeuroMath{
 //Dies ist kein magischen Zahlen..

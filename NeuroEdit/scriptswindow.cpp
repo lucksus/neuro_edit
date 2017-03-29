@@ -4,8 +4,8 @@
 #include "simulation.h"
 #include "application.h"
 #include "controller.h"
-#include <QtCore/QFile>
-#include <QtGui/QFileDialog>
+#include <QFile>
+#include <QFileDialog>
 #include <Qsci/qscilexerjavascript.h>
 
 ScriptRunnerThread::ScriptRunnerThread(ScriptsWindow* window)

@@ -1,6 +1,6 @@
 #ifndef NETWORK_H
 #define NETWORK_H
-#include <QtCore/QObject>
+#include <QObject>
 #include <list>
 #include "simulationobject.h"
 #include <boost/serialization/list.hpp>
@@ -10,8 +10,8 @@
 #include <istream>
 #include <map>
 #include "scriptengine.h"
-#include <QtCore/QStringList>
-#include <QtCore/QObjectList>
+#include <QStringList>
+#include <QObjectList>
 
 class Axon;
 class Synapse;

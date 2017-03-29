@@ -4,7 +4,7 @@
 #include <list>
 #include <boost/serialization/nvp.hpp>
 #include <boost/type_traits/is_virtual_base_of.hpp>
-#include <QtCore/QMetaType>
+#include <QMetaType>
 
 class Neuron;
 class SpikingObject;

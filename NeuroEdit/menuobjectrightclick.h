@@ -1,8 +1,8 @@
 #ifndef MENUOBJECTRIGHTCLICK_H
 #define MENUOBJECTRIGHTCLICK_H
-#include <QtGui/QMenu>
-#include <QtCore/QSignalMapper>
-#include <QtCore/QSet>
+#include <QMenu>
+#include <QSignalMapper>
+#include <QSet>
 
 class SimulationObject;
 class MenuObjectRightClick : public QMenu

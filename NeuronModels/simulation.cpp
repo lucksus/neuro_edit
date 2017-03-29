@@ -1,8 +1,8 @@
 #include "simulation.h"
 #include "network.h"
-#include <QtCore/QTime>
+#include <QTime>
 #include <iostream>
-#include <QtCore/QMutexLocker>
+#include <QMutexLocker>
 #include <fstream>
 #include "serializationhelper.h"
 #include <boost/foreach.hpp>

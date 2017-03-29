@@ -5,11 +5,10 @@
 #-------------------------------------------------
 
 QT     += core opengl script scripttools
-QT     += gui
 TARGET  = NeuroRunner
 CONFIG += console
 CONFIG -= app_bundle
-#CONFIG += debug_and_release
+CONFIG += debug_and_release
 TEMPLATE = app
 INCLUDEPATH += ../NeuronModels ../math ../MLP
 DESTDIR=../bin

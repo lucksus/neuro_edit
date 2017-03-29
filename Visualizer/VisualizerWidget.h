@@ -1,7 +1,7 @@
 #ifndef VISUALIZERWIDGET_H
 #define VISUALIZERWIDGET_H
 
-#include <QtGui/QMainWindow>
+#include <QMainWindow>
 #include "ui_visualizerwidget.h"
 class VisualizerContext;
 class VisualizerContext2D;

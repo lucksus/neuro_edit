@@ -1,5 +1,5 @@
 #include "guisettings.h"
-#include <QtCore/QSettings>
+#include <QSettings>
 
 GuiSettings::GuiSettings()
 {
